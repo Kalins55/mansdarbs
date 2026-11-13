@@ -88,7 +88,7 @@ function addRecord(){
  document.getElementById('amount').value='';document.getElementById('note').value='';renderRecords();
 }
 function clearRecords(){if(!getRecords().length)return;if(confirm('Vai tiešām dzēst visus šīs ierīces demonstrācijas ierakstus?')){localStorage.removeItem(STORAGE_KEY);renderRecords()}}
-document.getElementById('date').value=new Date().toISOString().slice(0,10);
+const today=new Date();document.getElementById('date').value=[today.getFullYear(),String(today.getMonth()+1).padStart(2,'0'),String(today.getDate()).padStart(2,'0')].join('-');
 renderRecords();
 </script>
 </body>
