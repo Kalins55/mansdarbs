@@ -1,221 +1,55 @@
 <!doctype html>
 <html lang="lv">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#f5f7fb">
-<title>mansdarbs — prototips</title>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#f5f7f4">
+<title>DarbaPalīgs — klikšķināms prototips</title>
 <style>
-:root{--bg:#f5f7fb;--panel:#fff;--ink:#172033;--muted:#697386;--line:#e5e9f0;--blue:#245bd6;--blue2:#eaf0ff;--green:#16845b;--greenbg:#e9f7f0;--amber:#9a6411;--amberbg:#fff5df;--shadow:0 10px 30px rgba(24,39,75,.06)}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}
-button,input,select{font:inherit}button{cursor:pointer}
-.shell{max-width:1120px;margin:auto;padding:24px}
-.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:26px}
-.brand{display:flex;align-items:center;gap:11px;font-weight:750;font-size:20px;letter-spacing:-.4px}
-.logo{width:38px;height:38px;border-radius:12px;background:var(--blue);color:white;display:grid;place-items:center;font-weight:800}
-.pill{font-size:12px;color:var(--blue);background:var(--blue2);padding:6px 10px;border-radius:99px;font-weight:650}
-h1{font-size:clamp(28px,4vw,40px);line-height:1.12;letter-spacing:-1.2px;margin:0 0 10px}
-h2{font-size:22px;letter-spacing:-.5px;margin:0 0 6px}
-h3{font-size:16px;margin:0 0 5px}
-p{margin:0;color:var(--muted)}
-.hero{padding:38px 0 28px;max-width:720px}
-.hero p{font-size:17px;max-width:590px}
-.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
-.card{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:22px;box-shadow:var(--shadow)}
-.choice{min-height:180px;text-align:left;display:flex;flex-direction:column;gap:12px;transition:.15s;border:1px solid var(--line);background:#fff;border-radius:18px;padding:22px;color:var(--ink)}
-.choice:hover,.navbtn:hover,.action:hover{border-color:#b9c9f5;transform:translateY(-1px)}
-.choice .symbol{width:42px;height:42px;border-radius:13px;background:var(--blue2);color:var(--blue);display:grid;place-items:center;font-size:21px}
-.choice strong{font-size:19px}.choice span:last-child{color:var(--muted);font-size:14px}
-.note{margin-top:20px;font-size:13px;color:var(--muted)}
-.layout{display:grid;grid-template-columns:230px 1fr;gap:22px;align-items:start}
-.sidebar{background:#fff;border:1px solid var(--line);border-radius:18px;padding:12px;position:sticky;top:16px}
-.navbtn{width:100%;border:0;background:transparent;color:#475166;padding:12px;border-radius:11px;text-align:left;display:flex;gap:11px;align-items:center;margin:2px 0}
-.navbtn.active{background:var(--blue2);color:var(--blue);font-weight:700}
-.navicon{width:22px;text-align:center;font-size:17px}
-.mainhead{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:20px}
-.sub{font-size:14px;color:var(--muted)}
-.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:13px;margin:18px 0}
-.metric{background:#fff;border:1px solid var(--line);border-radius:16px;padding:17px}
-.metric .label{font-size:13px;color:var(--muted)}.metric .value{font-size:25px;font-weight:750;letter-spacing:-.7px;margin-top:7px}
-.metric .hint{font-size:12px;color:var(--muted);margin-top:3px}
-.sectiongrid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
-.action{border:1px solid var(--line);border-radius:16px;background:#fff;padding:18px;text-align:left;display:flex;gap:14px;align-items:center;color:var(--ink);transition:.15s}
-.action .symbol{width:40px;height:40px;border-radius:12px;background:#f1f4fa;display:grid;place-items:center;font-size:19px;flex:none}
-.action p{font-size:13px;margin-top:3px}
-.btn{border:0;border-radius:12px;background:var(--blue);color:#fff;padding:12px 17px;font-weight:700}
-.btn.secondary{background:#eef2f8;color:#26334b}
-.btn.ghost{background:transparent;color:var(--blue);padding:9px}
-.row{display:flex;align-items:center;justify-content:space-between;gap:12px}
-.table{width:100%;border-collapse:collapse;margin-top:12px}.table th,.table td{text-align:left;padding:13px 8px;border-bottom:1px solid var(--line);font-size:14px}.table th{font-size:12px;color:var(--muted);font-weight:650}
-.amount{font-weight:700;white-space:nowrap}.positive{color:var(--green)}
-.status{display:inline-block;background:var(--greenbg);color:var(--green);font-size:12px;font-weight:700;padding:5px 9px;border-radius:99px}
-.warning{background:var(--amberbg);color:var(--amber);border-radius:13px;padding:14px;font-size:14px;margin-top:14px}
-.formrow{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0}
-label{display:block;font-size:13px;color:var(--muted);margin-bottom:6px}
-input,select{width:100%;border:1px solid var(--line);border-radius:11px;padding:12px;background:#fff;color:var(--ink)}
-.empty{padding:26px;text-align:center;color:var(--muted)}
-.back{color:var(--blue);font-weight:650;border:0;background:none;padding:0;margin-bottom:18px}
-.footer{margin-top:26px;color:var(--muted);font-size:12px;text-align:center}
-.hidden{display:none!important}
-@media(max-width:760px){.shell{padding:17px}.layout{grid-template-columns:1fr}.sidebar{position:static;display:flex;overflow:auto;gap:4px;padding:7px}.navbtn{width:auto;white-space:nowrap;padding:10px}.navbtn .navicon{display:none}.metrics{grid-template-columns:1fr 1fr}.metrics .metric:last-child{grid-column:span 2}.sectiongrid{grid-template-columns:1fr}.mainhead{flex-direction:column}.hero{padding-top:24px}}
-@media(max-width:480px){.grid{grid-template-columns:1fr}.choice{min-height:150px}.metrics{gap:9px}.metric{padding:13px}.metric .value{font-size:21px}.formrow{grid-template-columns:1fr}.topbar{margin-bottom:12px}}
-</style>
-</head>
-<body>
-<div class="shell">
-  <header class="topbar">
-    <div class="brand"><div class="logo">M</div><span>mansdarbs</span></div>
-    <span class="pill">Prototips 0.2</span>
-  </header>
-
-  <section id="welcome">
-    <div class="hero">
-      <h1>Darbs savā ritmā.<br>Dokumenti kārtībā.</h1>
-      <p>Vienkāršs palīgs pašnodarbinātajiem un cilvēkiem, kuri vēlas sākt strādāt legāli.</p>
-    </div>
-    <div class="grid">
-      <button class="choice" onclick="showDashboard()">
-        <span class="symbol">✓</span>
-        <strong>Es jau strādāju</strong>
-        <span>Pārvaldīt ienākumus, izdevumus un nodokļus.</span>
-      </button>
-      <button class="choice" onclick="showStart()">
-        <span class="symbol">＋</span>
-        <strong>Vēlos sākt legāli</strong>
-        <span>Uzzināt, kā reģistrēt savu darbību un ar ko sākt.</span>
-      </button>
-    </div>
-    <div class="note">Šis ir demonstrācijas prototips. Ievadītie dati netiek nosūtīti vai saglabāti.</div>
-  </section>
-
-  <section id="start" class="hidden">
-    <button class="back" onclick="showWelcome()">← Atpakaļ</button>
-    <div class="hero" style="padding-top:8px">
-      <h1>Sāksim ar vienkāršo.</h1>
-      <p>Daži soļi palīdzēs saprast, kā legāli sākt savu darbu Latvijā.</p>
-    </div>
-    <div class="card">
-      <h2>Ko tu plāno darīt?</h2>
-      <p class="sub">Piemēram, remontēt, tīrīt, veikt skaistumkopšanu vai pārdot paša ražotas lietas.</p>
-      <div class="formrow">
-        <div><label for="worktype">Kādu darbu plāno veikt?</label>
-          <select id="worktype" onchange="toggleOtherWorktype()">
-            <option value="">Izvēlies darba veidu</option>
-            <option>Remontēt un labot</option>
-            <option>Sniegt pakalpojumus</option>
-            <option>Veikt būvniecības darbus</option>
-            <option>Strādāt ar tehniku</option>
-            <option>Ražot vai izgatavot preces</option>
-            <option>Pirkt un pārdot preces</option>
-            <option value="other">Cits / vēl neesmu pārliecināts</option>
-          </select>
-        </div>
-        <div><label for="frequency">Cik bieži?</label><select id="frequency"><option>Reizēm</option><option>Katru nedēļu</option><option>Regulāri</option></select></div>
-      </div>
-      <div id="otherWorktypeWrap" class="formrow hidden"><div style="grid-column:1/-1"><label for="otherWorktype">Apraksti, ko plāno darīt (ja vēlies)</label><input id="otherWorktype" placeholder="Piemēram, remontdarbi"></div></div>
-      <button class="btn" onclick="continueStart()">Turpināt</button>
-    </div>
-  </section>
-
-  <section id="dashboard" class="hidden">
-    <div class="layout">
-      <nav class="sidebar" aria-label="Galvenā navigācija">
-        <button class="navbtn active" data-page="home" onclick="navigate('home')"><span class="navicon">⌂</span>Pārskats</button>
-        <button class="navbtn" data-page="income" onclick="navigate('income')"><span class="navicon">＋</span>Ienākumi</button>
-        <button class="navbtn" data-page="expenses" onclick="navigate('expenses')"><span class="navicon">−</span>Izdevumi</button>
-        <button class="navbtn" data-page="taxes" onclick="navigate('taxes')"><span class="navicon">▤</span>Nodokļi</button>
-        <button class="navbtn" data-page="profile" onclick="navigate('profile')"><span class="navicon">○</span>Mana darbība</button>
-        <button class="navbtn" data-page="help" onclick="navigate('help')"><span class="navicon">?</span>Palīdzība</button>
-      </nav>
-      <main>
-        <div id="page-home" class="page">
-          <div class="mainhead"><div><h1 style="font-size:30px">Tavs pārskats</h1><div class="sub">Īss ieskats tavā saimnieciskajā darbībā.</div></div><button class="btn secondary" onclick="showWelcome()">Iziet</button></div>
-          <div class="metrics">
-            <div class="metric"><div class="label">Ienākumi šomēnes</div><div class="value" id="totalIncome">€ 1 250</div><div class="hint">Demonstrācijas dati</div></div>
-            <div class="metric"><div class="label">Izdevumi šomēnes</div><div class="value" id="totalExpenses">€ 320</div><div class="hint">Demonstrācijas dati</div></div>
-            <div class="metric"><div class="label">Starpība</div><div class="value" id="totalDiff">€ 930</div><div class="hint">Ienākumi mīnus izdevumi</div></div>
-          </div>
-          <div class="row" style="margin:24px 0 13px"><div><h2>Ko vēlies darīt?</h2><p class="sub">Izvēlies nākamo darbību.</p></div></div>
-          <div class="sectiongrid">
-            <button class="action" onclick="navigate('income')"><span class="symbol">＋</span><span><h3>Pievienot ienākumu</h3><p>Reģistrē saņemto samaksu</p></span></button>
-            <button class="action" onclick="navigate('expenses')"><span class="symbol">−</span><span><h3>Pievienot izdevumu</h3><p>Pievieno ar darbu saistītu pirkumu</p></span></button>
-            <button class="action" onclick="navigate('taxes')"><span class="symbol">▤</span><span><h3>Apskatīt nodokļus</h3><p>Uzzini, kas jāņem vērā</p></span></button>
-            <button class="action" onclick="navigate('help')"><span class="symbol">?</span><span><h3>Saņemt palīdzību</h3><p>Atbildes saprotamā valodā</p></span></button>
-          </div>
-        </div>
-
-        <div id="page-income" class="page hidden">
-          <div class="mainhead"><div><h1 style="font-size:30px">Ienākumi</h1><div class="sub">Pieraksti, cik un kad esi nopelnījis.</div></div><button class="btn" onclick="document.getElementById('incomeAmount').focus()">＋ Pievienot</button></div>
-          <div class="card"><h2>Pievienot ienākumu</h2><div class="formrow"><div><label for="incomeAmount">Summa (€)</label><input id="incomeAmount" type="number" min="0" step="0.01" placeholder="0,00"></div><div><label for="incomeDate">Datums</label><input id="incomeDate" type="date"></div></div><div class="formrow"><div style="grid-column:1/-1"><label for="incomeNote">Par ko saņemta samaksa?</label><input id="incomeNote" placeholder="Piemēram, zāles pļaušana"></div></div><button class="btn" onclick="addEntry('income')">Saglabāt</button></div>
-          <div class="card" style="margin-top:14px"><h2>Pēdējie ienākumi</h2><div id="incomeList" class="empty">Pagaidām nav pievienotu ierakstu.</div></div>
-        </div>
-
-        <div id="page-expenses" class="page hidden">
-          <div class="mainhead"><div><h1 style="font-size:30px">Izdevumi</h1><div class="sub">Pieraksti pirkumus, kas saistīti ar tavu darbu.</div></div></div>
-          <div class="card"><h2>Pievienot izdevumu</h2><div class="formrow"><div><label for="expenseAmount">Summa (€)</label><input id="expenseAmount" type="number" min="0" step="0.01" placeholder="0,00"></div><div><label for="expenseDate">Datums</label><input id="expenseDate" type="date"></div></div><div class="formrow"><div style="grid-column:1/-1"><label for="expenseNote">Kas tika iegādāts?</label><input id="expenseNote" placeholder="Piemēram, darba materiāli"></div></div><button class="btn" onclick="addEntry('expenses')">Saglabāt</button></div>
-          <div class="card" style="margin-top:14px"><h2>Pēdējie izdevumi</h2><div id="expensesList" class="empty">Pagaidām nav pievienotu ierakstu.</div></div>
-        </div>
-
-        <div id="page-taxes" class="page hidden">
-          <div class="mainhead"><div><h1 style="font-size:30px">Nodokļi</h1><div class="sub">Svarīgākais par nodokļiem vienuviet.</div></div></div>
-          <div class="card"><span class="status">Palīgs un skaidrojumi</span><h2 style="margin-top:14px">Tavs nodokļu pārskats</h2><p>Šajā sadaļā vēlāk būs aprēķins pēc taviem ienākumiem, izdevumiem un aktuālajiem noteikumiem.</p><div class="warning">Svarīgi: šajā prototipā nodokļu summas netiek aprēķinātas. Pirms maksājumiem pārbaudi informāciju VID EDS.</div></div>
-          <div class="card" style="margin-top:14px"><h3>Ko šeit varēsi apskatīt?</h3><ul style="color:var(--muted);padding-left:20px"><li>Plānotās nodokļu iemaksas</li><li>Termiņus un atgādinājumus</li><li>Vienkāršu skaidrojumu par katru maksājumu</li></ul></div>
-        </div>
-
-        <div id="page-profile" class="page hidden">
-          <div class="mainhead"><div><h1 style="font-size:30px">Mana darbība</h1><div class="sub">Pamatinformācija par tavu darbu.</div></div></div>
-          <div class="card"><h2>Tavas darbības informācija</h2><p>Šeit varēsi pārskatīt savu darbības veidu, reģistrācijas datus un svarīgākos iestatījumus.</p><div class="warning">Šī prototipa versija nav savienota ar VID un nepārbauda reģistrācijas statusu.</div></div>
-        </div>
-
-        <div id="page-help" class="page hidden">
-          <div class="mainhead"><div><h1 style="font-size:30px">Palīdzība</h1><div class="sub">Atbildes bez sarežģītiem terminiem.</div></div></div>
-          <div class="card"><h3>Kas man jādara, ja saņemu samaksu?</h3><p>Reģistrē saņemto summu sadaļā “Ienākumi” un saglabā ar darbu saistītos dokumentus.</p><hr style="border:0;border-top:1px solid var(--line);margin:17px 0"><h3>Vai aplikācija iesniedz deklarācijas VID?</h3><p>Nē. Šī ir prototipa versija. Deklarāciju iesniegšana un VID pieslēgums vēl nav izveidots.</p><hr style="border:0;border-top:1px solid var(--line);margin:17px 0"><h3>Vai mani dati tiek saglabāti?</h3><p>Nē. Šajā demonstrācijā ievadītie dati paliek tikai atvērtajā lapā.</p></div>
-        </div>
-      </main>
-    </div>
-  </section>
-  <div class="footer">mansdarbs · Prototips 0.2 · Demonstrācijas dati, nevis nodokļu konsultācija</div>
-</div>
+:root{--bg:#f5f7f4;--paper:#fff;--ink:#17231f;--muted:#64716b;--line:#e1e8e2;--green:#176b50;--pale:#e8f3ec;--amber:#fff4d8;--amberink:#765315;--shadow:0 12px 34px rgba(24,45,35,.07)}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}button,input,select{font:inherit}button{cursor:pointer}.shell{max-width:1120px;margin:auto;padding:20px 22px 55px}.top{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:22px}.brand{display:flex;align-items:center;gap:10px;font-size:19px;font-weight:800;letter-spacing:-.4px}.logo{width:38px;height:38px;border-radius:12px;background:var(--green);color:#fff;display:grid;place-items:center}.tag{font-size:12px;color:var(--muted);background:#e9eeea;padding:7px 11px;border-radius:99px}
+.hero{max-width:740px;text-align:center;margin:46px auto 30px}.eyebrow{font-size:12px;color:var(--green);font-weight:800;letter-spacing:1.1px;text-transform:uppercase}.hero h1{font-size:clamp(32px,5vw,49px);line-height:1.08;letter-spacing:-1.7px;margin:12px 0}.hero p{font-size:17px;color:var(--muted);max-width:620px;margin:auto}.cards{max-width:850px;display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin:34px auto}.choice{background:var(--paper);border:1px solid var(--line);border-radius:20px;padding:25px;text-align:left;box-shadow:var(--shadow);transition:.18s}.choice:hover{transform:translateY(-2px);border-color:#9bb9a8}.ico{width:44px;height:44px;border-radius:14px;background:var(--pale);display:grid;place-items:center;font-size:22px;margin-bottom:17px}.choice h2{font-size:20px;margin:0 0 8px}.choice p{color:var(--muted);margin:0 0 19px}.arrow{color:var(--green);font-weight:750}.notice{max-width:850px;margin:18px auto;background:var(--amber);color:var(--amberink);padding:13px 16px;border-radius:13px;font-size:13px}
+.panel{max-width:850px;margin:20px auto;background:var(--paper);border:1px solid var(--line);border-radius:20px;padding:clamp(20px,4vw,34px);box-shadow:var(--shadow)}.panel h1{font-size:clamp(26px,4vw,35px);line-height:1.15;letter-spacing:-.8px;margin:8px 0}.sub{color:var(--muted);margin:0 0 22px}.progress{height:6px;background:#edf1ed;border-radius:8px;margin:20px 0 26px;overflow:hidden}.progress span{height:100%;display:block;background:var(--green);width:25%;transition:.2s}.options{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}.opt{border:1px solid var(--line);border-radius:12px;padding:12px;text-align:left;background:white;color:var(--ink)}.opt.selected{border-color:var(--green);background:var(--pale);color:#104d39;font-weight:700}.actions{display:flex;justify-content:space-between;gap:10px;margin-top:26px}.btn{border:0;border-radius:11px;padding:12px 18px;font-weight:750}.primary{background:var(--green);color:#fff}.secondary{background:#edf1ed;color:var(--ink)}.field{margin:17px 0}.field label{display:block;font-weight:700;margin-bottom:7px}.field small{display:block;color:var(--muted);margin-top:5px}.field input,.field select{width:100%;padding:12px 13px;border:1px solid #d5ded7;border-radius:11px;background:#fff}.appgrid{display:grid;grid-template-columns:230px 1fr;gap:18px;margin-top:22px}.side,.content{background:white;border:1px solid var(--line);border-radius:18px;padding:14px}.side button{display:block;width:100%;border:0;background:transparent;padding:11px 12px;border-radius:10px;text-align:left;color:var(--muted);font-weight:650;margin:3px 0}.side button.active,.side button:hover{background:var(--pale);color:var(--green)}.content{padding:24px}.content h2{font-size:25px;margin:0 0 4px}.muted{color:var(--muted)}.tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:18px 0}.tile{border:1px solid var(--line);border-radius:14px;padding:14px;min-width:0}.tile b{font-size:22px;display:block;overflow-wrap:anywhere}.tile span{font-size:12px;color:var(--muted)}.rowline{padding:13px 0;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:12px}.pill{font-size:11px;font-weight:750;padding:5px 8px;border-radius:99px;background:#f0f3f0;color:#58665e;white-space:nowrap}.pill.warn{background:var(--amber);color:var(--amberink)}.pill.good{background:var(--pale);color:var(--green)}.steps{display:grid;gap:11px;margin:18px 0}.step{display:flex;gap:13px;border:1px solid var(--line);border-radius:14px;padding:14px}.num{flex:0 0 30px;height:30px;border-radius:10px;background:var(--pale);color:var(--green);font-weight:800;display:grid;place-items:center}.step p{margin:3px 0 0;color:var(--muted);font-size:14px}.hidden{display:none!important}.footer{max-width:850px;margin:22px auto 0;text-align:center;color:#87928b;font-size:12px}
+@media(max-width:700px){.shell{padding:15px 13px 40px}.hero{margin:34px auto 24px}.cards{grid-template-columns:1fr;margin:24px auto}.choice{padding:21px}.appgrid{grid-template-columns:1fr}.side{display:flex;overflow:auto;gap:4px;padding:8px}.side button{width:auto;white-space:nowrap}.content{padding:17px}.tiles{grid-template-columns:1fr 1fr}.options{grid-template-columns:1fr}.tag{display:none}}
+</style></head>
+<body><div class="shell">
+<header class="top"><div class="brand"><div class="logo">D</div>DarbaPalīgs</div><span class="tag">Latvijai · prototips 0.1</span></header>
+<main id="home">
+<section class="hero"><div class="eyebrow">Sāc vienkārši. Strādā oficiāli.</div><h1>Sakārto savu darbu,<br>nevis cīnies ar papīriem.</h1><p>Praktisks palīgs, kas izskaidro nākamos soļus, palīdz saprast nodokļus un sakārtot ikdienas uzskaiti.</p></section>
+<section class="cards">
+<button class="choice" onclick="startFlow('new')"><div class="ico">↗</div><h2>Vēlos sākt strādāt oficiāli</h2><p>Vēl neesmu reģistrējis saimniecisko darbību vai tikai plānoju sākt.</p><span class="arrow">Noskaidrot, kā sākt →</span></button>
+<button class="choice" onclick="startFlow('existing')"><div class="ico">✓</div><h2>Jau esmu pašnodarbinātais</h2><p>Esmu reģistrēts, bet vēlos vieglāk pārvaldīt ienākumus, izdevumus un nodokļus.</p><span class="arrow">Atvērt manu darba vidi →</span></button>
+</section>
+<div class="notice">Interaktīvs koncepts. Nodokļu aprēķini un juridiskie ieteikumi nav aktivizēti. Pirms palaišanas tie jāpārbauda pret aktuālajiem VID un normatīvo aktu avotiem.</div>
+</main>
+<section id="flow" class="panel hidden"><div class="eyebrow" id="flowtag">SĀKUMA IZVĒRTĒJUMS</div><div class="progress"><span id="progress"></span></div><div id="flowbody"></div><div class="actions"><button class="btn secondary" onclick="prevStep()">Atpakaļ</button><button class="btn primary" id="next" onclick="nextStep()">Turpināt</button></div></section>
+<section id="workspace" class="hidden"><div class="eyebrow">TAVA DARBA VIDE</div><h1 style="font-size:clamp(28px,4vw,38px);letter-spacing:-1px;margin:7px 0">Viss svarīgais vienuviet.</h1><p class="muted">Pārskats un rīki ikdienas darbam. Demonstrācijas dati nav nodokļu aprēķins.</p><div class="appgrid">
+<nav class="side" id="nav"><button class="active" data-tab="overview">Pārskats</button><button data-tab="records">Ienākumi un izdevumi</button><button data-tab="tax">Nodokļi un termiņi</button><button data-tab="social">Sociālā aizsardzība</button><button data-tab="eds">VID / EDS palīgs</button><button data-tab="help">Palīdzība</button></nav><div class="content" id="tabcontent"></div></div></section>
+<div class="footer">DarbaPalīgs · koncepts · dati netiek sūtīti serverim · nekas netiek iesniegts VID</div></div>
 <script>
-const pages=['home','income','expenses','taxes','profile','help'];
-let entries={income:[],expenses:[]};
-function show(id){['welcome','start','dashboard'].forEach(x=>document.getElementById(x).classList.toggle('hidden',x!==id));}
-function showWelcome(){show('welcome')}
-function showStart(){show('start')}
-function showDashboard(){show('dashboard');navigate('home')}
-function toggleOtherWorktype(){document.getElementById('otherWorktypeWrap').classList.toggle('hidden',document.getElementById('worktype').value!=='other')}
-function continueStart(){const type=document.getElementById('worktype').value;if(!type){alert('Lūdzu, izvēlies darba veidu.');return;}alert('Paldies! Nākamajā solī izveidosim tev piemērotu reģistrācijas ceļvedi.')}
-function navigate(page){
-  pages.forEach(p=>document.getElementById('page-'+p).classList.toggle('hidden',p!==page));
-  document.querySelectorAll('.navbtn').forEach(b=>b.classList.toggle('active',b.dataset.page===page));
-}
-function addEntry(type){
-  const amount=Number(document.getElementById(type==='income'?'incomeAmount':'expenseAmount').value);
-  const date=document.getElementById(type==='income'?'incomeDate':'expenseDate').value;
-  const note=document.getElementById(type==='income'?'incomeNote':'expenseNote').value.trim();
-  if(!amount||amount<=0||!date){alert('Lūdzu, ievadi summu un datumu.');return;}
-  entries[type].unshift({amount,date,note:note||'Bez apraksta'});
-  document.getElementById(type==='income'?'incomeAmount':'expenseAmount').value='';
-  document.getElementById(type==='income'?'incomeNote':'expenseNote').value='';
-  renderEntries();updateTotals();alert('Ieraksts pievienots!');
-}
-function renderEntries(){
-  ['income','expenses'].forEach(type=>{
-    const el=document.getElementById(type+'List');
-    if(!entries[type].length){el.className='empty';el.textContent='Pagaidām nav pievienotu ierakstu.';return;}
-    el.className='';
-    el.innerHTML='<table class="table"><thead><tr><th>Datums</th><th>Apraksts</th><th>Summa</th></tr></thead><tbody>'+
-      entries[type].map(e=>`<tr><td>${e.date}</td><td>${escapeHtml(e.note)}</td><td class="amount ${type==='income'?'positive':''}">€ ${e.amount.toFixed(2)}</td></tr>`).join('')+'</tbody></table>';
-  });
-}
-function updateTotals(){
-  const inc=1250+entries.income.reduce((s,e)=>s+e.amount,0);
-  const exp=320+entries.expenses.reduce((s,e)=>s+e.amount,0);
-  document.getElementById('totalIncome').textContent='€ '+inc.toFixed(2);
-  document.getElementById('totalExpenses').textContent='€ '+exp.toFixed(2);
-  document.getElementById('totalDiff').textContent='€ '+(inc-exp).toFixed(2);
-}
-function escapeHtml(s){return s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
-</script>
-</body>
-</html>
+const $=id=>document.getElementById(id);let route='new',step=0,answers={activity:'Remontdarbi un tehniskie pakalpojumi',status:'',income:'',payments:''};
+const steps=[
+{title:'Ar ko tu nodarbosies?',desc:'Izvēlies tuvāko variantu. Vēlāk to varēsi precizēt.',key:'activity',opts:['Remontdarbi un tehniskie pakalpojumi','Skaistumkopšana un labsajūta','Būvniecība un amatniecība','Tirdzniecība','Digitālie vai radošie pakalpojumi','Cits pakalpojums']},
+{title:()=>route==='new'?'Kā tu šobrīd strādā?':'Kāds nodokļu režīms tev šobrīd ir reģistrēts?',desc:()=>route==='new'?'Tas palīdzēs noteikt pareizo nākamo soli.':'Ja nezini vai neesi pārliecināts, droši izvēlies pēdējo variantu.',key:'status',opts:()=>route==='new'?['Vēl tikai plānoju sākt','Jau sniedzu pakalpojumus, bet neesmu reģistrēts']:['Vispārējais nodokļu režīms','Mikrouzņēmumu nodoklis (MUN)','Nezinu / vēlos pārbaudīt']},
+{title:'Kādi ir aptuvenie mēneša ieņēmumi?',desc:'Aptuvenā summa pirms izdevumu atskaitīšanas. Tā nav deklarācija.',key:'income',opts:['Līdz 300 €','300–780 €','780–1500 €','1500–3000 €','Vairāk par 3000 €','Vēl nezinu']},
+{title:'Kā klienti parasti maksā?',desc:'Maksājuma veids var ietekmēt dokumentu un kases aparāta prasības. Tās jāizvērtē konkrētajai situācijai.',key:'payments',opts:['Ar bankas pārskaitījumu','Skaidrā naudā','Ar karti','Skaidrā naudā un ar pārskaitījumu','Vēl nezinu']}
+];
+function startFlow(r){route=r;step=0;answers={activity:'',status:'',income:'',payments:''};$('home').classList.add('hidden');$('workspace').classList.add('hidden');$('flow').classList.remove('hidden');renderStep()}
+function renderStep(){let s=steps[step],title=typeof s.title==='function'?s.title():s.title,desc=typeof s.desc==='function'?s.desc():s.desc,opts=typeof s.opts==='function'?s.opts():s.opts;$('flowtag').textContent=route==='new'?'CEĻŠ: SĀKT OFICIĀLI':'CEĻŠ: ESOŠS PAŠNODARBINĀTAIS';$('progress').style.width=((step+1)/steps.length*100)+'%';$('flowbody').innerHTML=`<h1>${title}</h1><p class="sub">${desc}</p><div class="options">${opts.map(o=>`<button class="opt ${answers[s.key]===o?'selected':''}" data-value="${o.replace(/&/g,'&amp;').replace(/"/g,'&quot;')}" onclick="choose('${s.key}',this.dataset.value,this)">${o}</button>`).join('')}</div>`;$('next').textContent=step===steps.length-1?'Parādīt manus nākamos soļus':'Turpināt';$('next').disabled=!answers[s.key];$('next').style.opacity=$('next').disabled?'.45':'1'}
+function choose(k,v,el){answers[k]=v;el.parentElement.querySelectorAll('.opt').forEach(x=>x.classList.remove('selected'));el.classList.add('selected');$('next').disabled=false;$('next').style.opacity='1'}
+function prevStep(){if(step){step--;renderStep()}else{$('flow').classList.add('hidden');$('home').classList.remove('hidden')}}
+function nextStep(){if(step<steps.length-1){step++;renderStep()}else showResult()}
+function showResult(){let fresh=route==='new'&&(answers.status.includes('plānoju')||answers.status.includes('neesmu reģistrēts'));$('flow').classList.add('hidden');$('workspace').classList.remove('hidden');$('tabcontent').innerHTML=`<h2>${fresh?'Tavs sākuma plāns':'Tavs darba pārskats'}</h2><p class="muted">Balstīts uz tavām atbildēm. Šis ir orientējošs ceļvedis, nevis juridisks slēdziens.</p><div class="tiles"><div class="tile"><span>Darbības veids</span><b style="font-size:16px">${answers.activity}</b></div><div class="tile"><span>Ieņēmumu līmenis</span><b style="font-size:17px">${answers.income}</b></div><div class="tile"><span>Maksājumi</span><b style="font-size:15px">${answers.payments}</b></div></div><div class="notice" style="margin:15px 0">Pirms konkrēta nodokļu režīma ieteikšanas jānoskaidro arī izdevumi, klientu veids, pakalpojuma sniegšanas vieta, PVN statuss un citi ienākumi.</div><h3>Nākamie soļi</h3><div class="steps"><div class="step"><div class="num">1</div><div><b>${fresh?'Pārbaudi, kā reģistrēt saimniecisko darbību':'Pārbaudi savus reģistrācijas datus'}</b><p>VID EDS pārbaudi reģistrācijas statusu, darbības veidu un NACE kodu.</p></div></div><div class="step"><div class="num">2</div><div><b>Salīdzini piemērojamos nodokļu režīmus</b><p>Izvēle atkarīga no darbības modeļa, izdevumiem un citiem apstākļiem.</p></div></div><div class="step"><div class="num">3</div><div><b>Noskaidro maksājumu dokumentu prasības</b><p>Skaidras naudas, karšu un bankas maksājumu prasības jāizvērtē atsevišķi.</p></div></div><div class="step"><div class="num">4</div><div><b>Sāc uzskaitīt darījumus</b><p>Reģistrē ieņēmumus un ar darbību saistītos izdevumus, saglabājot pamatojošos dokumentus.</p></div></div></div><div class="actions"><button class="btn secondary" onclick="resetApp()">Sākt no jauna</button><button class="btn primary" onclick="openTab('records')">Atvērt uzskaiti →</button></div>`}
+const tabData={
+overview:`<h2>Pārskats</h2><p class="muted">Tavas darbības galvenie rādītāji vienā skatā.</p><div class="tiles"><div class="tile"><span>Ieņēmumi šomēnes</span><b>0,00 €</b></div><div class="tile"><span>Izdevumi šomēnes</span><b>0,00 €</b></div><div class="tile"><span>Atlikums pirms nodokļiem</span><b>—</b></div></div><div class="rowline"><span>Uzskaites ieraksti</span><span class="pill good">Gatavs sākt</span></div><div class="rowline"><span>Nākamais solis</span><b>Pievieno pirmo darījumu</b></div><p class="muted">Pēc darījumu ievades šeit būs kopsavilkums. Nodokļu aprēķini tiks aktivizēti tikai pēc juridiskās loģikas pārbaudes.</p>`,
+records:`<h2>Ienākumi un izdevumi</h2><p class="muted">Vienkārša darījumu uzskaite. Ieraksti šajā demonstrācijā saglabājas tikai atvērtās lapas sesijā.</p><div class="field"><label>Darījuma veids</label><select id="kind"><option>Ieņēmums</option><option>Izdevums</option></select></div><div class="field"><label>Apraksts</label><input id="desc" placeholder="Piemēram, klienta automašīnas remonts"></div><div class="field"><label>Summa (€)</label><input id="amount" type="number" min="0" step=".01" placeholder="0,00"></div><div class="field"><label>Maksājuma veids</label><select id="pay"><option>Bankas pārskaitījums</option><option>Skaidrā naudā</option><option>Kartē</option></select></div><button class="btn primary" onclick="addRecord()">Pievienot darījumu</button><div id="recordlist" style="margin-top:15px"></div>`,
+tax:`<h2>Nodokļi un termiņi</h2><p class="muted">Šeit būs nodokļu kalendārs, aprēķina pamatojums un summa, ko rezervēt maksājumiem.</p><div class="notice" style="margin:15px 0">Aprēķini vēl nav aktivizēti. Jāpārbauda aktuālās likmes, sliekšņi, izņēmumi, režīmi un deklarēšanas termiņi.</div><div class="rowline"><span>Izvēlētais nodokļu režīms</span><span class="pill warn">Jāprecizē</span></div><div class="rowline"><span>Nākamais deklarācijas termiņš</span><span class="pill">Nav noteikts</span></div><div class="rowline"><span>Nodokļu rezerve</span><b>—</b></div><h3>Plānotās izmaiņas</h3><p class="muted">VID 2026. gada oktobra pārskatā norādīts, ka iesācēju MUN režīms mazajai saimnieciskajai darbībai paredzēts no 2027. gada 1. aprīļa. Tas nav jāuzrāda kā šobrīd pieejama izvēle. Pirms ieviešanas jāpārbauda spēkā stāšanās noteikumi un kritēriji.</p><a href="https://www.vid.gov.lv/lv/jaunums/parskats-par-nodoklu-normativajiem-aktiem-2026-gada-oktobri" target="_blank" rel="noopener">VID: 2026. gada oktobra normatīvo aktu pārskats ↗</a>`,
+social:`<h2>Sociālā aizsardzība</h2><p class="muted">Parādi, kā faktiskās sociālās iemaksas un apdrošināšanas veids ietekmē tiesības.</p><div class="notice" style="margin:15px 0">Reģistrēšanās pati par sevi negarantē visas sociālās garantijas. Tās ir atkarīgas no faktiskajām iemaksām, apdrošināšanas veida un likuma nosacījumiem.</div><div class="rowline"><span>Pensiju apdrošināšana</span><span class="pill">Jāpārbauda iemaksas</span></div><div class="rowline"><span>Invaliditātes, slimības un maternitātes apdrošināšana</span><span class="pill">Atkarīgs no statusa</span></div><div class="rowline"><span>Bezdarba apdrošināšana</span><span class="pill">Jāpārbauda nosacījumi</span></div>`,
+eds:`<h2>VID / EDS palīgs</h2><p class="muted">Soli pa solim norādes, ko sagatavot un kur EDS veikt darbības.</p><div class="steps"><div class="step"><div class="num">1</div><div><b>Pieslēdzies VID EDS</b><p>Atver oficiālo VID EDS vietni un pārbaudi savu profilu.</p></div></div><div class="step"><div class="num">2</div><div><b>Pārbaudi reģistrēto darbību</b><p>Pārliecinies par darbības veidu, NACE kodu un nodokļu režīmu.</p></div></div><div class="step"><div class="num">3</div><div><b>Sagatavo uzskaites datus</b><p>Šis prototips nav savienots ar EDS un neko neiesniedz.</p></div></div></div><p><a href="https://eds.vid.gov.lv/" target="_blank" rel="noopener">Atvērt VID EDS ↗</a></p>`,
+help:`<h2>Palīdzība un oficiālie avoti</h2><p class="muted">Jautājumi vienkāršā valodā. Juridiskās atbildes jāatjauno, mainoties VID skaidrojumiem un normatīvajiem aktiem.</p><div class="rowline"><span>Vai man vajadzīgs kases aparāts?</span><span class="pill warn">Atkarīgs no situācijas</span></div><div class="rowline"><span>Vai drīkstu atskaitīt izdevumus?</span><span class="pill">Atkarīgs no režīma</span></div><div class="rowline"><span>Kad jāmaksā VSAOI?</span><span class="pill">Atkarīgs no ienākumiem un statusa</span></div><div class="rowline"><span>Kā izvēlēties NACE kodu?</span><span class="pill">Pēc faktiskās darbības</span></div><h3>Avoti, pārbaudīti 13.11.2026.</h3><div class="steps"><div class="step"><div class="num">1</div><div><b>Reģistrācija un darbības sākšana</b><p><a href="https://www.vid.gov.lv/lv/ka-registret-un-veikt-saimniecisko-darbibu" target="_blank" rel="noopener">VID: Kā reģistrēt un veikt saimniecisko darbību ↗</a></p></div></div><div class="step"><div class="num">2</div><div><b>Reģistrācijas pakalpojumi</b><p><a href="https://www.vid.gov.lv/lv/registracijas-pakalpojumi-uznemejiem-un-saimnieciskas-darbibas-veicejiem" target="_blank" rel="noopener">VID: Reģistrācijas pakalpojumi ↗</a></p></div></div><div class="step"><div class="num">3</div><div><b>Kases aparāti un kvītis</b><p><a href="https://www.vid.gov.lv/lv/kases-aparati-un-kases-sistemas" target="_blank" rel="noopener">VID: Kases aparātu prasības un izņēmumi ↗</a></p></div></div><div class="step"><div class="num">4</div><div><b>Sociālās iemaksas un apdrošināšana</b><p><a href="https://www.vsaa.gov.lv/lv/par-iemaksam" target="_blank" rel="noopener">VSAA: Par iemaksām ↗</a> · <a href="https://www.vsaa.gov.lv/lv/jaunums/izmainas-attieciba-uz-valsts-socialas-apdrosinasanas-minimalajam-obligatajam-iemaksam-pasnodarbinatajiem-un-darba-devejiem" target="_blank" rel="noopener">VSAA: 2026. gada izmaiņas ↗</a></p></div></div><div class="notice" style="margin:16px 0">Svarīga pārbaudes piezīme: VSAA vispārīgajā iemaksu lapā un atsevišķajā 2026. gada izmaiņu paziņojumā ir atšķirīgi formulējumi par minimālo iemaksu objektu pašnodarbinātajiem. Pirms jebkāda aprēķina ieviešanas šī juridiskā redakcija jāsalīdzina ar spēkā esošo likumu un VID/VSAA skaidrojumiem.</div><p class="muted">Prototipā nav nodokļu aprēķinu, EDS savienojuma vai automātiskas juridisko noteikumu atjaunināšanas.</p>`
+};
+function openTab(t){document.querySelectorAll('#nav button').forEach(b=>b.classList.toggle('active',b.dataset.tab===t));$('tabcontent').innerHTML=tabData[t]}
+$('nav').addEventListener('click',e=>{let b=e.target.closest('button[data-tab]');if(b)openTab(b.dataset.tab)});
+function addRecord(){let a=Number($('amount').value);if(!a||a<=0){alert('Ievadi derīgu summu.');return}let row=document.createElement('div');row.className='rowline';let left=document.createElement('span');left.textContent=$('kind').value+': '+($('desc').value||'Bez apraksta')+' · '+$('pay').value;let right=document.createElement('b');right.textContent=a.toFixed(2)+' €';row.append(left,right);$('recordlist').prepend(row);$('amount').value='';$('desc').value=''}
+function resetApp(){$('workspace').classList.add('hidden');$('home').classList.remove('hidden')}
+openTab('overview');
+</script></body></html>
