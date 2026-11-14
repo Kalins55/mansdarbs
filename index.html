@@ -107,6 +107,7 @@
 <h2>VSAOI aprēķins par ceturksni</h2>
 <p class="muted">Ievadi katra mēneša peļņu — ieņēmumi mīnus ar saimniecisko darbību saistītie izdevumi. Aprēķins paredzēts vispārējā režīma pašnodarbinātajam, kuram piemēro standarta 31,07% likmi.</p>
 <div class="formgrid">
+<div class="field full"><label for="vsaoiQuarter">Ceturksnis</label><select id="vsaoiQuarter" onchange="loadVsaoiQuarter()"><option value="1">1. ceturksnis (janvāris–marts)</option><option value="2">2. ceturksnis (aprīlis–jūnijs)</option><option value="3">3. ceturksnis (jūlijs–septembris)</option><option value="4">4. ceturksnis (oktobris–decembris)</option></select><small class="muted">Katru ceturksni saglabā atsevišķi. IIN prognozē automātiski ieskaitīsies visi saglabātie ceturkšņi.</small></div>
 <div class="field full"><label for="contributionBase">Izvēlētais VSAOI objekts mēnesī (€)</label><input id="contributionBase" type="number" min="780" step="0.01" inputmode="decimal" value="780"><small class="muted">Vismaz 780 €. Vari izvēlēties lielāku summu, ja vēlies maksāt pilno VSAOI no lielākas peļņas daļas.</small></div>
 <div class="field"><label for="profit1">1. mēneša peļņa (€)</label><input id="profit1" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0,00"></div>
 <div class="field"><label for="profit2">2. mēneša peļņa (€)</label><input id="profit2" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0,00"></div>
@@ -122,8 +123,8 @@
 <h2>IIN prognoze par gadu</h2>
 <p class="muted">Aprēķins parāda, cik papildu IIN varētu radīt saimnieciskā darbība, ņemot vērā arī citus tavus gada apliekamos ienākumus.</p>
 <div class="formgrid">
-<div class="field"><label for="annualProfit">Saimnieciskās darbības peļņa gadā (€)</label><input id="annualProfit" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0,00"></div>
-<div class="field"><label for="annualVsaoi">Samaksātās pašnodarbinātā VSAOI (€)</label><input id="annualVsaoi" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0,00"><small class="muted">Ievadi tikai to VSAOI summu, kas vēl nav iekļauta saimnieciskās darbības izdevumos.</small></div>
+<div class="field"><label for="annualProfit">Saimnieciskās darbības peļņa gadā (€)</label><input id="annualProfit" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0,00" readonly><small class="muted">Automātiski no saglabātajiem VSAOI ceturkšņiem.</small></div>
+<div class="field"><label for="annualVsaoi">Samaksātās pašnodarbinātā VSAOI (€)</label><input id="annualVsaoi" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0,00" readonly><small class="muted">Automātiski no VSAOI aprēķina; faktiskās samaksas summas pārbaudi EDS.</small><small class="muted">Ievadi tikai to VSAOI summu, kas vēl nav iekļauta saimnieciskās darbības izdevumos.</small></div>
 <div class="field"><label for="otherTaxableIncome">Citi gada apliekamie ienākumi (€)</label><input id="otherTaxableIncome" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0,00"><small class="muted">Piemēram, darba alga pēc darba ņēmēja VSAOI, pirms neapliekamā minimuma un atvieglojumiem.</small></div>
 <div class="field"><label for="annualAllowance">Neapliekamais minimums gadā (€)</label><input id="annualAllowance" type="number" min="0" step="0.01" inputmode="decimal" value="6600"><small class="muted">2026. gadā līdz 6600 €. Ja tas jau izmantots citur, ievadi 0 vai neizmantoto daļu.</small></div>
 <div class="field full"><label for="otherDeductions">Citi atvieglojumi un attaisnotie izdevumi (€)</label><input id="otherDeductions" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0,00"><small class="muted">Ievadi tikai summu, ko vēlies ņemt vērā šajā aptuvenajā aprēķinā.</small></div>
@@ -141,6 +142,28 @@
 const STORAGE_KEY='mansdarbs_demo_records_v1';
 let editingIndex=null;
 
+function vsaoiQuarterKey(q){return 'mansdarbs-vsaoi-2026-q'+q}
+function loadVsaoiQuarter(){
+ const q=document.getElementById('vsaoiQuarter').value;
+ let saved={};
+ try{saved=JSON.parse(localStorage.getItem(vsaoiQuarterKey(q))||'{}')}catch(e){}
+ [1,2,3].forEach(i=>document.getElementById('profit'+i).value=saved.values?saved.values[i-1]??'':'');
+ document.getElementById('contributionBase').value=saved.base||'780';
+ syncIinFromVsaoi();
+}
+function syncIinFromVsaoi(){
+ let annualProfit=0,annualVsaoi=0;
+ for(let q=1;q<=4;q++){
+  let saved={};
+  try{saved=JSON.parse(localStorage.getItem(vsaoiQuarterKey(q))||'{}')}catch(e){}
+  if(saved.rows){
+   annualProfit+=saved.rows.reduce((s,r)=>s+Number(r.profit||0),0);
+   annualVsaoi+=saved.rows.reduce((s,r)=>s+Number(r.total||0),0);
+  }
+ }
+ document.getElementById('annualProfit').value=annualProfit.toFixed(2);
+ document.getElementById('annualVsaoi').value=annualVsaoi.toFixed(2);
+}
 function calculateVsaoi(){
  const values=[1,2,3].map(i=>Number(document.getElementById('profit'+i).value||0));
  const chosenBase=Number(document.getElementById('contributionBase').value||780);
@@ -153,6 +176,9 @@ function calculateVsaoi(){
   return {month:i+1,profit,base,full,pension,total:full+pension};
  });
  const total=rows.reduce((s,r)=>s+r.total,0);
+ const quarter=document.getElementById('vsaoiQuarter').value;
+ localStorage.setItem(vsaoiQuarterKey(quarter),JSON.stringify({values,base:chosenBase,rows}));
+ syncIinFromVsaoi();
  const body=rows.map(r=>'<div class="record"><div><strong>'+r.month+'. mēnesis</strong><small>Peļņa: '+money(r.profit)+' · VSAOI objekts: '+money(r.base)+' · 31,07%: '+money(r.full)+' · 10%: '+money(r.pension)+'</small></div><div class="amount">'+money(r.total)+'</div></div>').join('');
  document.getElementById('vsaoiResult').innerHTML='<h3 style="margin:0 0 8px">Aprēķina rezultāts</h3>'+body+'<div class="record"><strong>Kopā par ceturksni</strong><strong class="amount">'+money(total)+'</strong></div><p class="privacy">Pašnodarbinātā ziņojums EDS jāiesniedz līdz 17. datumam šajos mēnešos: janvārī (par 4. ceturksni), aprīlī (par 1. ceturksni), jūlijā (par 2. ceturksni) un oktobrī (par 3. ceturksni). VSAOI parasti jāsamaksā līdz attiecīgā mēneša 23. datumam. Precīzu termiņu un maksājamo summu vienmēr pārbaudi VID EDS.</p>';
 }
@@ -185,6 +211,7 @@ function calculateIin(){
 function resetIin(){['annualProfit','annualVsaoi','otherTaxableIncome','otherDeductions'].forEach(id=>document.getElementById(id).value='');document.getElementById('annualAllowance').value='6600';document.getElementById('minimumIinExempt').checked=false;document.getElementById('iinResult').textContent='Ievadi gada peļņu un, ja nepieciešams, arī citus ienākumus, lai aprēķinātu prognozi.'}
 function resetVsaoi(){[1,2,3].forEach(i=>document.getElementById('profit'+i).value='');document.getElementById('contributionBase').value='780';document.getElementById('vsaoiResult').textContent='Ievadi peļņu visiem trim ceturkšņa mēnešiem, lai redzētu orientējošo aprēķinu.'}
 
+function initVsaoi(){loadVsaoiQuarter();syncIinFromVsaoi()}
 function showView(name){document.getElementById('homeView').classList.remove('guide-mode');document.getElementById('guide').classList.remove('open');document.querySelector('.shell').classList.toggle('home-screen',name==='home');const ids={home:'homeView',calculator:'calculatorView',records:'recordsView'};Object.entries(ids).forEach(([key,id])=>document.getElementById(id).classList.toggle('active',key===name));document.querySelectorAll('.nav button').forEach(b=>{if(b.dataset.view===name)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current')});window.scrollTo({top:0,behavior:'smooth'});}
 function showGuide(){const home=document.getElementById('homeView'),guide=document.getElementById('guide'),button=document.getElementById('guideToggle');const opening=!guide.classList.contains('open');home.classList.toggle('guide-mode',opening);guide.classList.toggle('open',opening);button.setAttribute('aria-expanded',String(opening));button.innerHTML='Uzzināt, kā sākt <span aria-hidden="true">⌄</span>';}
 function getRecords(){try{const data=JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]');return Array.isArray(data)?data.filter(x=>x&&['Ienākums','Izdevums'].includes(x.kind)&&Number.isFinite(Number(x.amount))&&Number(x.amount)>0&&typeof x.date==='string'):[]}catch(e){return []}}
@@ -301,6 +328,7 @@ document.getElementById('kind').addEventListener('change',updateIinWarning);
 document.getElementById('date').addEventListener('change',updateIinWarning);
 renderRecords();
 updateIinWarning();
+document.addEventListener("DOMContentLoaded",initVsaoi);
 </script>
 </body>
 </html>
