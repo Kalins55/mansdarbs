@@ -385,7 +385,18 @@ function exportCsv(){
 
 const INVOICE_KEY='mansdarbs_demo_invoices_v1';
 function invoiceValue(id){return document.getElementById(id).value.trim()}
-function invoiceNumberNext(){let list=[];try{list=JSON.parse(localStorage.getItem(INVOICE_KEY)||'[]')}catch(e){}const year=new Date().getFullYear(),prefix='R-'+year+'-';const max=list.reduce((n,x)=>{const m=String(x.number||'').match(new RegExp('^R-'+year+'-(\\d+)
+function invoiceNumberNext(){
+ let list=[];
+ try{list=JSON.parse(localStorage.getItem(INVOICE_KEY)||'[]')}catch(e){}
+ const year=new Date().getFullYear(),prefix='R-'+year+'-';
+ const max=list.reduce((n,x)=>{
+  const number=String(x.number||'');
+  if(!number.startsWith(prefix))return n;
+  const suffix=Number(number.slice(prefix.length));
+  return Number.isInteger(suffix)?Math.max(n,suffix):n;
+ },0);
+ return prefix+String(max+1).padStart(3,'0');
+}
 function invoiceData(){
  const qty=Number(invoiceValue('invQty')),price=Number(invoiceValue('invPrice')),vatOn=document.getElementById('invVat').checked,rate=vatOn?Number(invoiceValue('invVatRate')):0;
  if(!invoiceValue('invSeller')||!invoiceValue('invBuyer')||!invoiceValue('invDescription')){alert('Aizpildi izrakstītāja, saņēmēja un pakalpojuma/preces nosaukuma laukus.');return null}
@@ -449,7 +460,8 @@ document.getElementById('kind').addEventListener('change',updateIinWarning);
 document.getElementById('date').addEventListener('change',updateIinWarning);
 renderRecords();
 updateIinWarning();
-document.addEventListener("DOMContentLoaded",()=>{initVsaoi();initInvoice()});
+initVsaoi();
+initInvoice();
 </script>
 </body>
 </html>));return m?Math.max(n,Number(m[1])):n},0);return prefix+String(max+1).padStart(3,'0')}
