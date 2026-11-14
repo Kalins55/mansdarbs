@@ -222,18 +222,29 @@ function updateIinWarning(){
  if(!warning)return;
  const date=document.getElementById('date').value;
  const year=date?date.slice(0,4):String(new Date().getFullYear());
+ const month=date?date.slice(0,7):new Date().toISOString().slice(0,7);
  const items=getRecords();
- const base=items.reduce((sum,item,index)=>{
-  if(item.date.slice(0,4)!==year||index===editingIndex)return sum;
-  return sum+(item.kind==='Ienākums'?Number(item.amount):-Number(item.amount));
- },0);
  const raw=document.getElementById('amount').value;
  const amount=raw===''?0:Number(raw);
  const kind=document.getElementById('kind').value;
- const projected=base+(kind==='Ienākums'?amount:-amount);
- if(projected>6600){
+ let annual=0,monthly=0;
+ items.forEach((item,index)=>{
+  if(index===editingIndex)return;
+  const value=item.kind==='Ienākums'?Number(item.amount):-Number(item.amount);
+  if(item.date.slice(0,4)===year)annual+=value;
+  if(item.date.slice(0,7)===month)monthly+=value;
+ });
+ const delta=kind==='Ienākums'?amount:-amount;
+ annual+=delta;
+ monthly+=delta;
+ const monthlyExceeded=monthly>550;
+ const annualExceeded=annual>6600;
+ if(monthlyExceeded||annualExceeded){
   warning.hidden=false;
-  warning.innerHTML='<strong>⚠ Iespējams IIN pienākums — pievērs uzmanību!</strong> Šī gada uzskaitītā peļņa sasniedz '+money(projected)+', pārsniedzot 6600 € gada neapliekamā minimuma orientieri.<small>IIN nav aprēķināms tikai pēc šīs robežas: nozīme ir arī citiem ienākumiem, attaisnotajiem izdevumiem, samaksātajām VSAOI un neizmantotajam neapliekamajam minimumam. Pārbaudi gada prognozi sadaļā “Aprēķini”.</small>';
+  const reasons=[];
+  if(monthlyExceeded)reasons.push('Šajā mēnesī uzskaitītā peļņa ir '+money(monthly)+', pārsniedzot 550 € mēneša orientieri.');
+  if(annualExceeded)reasons.push('Šī gada uzskaitītā peļņa ir '+money(annual)+', pārsniedzot 6600 € gada orientieri.');
+  warning.innerHTML='<strong>⚠ Iespējams IIN pienākums — pievērs uzmanību!</strong>'+reasons.join(' ')+'<small>550 € mēnesī un 6600 € gadā ir neapliekamā minimuma orientieri, nevis automātiskas nodokļa robežas. IIN nosaka pēc kopējiem gada apliekamajiem ienākumiem, ņemot vērā citus ienākumus, attaisnotos izdevumus, VSAOI un neizmantoto neapliekamo minimumu. Pārbaudi gada prognozi sadaļā “Aprēķini”.</small>';
  }else{
   warning.hidden=true;
   warning.textContent='';
