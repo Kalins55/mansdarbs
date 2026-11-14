@@ -449,7 +449,7 @@ document.getElementById('kind').addEventListener('change',updateIinWarning);
 document.getElementById('date').addEventListener('change',updateIinWarning);
 renderRecords();
 updateIinWarning();
-document.addEventListener("DOMContentLoaded",initVsaoi);
+document.addEventListener("DOMContentLoaded",()=>{initVsaoi();initInvoice()});
 </script>
 </body>
 </html>
