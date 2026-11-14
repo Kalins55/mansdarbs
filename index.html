@@ -123,7 +123,7 @@ function calculateVsaoi(){
  });
  const total=rows.reduce((s,r)=>s+r.total,0);
  const body=rows.map(r=>'<div class="record"><div><strong>'+r.month+'. mēnesis</strong><small>Peļņa: '+money(r.profit)+' · VSAOI objekts: '+money(r.base)+' · 31,07%: '+money(r.full)+' · 10%: '+money(r.pension)+'</small></div><div class="amount">'+money(r.total)+'</div></div>').join('');
- document.getElementById('vsaoiResult').innerHTML='<h3 style="margin:0 0 8px">Aprēķina rezultāts</h3>'+body+'<div class="record"><strong>Kopā par ceturksni</strong><strong class="amount">'+money(total)+'</strong></div><p class="privacy">Ziņojums EDS jāiesniedz līdz 17. datumam pēc ceturkšņa beigām; samaksa parasti jāveic līdz 23. datumam.</p>';
+ document.getElementById('vsaoiResult').innerHTML='<h3 style="margin:0 0 8px">Aprēķina rezultāts</h3>'+body+'<div class="record"><strong>Kopā par ceturksni</strong><strong class="amount">'+money(total)+'</strong></div><p class="privacy">Pašnodarbinātā ziņojums EDS jāiesniedz līdz 17. datumam šajos mēnešos: janvārī (par 4. ceturksni), aprīlī (par 1. ceturksni), jūlijā (par 2. ceturksni) un oktobrī (par 3. ceturksni). VSAOI parasti jāsamaksā līdz attiecīgā mēneša 23. datumam. Precīzu termiņu un maksājamo summu vienmēr pārbaudi VID EDS.</p>';
 }
 function progressiveIin(amount){
  const x=Math.max(0,amount);
