@@ -76,8 +76,19 @@ function renderRecords(){
  const items=getRecords(),root=document.getElementById('records');
  if(!items.length){root.innerHTML='<div class="empty">Pagaidām nav neviena ieraksta. Pievieno pirmo, kad esi gatavs.</div>';return}
  let income=0,expense=0;
- items.forEach(x=>{if(x.kind==='Ienākums')income+=x.amount;else expense+=x.amount});
- root.innerHTML='<div class="cards" style="margin-bottom:14px"><div class="card" style="box-shadow:none;padding:14px"><small class="muted">Ienākumi kopā</small><div class="amount">'+money(income)+'</div></div><div class="card" style="box-shadow:none;padding:14px"><small class="muted">Izdevumi kopā</small><div class="amount">'+money(expense)+'</div></div></div>'+items.slice().reverse().map(x=>'<div class="record"><div><strong>'+escapeHtml(x.kind)+'</strong><small>'+escapeHtml(x.date)+(x.note?' · '+escapeHtml(x.note):'')+'</small></div><div class="amount">'+(x.kind==='Izdevums'?'−':'+')+money(x.amount)+'</div></div>').join('');
+ const months={};
+ items.forEach(x=>{
+  if(x.kind==='Ienākums')income+=Number(x.amount);else expense+=Number(x.amount);
+  const key=x.date.slice(0,7);
+  if(!months[key])months[key]={income:0,expense:0};
+  if(x.kind==='Ienākums')months[key].income+=Number(x.amount);else months[key].expense+=Number(x.amount);
+ });
+ const monthlyHtml=Object.keys(months).sort().reverse().map(key=>{
+  const parts=key.split('-'),label=new Date(Number(parts[0]),Number(parts[1])-1,1).toLocaleDateString('lv-LV',{year:'numeric',month:'long'});
+  const m=months[key];
+  return '<div class="record"><div><strong>'+escapeHtml(label)+'</strong><small>Ienākumi: '+money(m.income)+' · Izdevumi: '+money(m.expense)+'</small></div><div class="amount">'+money(m.income-m.expense)+'</div></div>';
+ }).join('');
+ root.innerHTML='<div class="cards" style="margin-bottom:14px"><div class="card" style="box-shadow:none;padding:14px"><small class="muted">Ienākumi kopā</small><div class="amount">'+money(income)+'</div></div><div class="card" style="box-shadow:none;padding:14px"><small class="muted">Izdevumi kopā</small><div class="amount">'+money(expense)+'</div></div><div class="card" style="box-shadow:none;padding:14px"><small class="muted">Starpība</small><div class="amount">'+money(income-expense)+'</div></div></div><h3 style="margin:22px 0 5px">Pārskats pa mēnešiem</h3><p class="muted" style="font-size:13px;margin:0 0 8px">Pozitīva vai negatīva starpība starp reģistrētajiem ienākumiem un izdevumiem.</p>'+monthlyHtml+'<h3 style="margin:22px 0 5px">Visi ieraksti</h3>'+items.slice().reverse().map(x=>'<div class="record"><div><strong>'+escapeHtml(x.kind)+'</strong><small>'+escapeHtml(x.date)+(x.note?' · '+escapeHtml(x.note):'')+'</small></div><div class="amount">'+(x.kind==='Izdevums'?'−':'+')+money(x.amount)+'</div></div>').join('');
 }
 function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function addRecord(){
