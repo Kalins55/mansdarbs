@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="lv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f5f6f4">
+<title>Mansdarbs — VID asistenta prototips</title>
+<style>
+:root{font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#17231f;background:#f5f6f4;font-synthesis:none}
+*{box-sizing:border-box}body{margin:0;min-height:100vh}button,select{font:inherit}
+.shell{max-width:760px;margin:auto;padding:clamp(20px,5vw,42px)}
+.brand{font-size:18px;font-weight:800;letter-spacing:-.5px}.brand span{color:#64766d}
+.intro{padding-top:clamp(48px,12vh,110px)}.eyebrow{font-size:12px;text-transform:uppercase;letter-spacing:1.4px;color:#63776d;font-weight:750}
+h1{font-size:clamp(34px,8vw,54px);line-height:1.04;letter-spacing:-2px;margin:14px 0}
+p{line-height:1.6;color:#5d6b64}.panel{margin-top:30px;background:white;border:1px solid #e3e9e5;border-radius:22px;padding:22px;box-shadow:0 10px 35px #14271c0a}
+label{display:block;font-size:13px;font-weight:700;margin:18px 0 8px}select{width:100%;padding:14px;border:1px solid #d7e0da;border-radius:12px;background:#fff;color:#17231f}
+button{border:0;border-radius:13px;padding:15px 18px;font-weight:750;cursor:pointer}.primary{background:#183d2e;color:white;width:100%;margin-top:20px}.primary:active{transform:scale(.99)}
+.note{font-size:12px;color:#748078;margin-top:14px}
+.assistant{display:none;min-height:100svh;background:#f5f6f4}.assistant .top{padding:calc(18px + env(safe-area-inset-top)) 22px 18px;border-bottom:1px solid #e1e7e2;background:#fff;display:flex;align-items:center;justify-content:space-between}
+.pill{font-size:11px;font-weight:750;background:#eaf1ec;color:#315c43;padding:7px 10px;border-radius:20px}
+.content{max-width:720px;margin:auto;padding:30px 22px calc(30px + env(safe-area-inset-bottom))}
+.progress{height:5px;border-radius:9px;background:#e1e8e3;overflow:hidden;margin:16px 0 28px}.bar{height:100%;width:0;background:#34704d;transition:width .2s}
+.step{font-size:12px;font-weight:750;color:#668071;text-transform:uppercase;letter-spacing:1px}
+h2{font-size:clamp(27px,6vw,38px);letter-spacing:-1px;line-height:1.12;margin:12px 0}
+.instruction{font-size:16px;color:#46564d;line-height:1.65}
+.tip{background:#eaf1ec;border-radius:14px;padding:15px;margin:20px 0;color:#355443;font-size:14px;line-height:1.55}
+.actions{display:flex;gap:10px;margin-top:26px}.actions button{flex:1}.secondary{background:#e8ede9;color:#24382d}
+.vid-open{display:inline-flex;align-items:center;gap:7px;color:#315b43;font-weight:700;font-size:13px;text-decoration:none}
+.done{display:none;text-align:center;padding:45px 20px}.done h2{font-size:32px}
+@media(min-width:640px){.content{padding-top:54px}.panel{padding:30px}}
+</style>
+</head>
+<body>
+<main id="landing" class="shell">
+ <div class="brand">mansdarbs<span>.lv</span></div>
+ <section class="intro">
+  <div class="eyebrow">Prototips · VID navigācija</div>
+  <h1>VID darbiem.<br>Ar skaidru nākamo soli.</h1>
+  <p>Izvēlies, ko vēlies paveikt VID. Atverot VID, šajā Mansdarbs cilnē vienlaikus atvērsies pilnekrāna asistents ar soli pa solim norādēm.</p>
+  <div class="panel">
+   <label for="activity">Kāds ir tavs darbības veids?</label>
+   <select id="activity"><option value="self">Pašnodarbinātais — vispārējais režīms</option><option value="micro">Mikrouzņēmumu nodokļa maksātājs</option><option value="company">Uzņēmums / SIA</option></select>
+   <label for="task">Ko vēlies izdarīt VID?</label>
+   <select id="task"><option value="register">Reģistrēties kā saimnieciskās darbības veicējam</option><option value="quarter">Iesniegt pašnodarbinātā ziņojumu</option><option value="annual">Sagatavot gada ienākumu deklarāciju</option></select>
+   <button class="primary" id="launch">Atvērt VID EDS un asistentu ↗</button>
+   <div class="note">Pēc pogas nospiešanas VID atvērsies jaunā cilnē, bet šī lapa pāries uz asistentu. Šis ir demonstrācijas prototips — soļi ir paraugs, nevis personalizēts VID padoms.</div>
+  </div>
+ </section>
+</main>
+<section id="assistant" class="assistant" aria-live="polite">
+ <header class="top"><div class="brand">mansdarbs<span>.lv</span></div><div class="pill">AI asistenta prototips</div></header>
+ <div class="content">
+  <div class="eyebrow" id="taskName">VID uzdevums</div>
+  <div class="progress"><div class="bar" id="bar"></div></div>
+  <div id="guided">
+   <div class="step" id="stepCount"></div>
+   <h2 id="stepTitle"></h2>
+   <p class="instruction" id="stepText"></p>
+   <div class="tip" id="stepTip"></div>
+   <a class="vid-open" href="https://eds.vid.gov.lv/" target="_blank" rel="noopener">Pārslēgties uz VID EDS ↗</a>
+   <div class="actions"><button class="secondary" id="back">Atpakaļ</button><button class="primary" id="next" style="margin:0">Nākamais solis</button></div>
+  </div>
+  <div class="done" id="done"><div class="eyebrow">Uzdevuma ceļvedis pabeigts</div><h2>Labs darbs!</h2><p class="instruction">Pārbaudi, vai VID EDS visas darbības ir izpildītas un iesniegums ir pieņemts. Šis prototips nevar pārbaudīt tavu EDS kontu.</p><button class="primary" id="restart">Atgriezties uz sākumu</button></div>
+ </div>
+</section>
+<script>
+const guides={
+ register:{name:"Reģistrācija",steps:[
+  ["Atver VID EDS","Jaunajā cilnē pieslēdzies VID EDS ar sev pieejamo autentifikācijas veidu.","Neievadi piekļuves datus Mansdarbs lapā. Tie jāievada tikai oficiālajā VID vietnē."],
+  ["Atrodi reģistrācijas sadaļu","EDS izvēlnē meklē sadaļu, kas paredzēta reģistrācijai un izmaiņām nodokļu maksātāja datos.","VID izvēļņu nosaukumi var mainīties. Ja sadaļu neatrodi, izmanto EDS meklēšanu vai VID palīdzību."],
+  ["Izvēlies saimniecisko darbību","Atver saimnieciskās darbības veicēja reģistrācijas pieteikumu un izlasi prasīto informāciju.","Pirms iesniegšanas pārbaudi darbības sākuma datumu, adresi un darbības veidu."],
+  ["Pārbaudi un iesniedz","Pārskati visus laukus un iesniedz pieteikumu EDS.","Saglabā iesniegšanas apliecinājumu un pārbaudi EDS paziņojumus par lēmumu."]
+ ]},
+ quarter:{name:"Pašnodarbinātā ziņojums",steps:[
+  ["Pieslēdzies VID EDS","Atver VID EDS jaunajā cilnē un pieslēdzies savam kontam.","Piekļuves datus ievadi tikai oficiālajā VID vietnē."],
+  ["Atver dokumentu iesniegšanu","Meklē dokumentu iesniegšanas sadaļu un pašnodarbinātā ziņojumu.","Pārliecinies, ka izvēlēts pareizais taksācijas gads un ceturksnis."],
+  ["Pārbaudi mēnešu datus","Salīdzini katra mēneša ienākumus, izdevumus un aprēķināto VSAOI objektu ar savu uzskaiti.","Mansdarbs aprēķins ir orientējošs. EDS pārbaudi visus skaitļus pirms iesniegšanas."],
+  ["Iesniedz ziņojumu","Pārskati dokumentu, iesniedz to un pārliecinies, ka EDS redzams iesniegšanas apliecinājums.","Ja EDS uzrāda kļūdu vai brīdinājumu, izlasi to un neatstāj neatrisinātu."]
+ ]},
+ annual:{name:"Gada ienākumu deklarācija",steps:[
+  ["Pieslēdzies VID EDS","Atver VID EDS jaunajā cilnē un pieslēdzies savam kontam.","Piekļuves datus ievadi tikai oficiālajā VID vietnē."],
+  ["Atver gada ienākumu deklarāciju","Atrodi gada ienākumu deklarācijas dokumentu un izvēlies pareizo taksācijas gadu.","Pārbaudi, vai deklarācija ir par vajadzīgo gadu."],
+  ["Pārbaudi ienākumus un izdevumus","Salīdzini deklarācijā iekļautos datus ar saviem uzskaites dokumentiem un EDS pieejamo informāciju.","Neievadi summas pēc atmiņas. Pārbaudi tās pret rēķiniem, čekiem un uzskaiti."],
+  ["Pārbaudi aprēķinu un iesniedz","Pārskati deklarācijas kopsavilkumu, pārliecinies par maksājamo vai atmaksājamo summu un iesniedz deklarāciju.","Saglabā iesniegšanas apliecinājumu. Ja rodas neskaidrības, pirms iesniegšanas konsultējies ar VID."]
+ ]}
+};
+let current=null,index=0;
+const $=id=>document.getElementById(id);
+function render(){
+ const g=guides[current],s=g.steps[index];
+ $("taskName").textContent=g.name;$("stepCount").textContent="SOLIS "+(index+1)+" NO "+g.steps.length;
+ $("stepTitle").textContent=s[0];$("stepText").textContent=s[1];$("stepTip").textContent=s[2];
+ $("bar").style.width=((index+1)/g.steps.length*100)+"%";
+ $("back").disabled=index===0;$("back").style.opacity=index===0?".45":"1";
+ $("next").textContent=index===g.steps.length-1?"Pabeigt ceļvedi":"Nākamais solis";
+}
+function startAssistant(){
+ current=$("task").value;index=0;
+ $("landing").style.display="none";$("assistant").style.display="block";$("done").style.display="none";$("guided").style.display="block";render();
+}
+$("launch").addEventListener("click",()=>{
+ // Open the VID tab synchronously inside the user gesture so popup blockers are less likely to block it.
+ const vidWindow=window.open("https://eds.vid.gov.lv/","_blank","noopener");
+ startAssistant();
+ if(!vidWindow){$("stepTip").textContent+=" Jaunā cilne netika atvērta — atļauj uznirstošos logus vai izmanto saiti “Pārslēgties uz VID EDS”.";}
+});
+$("next").addEventListener("click",()=>{if(index<guides[current].steps.length-1){index++;render()}else{$("guided").style.display="none";$("done").style.display="block";$("bar").style.width="100%"}});
+$("back").addEventListener("click",()=>{if(index>0){index--;render()}});
+$("restart").addEventListener("click",()=>{ $("assistant").style.display="none";$("landing").style.display="block";window.scrollTo({top:0,behavior:"smooth"})});
+</script>
+</body>
+</html>
