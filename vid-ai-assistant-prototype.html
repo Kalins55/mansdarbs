@@ -84,23 +84,24 @@ const guides={
   ["Pārbaudi aprēķinu un iesniedz","Pārskati deklarācijas kopsavilkumu, pārliecinies par maksājamo vai atmaksājamo summu un iesniedz deklarāciju.","Saglabā iesniegšanas apliecinājumu. Ja rodas neskaidrības, pirms iesniegšanas konsultējies ar VID."]
  ]}
 };
-let current=null,index=0;
+let current=null,index=0,activityLabel="";
 const $=id=>document.getElementById(id);
 function render(){
  const g=guides[current],s=g.steps[index];
- $("taskName").textContent=g.name;$("stepCount").textContent="SOLIS "+(index+1)+" NO "+g.steps.length;
+ $("taskName").textContent=g.name+" · "+activityLabel;$("stepCount").textContent="SOLIS "+(index+1)+" NO "+g.steps.length;
  $("stepTitle").textContent=s[0];$("stepText").textContent=s[1];$("stepTip").textContent=s[2];
  $("bar").style.width=((index+1)/g.steps.length*100)+"%";
  $("back").disabled=index===0;$("back").style.opacity=index===0?".45":"1";
  $("next").textContent=index===g.steps.length-1?"Pabeigt ceļvedi":"Nākamais solis";
 }
 function startAssistant(){
- current=$("task").value;index=0;
+ current=$("task").value;index=0;activityLabel=$("activity").selectedOptions[0].textContent;
  $("landing").style.display="none";$("assistant").style.display="block";$("done").style.display="none";$("guided").style.display="block";render();
 }
 $("launch").addEventListener("click",()=>{
  // Open the VID tab synchronously inside the user gesture so popup blockers are less likely to block it.
- const vidWindow=window.open("https://eds.vid.gov.lv/","_blank","noopener");
+ const vidWindow=window.open("https://eds.vid.gov.lv/","_blank");
+ if(vidWindow)vidWindow.opener=null;
  startAssistant();
  if(!vidWindow){$("stepTip").textContent+=" Jaunā cilne netika atvērta — atļauj uznirstošos logus vai izmanto saiti “Pārslēgties uz VID EDS”.";}
 });
