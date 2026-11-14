@@ -385,7 +385,74 @@ function exportCsv(){
 
 const INVOICE_KEY='mansdarbs_demo_invoices_v1';
 function invoiceValue(id){return document.getElementById(id).value.trim()}
-function invoiceNumberNext(){let list=[];try{list=JSON.parse(localStorage.getItem(INVOICE_KEY)||'[]')}catch(e){}return 'R-'+new Date().getFullYear()+'-'+String(list.length+1).padStart(3,'0')}
+function invoiceNumberNext(){let list=[];try{list=JSON.parse(localStorage.getItem(INVOICE_KEY)||'[]')}catch(e){}const year=new Date().getFullYear(),prefix='R-'+year+'-';const max=list.reduce((n,x)=>{const m=String(x.number||'').match(new RegExp('^R-'+year+'-(\\\\d+)
+function invoiceData(){
+ const qty=Number(invoiceValue('invQty')),price=Number(invoiceValue('invPrice')),vatOn=document.getElementById('invVat').checked,rate=vatOn?Number(invoiceValue('invVatRate')):0;
+ if(!invoiceValue('invSeller')||!invoiceValue('invBuyer')||!invoiceValue('invDescription')){alert('Aizpildi izrakstītāja, saņēmēja un pakalpojuma/preces nosaukuma laukus.');return null}
+ if(!Number.isFinite(qty)||qty<=0||!Number.isFinite(price)||price<0){alert('Pārbaudi daudzumu un vienības cenu.');return null}
+ const net=Math.round(qty*price*100)/100,vat=Math.round(net*rate)/100,total=net+vat;
+ return {number:invoiceValue('invNumber'),date:invoiceValue('invDate'),due:invoiceValue('invDue'),seller:invoiceValue('invSeller'),reg:invoiceValue('invReg'),address:invoiceValue('invAddress'),bank:invoiceValue('invBank'),email:invoiceValue('invEmail'),buyer:invoiceValue('invBuyer'),buyerReg:invoiceValue('invBuyerReg'),buyerAddress:invoiceValue('invBuyerAddress'),description:invoiceValue('invDescription'),qty,price,net,vat,rate,total,currency:'EUR'};
+}
+function updateInvoiceTotals(){
+ const vatOn=document.getElementById('invVat').checked;
+ document.getElementById('vatRateField').hidden=!vatOn;
+ const qty=Number(invoiceValue('invQty'))||0,price=Number(invoiceValue('invPrice'))||0,rate=vatOn?(Number(invoiceValue('invVatRate'))||0):0;
+ const net=qty*price,vat=net*rate/100;
+ document.getElementById('invoiceTotals').textContent='Summa bez PVN: '+money(net)+' · PVN: '+money(vat)+' · Kopā: '+money(net+vat);
+}
+function invoicePrintHtml(x){
+ const line=(label,value)=>value?'<p><strong>'+label+':</strong> '+escapeHtml(value)+'</p>':'';
+ return '<div><h1>RĒĶINS</h1><h2>'+escapeHtml(x.number)+'</h2><p>Izrakstīšanas datums: '+escapeHtml(x.date)+' · Apmaksas termiņš: '+escapeHtml(x.due||'Nav norādīts')+'</p><div style="display:flex;gap:50px;margin-top:28px"><div style="flex:1"><h3>Izrakstītājs</h3><p><strong>'+escapeHtml(x.seller)+'</strong></p>'+line('Reģ. Nr.',x.reg)+line('Adrese',x.address)+line('Kontakti',x.email)+line('IBAN',x.bank)+'</div><div style="flex:1"><h3>Saņēmējs</h3><p><strong>'+escapeHtml(x.buyer)+'</strong></p>'+line('Reģ. Nr.',x.buyerReg)+line('Adrese',x.buyerAddress)+'</div></div><table><thead><tr><th>Apraksts</th><th>Daudzums</th><th>Cena</th><th>Summa</th></tr></thead><tbody><tr><td>'+escapeHtml(x.description)+'</td><td>'+x.qty+'</td><td>'+money(x.price)+'</td><td>'+money(x.net)+'</td></tr></tbody></table><div class="invoice-total"><p>Summa bez PVN: <strong>'+money(x.net)+'</strong></p><p>PVN '+x.rate+'%: <strong>'+money(x.vat)+'</strong></p><h2>Kopā apmaksai: '+money(x.total)+'</h2></div><p style="margin-top:45px">Paldies par sadarbību!</p></div>';
+}
+function previewInvoice(){
+ const x=invoiceData();if(!x)return;
+ document.getElementById('invoicePrint').innerHTML=invoicePrintHtml(x);
+ document.body.classList.add('invoice-printing');window.print();setTimeout(()=>document.body.classList.remove('invoice-printing'),500);
+}
+function saveInvoice(){
+ const x=invoiceData();if(!x)return;
+ if(!x.number||!x.date){alert('Norādi rēķina numuru un izrakstīšanas datumu.');return}
+ let list=[];try{list=JSON.parse(localStorage.getItem(INVOICE_KEY)||'[]')}catch(e){}
+ if(list.some(i=>i.number===x.number)){alert('Šāds rēķina numurs jau ir saglabāts.');return}
+ list.push({...x,id:Date.now(),savedAt:new Date().toISOString()});
+ try{localStorage.setItem(INVOICE_KEY,JSON.stringify(list))}catch(e){alert('Neizdevās saglabāt rēķinu pārlūkā.');return}
+ renderInvoices();document.getElementById('invoicePrint').innerHTML=invoicePrintHtml(x);document.getElementById('invNumber').value=invoiceNumberNext();
+ alert('Rēķins saglabāts šajā pārlūkā.');
+}
+function renderInvoices(){
+ let list=[];try{list=JSON.parse(localStorage.getItem(INVOICE_KEY)||'[]')}catch(e){}
+ const root=document.getElementById('savedInvoices');if(!root)return;
+ root.innerHTML='<h3 style="margin:20px 0 5px">Saglabātie rēķini</h3>'+(list.length?list.slice().reverse().map(x=>'<div class="invoice-saved"><div><strong>'+escapeHtml(x.number)+'</strong><small class="muted" style="display:block">'+escapeHtml(x.buyer)+' · '+escapeHtml(x.date)+'</small></div><div style="text-align:right"><strong>'+money(x.total)+'</strong><div><button class="textlink" style="border:0;background:none;padding:4px;cursor:pointer" onclick="printSavedInvoice('+Number(x.id)+')">Drukāt</button> <button class="textlink" style="border:0;background:none;padding:4px;cursor:pointer;color:#a33" onclick="deleteInvoice('+Number(x.id)+')">Dzēst</button></div></div></div>').join(''):'<div class="empty">Pagaidām nav saglabātu rēķinu.</div>');
+}
+function printSavedInvoice(id){
+ let list=[];try{list=JSON.parse(localStorage.getItem(INVOICE_KEY)||'[]')}catch(e){}
+ const x=list.find(i=>i.id===id);if(!x)return;
+ document.getElementById('invoicePrint').innerHTML=invoicePrintHtml(x);document.body.classList.add('invoice-printing');window.print();setTimeout(()=>document.body.classList.remove('invoice-printing'),500);
+}
+function deleteInvoice(id){
+ if(!confirm('Vai dzēst šo rēķinu?'))return;
+ let list=[];try{list=JSON.parse(localStorage.getItem(INVOICE_KEY)||'[]')}catch(e){}
+ try{localStorage.setItem(INVOICE_KEY,JSON.stringify(list.filter(i=>i.id!==id)))}catch(e){}
+ renderInvoices();
+}
+function resetInvoiceForm(){
+ ['invSeller','invReg','invAddress','invBank','invEmail','invBuyer','invBuyerReg','invBuyerAddress','invDescription','invPrice'].forEach(id=>document.getElementById(id).value='');
+ document.getElementById('invQty').value='1';document.getElementById('invVat').checked=false;updateInvoiceTotals();
+}
+function initInvoice(){
+ const now=new Date(),date=[now.getFullYear(),String(now.getMonth()+1).padStart(2,'0'),String(now.getDate()).padStart(2,'0')].join('-');
+ document.getElementById('invDate').value=date;document.getElementById('invNumber').value=invoiceNumberNext();document.getElementById('invQty').addEventListener('input',updateInvoiceTotals);document.getElementById('invPrice').addEventListener('input',updateInvoiceTotals);renderInvoices();updateInvoiceTotals();
+}
+
+const today=new Date();document.getElementById('date').value=[today.getFullYear(),String(today.getMonth()+1).padStart(2,'0'),String(today.getDate()).padStart(2,'0')].join('-');
+document.getElementById('kind').addEventListener('change',updateIinWarning);
+document.getElementById('date').addEventListener('change',updateIinWarning);
+renderRecords();
+updateIinWarning();
+document.addEventListener("DOMContentLoaded",()=>{initVsaoi();initInvoice()});
+</script>
+</body>
+</html>));return m?Math.max(n,Number(m[1])):n},0);return prefix+String(max+1).padStart(3,'0')}
 function invoiceData(){
  const qty=Number(invoiceValue('invQty')),price=Number(invoiceValue('invPrice')),vatOn=document.getElementById('invVat').checked,rate=vatOn?Number(invoiceValue('invVatRate')):0;
  if(!invoiceValue('invSeller')||!invoiceValue('invBuyer')||!invoiceValue('invDescription')){alert('Aizpildi izrakstītāja, saņēmēja un pakalpojuma/preces nosaukuma laukus.');return null}
