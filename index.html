@@ -70,13 +70,14 @@
 <h2>VSAOI aprēķins par ceturksni</h2>
 <p class="muted">Ievadi katra mēneša peļņu — ieņēmumi mīnus ar saimniecisko darbību saistītie izdevumi. Aprēķins paredzēts vispārējā režīma pašnodarbinātajam, kuram piemēro standarta 31,07% likmi.</p>
 <div class="formgrid">
+<div class="field full"><label for="contributionBase">Izvēlētais VSAOI objekts mēnesī (€)</label><input id="contributionBase" type="number" min="780" step="0.01" inputmode="decimal" value="780"><small class="muted">Vismaz 780 €. Vari izvēlēties lielāku summu, ja vēlies maksāt pilno VSAOI no lielākas peļņas daļas.</small></div>
 <div class="field"><label for="profit1">1. mēneša peļņa (€)</label><input id="profit1" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0,00"></div>
 <div class="field"><label for="profit2">2. mēneša peļņa (€)</label><input id="profit2" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0,00"></div>
 <div class="field"><label for="profit3">3. mēneša peļņa (€)</label><input id="profit3" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0,00"></div>
 </div>
 <div class="actions" style="justify-content:flex-start"><button class="btn primary" onclick="calculateVsaoi()">Aprēķināt VSAOI</button><button class="btn secondary" onclick="resetVsaoi()">Notīrīt</button></div>
 <div id="vsaoiResult" class="empty" aria-live="polite">Ievadi peļņu visiem trim ceturkšņa mēnešiem, lai redzētu orientējošo aprēķinu.</div>
-<p class="privacy">Pamatnoteikums 2026. gadā: ja mēneša peļņa ir vismaz 780 €, standarta gadījumā 31,07% aprēķina vismaz no 780 €, bet 10% — no peļņas daļas virs izvēlētā VSAOI objekta. Ja peļņa ir zem 780 €, 10% maksā no visas faktiskās peļņas. Šis vienkāršotais rīks pieņem, ka izvēlētais VSAOI objekts ir minimālie 780 € un neņem vērā īpašos statusus, lauksaimniecības/intelektuālā īpašuma izņēmumus vai citus apdrošināšanas objektus. EDS aprēķins ir noteicošais.</p>
+<p class="privacy">Pamatnoteikums 2026. gadā: ja mēneša peļņa ir vismaz 780 €, standarta gadījumā 31,07% aprēķina no paša izvēlēta VSAOI objekta (vismaz 780 €), bet 10% — no peļņas daļas virs šī objekta. Ja peļņa ir zem 780 €, 10% maksā no visas faktiskās peļņas. No 2026. gada pašnodarbinātajiem vairs nepiemēro minimālo VSAOI piemaksu par nepietiekamiem ienākumiem. Šis vienkāršotais rīks neņem vērā īpašos statusus un atšķirīgas likmes; EDS aprēķins ir noteicošais.</p>
 </section>
 
 <footer class="footer">Mansdarbs · Palīgs saimnieciskās darbības sākšanai un ikdienas uzskaitei · <a href="https://www.vid.gov.lv/" target="_blank" rel="noopener">VID oficiālā informācija</a></footer>
@@ -86,18 +87,20 @@ const STORAGE_KEY='mansdarbs_demo_records_v1';
 
 function calculateVsaoi(){
  const values=[1,2,3].map(i=>Number(document.getElementById('profit'+i).value||0));
+ const chosenBase=Number(document.getElementById('contributionBase').value||780);
  if(values.some(v=>!Number.isFinite(v)||v<0)){alert('Ievadi korektu peļņu — 0 vai lielāku summu.');return}
+ if(!Number.isFinite(chosenBase)||chosenBase<780){alert('VSAOI objektam jābūt vismaz 780 €.');return}
  const rows=values.map((profit,i)=>{
-  const base=profit>=780?780:0;
+  const base=profit>=780?Math.min(profit,chosenBase):0;
   const full=base*0.3107;
-  const pension=(profit-base)*0.10;
-  return {month:i+1,profit,full,pension,total:full+pension};
+  const pension=profit>=780?(profit-base)*0.10:profit*0.10;
+  return {month:i+1,profit,base,full,pension,total:full+pension};
  });
  const total=rows.reduce((s,r)=>s+r.total,0);
- const body=rows.map(r=>'<div class="record"><div><strong>'+r.month+'. mēnesis</strong><small>Peļņa: '+money(r.profit)+' · 31,07%: '+money(r.full)+' · 10%: '+money(r.pension)+'</small></div><div class="amount">'+money(r.total)+'</div></div>').join('');
+ const body=rows.map(r=>'<div class="record"><div><strong>'+r.month+'. mēnesis</strong><small>Peļņa: '+money(r.profit)+' · VSAOI objekts: '+money(r.base)+' · 31,07%: '+money(r.full)+' · 10%: '+money(r.pension)+'</small></div><div class="amount">'+money(r.total)+'</div></div>').join('');
  document.getElementById('vsaoiResult').innerHTML='<h3 style="margin:0 0 8px">Aprēķina rezultāts</h3>'+body+'<div class="record"><strong>Kopā par ceturksni</strong><strong class="amount">'+money(total)+'</strong></div><p class="privacy">Ziņojums EDS jāiesniedz līdz 17. datumam pēc ceturkšņa beigām; samaksa parasti jāveic līdz 23. datumam.</p>';
 }
-function resetVsaoi(){[1,2,3].forEach(i=>document.getElementById('profit'+i).value='');document.getElementById('vsaoiResult').textContent='Ievadi peļņu visiem trim ceturkšņa mēnešiem, lai redzētu orientējošo aprēķinu.'}
+function resetVsaoi(){[1,2,3].forEach(i=>document.getElementById('profit'+i).value='');document.getElementById('contributionBase').value='780';document.getElementById('vsaoiResult').textContent='Ievadi peļņu visiem trim ceturkšņa mēnešiem, lai redzētu orientējošo aprēķinu.'}
 
 function showGuide(){const g=document.getElementById('guide');g.classList.add('open');g.scrollIntoView({behavior:'smooth',block:'start'})}
 function getRecords(){try{const data=JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]');return Array.isArray(data)?data.filter(x=>x&&['Ienākums','Izdevums'].includes(x.kind)&&Number.isFinite(Number(x.amount))&&Number(x.amount)>0&&typeof x.date==='string'):[]}catch(e){return []}}
