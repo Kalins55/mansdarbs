@@ -40,6 +40,25 @@
 .shell.home-screen #homeView.guide-mode .hero .trust{display:none}
 .shell.home-screen #homeView.guide-mode .section{display:none}
 .shell.home-screen #homeView.guide-mode .guide.open{display:block;flex:0 0 auto;min-height:0;max-height:none;overflow:visible;margin:0 auto;width:100%}
+
+.invoice-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+.invoice-grid .field.full{grid-column:1/-1}
+.invoice-lines{width:100%;border-collapse:collapse;margin-top:12px;font-size:14px}
+.invoice-lines th,.invoice-lines td{padding:8px 5px;border-bottom:1px solid var(--line);text-align:left}
+.invoice-lines input{width:100%;min-width:0;border:1px solid #d5ded7;border-radius:8px;padding:9px}
+.invoice-lines .qty{width:72px}.invoice-lines .price{width:105px}
+.invoice-preview{background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px;margin-top:16px}
+.invoice-preview h3{margin:0 0 8px}.invoice-saved{border-top:1px solid var(--line);padding:12px 0;display:flex;justify-content:space-between;gap:12px}
+@media(max-width:680px){.invoice-grid{grid-template-columns:1fr}.invoice-grid .field.full{grid-column:auto}.invoice-lines{font-size:12px}.invoice-lines th,.invoice-lines td{padding:6px 3px}}
+@media print{
+ body.invoice-printing *{visibility:hidden!important}
+ body.invoice-printing #invoicePrint,body.invoice-printing #invoicePrint *{visibility:visible!important}
+ body.invoice-printing #invoicePrint{display:block!important;position:absolute;left:0;top:0;width:100%;padding:24px;color:#111;background:#fff;font:14px/1.45 Arial,sans-serif}
+ body.invoice-printing #invoicePrint table{width:100%;border-collapse:collapse;margin-top:24px}
+ body.invoice-printing #invoicePrint th,body.invoice-printing #invoicePrint td{border-bottom:1px solid #ddd;padding:10px;text-align:left}
+ body.invoice-printing #invoicePrint .invoice-total{text-align:right;margin-top:24px}
+}
+#invoicePrint{display:none}
 </style>
 </head>
 <body>
@@ -100,6 +119,44 @@
 <div class="records" id="records"><div class="empty">Pagaidām nav neviena ieraksta. Pievieno pirmo, kad esi gatavs.</div></div>
 <p class="privacy">Privātums: šī demonstrācijas versija datus saglabā tikai tavā pārlūkprogrammā šajā ierīcē. Tie netiek nosūtīti Mansdarbs serverim. Iztīrot pārlūka datus vai mainot ierīci, ieraksti var pazust. Šis rīks vēl nav oficiāls grāmatvedības reģistrs un neveic nodokļu aprēķinus.</p>
 </section>
+
+<section class="tool" id="invoiceTool">
+<div class="eyebrow">Uzskaite · rēķini</div>
+<h2>Rēķina izveide</h2>
+<p class="muted">Aizpildi informāciju, saglabā rēķinu un izdrukā to vai saglabā PDF formātā. Rēķini tiek glabāti tikai šajā pārlūkā.</p>
+<div class="invoice-grid">
+<div class="field"><label for="invNumber">Rēķina numurs</label><input id="invNumber" maxlength="40"></div>
+<div class="field"><label for="invDate">Izrakstīšanas datums</label><input id="invDate" type="date"></div>
+<div class="field"><label for="invDue">Apmaksas termiņš</label><input id="invDue" type="date"></div>
+<div class="field"><label for="invCurrency">Valūta</label><select id="invCurrency"><option value="EUR">EUR (€)</option></select></div>
+<div class="field full"><strong>Rēķina izrakstītājs</strong></div>
+<div class="field"><label for="invSeller">Vārds, uzvārds / uzņēmums</label><input id="invSeller" placeholder="Tavs vārds vai uzņēmuma nosaukums"></div>
+<div class="field"><label for="invReg">Reģistrācijas numurs (ja attiecas)</label><input id="invReg" placeholder="Reģistrācijas numurs"></div>
+<div class="field"><label for="invAddress">Adrese</label><input id="invAddress" placeholder="Juridiskā vai deklarētā adrese"></div>
+<div class="field"><label for="invBank">Bankas konts (IBAN)</label><input id="invBank" placeholder="LV00 BANK 0000 0000 0000 0"></div>
+<div class="field"><label for="invEmail">E-pasts / tālrunis</label><input id="invEmail" placeholder="Kontakti (nav obligāti)"></div>
+<div class="field full"><strong>Rēķina saņēmējs</strong></div>
+<div class="field"><label for="invBuyer">Vārds, uzvārds / uzņēmums</label><input id="invBuyer" placeholder="Klienta vārds vai uzņēmuma nosaukums"></div>
+<div class="field"><label for="invBuyerReg">Reģistrācijas numurs (ja attiecas)</label><input id="invBuyerReg" placeholder="Reģistrācijas numurs"></div>
+<div class="field full"><label for="invBuyerAddress">Adrese</label><input id="invBuyerAddress" placeholder="Klienta adrese"></div>
+<div class="field full"><strong>Pakalpojums vai prece</strong></div>
+<div class="field full"><label for="invDescription">Nosaukums / apraksts</label><input id="invDescription" maxlength="180" placeholder="Piemēram, traktora remonta pakalpojums"></div>
+<div class="field"><label for="invQty">Daudzums</label><input id="invQty" type="number" min="0.01" step="0.01" value="1"></div>
+<div class="field"><label for="invPrice">Cena par vienību (€)</label><input id="invPrice" type="number" min="0" step="0.01" placeholder="0,00"></div>
+<div class="field full"><label><input id="invVat" type="checkbox" style="width:auto;margin-right:8px" onchange="updateInvoiceTotals()">Esmu PVN maksātājs — piemērot PVN</label></div>
+<div class="field" id="vatRateField" hidden><label for="invVatRate">PVN likme (%)</label><select id="invVatRate" onchange="updateInvoiceTotals()"><option value="21">21%</option><option value="12">12%</option><option value="5">5%</option><option value="0">0%</option></select></div>
+</div>
+<div class="empty" id="invoiceTotals">Kopā: 0,00 €</div>
+<div class="actions" style="justify-content:flex-start">
+<button class="btn primary" onclick="saveInvoice()">Saglabāt rēķinu</button>
+<button class="btn secondary" onclick="previewInvoice()">Priekšskatīt / drukāt</button>
+<button class="btn secondary" onclick="resetInvoiceForm()">Notīrīt formu</button>
+</div>
+<div id="savedInvoices" class="records"></div>
+<p class="privacy">Pirms izsūtīšanas pārbaudi rekvizītus, darījuma aprakstu, PVN piemērošanu un citus obligātos laukus atbilstoši konkrētajam darījumam. Ja neesi PVN maksātājs, PVN neatzīmē. Šis ir vienkāršs rēķina sagatavošanas rīks, nevis grāmatvedības vai juridiskās atbilstības pārbaude.</p>
+</section>
+<div id="invoicePrint"></div>
+
 </div>
 </main>
 
@@ -325,6 +382,68 @@ function exportCsv(){
  const blob=new Blob([csv],{type:'text/csv;charset=utf-8;'}),url=URL.createObjectURL(blob),a=document.createElement('a');
  a.href=url;a.download='mansdarbs-uzskaite.csv';document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);
 }
+
+const INVOICE_KEY='mansdarbs_demo_invoices_v1';
+function invoiceValue(id){return document.getElementById(id).value.trim()}
+function invoiceNumberNext(){let list=[];try{list=JSON.parse(localStorage.getItem(INVOICE_KEY)||'[]')}catch(e){}return 'R-'+new Date().getFullYear()+'-'+String(list.length+1).padStart(3,'0')}
+function invoiceData(){
+ const qty=Number(invoiceValue('invQty')),price=Number(invoiceValue('invPrice')),vatOn=document.getElementById('invVat').checked,rate=vatOn?Number(invoiceValue('invVatRate')):0;
+ if(!invoiceValue('invSeller')||!invoiceValue('invBuyer')||!invoiceValue('invDescription')){alert('Aizpildi izrakstītāja, saņēmēja un pakalpojuma/preces nosaukuma laukus.');return null}
+ if(!Number.isFinite(qty)||qty<=0||!Number.isFinite(price)||price<0){alert('Pārbaudi daudzumu un vienības cenu.');return null}
+ const net=Math.round(qty*price*100)/100,vat=Math.round(net*rate)/100,total=net+vat;
+ return {number:invoiceValue('invNumber'),date:invoiceValue('invDate'),due:invoiceValue('invDue'),seller:invoiceValue('invSeller'),reg:invoiceValue('invReg'),address:invoiceValue('invAddress'),bank:invoiceValue('invBank'),email:invoiceValue('invEmail'),buyer:invoiceValue('invBuyer'),buyerReg:invoiceValue('invBuyerReg'),buyerAddress:invoiceValue('invBuyerAddress'),description:invoiceValue('invDescription'),qty,price,net,vat,rate,total,currency:'EUR'};
+}
+function updateInvoiceTotals(){
+ const vatOn=document.getElementById('invVat').checked;
+ document.getElementById('vatRateField').hidden=!vatOn;
+ const qty=Number(invoiceValue('invQty'))||0,price=Number(invoiceValue('invPrice'))||0,rate=vatOn?(Number(invoiceValue('invVatRate'))||0):0;
+ const net=qty*price,vat=net*rate/100;
+ document.getElementById('invoiceTotals').textContent='Summa bez PVN: '+money(net)+' · PVN: '+money(vat)+' · Kopā: '+money(net+vat);
+}
+function invoicePrintHtml(x){
+ const line=(label,value)=>value?'<p><strong>'+label+':</strong> '+escapeHtml(value)+'</p>':'';
+ return '<div><h1>RĒĶINS</h1><h2>'+escapeHtml(x.number)+'</h2><p>Izrakstīšanas datums: '+escapeHtml(x.date)+' · Apmaksas termiņš: '+escapeHtml(x.due||'Nav norādīts')+'</p><div style="display:flex;gap:50px;margin-top:28px"><div style="flex:1"><h3>Izrakstītājs</h3><p><strong>'+escapeHtml(x.seller)+'</strong></p>'+line('Reģ. Nr.',x.reg)+line('Adrese',x.address)+line('Kontakti',x.email)+line('IBAN',x.bank)+'</div><div style="flex:1"><h3>Saņēmējs</h3><p><strong>'+escapeHtml(x.buyer)+'</strong></p>'+line('Reģ. Nr.',x.buyerReg)+line('Adrese',x.buyerAddress)+'</div></div><table><thead><tr><th>Apraksts</th><th>Daudzums</th><th>Cena</th><th>Summa</th></tr></thead><tbody><tr><td>'+escapeHtml(x.description)+'</td><td>'+x.qty+'</td><td>'+money(x.price)+'</td><td>'+money(x.net)+'</td></tr></tbody></table><div class="invoice-total"><p>Summa bez PVN: <strong>'+money(x.net)+'</strong></p><p>PVN '+x.rate+'%: <strong>'+money(x.vat)+'</strong></p><h2>Kopā apmaksai: '+money(x.total)+'</h2></div><p style="margin-top:45px">Paldies par sadarbību!</p></div>';
+}
+function previewInvoice(){
+ const x=invoiceData();if(!x)return;
+ document.getElementById('invoicePrint').innerHTML=invoicePrintHtml(x);
+ document.body.classList.add('invoice-printing');window.print();setTimeout(()=>document.body.classList.remove('invoice-printing'),500);
+}
+function saveInvoice(){
+ const x=invoiceData();if(!x)return;
+ if(!x.number||!x.date){alert('Norādi rēķina numuru un izrakstīšanas datumu.');return}
+ let list=[];try{list=JSON.parse(localStorage.getItem(INVOICE_KEY)||'[]')}catch(e){}
+ if(list.some(i=>i.number===x.number)){alert('Šāds rēķina numurs jau ir saglabāts.');return}
+ list.push({...x,id:Date.now(),savedAt:new Date().toISOString()});
+ try{localStorage.setItem(INVOICE_KEY,JSON.stringify(list))}catch(e){alert('Neizdevās saglabāt rēķinu pārlūkā.');return}
+ renderInvoices();document.getElementById('invoicePrint').innerHTML=invoicePrintHtml(x);
+ alert('Rēķins saglabāts šajā pārlūkā.');
+}
+function renderInvoices(){
+ let list=[];try{list=JSON.parse(localStorage.getItem(INVOICE_KEY)||'[]')}catch(e){}
+ const root=document.getElementById('savedInvoices');if(!root)return;
+ root.innerHTML='<h3 style="margin:20px 0 5px">Saglabātie rēķini</h3>'+(list.length?list.slice().reverse().map(x=>'<div class="invoice-saved"><div><strong>'+escapeHtml(x.number)+'</strong><small class="muted" style="display:block">'+escapeHtml(x.buyer)+' · '+escapeHtml(x.date)+'</small></div><div style="text-align:right"><strong>'+money(x.total)+'</strong><div><button class="textlink" style="border:0;background:none;padding:4px;cursor:pointer" onclick="printSavedInvoice('+Number(x.id)+')">Drukāt</button> <button class="textlink" style="border:0;background:none;padding:4px;cursor:pointer;color:#a33" onclick="deleteInvoice('+Number(x.id)+')">Dzēst</button></div></div></div>').join(''):'<div class="empty">Pagaidām nav saglabātu rēķinu.</div>');
+}
+function printSavedInvoice(id){
+ let list=[];try{list=JSON.parse(localStorage.getItem(INVOICE_KEY)||'[]')}catch(e){}
+ const x=list.find(i=>i.id===id);if(!x)return;
+ document.getElementById('invoicePrint').innerHTML=invoicePrintHtml(x);document.body.classList.add('invoice-printing');window.print();setTimeout(()=>document.body.classList.remove('invoice-printing'),500);
+}
+function deleteInvoice(id){
+ if(!confirm('Vai dzēst šo rēķinu?'))return;
+ let list=[];try{list=JSON.parse(localStorage.getItem(INVOICE_KEY)||'[]')}catch(e){}
+ try{localStorage.setItem(INVOICE_KEY,JSON.stringify(list.filter(i=>i.id!==id)))}catch(e){}
+ renderInvoices();
+}
+function resetInvoiceForm(){
+ ['invSeller','invReg','invAddress','invBank','invEmail','invBuyer','invBuyerReg','invBuyerAddress','invDescription','invPrice'].forEach(id=>document.getElementById(id).value='');
+ document.getElementById('invQty').value='1';document.getElementById('invVat').checked=false;updateInvoiceTotals();
+}
+function initInvoice(){
+ const now=new Date(),date=[now.getFullYear(),String(now.getMonth()+1).padStart(2,'0'),String(now.getDate()).padStart(2,'0')].join('-');
+ document.getElementById('invDate').value=date;document.getElementById('invNumber').value=invoiceNumberNext();document.getElementById('invQty').addEventListener('input',updateInvoiceTotals);document.getElementById('invPrice').addEventListener('input',updateInvoiceTotals);renderInvoices();updateInvoiceTotals();
+}
+
 const today=new Date();document.getElementById('date').value=[today.getFullYear(),String(today.getMonth()+1).padStart(2,'0'),String(today.getDate()).padStart(2,'0')].join('-');
 document.getElementById('kind').addEventListener('change',updateIinWarning);
 document.getElementById('date').addEventListener('change',updateIinWarning);
