@@ -59,7 +59,7 @@
 <div class="field"><label for="date">Datums</label><input id="date" type="date"></div>
 <div class="field"><label for="note">Apraksts (nav obligāts)</label><input id="note" type="text" maxlength="120" placeholder="Vari atstāt tukšu"></div>
 </div>
-<div class="actions" style="justify-content:flex-start"><button class="btn primary" onclick="addRecord()">Pievienot ierakstu</button><button class="btn secondary" onclick="clearRecords()">Notīrīt uzskaiti</button><button class="btn secondary" onclick="exportCsv()">Lejupielādēt uzskaiti</button></div>
+<div class="actions" style="justify-content:flex-start"><button class="btn primary" id="saveRecordButton" onclick="addRecord()">Pievienot ierakstu</button><button class="btn secondary hidden" id="cancelEditButton" onclick="cancelEdit()">Atcelt labošanu</button><button class="btn secondary" onclick="clearRecords()">Notīrīt uzskaiti</button><button class="btn secondary" onclick="exportCsv()">Lejupielādēt uzskaiti</button></div>
 <div class="records" id="records"><div class="empty">Pagaidām nav neviena ieraksta. Pievieno pirmo, kad esi gatavs.</div></div>
 <p class="privacy">Privātums: šī demonstrācijas versija datus saglabā tikai tavā pārlūkprogrammā šajā ierīcē. Tie netiek nosūtīti Mansdarbs serverim. Iztīrot pārlūka datus vai mainot ierīci, ieraksti var pazust. Šis rīks vēl nav oficiāls grāmatvedības reģistrs un neveic nodokļu aprēķinus.</p>
 </section>
@@ -84,6 +84,7 @@
 </div>
 <script>
 const STORAGE_KEY='mansdarbs_demo_records_v1';
+let editingIndex=null;
 
 function calculateVsaoi(){
  const values=[1,2,3].map(i=>Number(document.getElementById('profit'+i).value||0));
@@ -109,28 +110,63 @@ function money(n){return Number(n).toLocaleString('lv-LV',{minimumFractionDigits
 function renderRecords(){
  const items=getRecords(),root=document.getElementById('records');
  if(!items.length){root.innerHTML='<div class="empty">Pagaidām nav neviena ieraksta. Pievieno pirmo, kad esi gatavs.</div>';return}
+ const selected=document.getElementById('monthFilter')?.value||'all';
+ const availableMonths=[...new Set(items.map(x=>x.date.slice(0,7)))].sort().reverse();
+ const filtered=selected==='all'?items:items.filter(x=>x.date.slice(0,7)===selected);
  let income=0,expense=0;
  const months={};
- items.forEach(x=>{
+ filtered.forEach(x=>{
   if(x.kind==='Ienākums')income+=Number(x.amount);else expense+=Number(x.amount);
   const key=x.date.slice(0,7);
   if(!months[key])months[key]={income:0,expense:0};
   if(x.kind==='Ienākums')months[key].income+=Number(x.amount);else months[key].expense+=Number(x.amount);
  });
+ const monthOptions='<option value="all">Visi mēneši</option>'+availableMonths.map(key=>{
+  const p=key.split('-'),label=new Date(Number(p[0]),Number(p[1])-1,1).toLocaleDateString('lv-LV',{year:'numeric',month:'long'});
+  return '<option value="'+key+'" '+(selected===key?'selected':'')+'>'+escapeHtml(label)+'</option>';
+ }).join('');
  const monthlyHtml=Object.keys(months).sort().reverse().map(key=>{
   const parts=key.split('-'),label=new Date(Number(parts[0]),Number(parts[1])-1,1).toLocaleDateString('lv-LV',{year:'numeric',month:'long'});
   const m=months[key];
   return '<div class="record"><div><strong>'+escapeHtml(label)+'</strong><small>Ienākumi: '+money(m.income)+' · Izdevumi: '+money(m.expense)+'</small></div><div class="amount">'+money(m.income-m.expense)+'</div></div>';
  }).join('');
- root.innerHTML='<div class="cards" style="margin-bottom:14px"><div class="card" style="box-shadow:none;padding:14px"><small class="muted">Ienākumi kopā</small><div class="amount">'+money(income)+'</div></div><div class="card" style="box-shadow:none;padding:14px"><small class="muted">Izdevumi kopā</small><div class="amount">'+money(expense)+'</div></div><div class="card" style="box-shadow:none;padding:14px"><small class="muted">Starpība</small><div class="amount">'+money(income-expense)+'</div></div></div><h3 style="margin:22px 0 5px">Pārskats pa mēnešiem</h3><p class="muted" style="font-size:13px;margin:0 0 8px">Pozitīva vai negatīva starpība starp reģistrētajiem ienākumiem un izdevumiem.</p>'+monthlyHtml+'<h3 style="margin:22px 0 5px">Visi ieraksti</h3>'+items.slice().reverse().map(x=>'<div class="record"><div><strong>'+escapeHtml(x.kind)+'</strong><small>'+escapeHtml(x.date)+(x.note?' · '+escapeHtml(x.note):'')+'</small></div><div class="amount">'+(x.kind==='Izdevums'?'−':'+')+money(x.amount)+'</div></div>').join('');
+ const recordHtml=filtered.map(x=>({x,index:items.indexOf(x)})).reverse().map(({x,index})=>'<div class="record"><div><strong>'+escapeHtml(x.kind)+'</strong><small>'+escapeHtml(x.date)+(x.note?' · '+escapeHtml(x.note):'')+'</small><div style="display:flex;gap:12px;margin-top:6px"><button class="textlink" style="border:0;background:none;padding:0;cursor:pointer" onclick="editRecord('+index+')">Labot</button><button class="textlink" style="border:0;background:none;padding:0;cursor:pointer;color:#a33" onclick="deleteRecord('+index+')">Dzēst</button></div></div><div class="amount">'+(x.kind==='Izdevums'?'−':'+')+money(x.amount)+'</div></div>').join('');
+ root.innerHTML='<div class="field" style="max-width:280px;margin:0 0 16px"><label for="monthFilter">Rādīt periodu</label><select id="monthFilter" onchange="renderRecords()">'+monthOptions+'</select></div><div class="cards" style="margin-bottom:14px"><div class="card" style="box-shadow:none;padding:14px"><small class="muted">Ienākumi kopā</small><div class="amount">'+money(income)+'</div></div><div class="card" style="box-shadow:none;padding:14px"><small class="muted">Izdevumi kopā</small><div class="amount">'+money(expense)+'</div></div><div class="card" style="box-shadow:none;padding:14px"><small class="muted">Starpība</small><div class="amount">'+money(income-expense)+'</div></div></div><h3 style="margin:22px 0 5px">Pārskats pa mēnešiem</h3><p class="muted" style="font-size:13px;margin:0 0 8px">Pozitīva vai negatīva starpība starp reģistrētajiem ienākumiem un izdevumiem.</p>'+monthlyHtml+'<h3 style="margin:22px 0 5px">Ieraksti</h3>'+(recordHtml||'<div class="empty">Šajā mēnesī ierakstu nav.</div>');
 }
 function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function addRecord(){
  const amount=Number(document.getElementById('amount').value),date=document.getElementById('date').value,kind=document.getElementById('kind').value,note=document.getElementById('note').value.trim();
  if(!Number.isFinite(amount)||amount<=0){alert('Ievadi summu, kas lielāka par 0.');return}
  if(!date){alert('Izvēlies datumu.');return}
- const items=getRecords();items.push({kind:kind,amount:Math.round(amount*100)/100,date:date,note:note});if(!saveRecords(items))return;
- document.getElementById('amount').value='';document.getElementById('note').value='';renderRecords();
+ const items=getRecords(),record={kind:kind,amount:Math.round(amount*100)/100,date:date,note:note};
+ if(editingIndex===null)items.push(record);else items[editingIndex]=record;
+ if(!saveRecords(items))return;
+ cancelEdit();renderRecords();
+}
+function editRecord(index){
+ const item=getRecords()[index];if(!item)return;
+ editingIndex=index;
+ document.getElementById('kind').value=item.kind;
+ document.getElementById('amount').value=Number(item.amount).toFixed(2);
+ document.getElementById('date').value=item.date;
+ document.getElementById('note').value=item.note||'';
+ document.getElementById('saveRecordButton').textContent='Saglabāt izmaiņas';
+ document.getElementById('cancelEditButton').classList.remove('hidden');
+ document.getElementById('amount').scrollIntoView({behavior:'smooth',block:'center'});
+}
+function cancelEdit(){
+ editingIndex=null;
+ document.getElementById('amount').value='';
+ document.getElementById('note').value='';
+ document.getElementById('saveRecordButton').textContent='Pievienot ierakstu';
+ document.getElementById('cancelEditButton').classList.add('hidden');
+}
+function deleteRecord(index){
+ const items=getRecords();if(!items[index])return;
+ if(!confirm('Vai dzēst šo ierakstu?'))return;
+ items.splice(index,1);if(!saveRecords(items))return;
+ if(editingIndex===index)cancelEdit();else if(editingIndex!==null&&editingIndex>index)editingIndex--;
+ renderRecords();
 }
 function clearRecords(){if(!getRecords().length)return;if(confirm('Vai tiešām dzēst visus šīs ierīces demonstrācijas ierakstus?')){try{localStorage.removeItem(STORAGE_KEY);renderRecords()}catch(e){alert('Neizdevās dzēst ierakstus pārlūka ierobežojumu dēļ.')}}}
 function exportCsv(){
