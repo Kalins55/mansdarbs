@@ -168,7 +168,7 @@ function deleteRecord(index){
  if(editingIndex===index)cancelEdit();else if(editingIndex!==null&&editingIndex>index)editingIndex--;
  renderRecords();
 }
-function clearRecords(){if(!getRecords().length)return;if(confirm('Vai tiešām dzēst visus šīs ierīces demonstrācijas ierakstus?')){try{localStorage.removeItem(STORAGE_KEY);renderRecords()}catch(e){alert('Neizdevās dzēst ierakstus pārlūka ierobežojumu dēļ.')}}}
+function clearRecords(){if(!getRecords().length)return;if(confirm('Vai tiešām dzēst visus šīs ierīces demonstrācijas ierakstus?')){try{localStorage.removeItem(STORAGE_KEY);cancelEdit();renderRecords()}catch(e){alert('Neizdevās dzēst ierakstus pārlūka ierobežojumu dēļ.')}}}
 function exportCsv(){
  const items=getRecords();
  if(!items.length){alert('Nav ierakstu, ko eksportēt.');return}
