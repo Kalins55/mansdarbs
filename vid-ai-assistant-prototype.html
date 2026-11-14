@@ -86,10 +86,16 @@ const guides={
 };
 let current=null,index=0,activityLabel="";
 const $=id=>document.getElementById(id);
+function profileNote(){
+ const profile=$("activity").value;
+ if(profile==="micro")return "Izvēlēts mikrouzņēmumu nodokļa režīms — tā deklarēšanas un maksāšanas kārtība atšķiras no vispārējā režīma. Šis prototips vēl nepārbauda visas režīma nianses.";
+ if(profile==="company")return "Izvēlēts uzņēmuma profils — SIA pienākumi atšķiras no pašnodarbinātā pienākumiem. Šis prototips vēl nav pilns uzņēmumu EDS ceļvedis.";
+ return "Ceļvedis orientēts uz fizisku personu, kas veic saimniecisko darbību vispārējā nodokļu režīmā.";
+}
 function render(){
  const g=guides[current],s=g.steps[index];
  $("taskName").textContent=g.name+" · "+activityLabel;$("stepCount").textContent="SOLIS "+(index+1)+" NO "+g.steps.length;
- $("stepTitle").textContent=s[0];$("stepText").textContent=s[1];$("stepTip").textContent=s[2];
+ $("stepTitle").textContent=s[0];$("stepText").textContent=s[1];$("stepTip").textContent=s[2]+" "+profileNote();
  $("bar").style.width=((index+1)/g.steps.length*100)+"%";
  $("back").disabled=index===0;$("back").style.opacity=index===0?".45":"1";
  $("next").textContent=index===g.steps.length-1?"Pabeigt ceļvedi":"Nākamais solis";
