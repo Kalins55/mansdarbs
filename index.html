@@ -85,7 +85,22 @@
 <div id="vsaoiResult" class="empty" aria-live="polite">Ievadi peļņu visiem trim ceturkšņa mēnešiem, lai redzētu orientējošo aprēķinu.</div>
 <p class="privacy">Pamatnoteikums 2026. gadā: ja mēneša peļņa ir vismaz 780 €, standarta gadījumā 31,07% aprēķina no paša izvēlēta VSAOI objekta (vismaz 780 €), bet 10% — no peļņas daļas virs šī objekta. Ja peļņa ir zem 780 €, 10% maksā no visas faktiskās peļņas. No 2026. gada pašnodarbinātajiem vairs nepiemēro minimālo VSAOI piemaksu par nepietiekamiem ienākumiem. Šis vienkāršotais rīks neņem vērā īpašos statusus un atšķirīgas likmes; EDS aprēķins ir noteicošais.</p>
 </section>
+
+<section class="tool" id="iin">
+<div class="eyebrow">Orientējošs aprēķins · 2026</div>
+<h2>IIN prognoze par gadu</h2>
+<p class="muted">Aprēķins parāda, cik papildu IIN varētu radīt saimnieciskā darbība, ņemot vērā arī citus tavus gada apliekamos ienākumus.</p>
+<div class="formgrid">
+<div class="field"><label for="annualProfit">Saimnieciskās darbības peļņa gadā (€)</label><input id="annualProfit" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0,00"></div>
+<div class="field"><label for="annualVsaoi">Samaksātās pašnodarbinātā VSAOI (€)</label><input id="annualVsaoi" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0,00"><small class="muted">Ievadi tikai to VSAOI summu, kas vēl nav iekļauta saimnieciskās darbības izdevumos.</small></div>
+<div class="field"><label for="otherTaxableIncome">Citi gada apliekamie ienākumi (€)</label><input id="otherTaxableIncome" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0,00"><small class="muted">Piemēram, darba alga pēc darba ņēmēja VSAOI, pirms neapliekamā minimuma un atvieglojumiem.</small></div>
+<div class="field"><label for="annualAllowance">Neapliekamais minimums gadā (€)</label><input id="annualAllowance" type="number" min="0" step="0.01" inputmode="decimal" value="6600"><small class="muted">2026. gadā līdz 6600 €. Ja tas jau izmantots citur, ievadi 0 vai neizmantoto daļu.</small></div>
+<div class="field full"><label for="otherDeductions">Citi atvieglojumi un attaisnotie izdevumi (€)</label><input id="otherDeductions" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0,00"><small class="muted">Ievadi tikai summu, ko vēlies ņemt vērā šajā aptuvenajā aprēķinā.</small></div>
 </div>
+<div class="actions" style="justify-content:flex-start"><button class="btn primary" onclick="calculateIin()">Aprēķināt IIN</button><button class="btn secondary" onclick="resetIin()">Notīrīt</button></div>
+<div id="iinResult" class="empty" aria-live="polite">Ievadi gada peļņu un, ja nepieciešams, arī citus ienākumus, lai aprēķinātu prognozi.</div>
+<p class="privacy">Aprēķins izmanto 2026. gada progresīvās IIN likmes: 25,5% līdz 105 300 € un 33% virs šīs summas, kā arī 3% papildu likmi ienākumu daļai virs 200 000 €. Pašnodarbinātā VSAOI, kas nav iekļautas izdevumos, tiek atskaitītas no saimnieciskās darbības peļņas. Neapliekamais minimums pēc noklusējuma ir 6600 € gadā. Aprēķins neietver minimālā 50 € IIN pienākuma pārbaudi, iepriekšējo gadu zaudējumus, īpašus atvieglojumus un individuālus izņēmumus. Rezultāts ir informatīvs, nevis VID aprēķins.</p>
+</section>
 
 <footer class="footer">Mansdarbs · Palīgs saimnieciskās darbības sākšanai un ikdienas uzskaitei · <a href="https://www.vid.gov.lv/" target="_blank" rel="noopener">VID oficiālā informācija</a></footer>
 </div>
@@ -108,6 +123,31 @@ function calculateVsaoi(){
  const body=rows.map(r=>'<div class="record"><div><strong>'+r.month+'. mēnesis</strong><small>Peļņa: '+money(r.profit)+' · VSAOI objekts: '+money(r.base)+' · 31,07%: '+money(r.full)+' · 10%: '+money(r.pension)+'</small></div><div class="amount">'+money(r.total)+'</div></div>').join('');
  document.getElementById('vsaoiResult').innerHTML='<h3 style="margin:0 0 8px">Aprēķina rezultāts</h3>'+body+'<div class="record"><strong>Kopā par ceturksni</strong><strong class="amount">'+money(total)+'</strong></div><p class="privacy">Ziņojums EDS jāiesniedz līdz 17. datumam pēc ceturkšņa beigām; samaksa parasti jāveic līdz 23. datumam.</p>';
 }
+function progressiveIin(amount){
+ const x=Math.max(0,amount);
+ const first=Math.min(x,105300)*0.255;
+ const second=Math.max(0,x-105300)*0.33;
+ const additional=Math.max(0,x-200000)*0.03;
+ return first+second+additional;
+}
+function calculateIin(){
+ const read=id=>Number(document.getElementById(id).value||0);
+ const profit=read('annualProfit'),vsaoi=read('annualVsaoi'),other=read('otherTaxableIncome'),minimum=read('annualAllowance'),deductions=read('otherDeductions');
+ const vals=[profit,vsaoi,other,minimum,deductions];
+ if(vals.some(v=>!Number.isFinite(v)||v<0)){alert('Lūdzu, ievadi korektas summas — 0 vai lielākas.');return}
+ if(vsaoi>profit){alert('Samaksātās VSAOI nevar būt lielākas par ievadīto saimnieciskās darbības peļņu. Pārbaudi summas.');return}
+ const businessTaxable=Math.max(0,profit-vsaoi);
+ const totalBeforeRelief=other+businessTaxable;
+ const relief=Math.min(totalBeforeRelief,minimum+deductions);
+ const taxableTotal=Math.max(0,totalBeforeRelief-relief);
+ const taxableOther=Math.max(0,other-Math.min(other,minimum+deductions));
+ const totalTax=progressiveIin(taxableTotal);
+ const taxWithoutBusiness=progressiveIin(taxableOther);
+ const extraTax=Math.max(0,totalTax-taxWithoutBusiness);
+ const afterTax=profit-vsaoi-extraTax;
+ document.getElementById('iinResult').innerHTML='<h3 style="margin:0 0 10px">Tava aptuvenā gada prognoze</h3><div class="record"><span>Saimnieciskās darbības peļņa</span><strong class="amount">'+money(profit)+'</strong></div><div class="record"><span>Atņemamās VSAOI</span><strong class="amount">− '+money(vsaoi)+'</strong></div><div class="record"><span>Aprēķinātā saimnieciskās darbības ienākuma daļa IIN bāzē</span><strong class="amount">'+money(businessTaxable)+'</strong></div><div class="record"><span>Papildu IIN no saimnieciskās darbības</span><strong class="amount">'+money(extraTax)+'</strong></div><div class="record"><strong>Aptuveni paliek pēc VSAOI un papildu IIN</strong><strong class="amount">'+money(afterTax)+'</strong></div><p class="privacy">Aprēķinātais kopējais apliekamais ienākums pēc ievadītajiem atskaitījumiem: '+money(taxableTotal)+'. Kopējais IIN no visiem ievadītajiem ienākumiem pirms citu nodokļu kredītu vai avansa maksājumu ieskaita: '+money(totalTax)+'.</p>';
+}
+function resetIin(){['annualProfit','annualVsaoi','otherTaxableIncome','otherDeductions'].forEach(id=>document.getElementById(id).value='');document.getElementById('annualAllowance').value='6600';document.getElementById('iinResult').textContent='Ievadi gada peļņu un, ja nepieciešams, arī citus ienākumus, lai aprēķinātu prognozi.'}
 function resetVsaoi(){[1,2,3].forEach(i=>document.getElementById('profit'+i).value='');document.getElementById('contributionBase').value='780';document.getElementById('vsaoiResult').textContent='Ievadi peļņu visiem trim ceturkšņa mēnešiem, lai redzētu orientējošo aprēķinu.'}
 
 function showView(name){const ids={home:'homeView',calculator:'calculatorView',records:'recordsView'};Object.entries(ids).forEach(([key,id])=>document.getElementById(id).classList.toggle('active',key===name));document.querySelectorAll('.nav button').forEach(b=>{if(b.dataset.view===name)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current')});window.scrollTo({top:0,behavior:'smooth'});}
