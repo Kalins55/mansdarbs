@@ -93,7 +93,7 @@ function exportCsv(){
  if(!items.length){alert('Nav ierakstu, ko eksportēt.');return}
  const quote=v=>'"'+String(v??'').replace(/"/g,'""')+'"';
  const rows=[['Datums','Veids','Summa EUR','Apraksts'],...items.map(x=>[x.date,x.kind,Number(x.amount).toFixed(2),x.note||''])];
- const csv='\\uFEFF'+rows.map(row=>row.map(quote).join(';')).join('\\r\\n');
+ const csv='\uFEFF'+rows.map(row=>row.map(quote).join(';')).join('\r\n');
  const blob=new Blob([csv],{type:'text/csv;charset=utf-8;'}),url=URL.createObjectURL(blob),a=document.createElement('a');
  a.href=url;a.download='mansdarbs-uzskaite.csv';document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);
 }
