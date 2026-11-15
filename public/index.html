@@ -52,4 +52,13 @@ $('nav').addEventListener('click',e=>{let b=e.target.closest('button[data-tab]')
 function addRecord(){let a=Number($('amount').value);if(!a||a<=0){alert('Ievadi derīgu summu.');return}let row=document.createElement('div');row.className='rowline';let left=document.createElement('span');left.textContent=$('kind').value+': '+($('desc').value||'Bez apraksta')+' · '+$('pay').value;let right=document.createElement('b');right.textContent=a.toFixed(2)+' €';row.append(left,right);$('recordlist').prepend(row);$('amount').value='';$('desc').value=''}
 function resetApp(){$('workspace').classList.add('hidden');$('home').classList.remove('hidden')}
 openTab('overview');
+
+// Apmeklējumu skaitītājs: reģistrē katru lapas ielādi, neidentificējot apmeklētāju.
+try {
+  if (document.visibilityState === 'visible' && navigator.sendBeacon) {
+    navigator.sendBeacon('/api/visit', new Blob([], { type: 'text/plain' }));
+  } else if (document.visibilityState === 'visible') {
+    fetch('/api/visit', { method: 'POST', keepalive: true, credentials: 'same-origin' }).catch(() => {});
+  }
+} catch (_) {}
 </script></body></html>
