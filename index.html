@@ -453,16 +453,6 @@ const SIA_KEY='mansdarbs_sia_prototype_v1';
 let siaActiveCompany=null;
 function siaLoad(){try{const x=JSON.parse(localStorage.getItem(SIA_KEY)||'{"companies":[],"transactions":[]}');return x&&Array.isArray(x.companies)&&Array.isArray(x.transactions)?x:{companies:[],transactions:[]}}catch(e){return {companies:[],transactions:[]}}}
 function siaSave(data){try{localStorage.setItem(SIA_KEY,JSON.stringify(data));return true}catch(e){alert('Neizdevās saglabāt SIA datus šajā pārlūkā.');return false}}
-function siaCreateCompany(){
- const name=document.getElementById('siaName').value.trim(),reg=document.getElementById('siaReg').value.trim(),address=document.getElementById('siaAddress').value.trim(),vat=document.getElementById('siaVatStatus').value,role=document.getElementById('siaRole').value;
- if(!name||!reg){alert('Norādi uzņēmuma nosaukumu un reģistrācijas numuru.');return}
- if(!/^[0-9]{11}$/.test(reg)){alert('Latvijas uzņēmuma reģistrācijas numuram jābūt 11 cipariem.');return}
- const data=siaLoad();if(data.companies.some(c=>c.reg===reg)){alert('Uzņēmums ar šādu reģistrācijas numuru jau ir pievienots.');return}
- const company={id:'sia-'+Date.now(),name,reg,address,vat,role,createdAt:new Date().toISOString()};
- data.companies.push(company);if(!siaSave(data))return;siaActiveCompany=company.id;siaRender();
-}
-function siaSelectCompany(id){siaActiveCompany=id;siaRender()}
-function siaSetRole(role){const data=siaLoad(),c=data.companies.find(x=>x.id===siaActiveCompany);if(!c)return;c.role=role;siaSave(data)}
 function siaUpdateVatOptions(){
  const vat=document.getElementById('siaTxVat');
  vat.disabled=false;
