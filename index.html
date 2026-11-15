@@ -436,7 +436,7 @@ function changeAccountingMode(){if(confirm('Mainīt uzskaites veidu? Saglabātie
 function showView(name){if(name==='calculator')showCalculatorPanel('overview');document.getElementById('homeView').classList.remove('guide-mode');document.getElementById('guide').classList.remove('open');document.querySelector('.shell').classList.toggle('home-screen',name==='home');const ids={home:'homeView',calculator:'calculatorView',records:'recordsView',sia:'siaView',choice:'accountingChoiceView'};Object.entries(ids).forEach(([key,id])=>document.getElementById(id).classList.toggle('active',key===name));document.querySelectorAll('.nav button').forEach(b=>{const activeName=name==='sia'||name==='choice'?'records':name;if(b.dataset.view===activeName)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current')});window.scrollTo({top:0,behavior:'smooth'});}
 function showGuide(){const home=document.getElementById('homeView'),guide=document.getElementById('guide'),button=document.getElementById('guideToggle');const opening=!guide.classList.contains('open');home.classList.toggle('guide-mode',opening);guide.classList.toggle('open',opening);button.setAttribute('aria-expanded',String(opening));button.innerHTML='Uzzināt, kā sākt <span aria-hidden="true">⌄</span>';}
 function getRecords(){try{const data=JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]');return Array.isArray(data)?data.filter(x=>x&&['Ienākums','Izdevums'].includes(x.kind)&&Number.isFinite(Number(x.amount))&&Number(x.amount)>0&&typeof x.date==='string'):[]}catch(e){return []}}
-function saveRecords(items){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(items));return true}catch(e){alert('Neizdevās saglabāt ierakstu. Pārbaudi pārlūka privātuma iestatījumus vai brīvo vietu ierīcē.');return false}}
+function saveRecords(items){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(items));return true}catch(e){reportIssue('storage_write_failed');alert('Neizdevās saglabāt ierakstu. Pārbaudi pārlūka privātuma iestatījumus vai brīvo vietu ierīcē.');return false}}
 function money(n){return Number(n).toLocaleString('lv-LV',{minimumFractionDigits:2,maximumFractionDigits:2})+' €'}
 function renderRecords(){
  const items=getRecords(),root=document.getElementById('records');
@@ -549,7 +549,7 @@ function exportCsv(){
 const SIA_KEY='mansdarbs_sia_prototype_v1';
 let siaActiveCompany=null;
 function siaLoad(){try{const x=JSON.parse(localStorage.getItem(SIA_KEY)||'{"companies":[],"transactions":[]}');return x&&Array.isArray(x.companies)&&Array.isArray(x.transactions)?x:{companies:[],transactions:[]}}catch(e){return {companies:[],transactions:[]}}}
-function siaSave(data){try{localStorage.setItem(SIA_KEY,JSON.stringify(data));return true}catch(e){alert('Neizdevās saglabāt SIA datus šajā pārlūkā.');return false}}
+function siaSave(data){try{localStorage.setItem(SIA_KEY,JSON.stringify(data));return true}catch(e){reportIssue('storage_write_failed');alert('Neizdevās saglabāt SIA datus šajā pārlūkā.');return false}}
 function siaUpdateVatOptions(){
  const vat=document.getElementById('siaTxVat');
  vat.disabled=false;
@@ -650,7 +650,7 @@ function saveInvoice(){
  let list=[];try{list=JSON.parse(localStorage.getItem(INVOICE_KEY)||'[]')}catch(e){}
  if(list.some(i=>i.number===x.number)){alert('Šāds rēķina numurs jau ir saglabāts.');return}
  list.push({...x,id:Date.now(),savedAt:new Date().toISOString()});
- try{localStorage.setItem(INVOICE_KEY,JSON.stringify(list))}catch(e){alert('Neizdevās saglabāt rēķinu pārlūkā.');return}
+ try{localStorage.setItem(INVOICE_KEY,JSON.stringify(list))}catch(e){reportIssue('storage_write_failed');alert('Neizdevās saglabāt rēķinu pārlūkā.');return}
  renderInvoices();document.getElementById('invoicePrint').innerHTML=invoicePrintHtml(x);document.getElementById('invNumber').value=invoiceNumberNext();
  alert('Rēķins saglabāts šajā pārlūkā.');
 }
