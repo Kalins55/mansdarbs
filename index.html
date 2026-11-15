@@ -584,19 +584,19 @@ function siaRender(){
  siaUpdateVatOptions();
 }
 
-const INVOICE_KEY='mansdarbs_demo_invoices_v1';
-const INVOICE_SELLER_KEY='mansdarbs_invoice_seller_v1';
+function invoiceStorageKey(){return localStorage.getItem('mansdarbs_accounting_mode')==='zs'?'mansdarbs_demo_invoices_zs_v1':'mansdarbs_demo_invoices_v1'}
+function invoiceSellerStorageKey(){return localStorage.getItem('mansdarbs_accounting_mode')==='zs'?'mansdarbs_invoice_seller_zs_v1':'mansdarbs_invoice_seller_v1'}
 function loadInvoiceSeller(){
- try{return JSON.parse(localStorage.getItem(INVOICE_SELLER_KEY)||'{}')}catch(e){return {}}
+ try{return JSON.parse(localStorage.getItem(invoiceSellerStorageKey())||'{}')}catch(e){return {}}
 }
 function saveInvoiceSeller(x){
  const profile={seller:x.seller||'',reg:x.reg||'',address:x.address||'',bank:x.bank||'',email:x.email||''};
- if(Object.values(profile).some(v=>v))try{localStorage.setItem(INVOICE_SELLER_KEY,JSON.stringify(profile))}catch(e){}
+ if(Object.values(profile).some(v=>v))try{localStorage.setItem(invoiceSellerStorageKey(),JSON.stringify(profile))}catch(e){}
 }
 function invoiceValue(id){return document.getElementById(id).value.trim()}
 function invoiceNumberNext(){
  let list=[];
- try{list=JSON.parse(localStorage.getItem(INVOICE_KEY)||'[]')}catch(e){}
+ try{list=JSON.parse(localStorage.getItem(invoiceStorageKey())||'[]')}catch(e){}
  const year=new Date().getFullYear(),prefix='R-'+year+'-';
  const max=list.reduce((n,x)=>{
   const number=String(x.number||'');
@@ -645,27 +645,27 @@ function saveInvoice(){
  const x=invoiceData();if(!x)return;
  if(!x.number||!x.date){alert(uiText('Norādi rēķina numuru un izrakstīšanas datumu.','Enter an invoice number and issue date.'));return}
  saveInvoiceSeller(x);
- let list=[];try{list=JSON.parse(localStorage.getItem(INVOICE_KEY)||'[]')}catch(e){}
+ let list=[];try{list=JSON.parse(localStorage.getItem(invoiceStorageKey())||'[]')}catch(e){}
  if(list.some(i=>i.number===x.number)){alert(uiText('Šāds rēķina numurs jau ir saglabāts.','This invoice number has already been used.'));return}
  list.push({...x,id:Date.now(),savedAt:new Date().toISOString()});
- try{localStorage.setItem(INVOICE_KEY,JSON.stringify(list))}catch(e){alert('Neizdevās saglabāt rēķinu pārlūkā.');return}
+ try{localStorage.setItem(invoiceStorageKey(),JSON.stringify(list))}catch(e){alert('Neizdevās saglabāt rēķinu pārlūkā.');return}
  renderInvoices();document.getElementById('invoicePrint').innerHTML=invoicePrintHtml(x);document.getElementById('invNumber').value=invoiceNumberNext();
  alert(uiText('Rēķins saglabāts šajā pārlūkā.','Invoice saved in this browser.'));
 }
 function renderInvoices(){
- let list=[];try{list=JSON.parse(localStorage.getItem(INVOICE_KEY)||'[]')}catch(e){}
+ let list=[];try{list=JSON.parse(localStorage.getItem(invoiceStorageKey())||'[]')}catch(e){}
  const root=document.getElementById('savedInvoices');if(!root)return;
  root.innerHTML='<h3 style="margin:20px 0 5px">Saglabātie rēķini</h3>'+(list.length?list.slice().reverse().map(x=>'<div class="invoice-saved"><div><strong>'+escapeHtml(x.number)+'</strong><small class="muted" style="display:block">'+escapeHtml(x.buyer)+' · '+escapeHtml(x.date)+'</small></div><div style="text-align:right"><strong>'+money(x.total)+'</strong><div><button class="textlink" style="border:0;background:none;padding:4px;cursor:pointer" onclick="printSavedInvoice('+Number(x.id)+')">Drukāt</button> <button class="textlink" style="border:0;background:none;padding:4px;cursor:pointer;color:#a33" onclick="deleteInvoice('+Number(x.id)+')">Dzēst</button></div></div></div>').join(''):'<div class="empty">Pagaidām nav saglabātu rēķinu.</div>');
 }
 function printSavedInvoice(id){
- let list=[];try{list=JSON.parse(localStorage.getItem(INVOICE_KEY)||'[]')}catch(e){}
+ let list=[];try{list=JSON.parse(localStorage.getItem(invoiceStorageKey())||'[]')}catch(e){}
  const x=list.find(i=>i.id===id);if(!x)return;
  document.getElementById('invoicePrint').innerHTML=invoicePrintHtml(x);runInvoicePrint();
 }
 function deleteInvoice(id){
  if(!confirm(uiText('Vai dzēst šo rēķinu?','Delete this invoice?')))return;
- let list=[];try{list=JSON.parse(localStorage.getItem(INVOICE_KEY)||'[]')}catch(e){}
- try{localStorage.setItem(INVOICE_KEY,JSON.stringify(list.filter(i=>i.id!==id)))}catch(e){}
+ let list=[];try{list=JSON.parse(localStorage.getItem(invoiceStorageKey())||'[]')}catch(e){}
+ try{localStorage.setItem(invoiceStorageKey(),JSON.stringify(list.filter(i=>i.id!==id)))}catch(e){}
  renderInvoices();
 }
 function resetInvoiceForm(){
