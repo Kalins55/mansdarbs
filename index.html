@@ -36,7 +36,7 @@
 .calculator-panel.active{display:block}
 .calculator-back{border:0;background:#edf3ee;color:var(--green);font-weight:800;border-radius:10px;padding:10px 13px;margin:0 0 22px;cursor:pointer}
 @media(max-width:680px){.calculator-choices{grid-template-columns:1fr}.calculator-choice{min-height:165px;padding:19px}.calc-icon{width:42px;height:42px;margin-bottom:10px}.calc-choice-title{font-size:19px}}
-.tool{max-width:900px;margin:28px auto;background:white;border:1px solid var(--line);border-radius:20px;padding:clamp(20px,4vw,32px);box-shadow:var(--shadow)}.tool h2{font-size:27px;letter-spacing:-.7px;margin:4px 0}.muted{color:var(--muted)}.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin-top:20px}.field label{display:block;font-weight:750;font-size:14px;margin-bottom:6px}.field input,.field select{width:100%;border:1px solid #d5ded7;border-radius:11px;padding:12px;background:#fff;color:var(--ink)}.field.full{grid-column:1/-1}.optional{display:flex;align-items:center;gap:9px;color:var(--muted);font-size:14px;margin-top:15px}.optional input{width:17px;height:17px;accent-color:var(--green)}.records{margin-top:22px}.record{display:flex;justify-content:space-between;gap:12px;border-top:1px solid var(--line);padding:12px 0}.record small{display:block;color:var(--muted)}.amount{font-weight:850;white-space:nowrap}.empty{padding:17px;border-radius:12px;background:#f5f7f4;color:var(--muted);font-size:14px;margin-top:16px}.privacy{font-size:12px;color:var(--muted);margin-top:13px}.view{display:none}.view.active{display:block}.nav{display:flex;gap:8px;align-items:center;margin:18px 0 8px;padding:7px;background:#e9efea;border-radius:14px;width:max-content;max-width:100%}.nav button{border:0;background:transparent;color:var(--muted);font-weight:800;padding:10px 16px;border-radius:10px;cursor:pointer}.nav button[aria-current="page"]{background:#fff;color:var(--green);box-shadow:0 2px 8px rgba(24,45,35,.07)}.footer{max-width:900px;text-align:center;margin:35px auto 0;color:#849089;font-size:12px}.hidden{display:none!important}
+.tool{max-width:900px;margin:28px auto;background:white;border:1px solid var(--line);border-radius:20px;padding:clamp(20px,4vw,32px);box-shadow:var(--shadow)}.tool h2{font-size:27px;letter-spacing:-.7px;margin:4px 0}.muted{color:var(--muted)}.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin-top:20px}.field label{display:block;font-weight:750;font-size:14px;margin-bottom:6px}.field input,.field select{width:100%;border:1px solid #d5ded7;border-radius:11px;padding:12px;background:#fff;color:var(--ink)}.field.full{grid-column:1/-1}.optional{display:flex;align-items:center;gap:9px;color:var(--muted);font-size:14px;margin-top:15px}.optional input{width:17px;height:17px;accent-color:var(--green)}.records{margin-top:22px}.record{display:flex;justify-content:space-between;gap:12px;border-top:1px solid var(--line);padding:12px 0}.record small{display:block;color:var(--muted)}.amount{font-weight:850;white-space:nowrap}.empty{padding:17px;border-radius:12px;background:#f5f7f4;color:var(--muted);font-size:14px;margin-top:16px}.privacy{font-size:12px;color:var(--muted);margin-top:13px}.view{display:none}.view.active{display:block}.nav{display:flex;gap:8px;align-items:center;margin:18px 0 8px;padding:7px;background:#e9efea;border-radius:14px;width:max-content;max-width:100%}.nav button{border:0;background:transparent;color:var(--muted);font-weight:800;padding:10px 16px;border-radius:10px;cursor:pointer}.nav button[aria-current="page"]{background:#fff;color:var(--green);box-shadow:0 2px 8px rgba(24,45,35,.07)}.footer{max-width:900px;text-align:center;margin:35px auto 0;color:#849089;font-size:12px}.issue-report{position:fixed;right:14px;bottom:calc(12px + env(safe-area-inset-bottom));z-index:1000;border:1px solid #cbd8cf;border-radius:999px;background:#fff;color:var(--green);padding:9px 13px;font-size:12px;font-weight:800;box-shadow:0 4px 16px rgba(24,45,35,.12);cursor:pointer}.issue-status{position:fixed;right:14px;bottom:calc(56px + env(safe-area-inset-bottom));z-index:1000;max-width:min(300px,calc(100vw - 28px));padding:8px 11px;border-radius:10px;background:#17231f;color:#fff;font-size:12px}.hidden{display:none!important}
 .tax-warning{margin:14px 0;padding:13px 15px;border:2px solid #d97706;border-radius:13px;background:#fff3df;color:#7c2d12;font-weight:750;font-size:14px;animation:taxPulse 1.25s ease-in-out infinite;box-shadow:0 0 0 0 rgba(217,119,6,.25)}.tax-warning strong{display:block;margin-bottom:3px}.tax-warning small{display:block;font-weight:500;color:#78350f;margin-top:4px}@keyframes taxPulse{0%,100%{border-color:#d97706;background:#fff3df;box-shadow:0 0 0 0 rgba(217,119,6,.16)}50%{border-color:#dc2626;background:#fee2e2;box-shadow:0 0 0 5px rgba(220,38,38,.10)}}@media(prefers-reduced-motion:reduce){.tax-warning{animation:none}}
 .shell.home-screen{min-height:100vh;min-height:100svh;display:flex;flex-direction:column;padding-bottom:24px}
 .shell.home-screen main{flex:1;min-height:auto;display:block;overflow:visible}
@@ -102,6 +102,7 @@
 <body>
 <div class="shell home-screen">
 <header class="top"><button type="button" class="brand" aria-label="Mansdarbs — uz sākumlapu" onclick="showView('home')"><span class="logo">M</span><span>Mansdarbs.eu</span></button><span class="topnote">Vienkāršākai saimnieciskajai darbībai Latvijā</span></header>
+<button type="button" class="issue-report" onclick="reportIssue('manual_report')">Report an issue</button><div id="issueStatus" class="issue-status hidden" role="status" aria-live="polite"></div>
 <nav class="nav" aria-label="Galvenā navigācija"><button type="button" data-view="home" aria-current="page" onclick="showView('home')">Sākums</button><button type="button" data-view="calculator" onclick="showView('calculator')">Aprēķini</button><button type="button" data-view="records" onclick="showAccounting()">Uzskaite</button></nav>
 
 <main>
@@ -309,9 +310,44 @@
 </section>
 </div>
 
-<footer class="footer">Mansdarbs · Palīgs saimnieciskās darbības sākšanai un ikdienas uzskaitei · <a href="https://www.vid.gov.lv/" target="_blank" rel="noopener">VID oficiālā informācija</a><br>Apmeklējumu skaitam izmantots ārējs skaitītājs. Tas saņem tehniskos pieprasījuma datus; Mansdarbs tam nenosūta tavus ienākumu, izdevumu vai rēķinu datus.<br><span style="display:inline-block;margin-top:12px;font-size:11px;color:#9aa49e">Jau esi reģistrējies? <button type="button" style="border:0;background:none;padding:0;color:var(--green);text-decoration:underline;cursor:pointer;font:inherit" onclick="showView('records')">Atvērt uzskaiti</button> · <button type="button" style="border:0;background:none;padding:0;color:var(--green);text-decoration:underline;cursor:pointer;font:inherit" onclick="showView('calculator')">Aprēķini</button></span></footer>
+<footer class="footer">Mansdarbs · Palīgs saimnieciskās darbības sākšanai un ikdienas uzskaitei · <a href="https://www.vid.gov.lv/" target="_blank" rel="noopener">VID oficiālā informācija</a><br>Apmeklējumu skaitam un tehnisko kļūdu diagnostikai tiek izmantoti servera tehniskie pieprasījumi. Kļūdu ziņojumos ir tikai kļūdas veids, sadaļa un pārlūka kategorija — netiek sūtīti ienākumi, izdevumi, rēķini, ievadītais teksts vai EDS piekļuves dati.<br><span style="display:inline-block;margin-top:12px;font-size:11px;color:#9aa49e">Jau esi reģistrējies? <button type="button" style="border:0;background:none;padding:0;color:var(--green);text-decoration:underline;cursor:pointer;font:inherit" onclick="showView('records')">Atvērt uzskaiti</button> · <button type="button" style="border:0;background:none;padding:0;color:var(--green);text-decoration:underline;cursor:pointer;font:inherit" onclick="showView('calculator')">Aprēķini</button></span></footer>
 </div>
 <script>
+
+const ISSUE_REPORT_SESSION_KEY='mansdarbs_issue_reported_v1';
+function issueBrowser(){
+ const ua=navigator.userAgent||'';
+ if(ua.includes('Edg/'))return 'Edge';
+ if(ua.includes('Firefox/'))return 'Firefox';
+ if(ua.includes('Chrome/'))return 'Chrome';
+ if(ua.includes('Safari/'))return 'Safari';
+ return 'Other';
+}
+function issueView(){
+ const active=document.querySelector('.view.active');
+ const id=active?.id||'';
+ return ({homeView:'home',calculatorView:'calculator',recordsView:'records',siaView:'sia',accountingChoiceView:'choice'})[id]||'unknown';
+}
+async function reportIssue(code){
+ const allowed=['manual_report','js_error','promise_rejection','storage_write_failed'];
+ if(!allowed.includes(code))return;
+ const status=document.getElementById('issueStatus');
+ const automatic=code!=='manual_report';
+ let sent=[];
+ try{sent=JSON.parse(sessionStorage.getItem(ISSUE_REPORT_SESSION_KEY)||'[]')}catch(_){}
+ if(automatic&&sent.includes(code))return;
+ if(automatic){sent.push(code);try{sessionStorage.setItem(ISSUE_REPORT_SESSION_KEY,JSON.stringify(sent))}catch(_){}}
+ try{
+  const response=await fetch('/api/report-issue',{method:'POST',credentials:'same-origin',keepalive:true,headers:{'Content-Type':'application/json'},body:JSON.stringify({code,view:issueView(),browser:issueBrowser()})});
+  if(!response.ok)throw new Error('report unavailable');
+  if(!automatic&&status){status.textContent='Paldies! Tehniskais ziņojums nosūtīts.';status.classList.remove('hidden');}
+ }catch(_){
+  if(!automatic&&status){status.textContent='Ziņojumu pašlaik neizdevās nosūtīt. Mēģini vēlāk.';status.classList.remove('hidden');}
+ }
+}
+window.addEventListener('error',()=>reportIssue('js_error'));
+window.addEventListener('unhandledrejection',()=>reportIssue('promise_rejection'));
+
 const STORAGE_KEY='mansdarbs_demo_records_v1';
 let editingIndex=null;
 
