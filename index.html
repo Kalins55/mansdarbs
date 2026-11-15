@@ -4,13 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#f5f7f4">
-<meta name="description" content="Mansdarbs palīdz saprast, kā sākt saimniecisko darbību Latvijā, un vienkāršot ikdienas uzskaiti.">
+<meta name="description" content="Mansdarbs palīdz sākt saimniecisko darbību Latvijā vai vienkāršāk pārvaldīt jau esošo — ar saprotamiem skaidrojumiem, aprēķiniem un ikdienas uzskaiti.">
 <link rel="canonical" href="https://mansdarbs.eu/">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="lv_LV">
 <meta property="og:site_name" content="Mansdarbs">
-<meta property="og:title" content="Mansdarbs — sāc vienkārši. Strādā oficiāli.">
-<meta property="og:description" content="Palīgs pašnodarbinātajiem un mazajiem pakalpojumu sniedzējiem Latvijā. Saprotami par saimniecisko darbību un ikdienas uzskaiti.">
+<meta property="og:title" content="Mansdarbs — sāc vai sakārto savu saimniecisko darbību.">
+<meta property="og:description" content="Palīgs tiem, kuri tikai plāno sākt, un tiem, kuri jau strādā paši — saprotami skaidrojumi, aprēķini un ikdienas uzskaite Latvijā.">
 <meta property="og:url" content="https://mansdarbs.eu/">
 <meta property="og:image" content="https://mansdarbs.eu/social-preview.svg">
 <meta property="og:image:secure_url" content="https://mansdarbs.eu/social-preview.svg">
@@ -107,14 +107,27 @@
 <main>
 <div class="view active" id="homeView">
 <section class="hero">
-<div class="eyebrow">Sāc vienkārši. Strādā oficiāli.</div>
-<h1>Gribi strādāt pats?<br>Mēs palīdzēsim sākt.</h1>
-<p>Saprotami izskaidrosim, kā reģistrēt saimniecisko darbību, un palīdzēsim sakārtot ikdienas uzskaiti. Bez liekām anketām un bez konta izveides.</p>
-<div class="actions">
-<button class="btn primary" id="guideToggle" class="guideToggle" aria-expanded="false" aria-controls="guide" onclick="showGuide()">Uzzināt, kā sākt <span aria-hidden="true">⌄</span></button>
-<button class="btn secondary" type="button" onclick="showView('records')">Izmēģināt uzskaiti</button>
-</div>
+<div class="eyebrow">Vienkāršāks ikdienas palīgs pašnodarbinātajiem</div>
+<h1>Sāc savu darbību.<br>Vai sakārto jau esošo.</h1>
+<p>Neatkarīgi no tā, vai tikai plāno strādāt patstāvīgi vai jau pieņem pasūtījumus un kārto saimniecisko darbību — šeit atradīsi saprotamus skaidrojumus, aprēķinus un ikdienas uzskaites rīkus.</p>
 <div class="trust"><span>Bezmaksas sākums</span><span>Bez Mansdarbs konta</span><span>EDS dati paliek VID</span></div>
+</section>
+
+<section class="section audience" aria-label="Izvēlies, ar ko sākt">
+<div class="cards">
+<article class="card">
+<div class="icon">🌱</div>
+<h3>Vēl tikai plāno sākt?</h3>
+<p>Uzzini, kā reģistrēt saimniecisko darbību, ko ņemt vērā un kādi ir pirmie soļi.</p>
+<button class="btn primary" type="button" onclick="showGuide()">Uzzināt, kā sākt</button>
+</article>
+<article class="card">
+<div class="icon">📊</div>
+<h3>Jau strādā patstāvīgi?</h3>
+<p>Seko ienākumiem un izdevumiem, veic aprēķinus un sakārto ikdienas uzskaiti.</p>
+<button class="btn secondary" type="button" onclick="showView('records')">Atvērt uzskaiti</button>
+</article>
+</div>
 </section>
 
 <section class="guide" id="guide">
