@@ -74,7 +74,7 @@
 <body>
 <div class="shell home-screen">
 <header class="top"><button type="button" class="brand" aria-label="Mansdarbs — uz sākumlapu" onclick="showView('home')"><span class="logo">M</span><span>Mansdarbs</span></button><span class="topnote">Vienkāršākai saimnieciskajai darbībai Latvijā</span></header>
-<nav class="nav" aria-label="Galvenā navigācija"><button type="button" data-view="home" aria-current="page" onclick="showView('home')">Sākums</button><button type="button" data-view="calculator" onclick="showView('calculator')">Aprēķini</button><button type="button" data-view="records" onclick="showView('records')">Uzskaite</button><button type="button" data-view="sia" onclick="showView('sia')">SIA</button></nav>
+<nav class="nav" aria-label="Galvenā navigācija"><button type="button" data-view="home" aria-current="page" onclick="showView('home')">Sākums</button><button type="button" data-view="calculator" onclick="showView('calculator')">Aprēķini</button><button type="button" data-view="records" onclick="showAccounting()">Uzskaite</button></nav>
 
 <main>
 <div class="view active" id="homeView">
@@ -115,7 +115,7 @@
 
 
 <div class="view" id="siaView">
-<section class="tool">
+<div class="actions" style="justify-content:flex-start;margin:10px 0"><span class="muted" style="font-size:13px">Uzskaites veids: <strong id="accountingModeLabelSia">Pašnodarbinātais</strong></span><button class="textlink" style="border:0;background:none;padding:0;cursor:pointer" onclick="changeAccountingMode()">Mainīt</button></div><section class="tool">
 <div class="eyebrow">Uzņēmumu grāmatvedība · SIA</div>
 <h2>SIA uzskaite</h2>
 <p class="muted">Izveido uzņēmuma profilu un sāc reģistrēt darījumus. Vienā Mansdarbs profilā varēsi pārslēgties starp vairākiem uzņēmumiem.</p>
@@ -169,8 +169,19 @@
 </section>
 </div>
 
+<div class="view" id="accountingChoiceView">
+<section class="tool">
+<div class="eyebrow">Uzskaite · sākuma izvēle</div>
+<h2>Kādu darbības veidu vēlies uzskaitīt?</h2>
+<p class="muted">Izvēlies vienu reizi. Mansdarbs turpmāk atvērs atbilstošo uzskaites vidi. Izvēli vēlāk varēsi mainīt.</p>
+<div class="cards" style="margin-top:18px">
+<article class="card"><div class="icon">👤</div><h3>Pašnodarbinātais</h3><p>Ienākumu un izdevumu uzskaite, nodokļu aprēķini un rēķini.</p><button class="btn primary" onclick="setAccountingMode('self')">Izvēlēties pašnodarbināto</button></article>
+<article class="card"><div class="icon">🏢</div><h3>SIA</h3><p>Uzņēmuma darījumi, PVN pārskats un divkāršās grāmatvedības prototips.</p><button class="btn primary" onclick="setAccountingMode('sia')">Izvēlēties SIA</button></article>
+</div>
+</section>
+</div>
 <div class="view" id="recordsView">
-<section class="tool" id="uzskaite">
+<section class="tool" id="uzskaite"><div class="actions" style="justify-content:flex-start;margin:10px 0"><span class="muted" style="font-size:13px">Uzskaites veids: <strong id="accountingModeLabel">Pašnodarbinātais</strong></span><button class="textlink" style="border:0;background:none;padding:0;cursor:pointer" onclick="changeAccountingMode()">Mainīt</button></div>
 <div class="eyebrow">Bezmaksas rīks · bez konta</div>
 <h2>Vienkārša ienākumu un izdevumu uzskaite</h2>
 <p class="muted">Ievadi summu. Aprakstu vari atstāt tukšu. Nav jānorāda, kur, kam vai par ko saņēmi naudu.</p>
@@ -337,7 +348,10 @@ function resetIin(){['otherTaxableIncome','otherDeductions'].forEach(id=>documen
 function resetVsaoi(){[1,2,3].forEach(i=>document.getElementById('profit'+i).value='');document.getElementById('contributionBase').value='780';document.getElementById('vsaoiResult').textContent='Ievadi peļņu visiem trim ceturkšņa mēnešiem, lai redzētu orientējošo aprēķinu.'}
 
 function initVsaoi(){loadVsaoiQuarter();syncIinFromVsaoi()}
-function showView(name){document.getElementById('homeView').classList.remove('guide-mode');document.getElementById('guide').classList.remove('open');document.querySelector('.shell').classList.toggle('home-screen',name==='home');const ids={home:'homeView',calculator:'calculatorView',records:'recordsView',sia:'siaView'};Object.entries(ids).forEach(([key,id])=>document.getElementById(id).classList.toggle('active',key===name));document.querySelectorAll('.nav button').forEach(b=>{if(b.dataset.view===name)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current')});window.scrollTo({top:0,behavior:'smooth'});}
+function showAccounting(){const mode=localStorage.getItem('mansdarbs_accounting_mode');showView(mode==='sia'?'sia':mode==='self'?'records':'choice')}
+function setAccountingMode(mode){localStorage.setItem('mansdarbs_accounting_mode',mode);document.getElementById('accountingModeLabel').textContent=mode==='sia'?'SIA':'Pašnodarbinātais';document.getElementById('accountingModeLabelSia').textContent=mode==='sia'?'SIA':'Pašnodarbinātais';showView(mode==='sia'?'sia':'records')}
+function changeAccountingMode(){if(confirm('Mainīt uzskaites veidu? Saglabātie dati netiks dzēsti.'))showView('choice')}
+function showView(name){document.getElementById('homeView').classList.remove('guide-mode');document.getElementById('guide').classList.remove('open');document.querySelector('.shell').classList.toggle('home-screen',name==='home');const ids={home:'homeView',calculator:'calculatorView',records:'recordsView',sia:'siaView',choice:'accountingChoiceView'};Object.entries(ids).forEach(([key,id])=>document.getElementById(id).classList.toggle('active',key===name));document.querySelectorAll('.nav button').forEach(b=>{const activeName=name==='sia'||name==='choice'?'records':name;if(b.dataset.view===activeName)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current')});window.scrollTo({top:0,behavior:'smooth'});}
 function showGuide(){const home=document.getElementById('homeView'),guide=document.getElementById('guide'),button=document.getElementById('guideToggle');const opening=!guide.classList.contains('open');home.classList.toggle('guide-mode',opening);guide.classList.toggle('open',opening);button.setAttribute('aria-expanded',String(opening));button.innerHTML='Uzzināt, kā sākt <span aria-hidden="true">⌄</span>';}
 function getRecords(){try{const data=JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]');return Array.isArray(data)?data.filter(x=>x&&['Ienākums','Izdevums'].includes(x.kind)&&Number.isFinite(Number(x.amount))&&Number(x.amount)>0&&typeof x.date==='string'):[]}catch(e){return []}}
 function saveRecords(items){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(items));return true}catch(e){alert('Neizdevās saglabāt ierakstu. Pārbaudi pārlūka privātuma iestatījumus vai brīvo vietu ierīcē.');return false}}
