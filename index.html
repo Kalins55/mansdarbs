@@ -334,7 +334,7 @@ function applyLanguage(){
   const original=node.__lvOriginal,trimmed=original.trim();
   if(!trimmed)continue;
   const translated=EN_TRANSLATIONS[trimmed];
-  node.nodeValue=english&&translated?original.replace(trimmed,translated):original;
+  const nextValue=english&&translated?original.replace(trimmed,translated):original;if(node.nodeValue!==nextValue)node.nodeValue=nextValue;
  }
  document.querySelectorAll('[placeholder]').forEach(el=>{
   if(!el.dataset.lvPlaceholder)el.dataset.lvPlaceholder=el.getAttribute('placeholder');
