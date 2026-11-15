@@ -714,7 +714,7 @@ function applyLanguage(){
   const translated=EN_TRANSLATIONS[trimmed];
   const nextValue=english&&translated?original.replace(trimmed,translated):original;if(node.nodeValue!==nextValue)node.nodeValue=nextValue;
  }
- document.querySelectorAll('select option').forEach(el=>{if(!el.dataset.lvOption)el.dataset.lvOption=el.firstChild?.__lvOriginal||el.textContent;const original=el.dataset.lvOption;el.textContent=english?(EN_TRANSLATIONS[original]||original):original;});
+ document.querySelectorAll('select option').forEach(el=>{if(!el.dataset.lvOption)el.dataset.lvOption=el.firstChild?.__lvOriginal||el.textContent;const original=el.dataset.lvOption;const translated=english?(EN_TRANSLATIONS[original]||original):original;if(el.textContent!==translated)el.textContent=translated;});
   document.querySelectorAll('[placeholder]').forEach(el=>{
   if(!el.dataset.lvPlaceholder)el.dataset.lvPlaceholder=el.getAttribute('placeholder');
   const value=el.dataset.lvPlaceholder;
