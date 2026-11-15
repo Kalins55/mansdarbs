@@ -103,10 +103,7 @@
 <div class="card" style="margin-top:18px"><div class="icon">↗</div><h3>Vēlos sākt strādāt oficiāli</h3><p>Vēlos saprast, kā reģistrēt saimniecisko darbību un kas jādara vispirms.</p><p class="muted">Iepriekš minētie soļi palīdzēs saprast, ar ko sākt.</p></div>
 </section>
 
-<div class="registered-entry" style="max-width:900px;margin:34px auto 8px;text-align:center;font-size:13px;color:var(--muted)">
-Jau esi reģistrējies? <button type="button" class="textlink" style="border:0;background:none;padding:0;cursor:pointer;color:var(--green)" onclick="showView('records')">Atvērt uzskaiti</button>
-<span style="margin:0 7px">·</span><button type="button" class="textlink" style="border:0;background:none;padding:0;cursor:pointer;color:var(--green)" onclick="showView('calculator')">Aprēķini</button>
-</div>
+
 
 
 </div>
@@ -234,7 +231,7 @@ Jau esi reģistrējies? <button type="button" class="textlink" style="border:0;b
 </div>
 <div class="actions" style="justify-content:flex-start"><button class="btn primary" onclick="calculateVsaoi()">Aprēķināt VSAOI</button><button class="btn secondary" onclick="resetVsaoi()">Notīrīt</button></div>
 <div id="vsaoiResult" class="empty" aria-live="polite">Ievadi peļņu visiem trim ceturkšņa mēnešiem, lai redzētu orientējošo aprēķinu.</div>
-<p class="privacy">Pamatnoteikums 2026. gadā: ja mēneša peļņa ir vismaz 780 €, standarta gadījumā 31,07% aprēķina no paša izvēlēta VSAOI objekta (vismaz 780 €), bet 10% — no peļņas daļas virs šī objekta. Ja peļņa ir zem 780 €, 10% maksā no visas faktiskās peļņas. No 2026. gada pašnodarbinātajiem vairs nepiemēro minimālo VSAOI piemaksu par nepietiekamiem ienākumiem. Šis vienkāršotais rīks neņem vērā īpašos statusus un atšķirīgas likmes; EDS aprēķins ir noteicošais.</p>
+<div class="callout" style="margin-top:14px"><strong>Ja mēneša peļņa nepārsniedz 780 €</strong><p>VSAOI pensiju apdrošināšanai ir 10% no visas mēneša peļņas. Piemēram, ja peļņa ir 550 €, iemaksa ir 55 €. 550 € nav VSAOI slieksnis — tā ir 2026. gada IIN neapliekamā minimuma summa. Ja peļņa sasniedz vismaz 780 €, standarta gadījumā 31,07% maksā no izvēlētā VSAOI objekta (vismaz 780 €), bet 10% — no peļņas daļas virs šī objekta. No 2026. gada pašnodarbinātajiem vairs nepiemēro minimālo VSAOI piemaksu par nepietiekamiem ienākumiem. <a href="https://www.vid.gov.lv/lv/saimnieciskas-darbibas-veiceji" target="_blank" rel="noopener">VID skaidrojums par VSAOI ↗</a></p></div><p class="privacy">Aprēķins ir orientējošs un neņem vērā īpašos statusus un atšķirīgas likmes; EDS aprēķins ir noteicošais.</p>
 </section>
 
 <section class="tool" id="iin">
@@ -255,7 +252,7 @@ Jau esi reģistrējies? <button type="button" class="textlink" style="border:0;b
 </section>
 </div>
 
-<footer class="footer">Mansdarbs · Palīgs saimnieciskās darbības sākšanai un ikdienas uzskaitei · <a href="https://www.vid.gov.lv/" target="_blank" rel="noopener">VID oficiālā informācija</a><br>Apmeklējumu skaitam izmantots ārējs skaitītājs. Tas saņem tehniskos pieprasījuma datus; Mansdarbs tam nenosūta tavus ienākumu, izdevumu vai rēķinu datus.</footer>
+<footer class="footer">Mansdarbs · Palīgs saimnieciskās darbības sākšanai un ikdienas uzskaitei · <a href="https://www.vid.gov.lv/" target="_blank" rel="noopener">VID oficiālā informācija</a><br>Apmeklējumu skaitam izmantots ārējs skaitītājs. Tas saņem tehniskos pieprasījuma datus; Mansdarbs tam nenosūta tavus ienākumu, izdevumu vai rēķinu datus.<br><span style="display:inline-block;margin-top:12px;font-size:11px;color:#9aa49e">Jau esi reģistrējies? <button type="button" style="border:0;background:none;padding:0;color:var(--green);text-decoration:underline;cursor:pointer;font:inherit" onclick="showView('records')">Atvērt uzskaiti</button> · <button type="button" style="border:0;background:none;padding:0;color:var(--green);text-decoration:underline;cursor:pointer;font:inherit" onclick="showView('calculator')">Aprēķini</button></span></footer>
 </div>
 <script>
 const STORAGE_KEY='mansdarbs_demo_records_v1';
