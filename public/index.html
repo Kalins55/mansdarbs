@@ -28,7 +28,7 @@
 <script>
 const $=id=>document.getElementById(id);let route='new',step=0,answers={activity:'Remontdarbi',status:'',income:'',payments:''};
 const steps=[
-{title:'Ar ko tu nodarbosies?',desc:'Izvēlies tuvāko variantu. Vēlāk to varēsi precizēt.',key:'activity',opts:['Remontdarbi','Influenceru pakalpojumi','Reklāmas satura veidošana','Frizieru pakalpojumi','3D druka','Bērnu krellīšu un līdzīgu aksesuāru tirdzniecība']},
+{title:'Ar ko tu nodarbosies?',desc:'Izvēlies tuvāko variantu. Vēlāk to varēsi precizēt.',key:'activity',opts:['Remontdarbi','Influenceru pakalpojumi','Reklāmas satura veidošana','Frizieru pakalpojumi','3D druka','Rokdarbu, rotu un aksesuāru tirdzniecība','Fotografēšana un video filmēšana','Šūšana un apģērbu labošana']},
 {title:()=>route==='new'?'Kā tu šobrīd strādā?':'Kāds nodokļu režīms tev šobrīd ir reģistrēts?',desc:()=>route==='new'?'Tas palīdzēs noteikt pareizo nākamo soli.':'Ja nezini vai neesi pārliecināts, droši izvēlies pēdējo variantu.',key:'status',opts:()=>route==='new'?['Vēl tikai plānoju sākt','Jau sniedzu pakalpojumus, bet neesmu reģistrēts']:['Vispārējais nodokļu režīms','Mikrouzņēmumu nodoklis (MUN)','Nezinu / vēlos pārbaudīt']},
 {title:'Kādi ir aptuvenie mēneša ieņēmumi?',desc:'Aptuvenā summa pirms izdevumu atskaitīšanas. Tā nav deklarācija.',key:'income',opts:['Līdz 300 €','300–780 €','780–1500 €','1500–3000 €','Vairāk par 3000 €','Vēl nezinu']},
 {title:'Kā klienti parasti maksā?',desc:'Maksājuma veids var ietekmēt dokumentu un kases aparāta prasības. Tās jāizvērtē konkrētajai situācijai.',key:'payments',opts:['Ar bankas pārskaitījumu','Skaidrā naudā','Ar karti','Skaidrā naudā un ar pārskaitījumu','Vēl nezinu']}
