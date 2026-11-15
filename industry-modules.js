@@ -3,7 +3,7 @@
 const PROFILE_KEY='mansdarbs_industry_profile_v1', RECORDS_KEY='mansdarbs_industry_records_v1';
 const sectors=[
 {id:'digital',name:'Digitālie un radošie pakalpojumi',jobs:['Influenceris / satura veidotājs','Blogeris','YouTube / video veidotājs','Straumētājs','Programmētājs','Grafiskais dizainers','Fotogrāfs','Mārketinga pakalpojumi','Tekstu autors','Konsultants']},
-{id:'repair',name:'Remonts un individuālie pakalpojumi',jobs:['Sadzīves tehnikas remonts','Elektronikas remonts','Apavu / apģērbu remonts','Šūšana','Atslēdznieks','Citi meistara pakalpojumi']},
+{id:'repair',name:'Remonts un individuālie pakalpojumi',jobs:['Automašīnu remonts','Traktoru remonts','Sadzīves tehnikas remonts','Elektronikas remonts','Apavu / apģērbu remonts','Šūšana','Atslēdznieks','Citi meistara pakalpojumi']},
 {id:'auto',name:'Auto tirdzniecība un remonts',jobs:['Lietotu auto tirgotājs','Jaunu auto tirgotājs','Auto komisijas tirdzniecība','Auto remonts','Auto rezerves daļu tirdzniecība','Auto noma']},
 {id:'agri',name:'Lauksaimniecība un mežsaimniecība',jobs:['Augkopība','Lopkopība','Biškopība','Mežsaimniecība','Lauksaimniecības pakalpojumi']},
 {id:'fishing',name:'Zvejniecība un akvakultūra',jobs:['Zvejniecība','Zivju audzēšana','Zivju apstrāde']},
