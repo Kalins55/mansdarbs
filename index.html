@@ -74,7 +74,7 @@
 <body>
 <div class="shell home-screen">
 <header class="top"><button type="button" class="brand" aria-label="Mansdarbs — uz sākumlapu" onclick="showView('home')"><span class="logo">M</span><span>Mansdarbs</span></button><span class="topnote">Vienkāršākai saimnieciskajai darbībai Latvijā</span></header>
-<nav class="nav" aria-label="Galvenā navigācija"><button type="button" data-view="home" aria-current="page" onclick="showView('home')">Sākums</button><button type="button" data-view="calculator" onclick="showView('calculator')">Aprēķini</button><button type="button" data-view="records" onclick="showView('records')">Uzskaite</button></nav>
+<nav class="nav" aria-label="Galvenā navigācija"><button type="button" data-view="home" aria-current="page" onclick="showView('home')">Sākums</button><button type="button" data-view="calculator" onclick="showView('calculator')">Aprēķini</button><button type="button" data-view="records" onclick="showView('records')">Uzskaite</button><button type="button" data-view="sia" onclick="showView('sia')">SIA</button></nav>
 
 <main>
 <div class="view active" id="homeView">
@@ -111,6 +111,62 @@
 </section>
 
 
+</div>
+
+
+<div class="view" id="siaView">
+<section class="tool">
+<div class="eyebrow">Uzņēmumu grāmatvedība · SIA</div>
+<h2>SIA uzskaite</h2>
+<p class="muted">Izveido uzņēmuma profilu un sāc reģistrēt darījumus. Vienā Mansdarbs profilā varēsi pārslēgties starp vairākiem uzņēmumiem.</p>
+<div id="siaCompanySetup" class="card" style="box-shadow:none;margin-top:16px">
+<h3>Izveidot uzņēmumu</h3>
+<div class="formgrid">
+<div class="field"><label for="siaName">Uzņēmuma nosaukums</label><input id="siaName" maxlength="120" placeholder="SIA Uzņēmums"></div>
+<div class="field"><label for="siaReg">Reģistrācijas numurs</label><input id="siaReg" maxlength="11" inputmode="numeric" placeholder="4000..."></div>
+<div class="field"><label for="siaAddress">Juridiskā adrese</label><input id="siaAddress" maxlength="180" placeholder="Adrese"></div>
+<div class="field"><label for="siaVatStatus">PVN statuss</label><select id="siaVatStatus"><option value="no">Nav PVN maksātājs</option><option value="yes">Ir PVN maksātājs</option></select></div>
+<div class="field full"><label for="siaRole">Kā izmantosi Mansdarbs?</label><select id="siaRole"><option value="owner">Uzņēmuma īpašnieks / vadītājs</option><option value="accountant">Grāmatvedis, kas apkalpo uzņēmumus</option></select></div>
+</div>
+<div class="actions" style="justify-content:flex-start"><button class="btn primary" onclick="siaCreateCompany()">Izveidot SIA profilu</button></div>
+</div>
+<div id="siaWorkspace" class="hidden">
+<div class="formgrid" style="align-items:end">
+<div class="field"><label for="siaCompanySelect">Aktīvais uzņēmums</label><select id="siaCompanySelect" onchange="siaSelectCompany(this.value)"></select></div>
+<div class="field"><label for="siaRoleView">Lietotāja loma</label><select id="siaRoleView" onchange="siaSetRole(this.value)"><option value="owner">Uzņēmuma īpašnieks / vadītājs</option><option value="accountant">Grāmatvedis</option></select></div>
+</div>
+<div id="siaCompanyInfo" class="empty" style="margin-top:12px"></div>
+<div class="cards" style="margin-top:16px">
+<div class="card" style="box-shadow:none"><small class="muted">Ieņēmumi bez PVN</small><div class="amount" id="siaIncome">0,00 €</div></div>
+<div class="card" style="box-shadow:none"><small class="muted">Izdevumi bez PVN</small><div class="amount" id="siaExpenses">0,00 €</div></div>
+<div class="card" style="box-shadow:none"><small class="muted">Rezultāts pirms nodokļiem</small><div class="amount" id="siaProfit">0,00 €</div></div>
+<div class="card" style="box-shadow:none"><small class="muted">PVN starpība</small><div class="amount" id="siaVatDue">0,00 €</div></div>
+</div>
+<div class="card" style="box-shadow:none;margin-top:18px">
+<h3>Reģistrēt darījumu</h3>
+<p class="muted" style="font-size:13px">Ievadītā summa ir bez PVN. PVN likmi izvēlies atbilstoši konkrētajam darījumam.</p>
+<div class="formgrid">
+<div class="field"><label for="siaTxKind">Darījuma veids</label><select id="siaTxKind" onchange="siaUpdateVatOptions()"><option value="income">Pārdošana / ieņēmumi</option><option value="expense">Pirkums / izdevumi</option></select></div>
+<div class="field"><label for="siaTxDate">Datums</label><input id="siaTxDate" type="date"></div>
+<div class="field"><label for="siaTxDescription">Darījuma apraksts</label><input id="siaTxDescription" maxlength="160" placeholder="Pakalpojums, prece vai izdevums"></div>
+<div class="field"><label for="siaTxAmount">Summa bez PVN (€)</label><input id="siaTxAmount" type="number" min="0.01" step="0.01" inputmode="decimal" placeholder="0,00"></div>
+<div class="field"><label for="siaTxVat">PVN likme</label><select id="siaTxVat"><option value="0">0%</option><option value="21">21%</option><option value="12">12%</option><option value="5">5%</option></select></div>
+<div class="field" id="siaExpenseAccountField"><label for="siaExpenseAccount">Izdevumu konts</label><select id="siaExpenseAccount"><option value="7210">7210 · Materiāli un preces</option><option value="7440">7440 · Pakalpojumi</option><option value="7550">7550 · Transporta izdevumi</option><option value="7610">7610 · Citi saimnieciskie izdevumi</option></select></div>
+</div>
+<div class="actions" style="justify-content:flex-start"><button class="btn primary" onclick="siaAddTransaction()">Pievienot darījumu</button></div>
+</div>
+<div class="card" style="box-shadow:none;margin-top:18px">
+<h3>Darījumu žurnāls</h3>
+<div id="siaTransactions" class="empty">Pagaidām darījumu nav.</div>
+</div>
+<div class="card" style="box-shadow:none;margin-top:18px">
+<h3>Grāmatojumu pārskats</h3>
+<p class="muted" style="font-size:13px">Katram darījumam tiek izveidots līdzsvarots debeta un kredīta ieraksts. Kontu numuri šajā prototipā ir sākotnēji piemēri.</p>
+<div id="siaJournal" class="empty">Pagaidām grāmatojumu nav.</div>
+</div>
+</div>
+<p class="privacy">Svarīgi: šī ir pirmā SIA funkcijas prototipa versija. Dati tiek glabāti tikai šajā pārlūkā (localStorage), nav piesaistīti kontam vai sinhronizēti ar grāmatvedi. Tā vēl nav pilnvērtīga vai juridiski pārbaudīta grāmatvedības sistēma; pirms reālas uzskaites jāievieš servera datubāze, lietotāju piekļuves tiesības, pilns kontu plāns, dokumentu piesaiste, labojumu/auditācijas žurnāls un normatīvo prasību pārbaude.</p>
+</section>
 </div>
 
 <div class="view" id="recordsView">
@@ -281,7 +337,7 @@ function resetIin(){['otherTaxableIncome','otherDeductions'].forEach(id=>documen
 function resetVsaoi(){[1,2,3].forEach(i=>document.getElementById('profit'+i).value='');document.getElementById('contributionBase').value='780';document.getElementById('vsaoiResult').textContent='Ievadi peļņu visiem trim ceturkšņa mēnešiem, lai redzētu orientējošo aprēķinu.'}
 
 function initVsaoi(){loadVsaoiQuarter();syncIinFromVsaoi()}
-function showView(name){document.getElementById('homeView').classList.remove('guide-mode');document.getElementById('guide').classList.remove('open');document.querySelector('.shell').classList.toggle('home-screen',name==='home');const ids={home:'homeView',calculator:'calculatorView',records:'recordsView'};Object.entries(ids).forEach(([key,id])=>document.getElementById(id).classList.toggle('active',key===name));document.querySelectorAll('.nav button').forEach(b=>{if(b.dataset.view===name)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current')});window.scrollTo({top:0,behavior:'smooth'});}
+function showView(name){document.getElementById('homeView').classList.remove('guide-mode');document.getElementById('guide').classList.remove('open');document.querySelector('.shell').classList.toggle('home-screen',name==='home');const ids={home:'homeView',calculator:'calculatorView',records:'recordsView',sia:'siaView'};Object.entries(ids).forEach(([key,id])=>document.getElementById(id).classList.toggle('active',key===name));document.querySelectorAll('.nav button').forEach(b=>{if(b.dataset.view===name)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current')});window.scrollTo({top:0,behavior:'smooth'});}
 function showGuide(){const home=document.getElementById('homeView'),guide=document.getElementById('guide'),button=document.getElementById('guideToggle');const opening=!guide.classList.contains('open');home.classList.toggle('guide-mode',opening);guide.classList.toggle('open',opening);button.setAttribute('aria-expanded',String(opening));button.innerHTML='Uzzināt, kā sākt <span aria-hidden="true">⌄</span>';}
 function getRecords(){try{const data=JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]');return Array.isArray(data)?data.filter(x=>x&&['Ienākums','Izdevums'].includes(x.kind)&&Number.isFinite(Number(x.amount))&&Number(x.amount)>0&&typeof x.date==='string'):[]}catch(e){return []}}
 function saveRecords(items){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(items));return true}catch(e){alert('Neizdevās saglabāt ierakstu. Pārbaudi pārlūka privātuma iestatījumus vai brīvo vietu ierīcē.');return false}}
@@ -393,6 +449,56 @@ function exportCsv(){
  a.href=url;a.download='mansdarbs-uzskaite.csv';document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);
 }
 
+
+const SIA_KEY='mansdarbs_sia_prototype_v1';
+let siaActiveCompany=null;
+function siaLoad(){try{const x=JSON.parse(localStorage.getItem(SIA_KEY)||'{"companies":[],"transactions":[]}');return x&&Array.isArray(x.companies)&&Array.isArray(x.transactions)?x:{companies:[],transactions:[]}}catch(e){return {companies:[],transactions:[]}}}
+function siaSave(data){try{localStorage.setItem(SIA_KEY,JSON.stringify(data));return true}catch(e){alert('Neizdevās saglabāt SIA datus šajā pārlūkā.');return false}}
+function siaCreateCompany(){
+ const name=document.getElementById('siaName').value.trim(),reg=document.getElementById('siaReg').value.trim(),address=document.getElementById('siaAddress').value.trim(),vat=document.getElementById('siaVatStatus').value,role=document.getElementById('siaRole').value;
+ if(!name||!reg){alert('Norādi uzņēmuma nosaukumu un reģistrācijas numuru.');return}
+ if(!/^[0-9]{11}$/.test(reg)){alert('Latvijas uzņēmuma reģistrācijas numuram jābūt 11 cipariem.');return}
+ const data=siaLoad();if(data.companies.some(c=>c.reg===reg)){alert('Uzņēmums ar šādu reģistrācijas numuru jau ir pievienots.');return}
+ const company={id:'sia-'+Date.now(),name,reg,address,vat,role,createdAt:new Date().toISOString()};
+ data.companies.push(company);if(!siaSave(data))return;siaActiveCompany=company.id;siaRender();
+}
+function siaSelectCompany(id){siaActiveCompany=id;siaRender()}
+function siaSetRole(role){const data=siaLoad(),c=data.companies.find(x=>x.id===siaActiveCompany);if(!c)return;c.role=role;siaSave(data)}
+function siaUpdateVatOptions(){
+ const data=siaLoad(),c=data.companies.find(x=>x.id===siaActiveCompany),vat=document.getElementById('siaTxVat');
+ if(!c||c.vat!=='yes'){vat.value='0';vat.disabled=true}else{vat.disabled=false}
+ document.getElementById('siaExpenseAccountField').hidden=document.getElementById('siaTxKind').value!=='expense';
+}
+function siaAddTransaction(){
+ const data=siaLoad(),c=data.companies.find(x=>x.id===siaActiveCompany);if(!c){alert('Vispirms izveido uzņēmuma profilu.');return}
+ const kind=document.getElementById('siaTxKind').value,date=document.getElementById('siaTxDate').value,description=document.getElementById('siaTxDescription').value.trim(),amount=Number(document.getElementById('siaTxAmount').value),rate=c.vat==='yes'?Number(document.getElementById('siaTxVat').value):0,account=kind==='expense'?document.getElementById('siaExpenseAccount').value:'6110';
+ if(!date||!description||!Number.isFinite(amount)||amount<=0){alert('Aizpildi datumu, aprakstu un summu, kas lielāka par 0.');return}
+ const net=Math.round(amount*100)/100,vat=Math.round(net*rate)/100,total=Math.round((net+vat)*100)/100;
+ data.transactions.push({id:Date.now(),companyId:c.id,kind,date,description,net,rate,vat,total,account});
+ if(!siaSave(data))return;
+ document.getElementById('siaTxDescription').value='';document.getElementById('siaTxAmount').value='';siaRender();
+}
+function siaRender(){
+ const data=siaLoad(),setup=document.getElementById('siaCompanySetup'),workspace=document.getElementById('siaWorkspace');
+ if(!data.companies.length){setup.classList.remove('hidden');workspace.classList.add('hidden');return}
+ setup.classList.remove('hidden');workspace.classList.remove('hidden');
+ if(!siaActiveCompany||!data.companies.some(c=>c.id===siaActiveCompany))siaActiveCompany=data.companies[0].id;
+ const c=data.companies.find(x=>x.id===siaActiveCompany),select=document.getElementById('siaCompanySelect');
+ select.innerHTML=data.companies.map(x=>'<option value="'+escapeHtml(x.id)+'" '+(x.id===c.id?'selected':'')+'>'+escapeHtml(x.name)+' · '+escapeHtml(x.reg)+'</option>').join('');
+ document.getElementById('siaRoleView').value=c.role||'owner';
+ document.getElementById('siaCompanyInfo').textContent=c.name+' · Reģ. Nr. '+c.reg+' · '+(c.vat==='yes'?'PVN maksātājs':'Nav PVN maksātājs')+(c.address?' · '+c.address:'');
+ const tx=data.transactions.filter(x=>x.companyId===c.id).sort((a,b)=>b.date.localeCompare(a.date)||b.id-a.id);
+ const income=tx.filter(x=>x.kind==='income').reduce((s,x)=>s+x.net,0),expenses=tx.filter(x=>x.kind==='expense').reduce((s,x)=>s+x.net,0),outVat=tx.filter(x=>x.kind==='income').reduce((s,x)=>s+x.vat,0),inVat=tx.filter(x=>x.kind==='expense').reduce((s,x)=>s+x.vat,0);
+ document.getElementById('siaIncome').textContent=money(income);document.getElementById('siaExpenses').textContent=money(expenses);document.getElementById('siaProfit').textContent=money(income-expenses);document.getElementById('siaVatDue').textContent=money(outVat-inVat);
+ document.getElementById('siaTransactions').innerHTML=tx.length?'<div style="overflow-x:auto"><table class="invoice-lines"><thead><tr><th>Datums</th><th>Veids / apraksts</th><th>Bez PVN</th><th>PVN</th><th>Kopā</th></tr></thead><tbody>'+tx.map(x=>'<tr><td>'+escapeHtml(x.date)+'</td><td><strong>'+(x.kind==='income'?'Ieņēmumi':'Izdevumi')+'</strong><br>'+escapeHtml(x.description)+'</td><td>'+money(x.net)+'</td><td>'+money(x.vat)+'</td><td><strong>'+money(x.total)+'</strong></td></tr>').join('')+'</tbody></table></div>':'<div class="empty">Pagaidām darījumu nav. Pievieno pirmo darījumu augstāk.</div>';
+ const rows=[];
+ tx.forEach(x=>{
+  if(x.kind==='income'){rows.push({date:x.date,desc:x.description,account:'2310 · Pircēju parādi',debit:x.total,credit:0});rows.push({date:x.date,desc:x.description,account:'6110 · Ieņēmumi',debit:0,credit:x.net});if(x.vat)rows.push({date:x.date,desc:x.description,account:'5721 · Aprēķinātais PVN',debit:0,credit:x.vat})}
+  else{rows.push({date:x.date,desc:x.description,account:x.account+' · Izdevumi',debit:x.net,credit:0});if(x.vat)rows.push({date:x.date,desc:x.description,account:'5721 · Priekšnodoklis',debit:x.vat,credit:0});rows.push({date:x.date,desc:x.description,account:'5310 · Piegādātāju parādi',debit:0,credit:x.total})}
+ });
+ document.getElementById('siaJournal').innerHTML=rows.length?'<div style="overflow-x:auto"><table class="invoice-lines"><thead><tr><th>Datums</th><th>Konts</th><th>Debets</th><th>Kredīts</th></tr></thead><tbody>'+rows.map(x=>'<tr><td>'+escapeHtml(x.date)+'</td><td>'+escapeHtml(x.account)+'<br><small>'+escapeHtml(x.desc)+'</small></td><td>'+money(x.debit)+'</td><td>'+money(x.credit)+'</td></tr>').join('')+'</tbody></table></div><p class="privacy">Debeta kopsumma: '+money(rows.reduce((s,x)=>s+x.debit,0))+' · Kredīta kopsumma: '+money(rows.reduce((s,x)=>s+x.credit,0))+'</p>':'<div class="empty">Grāmatojumi parādīsies pēc pirmā darījuma.</div>';
+ siaUpdateVatOptions();
+}
 const INVOICE_KEY='mansdarbs_demo_invoices_v1';
 function invoiceValue(id){return document.getElementById(id).value.trim()}
 function invoiceNumberNext(){
@@ -483,6 +589,8 @@ renderRecords();
 updateIinWarning();
 initVsaoi();
 initInvoice();
+document.getElementById('siaTxDate').value=[today.getFullYear(),String(today.getMonth()+1).padStart(2,'0'),String(today.getDate()).padStart(2,'0')].join('-');
+siaRender();
 
 </script>
 </body>
