@@ -50,13 +50,20 @@
 .invoice-preview{background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px;margin-top:16px}
 .invoice-preview h3{margin:0 0 8px}.invoice-saved{border-top:1px solid var(--line);padding:12px 0;display:flex;justify-content:space-between;gap:12px}
 @media(max-width:680px){.invoice-grid{grid-template-columns:1fr}.invoice-grid .field.full{grid-column:auto}.invoice-lines{font-size:12px}.invoice-lines th,.invoice-lines td{padding:6px 3px}}
+@page{size:A4 portrait;margin:12mm}
 @media print{
- body.invoice-printing *{visibility:hidden!important}
- body.invoice-printing #invoicePrint,body.invoice-printing #invoicePrint *{visibility:visible!important}
- body.invoice-printing #invoicePrint{display:block!important;position:absolute;left:0;top:0;width:100%;padding:24px;color:#111;background:#fff;font:14px/1.45 Arial,sans-serif}
- body.invoice-printing #invoicePrint table{width:100%;border-collapse:collapse;margin-top:24px}
- body.invoice-printing #invoicePrint th,body.invoice-printing #invoicePrint td{border-bottom:1px solid #ddd;padding:10px;text-align:left}
- body.invoice-printing #invoicePrint .invoice-total{text-align:right;margin-top:24px}
+ html,body{width:100%!important;height:auto!important;margin:0!important;padding:0!important;background:#fff!important}
+ body.invoice-printing>*{display:none!important}
+ body.invoice-printing>#invoicePrint{display:block!important;position:static!important;width:100%!important;max-width:none!important;height:auto!important;min-height:0!important;margin:0!important;padding:0!important;overflow:visible!important;color:#111!important;background:#fff!important;font:11pt/1.35 Arial,sans-serif!important}
+ body.invoice-printing #invoicePrint *{visibility:visible!important;box-sizing:border-box}
+ body.invoice-printing #invoicePrint h1{font-size:20pt;margin:0 0 8px}
+ body.invoice-printing #invoicePrint h2{font-size:15pt;margin:8px 0}
+ body.invoice-printing #invoicePrint p{margin:5px 0}
+ body.invoice-printing #invoicePrint table{width:100%;border-collapse:collapse;margin-top:16px;page-break-inside:avoid;break-inside:avoid}
+ body.invoice-printing #invoicePrint th,body.invoice-printing #invoicePrint td{border-bottom:1px solid #ddd;padding:7px 6px;text-align:left}
+ body.invoice-printing #invoicePrint .invoice-total{text-align:right;margin-top:16px;page-break-inside:avoid;break-inside:avoid}
+ body.invoice-printing #invoicePrint .invoice-footer{margin-top:28px;padding-top:9px;border-top:1px solid #ddd;text-align:center;font-size:9pt;color:#555;page-break-inside:avoid;break-inside:avoid}
+ body.invoice-printing #invoicePrint>div{page-break-inside:avoid;break-inside:avoid}
 }
 #invoicePrint{display:none}
 </style>
@@ -414,7 +421,7 @@ function updateInvoiceTotals(){
 function invoicePrintHtml(x){
  const line=(label,value)=>value?'<p><strong>'+label+':</strong> '+escapeHtml(value)+'</p>':'';
  const vatSummary=x.rate>0?'<p>Summa bez PVN: <strong>'+money(x.net)+'</strong></p><p>PVN '+x.rate+'%: <strong>'+money(x.vat)+'</strong></p>':'<p>PVN netiek piemērots.</p>';
- return '<div><h1>RĒĶINS</h1><h2>'+escapeHtml(x.number)+'</h2><p>Izrakstīšanas datums: '+escapeHtml(x.date)+' · Apmaksas termiņš: '+escapeHtml(x.due||'Nav norādīts')+'</p><div style="display:flex;gap:50px;margin-top:28px"><div style="flex:1"><h3>Izrakstītājs</h3><p><strong>'+escapeHtml(x.seller)+'</strong></p>'+line('Reģ. Nr.',x.reg)+line('Adrese',x.address)+line('Kontakti',x.email)+line('IBAN',x.bank)+'</div><div style="flex:1"><h3>Saņēmējs</h3><p><strong>'+escapeHtml(x.buyer)+'</strong></p>'+line('Reģ. Nr.',x.buyerReg)+line('Adrese',x.buyerAddress)+'</div></div><table><thead><tr><th>Apraksts</th><th>Daudzums</th><th>Cena</th><th>Summa</th></tr></thead><tbody><tr><td>'+escapeHtml(x.description)+'</td><td>'+x.qty+'</td><td>'+money(x.price)+'</td><td>'+money(x.net)+'</td></tr></tbody></table><div class="invoice-total">'+vatSummary+'<h2>Kopā apmaksai: '+money(x.total)+'</h2></div><p style="margin-top:45px">Paldies par sadarbību!</p></div>';
+ return '<div><h1>RĒĶINS</h1><h2>'+escapeHtml(x.number)+'</h2><p>Izrakstīšanas datums: '+escapeHtml(x.date)+' · Apmaksas termiņš: '+escapeHtml(x.due||'Nav norādīts')+'</p><div style="display:flex;gap:50px;margin-top:24px"><div style="flex:1"><h3>Izrakstītājs</h3><p><strong>'+escapeHtml(x.seller)+'</strong></p>'+line('Reģ. Nr.',x.reg)+line('Adrese',x.address)+line('Kontakti',x.email)+line('IBAN',x.bank)+'</div><div style="flex:1"><h3>Saņēmējs</h3><p><strong>'+escapeHtml(x.buyer)+'</strong></p>'+line('Reģ. Nr.',x.buyerReg)+line('Adrese',x.buyerAddress)+'</div></div><table><thead><tr><th>Apraksts</th><th>Daudzums</th><th>Cena</th><th>Summa</th></tr></thead><tbody><tr><td>'+escapeHtml(x.description)+'</td><td>'+x.qty+'</td><td>'+money(x.price)+'</td><td>'+money(x.net)+'</td></tr></tbody></table><div class="invoice-total">'+vatSummary+'<h2>Kopā apmaksai: '+money(x.total)+'</h2></div><p style="margin-top:24px">Paldies par sadarbību!</p><div class="invoice-footer">Dokuments ir sagatavots elektroniski un ir derīgs bez paraksta.</div></div>';
 }
 function previewInvoice(){
  const x=invoiceData();if(!x)return;
