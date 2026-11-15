@@ -2,16 +2,17 @@
 'use strict';
 const PROFILE_KEY='mansdarbs_industry_profile_v1', RECORDS_KEY='mansdarbs_industry_records_v1';
 const sectors=[
+{id:'digital',name:'Digitālie un radošie pakalpojumi',jobs:['Influenceris / satura veidotājs','Blogeris','YouTube / video veidotājs','Straumētājs','Programmētājs','Grafiskais dizainers','Fotogrāfs','Mārketinga pakalpojumi','Tekstu autors','Konsultants']},
+{id:'repair',name:'Remonts un individuālie pakalpojumi',jobs:['Sadzīves tehnikas remonts','Elektronikas remonts','Apavu / apģērbu remonts','Šūšana','Atslēdznieks','Citi meistara pakalpojumi']},
+{id:'auto',name:'Auto tirdzniecība un remonts',jobs:['Lietotu auto tirgotājs','Jaunu auto tirgotājs','Auto komisijas tirdzniecība','Auto remonts','Auto rezerves daļu tirdzniecība','Auto noma']},
 {id:'agri',name:'Lauksaimniecība un mežsaimniecība',jobs:['Augkopība','Lopkopība','Biškopība','Mežsaimniecība','Lauksaimniecības pakalpojumi']},
 {id:'fishing',name:'Zvejniecība un akvakultūra',jobs:['Zvejniecība','Zivju audzēšana','Zivju apstrāde']},
 {id:'manufacturing',name:'Ražošana un amatniecība',jobs:['Pārtikas ražošana','Mēbeļu izgatavošana','Metālapstrāde','Tekstilizstrādājumi','3D drukāšana','Cita ražošana']},
 {id:'construction',name:'Būvniecība un būvniecības darbi',jobs:['Būvdarbi','Elektriķis','Santehniķis','Apdares darbi','Jumtu darbi','Projektēšana']},
-{id:'auto',name:'Auto tirdzniecība un remonts',jobs:['Lietotu auto tirgotājs','Jaunu auto tirgotājs','Auto komisijas tirdzniecība','Auto remonts','Auto rezerves daļu tirdzniecība','Auto noma']},
 {id:'transport',name:'Transports un loģistika',jobs:['Kravu pārvadājumi','Pasažieru pārvadājumi','Kurjers / piegāde','Transporta organizēšana','Noliktavas pakalpojumi']},
 {id:'beauty',name:'Skaistumkopšana un labsajūta',jobs:['Frizieris','Manikīrs / pedikīrs','Kosmetologs','Vizāžists','Skropstu / uzacu meistars','Masieris','Tetovētājs']},
 {id:'health',name:'Veselība un aprūpe',jobs:['Veselības aprūpe','Fizioterapija','Aprūpes pakalpojumi','Uztura konsultācijas','Citi veselības pakalpojumi']},
 {id:'education',name:'Izglītība un apmācība',jobs:['Privātskolotājs','Valodu pasniedzējs','Profesionālā apmācība','Kursu veidotājs','Instruktors']},
-{id:'digital',name:'Digitālie un radošie pakalpojumi',jobs:['Influenceris / satura veidotājs','Blogeris','YouTube / video veidotājs','Straumētājs','Programmētājs','Grafiskais dizainers','Fotogrāfs','Mārketinga pakalpojumi','Tekstu autors','Konsultants']},
 {id:'professional',name:'Profesionālie un konsultāciju pakalpojumi',jobs:['Grāmatvedis','Biznesa konsultants','Jurists','Tulks / tulkotājs','Projektu vadītājs','Citi profesionālie pakalpojumi']},
 {id:'realestate',name:'Nekustamais īpašums',jobs:['Nekustamā īpašuma izīrēšana','Starpniecība','Pārvaldīšana','Uzturēšana']},
 {id:'retail',name:'Mazumtirdzniecība un e-komercija',jobs:['Veikals','Internetveikals','Preču tālākpārdošana','Tirgus tirdzniecība','Lietotu preču tirdzniecība']},
@@ -20,7 +21,6 @@ const sectors=[
 {id:'accommodation',name:'Izmitināšana un tūrisms',jobs:['Viesu nams','Īstermiņa izmitināšana','Tūrisma pakalpojumi','Gidu pakalpojumi']},
 {id:'admin',name:'Administratīvie un biroja pakalpojumi',jobs:['Virtuālais asistents','Datu ievade','Zvanu centra pakalpojumi','Biroja atbalsts']},
 {id:'cleaning',name:'Uzkopšana un teritoriju uzturēšana',jobs:['Telpu uzkopšana','Logu mazgāšana','Teritoriju kopšana','Specializētā tīrīšana']},
-{id:'repair',name:'Remonts un individuālie pakalpojumi',jobs:['Sadzīves tehnikas remonts','Elektronikas remonts','Apavu / apģērbu remonts','Šūšana','Atslēdznieks','Citi meistara pakalpojumi']},
 {id:'finance',name:'Finanses un apdrošināšana',jobs:['Finanšu konsultācijas','Apdrošināšanas starpniecība','Citi finanšu pakalpojumi']},
 {id:'arts',name:'Māksla, izklaide un sports',jobs:['Mūziķis','Mākslinieks','Pasākumu organizēšana','Sporta treneris','Fitnesa instruktors','Izklaides pakalpojumi']},
 {id:'other',name:'Cita saimnieciskā darbība',jobs:['Cita darbība / vēl nav sarakstā']}
