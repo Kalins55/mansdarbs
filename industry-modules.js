@@ -92,7 +92,7 @@ function init(){
  const s=el('industrySector');s.innerHTML=sectors.map(x=>'<option value="'+x.id+'">'+esc(sectorLabel(x))+'</option>').join('');
  const p=getProfile();s.value=sectors.some(x=>x.id===p.sector)?p.sector:'food';fillJobs(p.job);
  s.addEventListener('change',()=>{fillJobs('');renderModule()});el('industryJob').addEventListener('change',renderModule);
- const languageObserver=new MutationObserver(()=>{const selectedSector=s.value,selectedJob=el('industryJob').value;s.innerHTML=sectors.map(x=>'<option value="'+x.id+'">'+esc(sectorLabel(x))+'</option>').join('');s.value=selectedSector;fillJobs(selectedJob);});
+ const languageObserver=new MutationObserver(()=>{const selectedSector=s.value,selectedJob=el('industryJob').value;s.innerHTML=sectors.map(x=>'<option value="'+x.id+'">'+esc(sectorLabel(x))+'</option>').join('');s.value=selectedSector;fillJobs(selectedJob);renderModule();renderEntries();});
  languageObserver.observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
  el('saveIndustryProfile').addEventListener('click',()=>{const list=read('mansdarbs_industry_profiles_v1',[]);const profile={sector:s.value,job:el('industryJob').value};if(!list.some(x=>x.sector===profile.sector&&x.job===profile.job))list.push(profile);localStorage.setItem('mansdarbs_industry_profiles_v1',JSON.stringify(list));localStorage.setItem(PROFILE_KEY,JSON.stringify(profile));alert(t('Nozare saglabāta šajā pārlūkā.','Industry saved in this browser.'));});
  renderModule();
@@ -119,7 +119,7 @@ function renderEntries(){
  const root=el('industryEntries');if(!root)return;const sector=el('industrySector').value;
  const items=getRecords().filter(x=>x.sector===sector).slice().reverse();
  if(!items.length){root.innerHTML='<div class="empty">'+t('Šai nozarei vēl nav saglabātu ierakstu.','No records saved for this industry yet.')+'</div>';return;}
- root.innerHTML=items.map(x=>'<div class="record"><div><strong>'+esc(x.data?.project||x.data?.product||x.data?.vehicle||x.data?.event||x.data?.description||x.kind||x.job)+'</strong><small>'+esc(x.date)+' · '+esc(jobLabel(x.job))+' · '+esc(x.data?.counterparty||x.data?.terminal||x.data?.payment||'')+(x.data?.document||x.data?.doc?' · '+esc(x.data.document||x.data.doc):'')+'</small></div><div class="amount">'+Number(x.amount||0).toLocaleString('lv-LV',{minimumFractionDigits:2,maximumFractionDigits:2})+' €</div></div>').join('');
+ root.innerHTML=items.map(x=>'<div class="record"><div><strong>'+esc(x.data?.project||x.data?.product||x.data?.vehicle||x.data?.event||x.data?.description||translate(x.kind)||jobLabel(x.job))+'</strong><small>'+esc(x.date)+' · '+esc(jobLabel(x.job))+' · '+esc(x.data?.counterparty||x.data?.terminal||x.data?.payment||'')+(x.data?.document||x.data?.doc?' · '+esc(x.data.document||x.data.doc):'')+'</small></div><div class="amount">'+Number(x.amount||0).toLocaleString('lv-LV',{minimumFractionDigits:2,maximumFractionDigits:2})+' €</div></div>').join('');
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 })();
