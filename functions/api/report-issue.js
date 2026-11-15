@@ -9,10 +9,11 @@ export async function onRequestPost({ request, env }) {
   const origin = request.headers.get("Origin");
   if (origin && origin !== new URL(request.url).origin) return new Response("Forbidden", { status: 403 });
   if (!(request.headers.get("Content-Type") || "").toLowerCase().includes("application/json")) return new Response("Unsupported media type", { status: 415 });
-  const length = Number(request.headers.get("Content-Length") || 0);
-  if (length > 2048) return new Response("Payload too large", { status: 413 });
+  let raw;
+  try { raw = await request.text(); } catch (_) { return new Response("Bad request", { status: 400 }); }
+  if (new TextEncoder().encode(raw).byteLength > 2048) return new Response("Payload too large", { status: 413 });
   let body;
-  try { body = await request.json(); } catch (_) { return new Response("Bad request", { status: 400 }); }
+  try { body = JSON.parse(raw); } catch (_) { return new Response("Bad request", { status: 400 }); }
   const code = ALLOWED_CODES.has(body?.code) ? body.code : null;
   const view = ALLOWED_VIEWS.has(body?.view) ? body.view : "unknown";
   const browser = ALLOWED_BROWSERS.has(body?.browser) ? body.browser : "Other";
