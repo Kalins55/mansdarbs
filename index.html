@@ -426,7 +426,7 @@ function showCalculatorPanel(panel){
  if(panel!=='overview')window.scrollTo({top:0,behavior:'smooth'});
 }
 function showAccounting(){const mode=localStorage.getItem('mansdarbs_accounting_mode');showView(mode==='sia'?'sia':mode==='self'||mode==='zs'?'records':'choice')}
-function setAccountingMode(mode){localStorage.setItem('mansdarbs_accounting_mode',mode);document.getElementById('accountingModeLabel').textContent=mode==='sia'?'SIA':'Pašnodarbinātais';document.getElementById('accountingModeLabelSia').textContent=mode==='sia'?'SIA':'Pašnodarbinātais';showView(mode==='sia'?'sia':'records')}
+function setAccountingMode(mode){localStorage.setItem('mansdarbs_accounting_mode',mode);document.getElementById('accountingModeLabel').textContent=mode==='sia'?'SIA':'Pašnodarbinātais';document.getElementById('accountingModeLabelSia').textContent=mode==='sia'?'SIA':'Pašnodarbinātais';refreshInvoiceForMode();showView(mode==='sia'?'sia':'records')}
 function changeAccountingMode(){if(confirm(uiText('Mainīt uzskaites veidu? Saglabātie dati netiks dzēsti.','Change the tracking type? Your saved data will not be deleted.')))showView('choice')}
 function showView(name){if(name==='calculator')showCalculatorPanel('overview');document.getElementById('homeView').classList.remove('guide-mode');document.getElementById('guide').classList.remove('open');document.querySelector('.shell').classList.toggle('home-screen',name==='home');const ids={home:'homeView',calculator:'calculatorView',records:'recordsView',sia:'siaView',choice:'accountingChoiceView'};Object.entries(ids).forEach(([key,id])=>document.getElementById(id).classList.toggle('active',key===name));const zsMode=localStorage.getItem('mansdarbs_accounting_mode')==='zs';document.getElementById('uzskaite').style.display=name==='records'&&zsMode?'none':'';document.getElementById('zsInvoiceHeader').style.display=name==='records'&&zsMode?'flex':'none';document.getElementById('invoiceEyebrow').textContent=name==='records'&&zsMode?uiText('Z/S · bezmaksas rēķini','Farm · free invoices'):uiText('Uzskaite · rēķini','Records · invoices');document.querySelectorAll('.nav button').forEach(b=>{const activeName=name==='sia'||name==='choice'?'records':name;if(b.dataset.view===activeName)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current')});window.scrollTo({top:0,behavior:'smooth'});}
 function showGuide(){const home=document.getElementById('homeView'),guide=document.getElementById('guide');const opening=!guide.classList.contains('open');home.classList.toggle('guide-mode',opening);guide.classList.toggle('open',opening);if(opening){selectStartRoute('resident');updateBusinessChecklist()}window.scrollTo({top:0,behavior:'smooth'});}
@@ -592,6 +592,16 @@ function loadInvoiceSeller(){
 function saveInvoiceSeller(x){
  const profile={seller:x.seller||'',reg:x.reg||'',address:x.address||'',bank:x.bank||'',email:x.email||''};
  if(Object.values(profile).some(v=>v))try{localStorage.setItem(invoiceSellerStorageKey(),JSON.stringify(profile))}catch(e){}
+}
+function refreshInvoiceForMode(){
+ const seller=loadInvoiceSeller();
+ document.getElementById('invSeller').value=seller.seller||'';
+ document.getElementById('invReg').value=seller.reg||'';
+ document.getElementById('invAddress').value=seller.address||'';
+ document.getElementById('invBank').value=seller.bank||'';
+ document.getElementById('invEmail').value=seller.email||'';
+ document.getElementById('invNumber').value=invoiceNumberNext();
+ renderInvoices();
 }
 function invoiceValue(id){return document.getElementById(id).value.trim()}
 function invoiceNumberNext(){
