@@ -673,6 +673,7 @@ function setLanguage(lang){
  document.getElementById('langLv')?.setAttribute('aria-pressed',String(value==='lv'));
  document.getElementById('langEn')?.setAttribute('aria-pressed',String(value==='en'));
  applyLanguage();
+  if(typeof updateInvoiceTotals==='function')updateInvoiceTotals();
 }
 function applyLanguage(){
  const english=document.documentElement.lang==='en';
