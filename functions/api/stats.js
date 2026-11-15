@@ -22,14 +22,21 @@ export async function onRequestGet({ env }) {
   }
 
   try {
-    const [pageviews, uniqueVisitors] = await Promise.all([
+    const [pageviews, uniqueVisitors, legacyRaw] = await Promise.all([
       countKeys(env.VISITS, PAGEVIEW_PREFIX),
-      countKeys(env.VISITS, VISITOR_PREFIX)
+      countKeys(env.VISITS, VISITOR_PREFIX),
+      env.VISITS.get("stats:totals")
     ]);
+
+    // Preserve page views collected by the previous counter implementation.
+    let legacyPageviews = 0;
+    try {
+      legacyPageviews = Number(JSON.parse(legacyRaw || "{}").pageviews || 0);
+    } catch (_) {}
 
     return Response.json({
       uniqueVisitors,
-      pageviews,
+      pageviews: legacyPageviews + pageviews,
       retentionDays: 365,
       updatedAt: new Date().toISOString()
     }, { headers: { "Cache-Control": "no-store" } });
