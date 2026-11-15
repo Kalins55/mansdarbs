@@ -53,15 +53,17 @@
 @page{size:A4 portrait;margin:12mm}
 @media print{
  html,body{width:100%!important;height:auto!important;margin:0!important;padding:0!important;background:#fff!important}
- body.invoice-printing>.shell{display:block!important}
- body.invoice-printing>.shell>*{display:none!important}
- body.invoice-printing>.shell>#invoicePrint{display:block!important;position:static!important;width:100%!important;max-width:none!important;height:auto!important;min-height:0!important;margin:0!important;padding:0!important;overflow:visible!important;color:#111!important;background:#fff!important;font:11pt/1.35 Arial,sans-serif!important}
+ body.invoice-printing>*:not(#invoicePrint){display:none!important}
+ body.invoice-printing>#invoicePrint{display:block!important;position:static!important;width:100%!important;max-width:none!important;height:auto!important;min-height:0!important;margin:0!important;padding:0!important;overflow:visible!important;color:#111!important;background:#fff!important;font:11pt/1.35 Arial,sans-serif!important}
  body.invoice-printing #invoicePrint *{visibility:visible!important;box-sizing:border-box}
  body.invoice-printing #invoicePrint h1{font-size:20pt;margin:0 0 8px}
  body.invoice-printing #invoicePrint h2{font-size:15pt;margin:8px 0}
  body.invoice-printing #invoicePrint p{margin:5px 0}
- body.invoice-printing #invoicePrint table{width:100%;border-collapse:collapse;margin-top:16px;page-break-inside:avoid;break-inside:avoid}
- body.invoice-printing #invoicePrint th,body.invoice-printing #invoicePrint td{border-bottom:1px solid #ddd;padding:7px 6px;text-align:left}
+ body.invoice-printing #invoicePrint table{display:table!important;width:100%;border-collapse:collapse;margin-top:16px;page-break-inside:avoid;break-inside:avoid}
+ body.invoice-printing #invoicePrint thead{display:table-header-group!important}
+ body.invoice-printing #invoicePrint tbody{display:table-row-group!important}
+ body.invoice-printing #invoicePrint tr{display:table-row!important}
+ body.invoice-printing #invoicePrint th,body.invoice-printing #invoicePrint td{display:table-cell!important;border-bottom:1px solid #ddd;padding:7px 6px;text-align:left}
  body.invoice-printing #invoicePrint .invoice-total{text-align:right;margin-top:16px;page-break-inside:avoid;break-inside:avoid}
  body.invoice-printing #invoicePrint .invoice-footer{margin-top:28px;padding-top:9px;border-top:1px solid #ddd;text-align:center;font-size:9pt;color:#555;page-break-inside:avoid;break-inside:avoid}
  body.invoice-printing #invoicePrint>div{page-break-inside:avoid;break-inside:avoid}
@@ -424,10 +426,20 @@ function invoicePrintHtml(x){
  const vatSummary=x.rate>0?'<p>Summa bez PVN: <strong>'+money(x.net)+'</strong></p><p>PVN '+x.rate+'%: <strong>'+money(x.vat)+'</strong></p>':'<p>PVN netiek piemērots.</p>';
  return '<div><h1>RĒĶINS</h1><h2>'+escapeHtml(x.number)+'</h2><p>Izrakstīšanas datums: '+escapeHtml(x.date)+' · Apmaksas termiņš: '+escapeHtml(x.due||'Nav norādīts')+'</p><div style="display:flex;gap:50px;margin-top:24px"><div style="flex:1"><h3>Izrakstītājs</h3><p><strong>'+escapeHtml(x.seller)+'</strong></p>'+line('Reģ. Nr.',x.reg)+line('Adrese',x.address)+line('Kontakti',x.email)+line('IBAN',x.bank)+'</div><div style="flex:1"><h3>Saņēmējs</h3><p><strong>'+escapeHtml(x.buyer)+'</strong></p>'+line('Reģ. Nr.',x.buyerReg)+line('Adrese',x.buyerAddress)+'</div></div><table><thead><tr><th>Apraksts</th><th>Daudzums</th><th>Cena</th><th>Summa</th></tr></thead><tbody><tr><td>'+escapeHtml(x.description)+'</td><td>'+x.qty+'</td><td>'+money(x.price)+'</td><td>'+money(x.net)+'</td></tr></tbody></table><div class="invoice-total">'+vatSummary+'<h2>Kopā apmaksai: '+money(x.total)+'</h2></div><p style="margin-top:24px">Paldies par sadarbību!</p><div class="invoice-footer">Dokuments ir sagatavots elektroniski un ir derīgs bez paraksta.</div></div>';
 }
+function runInvoicePrint(){
+ const el=document.getElementById('invoicePrint');if(!el)return;
+ const parent=el.parentNode,next=el.nextSibling;
+ document.body.appendChild(el);
+ document.body.classList.add('invoice-printing');
+ const restore=()=>{document.body.classList.remove('invoice-printing');if(parent)parent.insertBefore(el,next);window.removeEventListener('afterprint',restore)};
+ window.addEventListener('afterprint',restore);
+ window.print();
+ setTimeout(()=>{if(document.body.classList.contains('invoice-printing'))restore()},3000);
+}
 function previewInvoice(){
  const x=invoiceData();if(!x)return;
  document.getElementById('invoicePrint').innerHTML=invoicePrintHtml(x);
- document.body.classList.add('invoice-printing');window.print();setTimeout(()=>document.body.classList.remove('invoice-printing'),500);
+ runInvoicePrint();
 }
 function saveInvoice(){
  const x=invoiceData();if(!x)return;
@@ -447,7 +459,7 @@ function renderInvoices(){
 function printSavedInvoice(id){
  let list=[];try{list=JSON.parse(localStorage.getItem(INVOICE_KEY)||'[]')}catch(e){}
  const x=list.find(i=>i.id===id);if(!x)return;
- document.getElementById('invoicePrint').innerHTML=invoicePrintHtml(x);document.body.classList.add('invoice-printing');window.print();setTimeout(()=>document.body.classList.remove('invoice-printing'),500);
+ document.getElementById('invoicePrint').innerHTML=invoicePrintHtml(x);runInvoicePrint();
 }
 function deleteInvoice(id){
  if(!confirm('Vai dzēst šo rēķinu?'))return;
