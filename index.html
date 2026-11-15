@@ -646,8 +646,22 @@ function initInvoice(){
  document.getElementById('invReg').value=seller.reg||'';
  document.getElementById('invAddress').value=seller.address||'';
  document.getElementById('invBank').value=seller.bank||'';
- document.getElementById('invEmail').value=seller.email
+ document.getElementById('invEmail').value=seller.email||'';
+ document.getElementById('invQty').addEventListener('input',updateInvoiceTotals);document.getElementById('invPrice').addEventListener('input',updateInvoiceTotals);renderInvoices();updateInvoiceTotals();
+}
 
+const today=new Date();document.getElementById('date').value=[today.getFullYear(),String(today.getMonth()+1).padStart(2,'0'),String(today.getDate()).padStart(2,'0')].join('-');
+document.getElementById('kind').addEventListener('change',updateIinWarning);
+document.getElementById('date').addEventListener('change',updateIinWarning);
+renderRecords();
+updateIinWarning();
+initVsaoi();
+initInvoice();
+document.getElementById('siaTxDate').value=[today.getFullYear(),String(today.getMonth()+1).padStart(2,'0'),String(today.getDate()).padStart(2,'0')].join('-');
+siaRender();
+
+</script>
+<script>
 const LANGUAGE_KEY='mansdarbs_language_v1';
 const EN_TRANSLATIONS={"Sākums":"Home","Aprēķini":"Calculators","Uzskaite":"Records","Vienkāršāks ikdienas palīgs pašnodarbinātajiem":"A simpler everyday toolkit for self-employed people","Sāc savu darbību.":"Start your own activity.","Vai sakārto jau esošo.":"Or organise the activity you already have.","Neatkarīgi no tā, vai tikai plāno strādāt patstāvīgi vai jau pieņem pasūtījumus un kārto saimniecisko darbību — šeit atradīsi saprotamus skaidrojumus, aprēķinus un ikdienas uzskaites rīkus.":"Whether you are planning to work independently or already take on jobs and manage a business, you will find clear guidance, calculations and everyday tools here.","Bezmaksas sākums":"Free to get started","Bez Mansdarbs konta":"No account needed","EDS dati paliek VID":"Your EDS data stays with VID","Vēl tikai plāno sākt?":"Planning to get started?","Uzzini, kā reģistrēt saimniecisko darbību, ko ņemt vērā un kādi ir pirmie soļi.":"Learn how to register your business activity and what the first steps are.","Uzzināt, kā sākt":"Learn how to get started","Jau strādā patstāvīgi?":"Already self-employed?","Seko ienākumiem un izdevumiem, veic aprēķinus un sakārto ikdienas uzskaiti.":"Track income and expenses, calculate taxes and keep your records organised.","Atvērt uzskaiti":"Open records","Tavs ceļš līdz reģistrācijai":"Your path to registration","Reģistrācija nav jāveic Mansdarbs.":"Registration is not done through Mansdarbs.","Mansdarbs palīdz sagatavoties. Oficiālo reģistrāciju tu pats veic VID EDS sistēmā.":"Mansdarbs helps you prepare. You complete the official registration yourself in the VID EDS system.","Saproti, ko vēlies darīt":"Decide what you want to do","Padomā, kādu pakalpojumu vai darbu piedāvāsi. Šajā posmā nav jāaizpilda gara anketa un nekas nav jāiesniedz.":"Think about the service or work you want to offer. There is no long form to fill in at this stage.","Iepazīsties ar VID skaidrojumu":"Read the VID guidance","VID oficiālajā lapā ir aprakstīts, kā reģistrēt un veikt saimniecisko darbību.":"The official VID website explains how to register and carry out business activity.","Lasīt VID reģistrācijas ceļvedi ↗":"Read the VID registration guide ↗","Reģistrējies VID EDS":"Register with VID EDS","Atver VID EDS un veic reģistrāciju oficiālajā sistēmā. Mansdarbs neprasa un neglabā tavu EDS paroli vai piekļuves datus.":"Open VID EDS and complete your registration. Mansdarbs does not ask for or store your EDS password or login details.","Atvērt VID EDS ↗":"Open VID EDS ↗","Atgriezies, kad esi gatavs":"Come back when you are ready","Vari izmantot Mansdarbs ienākumu un izdevumu uzskaitei, pārskatiem un citiem ikdienas rīkiem. Kontu sākumā veidot nav nepieciešams.":"Use Mansdarbs to track income and expenses and access everyday tools. No account is needed to get started.","Izmēģināt uzskaiti →":"Try the records tool →","Tev nav jāizlemj viss uzreiz.":"You do not have to decide everything right away.","Vēlos sākt strādāt oficiāli":"I want to work legally","Vēlos saprast, kā reģistrēt saimniecisko darbību un kas jādara vispirms.":"I want to understand how to register my business activity and what to do first.","Iepriekš minētie soļi palīdzēs saprast, ar ko sākt.":"The steps above will help you understand where to begin.","Pašnodarbinātais":"Self-employed","Mainīt":"Change","SIA uzskaite":"Company records","Ienākumi bez PVN":"Income excluding VAT","Izdevumi bez PVN":"Expenses excluding VAT","Reģistrēt darījumu":"Record a transaction","Darījuma veids":"Transaction type","Pārdošana / ieņēmumi":"Sale / income","Pirkums / izdevumi":"Purchase / expense","Datums":"Date","Darījuma apraksts":"Transaction description","Summa bez PVN (€)":"Amount excluding VAT (€)","PVN likme":"VAT rate","Izdevumu konts":"Expense account","Pievienot darījumu":"Add transaction","Uzskaite · sākuma izvēle":"Records · initial choice","Kādu darbības veidu vēlies uzskaitīt?":"Which type of activity would you like to track?","Bezmaksas rīks · bez konta":"Free tool · no account required","Vienkārša ienākumu un izdevumu uzskaite":"Simple income and expense tracking","Ieraksta veids":"Entry type","Ienākums":"Income","Izdevums":"Expense","Summa (€)":"Amount (€)","Apraksts (nav obligāts)":"Description (optional)","Pievienot ierakstu":"Add entry","Atcelt labošanu":"Cancel edit","Notīrīt uzskaiti":"Clear records","Lejupielādēt uzskaiti":"Download records","Rēķina izveide":"Create an invoice","Rēķina numurs":"Invoice number","Izrakstīšanas datums":"Issue date","Apmaksas termiņš":"Payment due date","Valūta":"Currency","Rēķina izrakstītājs":"Invoice issuer","Vārds, uzvārds / uzņēmums":"Full name / company","Reģistrācijas numurs (ja attiecas)":"Registration number (if applicable)","Adrese":"Address","Bankas konts (IBAN)":"Bank account (IBAN)","E-pasts / tālrunis":"Email / phone","Rēķina saņēmējs":"Invoice recipient","Pakalpojums vai prece":"Service or product","Nosaukums / apraksts":"Name / description","Daudzums":"Quantity","Cena par vienību (€)":"Price per unit (€)","Esmu PVN maksātājs — piemērot PVN":"I am VAT-registered — apply VAT","PVN likme (%)":"VAT rate (%)","Saglabāt rēķinu":"Save invoice","Priekšskatīt / drukāt":"Preview / print","Notīrīt formu":"Clear form","Nodokļu palīgs · 2026":"Tax assistant · 2026","Ko vēlies aprēķināt?":"What would you like to calculate?","VSAOI aprēķins":"Social contributions (VSAOI)","IIN prognoze":"Personal income tax estimate","Atvērt aprēķinu":"Open calculator","Īsumā par nodokļiem":"A brief guide to taxes","Ceturksnis":"Quarter","Aprēķināt VSAOI":"Calculate VSAOI","Notīrīt":"Clear","Aprēķināt IIN":"Calculate IIN"};
 function setLanguage(lang){
@@ -687,19 +701,6 @@ function applyLanguage(){
  observer.observe(document.body,{childList:true,subtree:true,characterData:true});
 })();
 
-||'';
- document.getElementById('invQty').addEventListener('input',updateInvoiceTotals);document.getElementById('invPrice').addEventListener('input',updateInvoiceTotals);renderInvoices();updateInvoiceTotals();
-}
-
-const today=new Date();document.getElementById('date').value=[today.getFullYear(),String(today.getMonth()+1).padStart(2,'0'),String(today.getDate()).padStart(2,'0')].join('-');
-document.getElementById('kind').addEventListener('change',updateIinWarning);
-document.getElementById('date').addEventListener('change',updateIinWarning);
-renderRecords();
-updateIinWarning();
-initVsaoi();
-initInvoice();
-document.getElementById('siaTxDate').value=[today.getFullYear(),String(today.getMonth()+1).padStart(2,'0'),String(today.getDate()).padStart(2,'0')].join('-');
-siaRender();
 
 </script>
 </body>
