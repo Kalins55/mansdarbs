@@ -1,7 +1,7 @@
 // Shared activity catalogue backed by Cloudflare KV (VISITS binding).
 // A custom activity is promoted after five confirmed selections.
 const THRESHOLD = 5;
-const cleanName = value => typeof value === "string" ? value.trim().replace(/\\s+/g, " ").slice(0, 80) : "";
+const cleanName = value => typeof value === "string" ? value.trim().replace(/\s+/g, " ").slice(0, 80) : "";
 const keyFor = name => "activity:" + encodeURIComponent(name.toLocaleLowerCase("lv-LV"));
 export async function onRequestGet({ env }) {
   if (!env.VISITS) return Response.json({ popular: [] }, { status: 200 });
@@ -23,7 +23,7 @@ export async function onRequestPost({ request, env }) {
   let body;
   try { body = await request.json(); } catch (_) { return new Response("Bad request", { status: 400 }); }
   const name = cleanName(body?.name);
-  if (name.length < 2 || !/[\\p{L}\\p{N}]/u.test(name)) return new Response("Invalid activity", { status: 400 });
+  if (name.length < 2 || !/[\p{L}\p{N}]/u.test(name)) return new Response("Invalid activity", { status: 400 });
   const key = keyFor(name);
   let item = {};
   try { item = JSON.parse(await env.VISITS.get(key) || "{}"); } catch (_) {}
