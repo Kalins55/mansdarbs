@@ -56,3 +56,8 @@ Nekad neievietot repozitorijā VID/EDS paroles, API atslēgas, piekļuves tokenu
 ### Nozares uzskaites ienākumu un izdevumu kopsavilkums
 
 Nozares ierakstos katram darījumam var norādīt ienākumu, izdevumu vai klientam veiktu atmaksu. Nozares skatā tiek aprēķinātas šo kategoriju kopsummas un atlikums pirms nodokļiem. Vecie ieraksti paliek lasāmi un tiek saglabāti kā ienākumi, jo iepriekš tiem nebija atsevišķa darījuma veida. Šis kopsavilkums nav nodokļu aprēķins.
+
+
+### Kopējais finanšu pārskats
+
+Kopējais pārskats apvieno pašnodarbinātā pamata uzskaites ierakstus un visus nozares uzskaites ierakstus no tās pašas pārlūkprogrammas. Tas rāda ienākumus, izdevumus, klientu atmaksas, atlikumu pirms nodokļiem un pēdējo sešu aktīvo mēnešu rezultātus. SIA darījumi netiek jaukti šajā pārskatā, jo uzņēmuma grāmatvedība ir atsevišķa. Pārskats ir informatīvs un nav nodokļu aprēķins.
