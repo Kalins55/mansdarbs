@@ -113,8 +113,12 @@ const STORAGE_KEY='mansdarbs_demo_records_v1';
 let editingIndex=null;
 
 function calculateVsaoi(){
- const values=[1,2,3].map(i=>Number(document.getElementById('profit'+i).value||0));
- const chosenBase=Number(document.getElementById('contributionBase').value||780);
+ const inputs=[1,2,3].map(i=>document.getElementById('profit'+i).value.trim());
+ if(inputs.some(v=>v==='')){alert('Ievadi katra mēneša peļņu; ja peļņas nav, ievadi 0.');return}
+ const values=inputs.map(Number);
+ const baseInput=document.getElementById('contributionBase').value.trim();
+ if(baseInput===''){alert('Ievadi VSAOI objektu — vismaz 780 €.');return}
+ const chosenBase=Number(baseInput);
  if(values.some(v=>!Number.isFinite(v)||v<0)){alert('Ievadi korektu peļņu — 0 vai lielāku summu.');return}
  if(!Number.isFinite(chosenBase)||chosenBase<780){alert('VSAOI objektam jābūt vismaz 780 €.');return}
  const rows=values.map((profit,i)=>{
@@ -135,6 +139,7 @@ function progressiveIin(amount){
  return first+second+additional;
 }
 function calculateIin(){
+ if(document.getElementById('annualProfit').value.trim()===''){alert('Ievadi gada peļņu; ja peļņas nav, ievadi 0.');return}
  const read=id=>Number(document.getElementById(id).value||0);
  const profit=read('annualProfit'),vsaoi=read('annualVsaoi'),other=read('otherTaxableIncome'),minimum=read('annualAllowance'),deductions=read('otherDeductions');
  const minimumIinExempt=document.getElementById('minimumIinExempt').checked;
