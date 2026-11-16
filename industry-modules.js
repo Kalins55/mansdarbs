@@ -101,6 +101,7 @@ function init(){
   if(!list.some(x=>x.sector===profile.sector&&x.job===profile.job))list.push(profile);
   localStorage.setItem('mansdarbs_industry_profiles_v1',JSON.stringify(list));
   localStorage.setItem(PROFILE_KEY,JSON.stringify(profile));
+  document.dispatchEvent(new CustomEvent('mansdarbs:industry-profile-updated',{detail:profile}));
   return profile;
  }
  el('saveIndustryProfile').addEventListener('click',()=>{saveProfile();el('saveIndustryProfile').textContent=t('Profils saglabāts','Profile saved');});
