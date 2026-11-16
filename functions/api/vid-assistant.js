@@ -78,8 +78,8 @@ export async function onRequestPost({ request, env }) {
       },
       body: JSON.stringify({
         model: env.OPENAI_MODEL || MODEL_DEFAULT,
-        instructions: SYSTEM_INSTRUCTIONS,
-        input: [{ role: "user", content: context }, ...messages],
+        instructions: SYSTEM_INSTRUCTIONS + "\n\n" + context,
+        input: messages,
         tools: [{
           type: "web_search",
           search_context_size: "low",
