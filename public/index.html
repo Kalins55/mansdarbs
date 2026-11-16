@@ -1,77 +1,831 @@
 <!doctype html>
 <html lang="lv">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#f5f7f4">
-<meta name="description" content="Mansdarbs palīdz sakārtot darba ikdienu, saprast nākamos soļus un virzīties uz saviem mērķiem.">
+<meta name="description" content="Mansdarbs palīdz sākt saimniecisko darbību Latvijā vai vienkāršāk pārvaldīt jau esošo — ar saprotamiem skaidrojumiem, aprēķiniem un ikdienas uzskaiti.">
+<link rel="canonical" href="https://mansdarbs.eu/">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="lv_LV">
-<meta property="og:title" content="Mansdarbs — Mazie soļi lieliem mērķiem">
-<meta property="og:description" content="Tavs palīgs darbā, finansēs un ikdienā.">
-<meta property="og:url" content="https://mansdarbs.pages.dev/">
-<meta property="og:image" content="https://mansdarbs.pages.dev/og-mansdarbs.svg">
+<meta property="og:site_name" content="Mansdarbs">
+<meta property="og:title" content="Mansdarbs — sāc vai sakārto savu saimniecisko darbību.">
+<meta property="og:description" content="Palīgs tiem, kuri tikai plāno sākt, un tiem, kuri jau strādā paši — saprotami skaidrojumi, aprēķini un ikdienas uzskaite Latvijā.">
+<meta property="og:url" content="https://mansdarbs.eu/">
+<meta property="og:image" content="https://mansdarbs.eu/social-preview.svg">
+<meta property="og:image:secure_url" content="https://mansdarbs.eu/social-preview.svg">
+<meta property="og:image:type" content="image/svg+xml">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:type" content="image/svg+xml">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Mansdarbs — Mazie soļi lieliem mērķiem">
-<meta name="twitter:description" content="Tavs palīgs darbā, finansēs un ikdienā.">
-<meta name="twitter:image" content="https://mansdarbs.pages.dev/og-mansdarbs.svg">
-<title>MansDarbs — interaktīvs prototips</title>
+<meta name="twitter:title" content="Mansdarbs — sāc vienkārši. Strādā oficiāli.">
+<meta name="twitter:description" content="Palīgs pašnodarbinātajiem un mazajiem pakalpojumu sniedzējiem Latvijā.">
+<meta name="twitter:image" content="https://mansdarbs.eu/social-preview.svg">
+<title>Mansdarbs — sāc vienkārši</title>
 <style>
-:root{--bg:#f5f7f4;--paper:#fff;--ink:#17231f;--muted:#64716b;--line:#e1e8e2;--green:#176b50;--pale:#e8f3ec;--amber:#fff4d8;--amberink:#765315;--shadow:0 12px 34px rgba(24,45,35,.07)}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}button,input,select{font:inherit}button{cursor:pointer}.shell{max-width:1120px;margin:auto;padding:20px 22px 55px}.top{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:22px}.brand{display:flex;align-items:center;gap:10px;font-size:19px;font-weight:800;letter-spacing:-.4px}.logo{width:38px;height:38px;border-radius:12px;background:var(--green);color:#fff;display:grid;place-items:center}.tag{font-size:12px;color:var(--muted);background:#e9eeea;padding:7px 11px;border-radius:99px}
-.hero{max-width:740px;text-align:center;margin:46px auto 30px}.eyebrow{font-size:12px;color:var(--green);font-weight:800;letter-spacing:1.1px;text-transform:uppercase}.hero h1{font-size:clamp(32px,5vw,49px);line-height:1.08;letter-spacing:-1.7px;margin:12px 0}.hero p{font-size:17px;color:var(--muted);max-width:620px;margin:auto}.cards{max-width:850px;display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin:34px auto}.choice{background:var(--paper);border:1px solid var(--line);border-radius:20px;padding:25px;text-align:left;box-shadow:var(--shadow);transition:.18s}.choice:hover{transform:translateY(-2px);border-color:#9bb9a8}.ico{width:44px;height:44px;border-radius:14px;background:var(--pale);display:grid;place-items:center;font-size:22px;margin-bottom:17px}.choice h2{font-size:20px;margin:0 0 8px}.choice p{color:var(--muted);margin:0 0 19px}.arrow{color:var(--green);font-weight:750}.notice{max-width:850px;margin:18px auto;background:var(--amber);color:var(--amberink);padding:13px 16px;border-radius:13px;font-size:13px}
-.panel{max-width:850px;margin:20px auto;background:var(--paper);border:1px solid var(--line);border-radius:20px;padding:clamp(20px,4vw,34px);box-shadow:var(--shadow)}.panel h1{font-size:clamp(26px,4vw,35px);line-height:1.15;letter-spacing:-.8px;margin:8px 0}.sub{color:var(--muted);margin:0 0 22px}.progress{height:6px;background:#edf1ed;border-radius:8px;margin:20px 0 26px;overflow:hidden}.progress span{height:100%;display:block;background:var(--green);width:25%;transition:.2s}.options{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}.opt{border:1px solid var(--line);border-radius:12px;padding:12px;text-align:left;background:white;color:var(--ink)}.opt.selected{border-color:var(--green);background:var(--pale);color:#104d39;font-weight:700}.actions{display:flex;justify-content:space-between;gap:10px;margin-top:26px}.btn{border:0;border-radius:11px;padding:12px 18px;font-weight:750}.primary{background:var(--green);color:#fff}.secondary{background:#edf1ed;color:var(--ink)}.field{margin:17px 0}.field label{display:block;font-weight:700;margin-bottom:7px}.field small{display:block;color:var(--muted);margin-top:5px}.field input,.field select{width:100%;padding:12px 13px;border:1px solid #d5ded7;border-radius:11px;background:#fff}.appgrid{display:grid;grid-template-columns:230px 1fr;gap:18px;margin-top:22px}.side,.content{background:white;border:1px solid var(--line);border-radius:18px;padding:14px}.side button{display:block;width:100%;border:0;background:transparent;padding:11px 12px;border-radius:10px;text-align:left;color:var(--muted);font-weight:650;margin:3px 0}.side button.active,.side button:hover{background:var(--pale);color:var(--green)}.content{padding:24px}.content h2{font-size:25px;margin:0 0 4px}.muted{color:var(--muted)}.tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:18px 0}.tile{border:1px solid var(--line);border-radius:14px;padding:14px;min-width:0}.tile b{font-size:22px;display:block;overflow-wrap:anywhere}.tile span{font-size:12px;color:var(--muted)}.rowline{padding:13px 0;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:12px}.pill{font-size:11px;font-weight:750;padding:5px 8px;border-radius:99px;background:#f0f3f0;color:#58665e;white-space:nowrap}.pill.warn{background:var(--amber);color:var(--amberink)}.pill.good{background:var(--pale);color:var(--green)}.steps{display:grid;gap:11px;margin:18px 0}.step{display:flex;gap:13px;border:1px solid var(--line);border-radius:14px;padding:14px}.num{flex:0 0 30px;height:30px;border-radius:10px;background:var(--pale);color:var(--green);font-weight:800;display:grid;place-items:center}.step p{margin:3px 0 0;color:var(--muted);font-size:14px}.hidden{display:none!important}.footer{max-width:850px;margin:22px auto 0;text-align:center;color:#87928b;font-size:12px}.consent{position:fixed;z-index:20;left:14px;right:14px;bottom:14px;max-width:680px;margin:auto;background:#fff;border:1px solid var(--line);border-radius:15px;padding:15px;box-shadow:0 10px 35px rgba(24,45,35,.18);display:flex;gap:14px;align-items:center;justify-content:space-between}.consent p{margin:0;color:var(--muted);font-size:13px}.consent-actions{display:flex;gap:7px;flex-shrink:0}.consent-actions button{border:0;border-radius:9px;padding:9px 12px;font-weight:700}.consent-yes{background:var(--green);color:#fff}.consent-no{background:#edf1ed;color:var(--ink)}@media(max-width:540px){.consent{align-items:stretch;flex-direction:column}.consent-actions button{flex:1}}
-@media(max-width:700px){.shell{padding:15px 13px 40px}.hero{margin:34px auto 24px}.cards{grid-template-columns:1fr;margin:24px auto}.choice{padding:21px}.appgrid{grid-template-columns:1fr}.side{display:flex;overflow:auto;gap:4px;padding:8px}.side button{width:auto;white-space:nowrap}.content{padding:17px}.tiles{grid-template-columns:1fr 1fr}.options{grid-template-columns:1fr}.tag{display:none}}
-</style></head>
-<body><div class="shell">
-<header class="top"><div class="brand"><div class="logo">M</div>MansDarbs</div><span class="tag">Latvijai · prototips 0.1</span></header>
-<main id="home">
-<section class="hero"><div class="eyebrow">Sāc vienkārši. Strādā oficiāli.</div><h1>Sakārto savu darbu,<br>nevis cīnies ar papīriem.</h1><p>Praktisks palīgs, kas izskaidro nākamos soļus, palīdz saprast nodokļus un sakārtot ikdienas uzskaiti.</p></section>
-<section class="cards">
-<button class="choice" onclick="startFlow('new')"><div class="ico">↗</div><h2>Vēlos sākt strādāt oficiāli</h2><p>Vēl neesmu reģistrējis saimniecisko darbību vai tikai plānoju sākt.</p><span class="arrow">Noskaidrot, kā sākt →</span></button>
-<button class="choice" onclick="startFlow('existing')"><div class="ico">✓</div><h2>Jau esmu pašnodarbinātais</h2><p>Esmu reģistrēts, bet vēlos vieglāk pārvaldīt ienākumus, izdevumus un nodokļus.</p><span class="arrow">Atvērt manu darba vidi →</span></button>
+:root{--bg:#f5f7f4;--paper:#fff;--ink:#17231f;--muted:#64716b;--line:#e1e8e2;--green:#176b50;--green-dark:#10543e;--pale:#e8f3ec;--shadow:0 14px 40px rgba(24,45,35,.07)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}button,input,select{font:inherit}button,a{ -webkit-tap-highlight-color:transparent}a{color:var(--green);font-weight:700}.shell{max-width:1100px;margin:auto;padding:20px 22px 60px}.top{display:flex;align-items:center;justify-content:space-between;gap:16px}.brand{display:flex;align-items:center;gap:10px;font-size:20px;font-weight:850;letter-spacing:-.5px;border:0;background:transparent;color:inherit;padding:0;cursor:pointer}.logo{width:39px;height:39px;border-radius:13px;background:var(--green);color:#fff;display:grid;place-items:center;font-weight:900}.topnote{font-size:13px;color:var(--muted)}.hero{max-width:790px;text-align:center;margin:75px auto 45px}.eyebrow{font-size:12px;color:var(--green);font-weight:850;letter-spacing:1.2px;text-transform:uppercase}.hero h1{font-size:clamp(36px,6vw,62px);line-height:1.04;letter-spacing:-2.2px;margin:15px 0 18px}.hero p{font-size:18px;color:var(--muted);max-width:650px;margin:0 auto}.english-tagline{display:none}.hero:has(.english-tagline) .english-tagline{font-size:18px;color:var(--green);font-weight:750;margin:12px auto 0}html[lang="en"] .english-tagline{display:block}@media(max-width:680px){html[lang="en"] .hero .english-tagline{font-size:15px;margin-top:9px}}.actions{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:28px}.btn{border:0;border-radius:12px;padding:14px 20px;font-weight:800;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:8px;cursor:pointer}.primary{background:var(--green);color:white}.primary:hover{background:var(--green-dark)}.secondary{background:#e9efea;color:var(--ink)}.textlink{font-weight:750;text-decoration:none}.trust{display:flex;justify-content:center;gap:20px;flex-wrap:wrap;color:var(--muted);font-size:13px;margin-top:23px}.trust span:before{content:"✓";color:var(--green);font-weight:900;margin-right:7px}.section{max-width:900px;margin:0 auto 22px}.sectionhead{text-align:center;margin:0 auto 20px;max-width:650px}.sectionhead h2{font-size:clamp(25px,4vw,34px);letter-spacing:-.8px;margin:5px 0}.sectionhead p{color:var(--muted);margin:0}.cards{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}.card{background:var(--paper);border:1px solid var(--line);border-radius:19px;padding:24px;box-shadow:var(--shadow)}.card h3{font-size:20px;margin:0 0 7px}.card p{color:var(--muted);margin:0 0 17px}.icon{width:44px;height:44px;border-radius:14px;background:var(--pale);display:grid;place-items:center;font-size:22px;margin-bottom:15px}.guide{display:block;max-width:900px;max-height:0;overflow:hidden;visibility:hidden;opacity:0;transform:translateY(-8px);background:white;border:1px solid transparent;border-radius:20px;padding:0 clamp(20px,4vw,34px);box-shadow:none;margin:0 auto;transition:max-height .55s ease,opacity .35s ease,transform .35s ease,padding .35s ease,margin .35s ease,border-color .35s ease,box-shadow .35s ease}.guide.open{max-height:6000px;visibility:visible;opacity:1;transform:translateY(0);padding:clamp(20px,4vw,34px);margin:18px auto 28px;border-color:var(--line);box-shadow:var(--shadow)}.guideToggle span{display:inline-block;transition:transform .3s ease}.guideToggle[aria-expanded="true"] span{transform:rotate(180deg)}@media(prefers-reduced-motion:reduce){.guide{transition:none}.guideToggle span{transition:none}}.guide h2{font-size:clamp(26px,4vw,36px);letter-spacing:-1px;margin:5px 0 8px}.guideintro{color:var(--muted);margin:0 0 22px}.steps{display:grid;gap:12px}.step{display:flex;gap:14px;border:1px solid var(--line);border-radius:15px;padding:16px}.num{flex:0 0 32px;height:32px;border-radius:11px;background:var(--pale);color:var(--green);font-weight:900;display:grid;place-items:center}.step h3{margin:0 0 4px;font-size:17px}.step p{margin:0;color:var(--muted);font-size:14px}.step a{display:inline-block;margin-top:9px}.callout{background:#edf5ef;border-radius:15px;padding:17px;margin-top:18px}.callout strong{display:block;margin-bottom:4px}.callout p{margin:0;color:#4c6256;font-size:14px}.calculator-choices{margin-top:22px;gap:16px}
+.calculator-choice{appearance:none;text-align:left;color:var(--ink);font:inherit;cursor:pointer;min-height:205px;display:flex;flex-direction:column;align-items:flex-start;transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease}
+.calculator-choice:hover{transform:translateY(-3px);border-color:#9bbbaa;box-shadow:0 16px 34px rgba(24,45,35,.11)}
+.calc-icon{width:48px;height:48px;border-radius:15px;background:var(--pale);color:var(--green);display:grid;place-items:center;font-size:25px;font-weight:850;margin-bottom:15px}
+.calc-choice-title{font-size:21px;font-weight:850;line-height:1.25}
+.calc-choice-copy{font-size:14px;color:var(--muted);margin-top:7px}
+.calc-choice-link{margin-top:auto;padding-top:18px;color:var(--green);font-size:14px;font-weight:850}
+.calculator-info{margin-top:18px}
+.calculator-panel{display:none}
+.calculator-panel.active{display:block}
+.calculator-back{border:0;background:#edf3ee;color:var(--green);font-weight:800;border-radius:10px;padding:10px 13px;margin:0 0 22px;cursor:pointer}
+.accounting-options{grid-template-columns:repeat(3,minmax(0,1fr))}.accounting-options .card{display:flex;flex-direction:column;align-items:flex-start}.accounting-options .card .btn{margin-top:auto}@media(max-width:820px){.accounting-options{grid-template-columns:1fr}}@media(max-width:680px){.calculator-choices{grid-template-columns:1fr}.calculator-choice{min-height:165px;padding:19px}.calc-icon{width:42px;height:42px;margin-bottom:10px}.calc-choice-title{font-size:19px}}
+.tool{max-width:900px;margin:28px auto;background:white;border:1px solid var(--line);border-radius:20px;padding:clamp(20px,4vw,32px);box-shadow:var(--shadow)}.tool h2{font-size:27px;letter-spacing:-.7px;margin:4px 0}.muted{color:var(--muted)}.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin-top:20px}.field label{display:block;font-weight:750;font-size:14px;margin-bottom:6px}.field input,.field select{width:100%;border:1px solid #d5ded7;border-radius:11px;padding:12px;background:#fff;color:var(--ink)}.field.full{grid-column:1/-1}.optional{display:flex;align-items:center;gap:9px;color:var(--muted);font-size:14px;margin-top:15px}.optional input{width:17px;height:17px;accent-color:var(--green)}.records{margin-top:22px}.record{display:flex;justify-content:space-between;gap:12px;border-top:1px solid var(--line);padding:12px 0}.record small{display:block;color:var(--muted)}.amount{font-weight:850;white-space:nowrap}.empty{padding:17px;border-radius:12px;background:#f5f7f4;color:var(--muted);font-size:14px;margin-top:16px}.privacy{font-size:12px;color:var(--muted);margin-top:13px}.view{display:none}.view.active{display:block}.nav{display:flex;gap:8px;align-items:center;margin:18px 0 8px;padding:7px;background:#e9efea;border-radius:14px;width:max-content;max-width:100%}.nav button{border:0;background:transparent;color:var(--muted);font-weight:800;padding:10px 16px;border-radius:10px;cursor:pointer}.nav button[aria-current="page"]{background:#fff;color:var(--green);box-shadow:0 2px 8px rgba(24,45,35,.07)}.footer{max-width:900px;text-align:center;margin:35px auto 0;color:#849089;font-size:12px}.hidden{display:none!important}
+.tax-warning{margin:14px 0;padding:13px 15px;border:2px solid #d97706;border-radius:13px;background:#fff3df;color:#7c2d12;font-weight:750;font-size:14px;animation:taxPulse 1.25s ease-in-out infinite;box-shadow:0 0 0 0 rgba(217,119,6,.25)}.tax-warning strong{display:block;margin-bottom:3px}.tax-warning small{display:block;font-weight:500;color:#78350f;margin-top:4px}@keyframes taxPulse{0%,100%{border-color:#d97706;background:#fff3df;box-shadow:0 0 0 0 rgba(217,119,6,.16)}50%{border-color:#dc2626;background:#fee2e2;box-shadow:0 0 0 5px rgba(220,38,38,.10)}}@media(prefers-reduced-motion:reduce){.tax-warning{animation:none}}
+.shell.home-screen{min-height:100vh;min-height:100svh;display:flex;flex-direction:column;padding-bottom:24px}
+.shell.home-screen main{flex:1;min-height:auto;display:block;overflow:visible}
+.shell.home-screen #homeView{width:100%;min-height:auto;display:flex;flex-direction:column;justify-content:center;overflow:visible}
+.shell.home-screen .hero{margin:clamp(14px,3vh,34px) auto clamp(14px,3vh,30px)}
+.shell.home-screen .hero h1{font-size:clamp(40px,6vw,62px);letter-spacing:-2.2px;margin:15px 0 18px}
+.shell.home-screen .hero p{font-size:clamp(14px,1.6vw,17px)}
+.india-founder-note{display:none;max-width:620px;margin:14px auto 0;padding:12px 15px;border:1px solid #cfe0d4;border-radius:14px;background:#f0f7f1;text-align:left;font-size:13px;line-height:1.4}.india-founder-note strong,.india-founder-note span{display:block}.india-founder-note strong{color:var(--green);font-size:14px;margin-bottom:3px}.india-founder-note span{color:var(--muted)}.india-founder-note button{margin-top:7px;padding:0;font-size:13px}@media(max-width:680px){html[lang="en"] .india-founder-note{margin:10px auto 0;padding:9px 11px;font-size:12px}html[lang="en"] .india-founder-note strong{font-size:13px}}html[lang="en"] .india-founder-note{display:block}
+.shell.home-screen .actions{margin-top:18px}
+.shell.home-screen .section{margin:0 auto;width:100%}
+.shell.home-screen .sectionhead{margin-bottom:12px}
+.shell.home-screen .sectionhead h2{font-size:clamp(20px,3vw,27px)}
+.shell.home-screen .card{padding:clamp(14px,2vw,21px)}
+.shell.home-screen .card h3{font-size:17px}
+.shell.home-screen .card p{font-size:14px;margin-bottom:10px}
+.shell.home-screen .icon{width:36px;height:36px;font-size:18px;margin-bottom:9px}
+.shell.home-screen .footer{display:none}
+.shell.home-screen #homeView.guide-mode{justify-content:flex-start}
+.shell.home-screen #homeView.guide-mode .hero,.shell.home-screen #homeView.guide-mode .section{display:none}
+.shell.home-screen #homeView.guide-mode .guide.open{display:block;overflow:visible;min-height:0;margin:10px auto;width:100%}
+.shell.home-screen .nav{margin:12px 0 8px}
+@media(max-width:680px){.shell.home-screen{padding:12px 10px}.shell.home-screen .top{flex:0 0 auto}.shell.home-screen main{min-height:0}.shell.home-screen #homeView{justify-content:center}.shell.home-screen .hero{margin:12px auto 18px}.shell.home-screen .hero h1{font-size:clamp(38px,10vw,48px);letter-spacing:-1.8px}.shell.home-screen .hero p{font-size:14px}.shell.home-screen .trust{font-size:11px;margin-top:12px}.shell.home-screen .sectionhead{margin-bottom:10px}.shell.home-screen .cards{grid-template-columns:1fr;gap:9px}.shell.home-screen .card{padding:12px 14px;display:grid;grid-template-columns:38px 1fr;column-gap:10px;align-items:center}.shell.home-screen .card .icon{grid-row:1/4;margin:0}.shell.home-screen .card h3{margin:0;font-size:15px}.shell.home-screen .card p{font-size:12px;margin:2px 0 6px}.shell.home-screen .card .btn{grid-column:2;width:100%;padding:9px 12px;font-size:13px}.shell.home-screen .nav{width:100%;justify-content:stretch}.shell.home-screen .nav button{flex:1;padding:9px 8px;font-size:13px}.shell.home-screen .guide{padding:16px}.shell.home-screen #homeView.guide-mode .guide.open{max-height:none;}}
+@media(max-height:700px) and (min-width:681px){.shell.home-screen .hero{margin:10px auto}.shell.home-screen .trust{margin-top:10px}.shell.home-screen .card{padding:12px}.shell.home-screen .icon{margin-bottom:6px}}
+@media(max-width:680px){.shell{padding:15px 13px 40px}.hero{margin:52px auto 38px}.hero h1{letter-spacing:-1.5px}.cards{grid-template-columns:1fr}.card{padding:20px}.formgrid{grid-template-columns:1fr}.field.full{grid-column:auto}.topnote{display:none}.trust{gap:9px 15px}.btn{width:100%}.actions{flex-direction:column}}
+
+/* Sākuma ekrāna informācijas sadaļas izvēršana */
+.shell.home-screen #homeView.guide-mode .hero{flex:0 0 auto;margin:clamp(8px,1.5vh,18px) auto 10px}
+.shell.home-screen #homeView.guide-mode .hero h1{font-size:clamp(27px,4vw,40px);margin:6px 0 8px}
+.shell.home-screen #homeView.guide-mode .hero p{font-size:14px}
+.shell.home-screen #homeView.guide-mode .hero .trust{display:none}
+.shell.home-screen #homeView.guide-mode .section{display:none}
+.shell.home-screen #homeView.guide-mode .guide.open{display:block;flex:0 0 auto;min-height:0;max-height:none;overflow:visible;margin:0 auto;width:100%}
+
+.invoice-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+.invoice-grid .field.full{grid-column:1/-1}
+.invoice-lines{width:100%;border-collapse:collapse;margin-top:12px;font-size:14px}
+.invoice-lines th,.invoice-lines td{padding:8px 5px;border-bottom:1px solid var(--line);text-align:left}
+.invoice-lines input{width:100%;min-width:0;border:1px solid #d5ded7;border-radius:8px;padding:9px}
+.invoice-lines .qty{width:72px}.invoice-lines .price{width:105px}
+.invoice-preview{background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px;margin-top:16px}
+.invoice-preview h3{margin:0 0 8px}.invoice-saved{border-top:1px solid var(--line);padding:12px 0;display:flex;justify-content:space-between;gap:12px}
+@media(max-width:680px){.invoice-grid{grid-template-columns:1fr}.invoice-grid .field.full{grid-column:auto}.invoice-lines{font-size:12px}.invoice-lines th,.invoice-lines td{padding:6px 3px}}
+@page{size:A4 portrait;margin:12mm}
+@media print{
+ html,body{width:100%!important;height:auto!important;margin:0!important;padding:0!important;background:#fff!important}
+ body.invoice-printing>*:not(#invoicePrint){display:none!important}
+ body.invoice-printing>#invoicePrint{display:block!important;position:static!important;width:100%!important;max-width:none!important;height:auto!important;min-height:0!important;margin:0!important;padding:0!important;overflow:visible!important;color:#111!important;background:#fff!important;font:11pt/1.35 Arial,sans-serif!important}
+ body.invoice-printing #invoicePrint *{visibility:visible!important;box-sizing:border-box}
+ body.invoice-printing #invoicePrint h1{font-size:20pt;margin:0 0 8px}
+ body.invoice-printing #invoicePrint h2{font-size:15pt;margin:8px 0}
+ body.invoice-printing #invoicePrint p{margin:5px 0}
+ body.invoice-printing #invoicePrint table{display:table!important;width:100%;border-collapse:collapse;margin-top:16px;page-break-inside:avoid;break-inside:avoid}
+ body.invoice-printing #invoicePrint thead{display:table-header-group!important}
+ body.invoice-printing #invoicePrint tbody{display:table-row-group!important}
+ body.invoice-printing #invoicePrint tr{display:table-row!important}
+ body.invoice-printing #invoicePrint th,body.invoice-printing #invoicePrint td{display:table-cell!important;border-bottom:1px solid #ddd;padding:7px 6px;text-align:left}
+ body.invoice-printing #invoicePrint .invoice-total{text-align:right;margin-top:16px;page-break-inside:avoid;break-inside:avoid}
+ body.invoice-printing #invoicePrint .invoice-footer{margin-top:28px;padding-top:9px;border-top:1px solid #ddd;text-align:center;font-size:9pt;color:#555;page-break-inside:avoid;break-inside:avoid}
+ body.invoice-printing #invoicePrint>div{page-break-inside:avoid;break-inside:avoid}
+}
+#invoicePrint{display:none}
+.top-right{display:flex;align-items:center;gap:14px}.lang-switch{display:flex;gap:2px;padding:3px;border:1px solid var(--line);border-radius:999px;background:#fff}.lang-switch button{border:0;background:transparent;color:var(--muted);font-size:12px;font-weight:850;padding:6px 9px;border-radius:999px;cursor:pointer}.lang-switch button[aria-pressed="true"]{background:var(--green);color:#fff}@media(max-width:680px){.top-right{gap:7px}.lang-switch button{padding:6px 8px}.topnote{display:none}}.start-route-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:18px 0}.start-route-choice{appearance:none;text-align:left;color:var(--ink);font:inherit;cursor:pointer;box-shadow:none;display:flex;flex-direction:column;gap:7px}.start-route-choice .icon{margin:0}.start-route-choice small{color:var(--muted)}.start-route-choice.active{border-color:var(--green);background:#f2f8f3;box-shadow:0 0 0 2px rgba(23,107,80,.12)}.start-route-panel{margin-top:16px}.start-route-panel h3{font-size:20px;margin:0 0 14px}.start-route-panel .steps{margin-top:12px}.start-route-panel .step{background:#fff}.start-route-panel .callout{margin-top:12px}@media(max-width:680px){.start-route-grid{grid-template-columns:1fr}.start-route-choice{min-height:0;padding:15px}.start-route-panel .step{padding:12px;gap:10px}}
+.md-context-help{position:fixed;z-index:50;left:14px;right:14px;bottom:14px;max-width:560px;margin:0 auto;padding:16px;background:#fff;border:1px solid #cbd9ce;border-radius:16px;box-shadow:0 12px 36px rgba(24,45,35,.18);display:flex;align-items:flex-start;justify-content:space-between;gap:14px}.md-context-help[hidden]{display:none}.md-context-help__copy{min-width:0}.md-context-help__title{display:block;font-size:15px;line-height:1.35}.md-context-help__message{font-size:13px;color:var(--muted);margin:6px 0 0}.md-context-help__actions{display:flex;flex-shrink:0;gap:7px;align-items:center}.md-context-help__actions button{border:0;border-radius:9px;padding:9px 11px;font:inherit;font-size:13px;font-weight:800;cursor:pointer}.md-context-help__accept{background:var(--green);color:#fff}.md-context-help__later{background:#edf1ed;color:var(--ink)}@media(max-width:540px){.md-context-help{display:block}.md-context-help__actions{margin-top:12px}.md-context-help__actions button{flex:1}.md-context-help__actions{display:flex}}
+.records-toolbar{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:18px 0 14px}.records-toolbar .field{min-width:0}.records-toolbar label{font-size:13px}.records-toolbar input,.records-toolbar select{width:100%;min-width:0;border:1px solid #d5ded7;border-radius:11px;padding:11px;background:#fff;color:var(--ink)}.record-entry{align-items:flex-start}.record-entry .record-main{min-width:0}.record-entry .record-meta{display:flex;flex-wrap:wrap;gap:5px 10px;color:var(--muted);font-size:13px}.record-category{display:inline-flex;align-items:center;border-radius:999px;background:#edf4ef;color:var(--green);padding:2px 8px;font-size:11px;font-weight:750}.record-actions{display:flex;gap:12px;margin-top:7px}.record-actions button{font-size:13px}.records-toolbar-count{font-size:12px;color:var(--muted);margin:0 0 8px}.records-actions{display:flex;gap:8px;flex-wrap:wrap}.records-actions .btn{width:auto}.records-help{font-size:12px;color:var(--muted);margin:8px 0 0}@media(max-width:680px){.records-toolbar{grid-template-columns:1fr 1fr;gap:9px}.records-toolbar .field:last-child{grid-column:1/-1}.records-actions{display:grid;grid-template-columns:1fr 1fr}.records-actions .btn{width:100%;padding:10px 9px;font-size:13px}.record-entry{gap:8px}.record-entry .amount{font-size:14px}}
+
+/* Uzskaites iekšējā izvēlne */
+.accounting-menu{display:flex;gap:7px;overflow-x:auto;overscroll-behavior-x:contain;padding:7px;margin:10px 0 16px;background:#e9efea;border:1px solid var(--line);border-radius:14px;scrollbar-width:thin}
+.accounting-menu button{flex:0 0 auto;border:0;border-radius:10px;background:transparent;color:var(--muted);font-weight:800;padding:10px 13px;cursor:pointer;white-space:nowrap}
+.accounting-menu button[aria-pressed="true"]{background:#fff;color:var(--green);box-shadow:0 2px 8px rgba(24,45,35,.08)}
+.accounting-menu button:focus-visible{outline:3px solid #8ab69c;outline-offset:2px}
+@media(max-width:680px){.accounting-menu{margin:8px 0 12px;padding:5px;gap:4px}.accounting-menu button{font-size:13px;padding:9px 11px}}
+</style>
+</head>
+<body>
+<div class="shell home-screen">
+<header class="top"><button type="button" class="brand" aria-label="Mansdarbs — uz sākumlapu" onclick="showView('home')"><span class="logo">M</span><span>Mansdarbs.eu</span></button><div class="top-right"><span class="topnote">Vienkāršākai saimnieciskajai darbībai Latvijā</span><div class="lang-switch" role="group" aria-label="Language"><button type="button" id="langLv" aria-pressed="true" onclick="setLanguage('lv')">LV</button><button type="button" id="langEn" aria-pressed="false" onclick="setLanguage('en')">EN</button></div></div></header>
+<nav class="nav" aria-label="Galvenā navigācija"><button type="button" data-view="home" aria-current="page" onclick="showView('home')">Sākums</button><button type="button" data-view="calculator" onclick="showView('calculator')">Aprēķini</button><button type="button" data-view="records" onclick="showAccounting()">Uzskaite</button></nav>
+
+<main>
+<div class="view active" id="homeView">
+<section class="hero">
+<div class="eyebrow">Vienkāršāks ikdienas palīgs pašnodarbinātajiem</div>
+<h1>Sāc savu darbību.<br>Vai sakārto jau esošo.</h1>
+<p class="english-tagline" lang="en">Start your business in Latvia — we’ll help you through every step.</p>
+<p>Neatkarīgi no tā, vai tikai plāno strādāt patstāvīgi vai jau pieņem pasūtījumus un kārto saimniecisko darbību — šeit atradīsi saprotamus skaidrojumus, aprēķinus un ikdienas uzskaites rīkus.</p>
+<div class="trust"><span>Bezmaksas sākums</span><span>Bez Mansdarbs konta</span><span>EDS dati paliek VID</span></div>
+<div class="india-founder-note" lang="en"><strong>New to Latvia? Start your business journey here.</strong><span>Already living here or planning to move? Follow a clear guide to residence, business registration and the permits your business may need.</span><button class="textlink" type="button" onclick="showGuide()">Explore the step-by-step guide →</button></div>
 </section>
-<div class="notice">Interaktīvs koncepts. Nodokļu aprēķini un juridiskie ieteikumi nav aktivizēti. Pirms palaišanas tie jāpārbauda pret aktuālajiem VID un normatīvo aktu avotiem.</div>
+
+<section class="section audience" aria-label="Izvēlies, ar ko sākt">
+<div class="cards">
+<article class="card">
+<div class="icon">🌱</div>
+<h3>Vēl tikai plāno sākt?</h3>
+<p>Uzzini, kā reģistrēt saimniecisko darbību, ko ņemt vērā un kādi ir pirmie soļi.</p>
+<button class="btn primary" type="button" onclick="showGuide()">Uzzināt, kā sākt</button>
+</article>
+<article class="card">
+<div class="icon">📊</div>
+<h3>Jau strādā patstāvīgi?</h3>
+<p>Seko ienākumiem un izdevumiem, veic aprēķinus un sakārto ikdienas uzskaiti.</p>
+<button class="btn secondary" type="button" onclick="showView('records')">Atvērt uzskaiti</button>
+</article>
+</div>
+</section>
+
+<section class="guide" id="guide">
+<div class="eyebrow">Tavs ceļš līdz oficiālam biznesam Latvijā</div>
+<h2>Sāc savu biznesu Latvijā — soli pa solim.</h2>
+<p class="guideintro">Izvēlies, vai jau dzīvo Latvijā vai plāno pārcelties. Mansdarbs palīdzēs saprast secību un atrast oficiālās iestādes. Reģistrāciju un atļaujas izsniedz valsts iestādes, nevis Mansdarbs.</p>
+<div class="start-route-grid">
+<button type="button" class="card start-route-choice active" id="routeResidentButton" onclick="selectStartRoute('resident')"><span class="icon">🇱🇻</span><strong>Es jau dzīvoju Latvijā</strong><small>Vēlos sākt legālu uzņēmējdarbību šeit.</small></button>
+<button type="button" class="card start-route-choice" id="routeMovingButton" onclick="selectStartRoute('moving')"><span class="icon">✈️</span><strong>Vēlos pārcelties uz Latviju</strong><small>Vēlos noskaidrot uzturēšanās un biznesa sākšanas iespējas.</small></button>
+</div>
+<div id="residentPath" class="start-route-panel">
+<h3>Ja jau dzīvo Latvijā</h3>
+<div class="steps">
+<div class="step"><div class="num">1</div><div><h3>Pārbaudi savas tiesības strādāt</h3><p>Ja neesi Latvijas vai ES/EEZ pilsonis, pārbaudi, vai tava vīza vai uzturēšanās atļauja ļauj veikt tieši šādu uzņēmējdarbību. Tiesības uzturēties Latvijā automātiski nenozīmē tiesības strādāt jebkurā veidā.</p><a href="https://www.pmlp.gov.lv/en/employment-foreigners" target="_blank" rel="noopener">PMLP: tiesības strādāt Latvijā ↗</a></div></div>
+<div class="step"><div class="num">2</div><div><h3>Izvēlies uzņēmējdarbības formu</h3><p>Vienkāršākai individuālai darbībai var derēt reģistrācija VID kā saimnieciskās darbības veicējam. Ja plāno restorānu, darbiniekus, partnerus vai lielāku risku, izvērtē SIA. Izvēle atkarīga no darbības un atbildības.</p><a href="https://www.vid.gov.lv/en/first-steps-entrepreneurs" target="_blank" rel="noopener">VID: pirmie soļi uzņēmējiem ↗</a> · <a href="https://apraksti.ur.gov.lv/en/register/registration-register-enterprises/summary" target="_blank" rel="noopener">Reģistrēt SIA ↗</a></div></div>
+<div class="step"><div class="num">3</div><div><h3>Reģistrē darbību un uzņēmuma adresi</h3><p>Pašnodarbinātie reģistrē saimniecisko darbību VID. SIA reģistrē Uzņēmumu reģistrā un nokārto nodokļu pienākumus VID. Ja veikals vai ēdināšanas vieta atrodas citā adresē, pārbaudi arī struktūrvienības reģistrāciju.</p><a href="https://www.vid.gov.lv/en/self-employed-persons-individual-entrepreneurs" target="_blank" rel="noopener">VID: saimnieciskās darbības reģistrācija ↗</a> · <a href="https://www.vid.gov.lv/lv/strukturvienibas-registracija" target="_blank" rel="noopener">VID: struktūrvienības reģistrācija ↗</a></div></div>
+<div class="step"><div class="num">4</div><div><h3>Sakārto nozarei vajadzīgās atļaujas</h3><p>Prasības atšķiras pēc tā, ko pārdosi vai kādu pakalpojumu sniegsi. Pārtikas uzņēmumam pirms darba sākšanas jāsakārto PVD reģistrācija vai atzīšana.</p></div></div>
+<div class="step"><div class="num">5</div><div><h3>Sagatavo nodokļus un ikdienas uzskaiti</h3><p>Pārbaudi PVN pienākumu, kases aparāta prasības, darbinieku reģistrāciju un grāmatvedību. Mansdarbs var palīdzēt ar ikdienas uzskaiti un orientējošiem aprēķiniem.</p><a href="https://www.vid.gov.lv/en/first-steps-entrepreneurs" target="_blank" rel="noopener">VID: uzņēmējdarbības kontrolsaraksts ↗</a></div></div>
+</div>
+</div>
+<div id="movingPath" class="start-route-panel hidden">
+<h3>Ja vēlies pārcelties uz Latviju</h3>
+<div class="callout"><strong>Svarīgi — vispirms noskaidro uzturēšanās pamatu.</strong><p>Uzņēmuma reģistrēšana pati par sevi nedod tiesības pārcelties uz Latviju vai šeit strādāt. Pirms maksā par telpām, dibini uzņēmumu vai pērc biļeti, pārbaudi savu konkrēto uzturēšanās un darba tiesību ceļu PMLP vai Latvijas pārstāvniecībā.</p></div>
+<div class="steps">
+<div class="step"><div class="num">1</div><div><h3>Noskaidro, kāds uzturēšanās pamats tev var būt piemērots</h3><p>Ja esi Indijas pilsonis, tu esi trešās valsts pilsonis. Noteikumi atšķiras atkarībā no tā, vai plāno būt pašnodarbinātais, individuālais komersants, uzņēmuma valdes loceklis vai darbinieks. Vienkārši kļūt par SIA īpašnieku nav tas pats, kas iegūt uzturēšanās atļauju.</p><a href="https://www.pmlp.gov.lv/en/residence-permit" target="_blank" rel="noopener">PMLP: uzturēšanās atļaujas ↗</a> · <a href="https://www.pmlp.gov.lv/en/employment-foreigners" target="_blank" rel="noopener">PMLP: ārzemnieku tiesības strādāt ↗</a></div></div>
+<div class="step"><div class="num">2</div><div><h3>Pārbaudi pašnodarbinātā vai uzņēmēja nosacījumus</h3><p>PMLP publicē atsevišķas prasības pašnodarbinātajiem un komersantiem. Pašnodarbinātā uzturēšanās atļaujas ceļā var būt vajadzīgs zvērināta revidenta apstiprināts biznesa plāns, pietiekami finanšu līdzekļi un citi dokumenti. Atļaujas termiņš un nosacījumi ir atkarīgi no konkrētā pamata.</p><a href="https://www.pmlp.gov.lv/en/self-employed-person" target="_blank" rel="noopener">PMLP: pašnodarbinātā persona ↗</a> · <a href="https://www.pmlp.gov.lv/en/businessman" target="_blank" rel="noopener">PMLP: individuālais komersants ↗</a></div></div>
+<div class="step"><div class="num">3</div><div><h3>Sazinies ar PMLP pirms uzņēmuma dibināšanas</h3><p>Nosūti savas ieceres aprakstu un pajautā, kurš uzturēšanās pamats attiecas uz tavu situāciju, kādi ir aktuālie finanšu kritēriji un kādi dokumenti jāiesniedz no Indijas. Nepaļaujies uz veciem blogiem vai vispārīgu padomu internetā.</p><a href="https://www.pmlp.gov.lv/en/residence-permit" target="_blank" rel="noopener">PMLP oficiālā informācija ↗</a></div></div>
+<div class="step"><div class="num">4</div><div><h3>Sagatavo biznesa plānu un budžetu</h3><p>Aprēķini telpu īri, aprīkojumu, preces, algas, nodokļus, atļaujas un dzīvošanas izmaksas. Ja tavs uzturēšanās pamats prasa biznesa plānu vai kapitālu, pārbaudi prasības ar PMLP un profesionālu konsultantu.</p></div></div>
+<div class="step"><div class="num">5</div><div><h3>Pēc atļaujas — reģistrē un sāc darbību</h3><p>Kad ir skaidrs, ka drīksti dzīvot un strādāt Latvijā, seko vietējai uzņēmuma reģistrācijai, VID, PVD un citām konkrētās nozares prasībām.</p><a href="https://www.vid.gov.lv/en/first-steps-entrepreneurs" target="_blank" rel="noopener">VID: pirmie soļi uzņēmējiem ↗</a></div></div>
+</div>
+</div>
+<div class="card" style="margin-top:18px">
+<div class="eyebrow">Izvēlies savu biznesa ideju</div>
+<h3>Kādu uzņēmumu vēlies sākt?</h3>
+<p>Izvēlies darbības veidu, lai redzētu papildu prasības.</p>
+<div class="field"><label for="startBusinessType">Biznesa veids</label><select id="startBusinessType" onchange="updateBusinessChecklist()"><option value="food">Kafejnīca, restorāns vai cits ēdināšanas uzņēmums</option><option value="shop">Veikals vai preču tirdzniecība</option><option value="service">Remonts, uzkopšana vai citi pakalpojumi</option><option value="other">Cits biznesa veids</option></select></div>
+<div id="foodBusinessInfo" class="callout"><strong>Ja vēlies atvērt kafejnīcu, restorānu vai citu ēdināšanas uzņēmumu</strong><p>Tev būs jāatrod telpas, kuras drīkst izmantot šādai darbībai, jāsagatavo telpu plāns un dokumenti par tiesībām telpas izmantot, jāreģistrē pārtikas uzņēmums PVD un jāizpilda higiēnas prasības. Ēdiena gatavošanas uzņēmumam, kuram nav vajadzīga atzīšana, PVD veic pirmsreģistrācijas pārbaudi. PVD reģistrācijas process sākas pēc atbilstošu dokumentu iesniegšanas; nesāc ēdiena gatavošanu komerciālai pārdošanai, kamēr nav izpildītas visas prasības.</p><a href="https://www.pvd.gov.lv/en/services/registration-or-recognition-food-undertaking" target="_blank" rel="noopener">PVD: pārtikas uzņēmuma reģistrācija ↗</a> · <a href="https://www.pvd.gov.lv/lv/uznemuma-registracija" target="_blank" rel="noopener">PVD: telpas un pirmsreģistrācijas pārbaude ↗</a></div>
+<div id="otherBusinessInfo" class="callout hidden"><strong>Pārbaudi savas nozares noteikumus</strong><p>Veikalam, tirdzniecībai un pakalpojumiem var būt atšķirīgas prasības, piemēram, kases aparāts, licence, darba aizsardzība vai īpašas kvalifikācijas apliecinājums. Pārbaudi konkrēto darbības veidu VID un attiecīgajā uzraudzības iestādē, pirms sāc darbu.</p><a href="https://www.vid.gov.lv/en/first-steps-entrepreneurs" target="_blank" rel="noopener">VID: pirmie soļi uzņēmējiem ↗</a></div>
+</div>
+<div class="callout"><strong>Mansdarbs ir ceļvedis, nevis valsts iestāde.</strong><p>Prasības var atšķirties pēc pilsonības, uzturēšanās statusa, uzņēmējdarbības formas un nozares. Pirms svarīga lēmuma pārbaudi jaunāko informāciju pie VID, Uzņēmumu reģistra, PMLP un PVD. Mansdarbs neprasa tavu EDS paroli un neveic reģistrāciju tavā vietā.</p></div>
+</section>
+
+
+
+
+</div>
+
+
+<div class="view" id="siaView">
+<div class="actions" style="justify-content:flex-start;margin:10px 0"><span class="muted" style="font-size:13px">Uzskaites veids: <strong id="accountingModeLabelSia">Pašnodarbinātais</strong></span><button class="textlink" style="border:0;background:none;padding:0;cursor:pointer" onclick="changeAccountingMode()">Mainīt</button></div><section class="tool">
+<div class="eyebrow">Uzņēmumu grāmatvedība · SIA</div>
+<h2>SIA uzskaite</h2>
+<p class="muted">Sāc uzskaiti uzreiz. Uzņēmuma nosaukumu, reģistrācijas numuru, adresi un citus rekvizītus ievadīsi tikai tad, kad tie būs vajadzīgi, piemēram, izrakstot pirmo rēķinu.</p>
+<div id="siaWorkspace">
+<div id="siaCompanyInfo" class="empty" style="margin-top:12px">Uzņēmuma rekvizīti vēl nav ievadīti. Tie nav nepieciešami, lai sāktu uzskaiti.</div>
+<div class="cards" style="margin-top:16px">
+<div class="card" style="box-shadow:none"><small class="muted">Ieņēmumi bez PVN</small><div class="amount" id="siaIncome">0,00 €</div></div>
+<div class="card" style="box-shadow:none"><small class="muted">Izdevumi bez PVN</small><div class="amount" id="siaExpenses">0,00 €</div></div>
+<div class="card" style="box-shadow:none"><small class="muted">Rezultāts pirms nodokļiem</small><div class="amount" id="siaProfit">0,00 €</div></div>
+<div class="card" style="box-shadow:none"><small class="muted">PVN starpība</small><div class="amount" id="siaVatDue">0,00 €</div></div>
+</div>
+<div class="card" style="box-shadow:none;margin-top:18px">
+<h3>Reģistrēt darījumu</h3>
+<p class="muted" style="font-size:13px">Ievadītā summa ir bez PVN. PVN likmi izvēlies atbilstoši konkrētajam darījumam.</p>
+<div class="formgrid">
+<div class="field"><label for="siaTxKind">Darījuma veids</label><select id="siaTxKind" onchange="siaUpdateVatOptions()"><option value="income">Pārdošana / ieņēmumi</option><option value="expense">Pirkums / izdevumi</option></select></div>
+<div class="field"><label for="siaTxDate">Datums</label><input id="siaTxDate" type="date"></div>
+<div class="field"><label for="siaTxDescription">Darījuma apraksts</label><input id="siaTxDescription" maxlength="160" placeholder="Pakalpojums, prece vai izdevums"></div>
+<div class="field"><label for="siaTxAmount">Summa bez PVN (€)</label><input id="siaTxAmount" type="number" min="0.01" step="0.01" inputmode="decimal" placeholder="0,00"></div>
+<div class="field"><label for="siaTxVat">PVN likme</label><select id="siaTxVat"><option value="0">0%</option><option value="21">21%</option><option value="12">12%</option><option value="5">5%</option></select></div>
+<div class="field" id="siaExpenseAccountField"><label for="siaExpenseAccount">Izdevumu konts</label><select id="siaExpenseAccount"><option value="7210">7210 · Materiāli un preces</option><option value="7440">7440 · Pakalpojumi</option><option value="7550">7550 · Transporta izdevumi</option><option value="7610">7610 · Citi saimnieciskie izdevumi</option></select></div>
+</div>
+<div class="actions" style="justify-content:flex-start"><button class="btn primary" onclick="siaAddTransaction()">Pievienot darījumu</button></div>
+</div>
+<div class="card" style="box-shadow:none;margin-top:18px">
+<h3>Darījumu žurnāls</h3>
+<div id="siaTransactions" class="empty">Pagaidām darījumu nav.</div>
+</div>
+<div class="card" style="box-shadow:none;margin-top:18px">
+<h3>Grāmatojumu pārskats</h3>
+<p class="muted" style="font-size:13px">Katram darījumam tiek izveidots līdzsvarots debeta un kredīta ieraksts. Kontu numuri šajā prototipā ir sākotnēji piemēri.</p>
+<div id="siaJournal" class="empty">Pagaidām grāmatojumu nav.</div>
+</div>
+</div>
+<p class="privacy">Svarīgi: šī ir pirmā SIA funkcijas prototipa versija. Dati tiek glabāti tikai šajā pārlūkā (localStorage), nav piesaistīti kontam vai sinhronizēti ar grāmatvedi. Tā vēl nav pilnvērtīga vai juridiski pārbaudīta grāmatvedības sistēma; pirms reālas uzskaites jāievieš servera datubāze, lietotāju piekļuves tiesības, pilns kontu plāns, dokumentu piesaiste, labojumu/auditācijas žurnāls un normatīvo prasību pārbaude.</p>
+</section>
+</div>
+
+<div class="view" id="accountingChoiceView">
+<section class="tool">
+<div class="eyebrow">Uzskaite · sākuma izvēle</div>
+<h2>Kādu darbības veidu vēlies uzskaitīt?</h2>
+<p class="muted">Izvēlies vienu reizi. Mansdarbs turpmāk atvērs atbilstošo uzskaites vidi. Izvēli vēlāk varēsi mainīt.</p>
+<div class="cards accounting-options" style="margin-top:18px">
+<article class="card"><div class="icon">👤</div><h3>Pašnodarbinātais</h3><p>Ienākumu un izdevumu uzskaite, nodokļu aprēķini un rēķini.</p><button class="btn primary" onclick="setAccountingMode('self')">Izvēlēties pašnodarbināto</button></article>
+<article class="card"><div class="icon">🏢</div><h3>SIA</h3><p>Uzņēmuma darījumi, PVN pārskats un divkāršās grāmatvedības prototips.</p><button class="btn primary" onclick="setAccountingMode('sia')">Izvēlēties SIA</button></article>
+<article class="card"><div class="icon">🌾</div><h3>Zemnieku saimniecība (Z/S)</h3><p>Bezmaksas rēķinu izrakstīšana un saglabāšana. Z/S specifiska grāmatvedības uzskaite tiks pievienota atsevišķi.</p><button class="btn primary" onclick="setAccountingMode('zs')">Izvēlēties Z/S</button></article>
+</div>
+</section>
+</div>
+<div class="view" id="recordsView">
+<nav class="accounting-menu" aria-label="Uzskaites sadaļas">
+<button type="button" data-accounting-section="overview" aria-pressed="true" onclick="showAccountingSection('overview')">Pārskats</button>
+<button type="button" data-accounting-section="income" aria-pressed="false" onclick="showAccountingSection('income')">Ienākumi</button>
+<button type="button" data-accounting-section="expense" aria-pressed="false" onclick="showAccountingSection('expense')">Izdevumi</button>
+<button type="button" data-accounting-section="invoices" aria-pressed="false" onclick="showAccountingSection('invoices')">Rēķini</button>
+<button type="button" data-accounting-section="data" aria-pressed="false" onclick="showAccountingSection('data')">Datu eksports</button>
+</nav>
+<section class="tool" id="uzskaite"><div class="actions" style="justify-content:flex-start;margin:10px 0"><span class="muted" style="font-size:13px">Uzskaites veids: <strong id="accountingModeLabel">Pašnodarbinātais</strong></span><button class="textlink" style="border:0;background:none;padding:0;cursor:pointer" onclick="changeAccountingMode()">Mainīt</button></div>
+<div class="eyebrow">Bezmaksas rīks · bez konta</div>
+<h2>Vienkārša ienākumu un izdevumu uzskaite</h2>
+<p class="muted">Ievadi summu. Aprakstu vari atstāt tukšu. Nav jānorāda, kur, kam vai par ko saņēmi naudu.</p>
+<div class="formgrid">
+<div class="field"><label for="kind">Ieraksta veids</label><select id="kind" onchange="updateRecordCategories();updateIinWarning()"><option value="Ienākums">Ienākums</option><option value="Izdevums">Izdevums</option></select></div>
+<div class="field"><label for="amount">Summa (€)</label><input id="amount" type="number" min="0.01" step="0.01" inputmode="decimal" placeholder="0,00" oninput="updateIinWarning()" autocomplete="off"></div>
+<div class="field"><label for="date">Datums</label><input id="date" type="date"></div>
+<div class="field"><label for="category">Kategorija (nav obligāta)</label><select id="category"><option value="">Bez kategorijas</option></select></div>
+<div class="field full"><label for="note">Apraksts (nav obligāts)</label><input id="note" type="text" maxlength="120" placeholder="Piemēram, klienta darbs vai degviela"></div>
+</div>
+<div id="taxWarning" class="tax-warning" role="status" aria-live="polite" hidden></div>
+<div class="actions records-actions"><button class="btn primary" id="saveRecordButton" onclick="addRecord()">Pievienot ierakstu</button><button class="btn secondary hidden" id="cancelEditButton" onclick="cancelEdit()">Atcelt labošanu</button></div>
+<div class="records-actions" id="recordsDataActions" style="margin-top:10px"><button class="btn secondary" onclick="exportCsv()">Lejupielādēt CSV</button><button class="btn secondary" onclick="exportRecordsBackup()">Datu rezerves kopija</button><button class="btn secondary" onclick="document.getElementById('importRecordsFile').click()">Atjaunot kopiju</button><button class="btn secondary" onclick="clearRecords()">Dzēst visus ierakstus</button><input id="importRecordsFile" type="file" accept="application/json,.json" hidden onchange="importRecordsBackup(event)"></div>
+<p class="records-help">CSV paredzēts darbam izklājlapā. JSON rezerves kopija ļauj atjaunot ierakstus arī citā ierīcē.</p>
+<div class="records" id="records"><div class="empty">Pagaidām nav neviena ieraksta. Pievieno pirmo, kad esi gatavs.</div></div>
+<p class="privacy">Privātums: šī demonstrācijas versija datus saglabā tikai tavā pārlūkprogrammā šajā ierīcē. Tie netiek nosūtīti Mansdarbs serverim. Iztīrot pārlūka datus vai mainot ierīci, ieraksti var pazust. Šis rīks vēl nav oficiāls grāmatvedības reģistrs un neveic nodokļu aprēķinus.</p>
+</section>
+
+<section class="tool" id="invoiceTool">
+<div id="zsInvoiceHeader" class="actions" style="display:none;justify-content:space-between;margin:0 0 14px"><span class="muted" style="font-size:13px">Uzskaites veids: <strong>Zemnieku saimniecība (Z/S)</strong></span><button class="textlink" style="border:0;background:none;padding:0;cursor:pointer" onclick="changeAccountingMode()">Mainīt</button></div>
+<div class="eyebrow" id="invoiceEyebrow">Uzskaite · rēķini</div>
+<h2>Rēķina izveide</h2>
+<p class="muted">Aizpildi informāciju, saglabā rēķinu un izdrukā to vai saglabā PDF formātā. Rēķini tiek glabāti tikai šajā pārlūkā.</p>
+<div class="invoice-grid">
+<div class="field"><label for="invNumber">Rēķina numurs</label><input id="invNumber" maxlength="40"></div>
+<div class="field"><label for="invDate">Izrakstīšanas datums</label><input id="invDate" type="date"></div>
+<div class="field"><label for="invDue">Apmaksas termiņš</label><input id="invDue" type="date"></div>
+<div class="field"><label for="invCurrency">Valūta</label><select id="invCurrency"><option value="EUR">EUR (€)</option></select></div>
+<div class="field full"><strong>Rēķina izrakstītājs</strong></div>
+<div class="field"><label for="invSeller">Vārds, uzvārds / uzņēmums</label><input id="invSeller" placeholder="Tavs vārds vai uzņēmuma nosaukums"></div>
+<div class="field"><label for="invReg">Reģistrācijas numurs (ja attiecas)</label><input id="invReg" placeholder="Reģistrācijas numurs"></div>
+<div class="field"><label for="invAddress">Adrese</label><input id="invAddress" placeholder="Juridiskā vai deklarētā adrese"></div>
+<div class="field"><label for="invBank">Bankas konts (IBAN)</label><input id="invBank" placeholder="LV00 BANK 0000 0000 0000 0"></div>
+<div class="field"><label for="invEmail">E-pasts / tālrunis</label><input id="invEmail" placeholder="Kontakti (nav obligāti)"></div>
+<div class="field full"><strong>Rēķina saņēmējs</strong></div>
+<div class="field"><label for="invBuyer">Vārds, uzvārds / uzņēmums</label><input id="invBuyer" placeholder="Klienta vārds vai uzņēmuma nosaukums"></div>
+<div class="field"><label for="invBuyerReg">Reģistrācijas numurs (ja attiecas)</label><input id="invBuyerReg" placeholder="Reģistrācijas numurs"></div>
+<div class="field full"><label for="invBuyerAddress">Adrese</label><input id="invBuyerAddress" placeholder="Klienta adrese"></div>
+<div class="field full"><strong>Pakalpojums vai prece</strong></div>
+<div class="field full"><label for="invDescription">Nosaukums / apraksts</label><input id="invDescription" maxlength="180" placeholder="Piemēram, traktora remonta pakalpojums"></div>
+<div class="field"><label for="invQty">Daudzums</label><input id="invQty" type="number" min="0.01" step="0.01" value="1"></div>
+<div class="field"><label for="invPrice">Cena par vienību (€)</label><input id="invPrice" type="number" min="0" step="0.01" placeholder="0,00"></div>
+<div class="field full"><label><input id="invVat" type="checkbox" style="width:auto;margin-right:8px" onchange="updateInvoiceTotals()">Esmu PVN maksātājs — piemērot PVN</label></div>
+<div class="field" id="vatRateField" hidden><label for="invVatRate">PVN likme (%)</label><select id="invVatRate" onchange="updateInvoiceTotals()"><option value="21">21%</option><option value="12">12%</option><option value="5">5%</option><option value="0">0%</option></select></div>
+</div>
+<div class="empty" id="invoiceTotals">Kopā: 0,00 €</div>
+<div class="actions" style="justify-content:flex-start">
+<button class="btn primary" onclick="saveInvoice()">Saglabāt rēķinu</button>
+<button class="btn secondary" onclick="previewInvoice()">Priekšskatīt / drukāt</button>
+<button class="btn secondary" onclick="resetInvoiceForm()">Notīrīt formu</button>
+</div>
+<div id="savedInvoices" class="records"></div>
+<p class="privacy">Pirms izsūtīšanas pārbaudi rekvizītus, darījuma aprakstu, PVN piemērošanu un citus obligātos laukus atbilstoši konkrētajam darījumam. Ja neesi PVN maksātājs, PVN neatzīmē. Šis ir vienkāršs rēķina sagatavošanas rīks, nevis grāmatvedības vai juridiskās atbilstības pārbaude.</p>
+</section>
+<div id="invoicePrint"></div>
+
+</div>
 </main>
-<section id="flow" class="panel hidden"><div class="eyebrow" id="flowtag">SĀKUMA IZVĒRTĒJUMS</div><div class="progress"><span id="progress"></span></div><div id="flowbody"></div><div class="actions"><button class="btn secondary" onclick="prevStep()">Atpakaļ</button><button class="btn primary" id="next" onclick="nextStep()">Turpināt</button></div></section>
-<section id="workspace" class="hidden"><div class="eyebrow">TAVA DARBA VIDE</div><h1 style="font-size:clamp(28px,4vw,38px);letter-spacing:-1px;margin:7px 0">Viss svarīgais vienuviet.</h1><p class="muted">Pārskats un rīki ikdienas darbam. Demonstrācijas dati nav nodokļu aprēķins.</p><div class="appgrid">
-<nav class="side" id="nav"><button class="active" data-tab="overview">Pārskats</button><button data-tab="records">Ienākumi un izdevumi</button><button data-tab="tax">Nodokļi un termiņi</button><button data-tab="social">Sociālā aizsardzība</button><button data-tab="eds">VID / EDS palīgs</button><button data-tab="help">Palīdzība</button></nav><div class="content" id="tabcontent"></div></div></section>
-<div class="footer">MansDarbs · koncepts · apmeklējumu statistika tiek apkopota tikai ar piekrišanu · nekas netiek iesniegts VID</div></div>
-<div id="analyticsConsent" class="consent hidden" role="dialog" aria-label="Apmeklējumu statistikas izvēle"><p>Atļaut anonīmu apmeklējumu statistiku? Tā palīdz uzlabot Mansdarbs. Tiek skaitīti lapas skatījumi un aptuveni unikālie pārlūki; vārdi un e-pasti netiek vākti.</p><div class="consent-actions"><button class="consent-no" type="button" onclick="setAnalyticsConsent(false)">Noraidīt</button><button class="consent-yes" type="button" onclick="setAnalyticsConsent(true)">Atļaut</button></div></div>
+
+<div class="view" id="calculatorView">
+<section class="tool" id="calculatorOverview">
+<div class="eyebrow">Nodokļu palīgs · 2026</div>
+<h2>Ko vēlies aprēķināt?</h2>
+<p class="muted">Izvēlies sev vajadzīgo aprēķinu. Vispirms īsi iepazīsties ar pamatprincipu — detalizētās ievades tabulas atvērsies tikai tad, kad tās izvēlēsies.</p>
+<div class="cards calculator-choices">
+<button type="button" class="card calculator-choice" onclick="showCalculatorPanel('vsaoi')">
+<span class="calc-icon">％</span><span class="calc-choice-title">VSAOI aprēķins</span><span class="calc-choice-copy">Ceturkšņa sociālās iemaksas un pensiju apdrošināšana</span><span class="calc-choice-link">Atvērt aprēķinu <span aria-hidden="true">→</span></span>
+</button>
+<button type="button" class="card calculator-choice" onclick="showCalculatorPanel('iin')">
+<span class="calc-icon">€</span><span class="calc-choice-title">IIN prognoze</span><span class="calc-choice-copy">Gada ienākuma nodokļa aptuvenais aprēķins</span><span class="calc-choice-link">Atvērt aprēķinu <span aria-hidden="true">→</span></span>
+</button>
+</div>
+<div class="callout calculator-info"><strong>Īsumā par nodokļiem</strong><p>VSAOI ir sociālās apdrošināšanas iemaksas, bet IIN ir iedzīvotāju ienākuma nodoklis. Tie ir divi atšķirīgi aprēķini. VSAOI dati pēc aprēķina tiek izmantoti arī IIN prognozē, lai nebūtu viss jāievada atkārtoti.</p></div>
+</section>
+<section class="tool calculator-panel" id="nodokli">
+<button type="button" class="calculator-back" onclick="showCalculatorPanel('overview')">← Atpakaļ uz aprēķinu izvēli</button>
+<div class="eyebrow">Orientējošs aprēķins · 2026</div>
+<h2>VSAOI aprēķins par ceturksni</h2>
+<p class="muted">Ievadi katra mēneša peļņu — ieņēmumi mīnus ar saimniecisko darbību saistītie izdevumi. Aprēķins paredzēts vispārējā režīma pašnodarbinātajam, kuram piemēro standarta 31,07% likmi.</p>
+<div class="formgrid">
+<div class="field full"><label for="vsaoiQuarter">Ceturksnis</label><select id="vsaoiQuarter" onchange="loadVsaoiQuarter()"><option value="1">1. ceturksnis (janvāris–marts)</option><option value="2">2. ceturksnis (aprīlis–jūnijs)</option><option value="3">3. ceturksnis (jūlijs–septembris)</option><option value="4">4. ceturksnis (oktobris–decembris)</option></select><small class="muted">Katru ceturksni saglabā atsevišķi. IIN prognozē automātiski ieskaitīsies visi saglabātie ceturkšņi.</small></div>
+<div class="field full"><label for="contributionBase">Izvēlētais VSAOI objekts mēnesī (€)</label><input id="contributionBase" type="number" min="780" step="0.01" inputmode="decimal" value="780"><small class="muted">Vismaz 780 €. Vari izvēlēties lielāku summu, ja vēlies maksāt pilno VSAOI no lielākas peļņas daļas.</small></div>
+<div class="field"><label for="profit1">1. mēneša peļņa (€)</label><input id="profit1" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0,00"></div>
+<div class="field"><label for="profit2">2. mēneša peļņa (€)</label><input id="profit2" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0,00"></div>
+<div class="field"><label for="profit3">3. mēneša peļņa (€)</label><input id="profit3" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0,00"></div>
+</div>
+<div class="actions" style="justify-content:flex-start"><button class="btn primary" onclick="calculateVsaoi()">Aprēķināt VSAOI</button><button class="btn secondary" onclick="resetVsaoi()">Notīrīt</button></div>
+<div id="vsaoiResult" class="empty" aria-live="polite">Ievadi peļņu visiem trim ceturkšņa mēnešiem, lai redzētu orientējošo aprēķinu.</div>
+<div class="callout" style="margin-top:14px"><strong>Ja mēneša peļņa nepārsniedz 780 €</strong><p>VSAOI pensiju apdrošināšanai ir 10% no visas mēneša peļņas. Piemēram, ja peļņa ir 550 €, iemaksa ir 55 €. 550 € nav VSAOI slieksnis — tā ir 2026. gada IIN neapliekamā minimuma summa. Ja peļņa sasniedz vismaz 780 €, standarta gadījumā 31,07% maksā no izvēlētā VSAOI objekta (vismaz 780 €), bet 10% — no peļņas daļas virs šī objekta. No 2026. gada pašnodarbinātajiem vairs nepiemēro minimālo VSAOI piemaksu par nepietiekamiem ienākumiem. <a href="https://www.vid.gov.lv/lv/saimnieciskas-darbibas-veiceji" target="_blank" rel="noopener">VID skaidrojums par VSAOI ↗</a></p></div><p class="privacy">Aprēķins ir orientējošs un neņem vērā īpašos statusus un atšķirīgas likmes; EDS aprēķins ir noteicošais.</p>
+</section>
+
+<section class="tool calculator-panel" id="iin">
+<button type="button" class="calculator-back" onclick="showCalculatorPanel('overview')">← Atpakaļ uz aprēķinu izvēli</button>
+<div class="eyebrow">Orientējošs aprēķins · 2026</div>
+<h2>IIN prognoze par gadu</h2>
+<p class="muted">Aprēķins parāda, cik papildu IIN varētu radīt saimnieciskā darbība, ņemot vērā arī citus tavus gada apliekamos ienākumus.</p>
+<div class="formgrid">
+<div class="field"><label for="annualProfit">Saimnieciskās darbības peļņa gadā (€)</label><input id="annualProfit" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0,00" readonly><small class="muted">Automātiski no saglabātajiem VSAOI ceturkšņiem.</small></div>
+<div class="field"><label for="annualVsaoi">VSAOI IIN prognozei (€)</label><input id="annualVsaoi" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0,00" readonly><small class="muted">Automātiski no saglabātajiem ceturkšņu aprēķiniem. Pirms deklarācijas salīdzini ar faktiski samaksāto summu EDS.</small><small class="muted">Ievadi tikai to VSAOI summu, kas vēl nav iekļauta saimnieciskās darbības izdevumos.</small></div>
+<div class="field"><label for="otherTaxableIncome">Citi gada apliekamie ienākumi (€)</label><input id="otherTaxableIncome" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0,00"><small class="muted">Piemēram, darba alga pēc darba ņēmēja VSAOI, pirms neapliekamā minimuma un atvieglojumiem.</small></div>
+<div class="field"><label for="annualAllowance">Neapliekamais minimums gadā (€)</label><input id="annualAllowance" type="number" min="0" step="0.01" inputmode="decimal" value="6600"><small class="muted">2026. gadā līdz 6600 €. Ja tas jau izmantots citur, ievadi 0 vai neizmantoto daļu.</small></div>
+<div class="field full"><label for="otherDeductions">Citi atvieglojumi un attaisnotie izdevumi (€)</label><input id="otherDeductions" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0,00"><small class="muted">Ievadi tikai summu, ko vēlies ņemt vērā šajā aptuvenajā aprēķinā.</small></div>
+<div class="field full"><label><input id="minimumIinExempt" type="checkbox" style="width:auto;margin-right:8px">Man ir tiesības uz atbrīvojumu no minimālā 50 € IIN</label><small class="muted">Atzīmē, ja attiecīgajā gadā esi veicis VSAOI par sevi vai darbiniekiem, maksājis IIN, tas ir pirmais vai nākamais gads pēc reģistrācijas, vai gads, kurā darbību izbeidzi. Īpašie proporcionālie izņēmumi (bērna kopšana līdz 2 gadu vecumam un darbnespējas lapa B) šajā vienkāršotajā rīkā nav aprēķināti.</small></div>
+</div>
+<div class="actions" style="justify-content:flex-start"><button class="btn primary" onclick="calculateIin()">Aprēķināt IIN</button><button class="btn secondary" onclick="resetIin()">Notīrīt</button></div>
+<div id="iinResult" class="empty" aria-live="polite">Ievadi gada peļņu un, ja nepieciešams, arī citus ienākumus, lai aprēķinātu prognozi.</div>
+<p class="privacy">Aprēķins izmanto 2026. gada progresīvās IIN likmes: 25,5% līdz 105 300 € un 33% virs šīs summas, kā arī 3% papildu likmi ienākumu daļai virs 200 000 €. Pašnodarbinātā VSAOI, kas nav iekļautas izdevumos, tiek atskaitītas no saimnieciskās darbības peļņas. Neapliekamais minimums pēc noklusējuma ir 6600 € gadā. Ja IIN no saimnieciskās darbības nepārsniedz 50 € un nav piemērojams VID noteikts izņēmums, aprēķinā tiek piemērots minimālais 50 € IIN. Atzīmē atbrīvojumu tikai tad, ja atbilsti kādam no VID noteiktajiem nosacījumiem. Aprēķins neietver iepriekšējo gadu zaudējumus, pilnu individuālo atvieglojumu un attaisnoto izdevumu ierobežojumu izvērtējumu, kā arī īpašos proporcionālos izņēmumus. Rezultāts ir informatīvs, nevis VID aprēķins. <a href="https://www.vid.gov.lv/lv/media/1894/download?attachment=" target="_blank" rel="noopener">VID metodiskais materiāls par IIN no saimnieciskās darbības ↗</a> · <a href="https://www.vid.gov.lv/lv/iedzivotaju-ienakuma-nodokla-likmes" target="_blank" rel="noopener">VID IIN likmes ↗</a></p>
+</section>
+</div>
+
+<footer class="footer">Mansdarbs · Palīgs saimnieciskās darbības sākšanai un ikdienas uzskaitei · <a href="https://www.vid.gov.lv/" target="_blank" rel="noopener">VID oficiālā informācija</a><br>Apmeklējumu skaitam izmantots ārējs skaitītājs. Tas saņem tehniskos pieprasījuma datus; Mansdarbs tam nenosūta tavus ienākumu, izdevumu vai rēķinu datus.<br><details style="max-width:560px;margin:16px auto 0;text-align:left;font-size:12px;color:#89958e"><summary style="display:inline-block;cursor:pointer;color:var(--green);font-size:12px">♡ Atbalstīt Mansdarbs izstrādi</summary><div style="margin-top:9px;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:var(--surface);color:var(--muted);line-height:1.55"><strong style="color:var(--text)">Paldies, ka palīdzi Mansdarbs augt!</strong><p style="margin:6px 0">Mansdarbs pamatfunkcijas paliks bez maksas. Ja šis rīks tev noder, nākotnē varēsi brīvprātīgi atbalstīt tā uzturēšanu, serveru izmaksas un jaunu funkciju izstrādi.</p><p style="margin:6px 0">Atbalsta maksājumu rekvizīti un dokumentu noformēšanas kārtība tiks publicēta pēc juridiski korekta saņēmēja un uzskaites modeļa sakārtošanas. Līdz tam maksājumus neveic.</p><p style="margin:6px 0">Ja plāno maksāt no uzņēmuma konta, pirms pārskaitījuma saskaņo maksājuma pamatojumu un nodokļu uzskaiti ar savu grāmatvedi. Brīvprātīgs atbalsts automātiski nav atskaitāms uzņēmuma izdevums vai nodokļu ziņā atskaitāms ziedojums.</p></div></details><span style="display:inline-block;margin-top:12px;font-size:11px;color:#9aa49e">Jau esi reģistrējies? <button type="button" style="border:0;background:none;padding:0;color:var(--green);text-decoration:underline;cursor:pointer;font:inherit" onclick="showView('records')">Atvērt uzskaiti</button> · <button type="button" style="border:0;background:none;padding:0;color:var(--green);text-decoration:underline;cursor:pointer;font:inherit" onclick="showView('calculator')">Aprēķini</button></span></footer>
+</div>
 <script>
-const $=id=>document.getElementById(id);let route='new',step=0,answers={activity:'Remontdarbi',status:'',income:'',payments:''};
-const steps=[
-{title:'Ar ko tu nodarbosies?',desc:'Izvēlies tuvāko variantu. Vēlāk to varēsi precizēt.',key:'activity',opts:['Remontdarbi','Influenceru pakalpojumi','Reklāmas satura veidošana','Frizieru pakalpojumi','3D druka','Rokdarbu, rotu un aksesuāru tirdzniecība','Fotografēšana un video filmēšana','Šūšana un apģērbu labošana']},
-{title:()=>route==='new'?'Kā tu šobrīd strādā?':'Kāds nodokļu režīms tev šobrīd ir reģistrēts?',desc:()=>route==='new'?'Tas palīdzēs noteikt pareizo nākamo soli.':'Ja nezini vai neesi pārliecināts, droši izvēlies pēdējo variantu.',key:'status',opts:()=>route==='new'?['Vēl tikai plānoju sākt','Jau sniedzu pakalpojumus, bet neesmu reģistrēts']:['Vispārējais nodokļu režīms','Mikrouzņēmumu nodoklis (MUN)','Nezinu / vēlos pārbaudīt']},
-{title:'Kādi ir aptuvenie mēneša ieņēmumi?',desc:'Aptuvenā summa pirms izdevumu atskaitīšanas. Tā nav deklarācija.',key:'income',opts:['Līdz 300 €','300–780 €','780–1500 €','1500–3000 €','Vairāk par 3000 €','Vēl nezinu']},
-{title:'Kā klienti parasti maksā?',desc:'Maksājuma veids var ietekmēt dokumentu un kases aparāta prasības. Tās jāizvērtē konkrētajai situācijai.',key:'payments',opts:['Ar bankas pārskaitījumu','Skaidrā naudā','Ar karti','Skaidrā naudā un ar pārskaitījumu','Vēl nezinu']}
-];
-let popularActivities=[];
-function escapeHtml(value){return String(value).replace(/[&<>\"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',\"'\":'&#39;'}[ch]))}
-function addCustomActivity(){let el=$('customActivity'),name=(el.value||'').trim().replace(/\\s+/g,' ');if(name.length<2){el.focus();return}if(!popularActivities.includes(name)&&!steps[0].opts.includes(name))popularActivities.push(name);answers.activity=name;renderStep();let buttons=$('flowbody').querySelectorAll('.opt');buttons.forEach(b=>{if(b.dataset.value===name)b.classList.add('selected')});$('next').disabled=false;$('next').style.opacity='1'}
-fetch('/api/activity').then(r=>r.ok?r.json():null).then(data=>{if(data&&Array.isArray(data.popular)){popularActivities=data.popular.map(x=>x.name);if(step===0&&$('flow')&&!$('flow').classList.contains('hidden'))renderStep()}}).catch(()=>{});
-function startFlow(r){route=r;step=0;answers={activity:'',status:'',income:'',payments:''};$('home').classList.add('hidden');$('workspace').classList.add('hidden');$('flow').classList.remove('hidden');renderStep()}
-function renderStep(){let s=steps[step],title=typeof s.title==='function'?s.title():s.title,desc=typeof s.desc==='function'?s.desc():s.desc,opts=typeof s.opts==='function'?s.opts():s.opts;if(s.key==='activity')opts=[...new Set([...opts,...popularActivities])];$('flowtag').textContent=route==='new'?'CEĻŠ: SĀKT OFICIĀLI':'CEĻŠ: ESOŠS PAŠNODARBINĀTAIS';$('progress').style.width=((step+1)/steps.length*100)+'%';$('flowbody').innerHTML=`<h1>${title}</h1><p class="sub">${desc}</p><div class="options">${opts.map(o=>`<button class="opt ${answers[s.key]===o?'selected':''}" data-value="${escapeHtml(o)}" onclick="choose('${s.key}',this.dataset.value,this)">${escapeHtml(o)}</button>`).join('')}</div>${s.key==='activity'?'<div class="custom-activity"><label for="customActivity">Neatrodi savu darbības veidu?</label><div style="display:flex;gap:8px;margin-top:8px"><input id="customActivity" maxlength="80" placeholder="Ieraksti savu darbības veidu" style="min-width:0;flex:1"><button class="btn secondary" type="button" onclick="addCustomActivity()">Pievienot</button></div><p class="muted" style="margin-top:7px">Pievienotais variants uzreiz būs izvēlams tev. Kopējā sarakstā tas nonāks, kad tas būs izvēlēts vismaz 5 reizes.</p></div>':''}`;$('next').textContent=step===steps.length-1?'Parādīt manus nākamos soļus':'Turpināt';$('next').disabled=!answers[s.key];$('next').style.opacity=$('next').disabled?'.45':'1'}
-function choose(k,v,el){answers[k]=v;el.parentElement.querySelectorAll('.opt').forEach(x=>x.classList.remove('selected'));el.classList.add('selected');$('next').disabled=false;$('next').style.opacity='1'}
-function prevStep(){if(step){step--;renderStep()}else{$('flow').classList.add('hidden');$('home').classList.remove('hidden')}}
-function nextStep(){if(step===0&&answers.activity){fetch('/api/activity',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:answers.activity})}).then(r=>r.ok?r.json():null).then(data=>{if(data&&Array.isArray(data.popular))popularActivities=data.popular.map(x=>x.name)}).catch(()=>{})}if(step<steps.length-1){step++;renderStep()}else showResult()}
-function showResult(){let fresh=route==='new'&&(answers.status.includes('plānoju')||answers.status.includes('neesmu reģistrēts'));$('flow').classList.add('hidden');$('workspace').classList.remove('hidden');$('tabcontent').innerHTML=`<h2>${fresh?'Tavs sākuma plāns':'Tavs darba pārskats'}</h2><p class="muted">Balstīts uz tavām atbildēm. Šis ir orientējošs ceļvedis, nevis juridisks slēdziens.</p><div class="tiles"><div class="tile"><span>Darbības veids</span><b style="font-size:16px">${escapeHtml(answers.activity)}</b></div><div class="tile"><span>Ieņēmumu līmenis</span><b style="font-size:17px">${answers.income}</b></div><div class="tile"><span>Maksājumi</span><b style="font-size:15px">${answers.payments}</b></div></div><div class="notice" style="margin:15px 0">Pirms konkrēta nodokļu režīma ieteikšanas jānoskaidro arī izdevumi, klientu veids, pakalpojuma sniegšanas vieta, PVN statuss un citi ienākumi.</div><h3>Nākamie soļi</h3><div class="steps"><div class="step"><div class="num">1</div><div><b>${fresh?'Pārbaudi, kā reģistrēt saimniecisko darbību':'Pārbaudi savus reģistrācijas datus'}</b><p>VID EDS pārbaudi reģistrācijas statusu, darbības veidu un NACE kodu.</p></div></div><div class="step"><div class="num">2</div><div><b>Salīdzini piemērojamos nodokļu režīmus</b><p>Izvēle atkarīga no darbības modeļa, izdevumiem un citiem apstākļiem.</p></div></div><div class="step"><div class="num">3</div><div><b>Noskaidro maksājumu dokumentu prasības</b><p>Skaidras naudas, karšu un bankas maksājumu prasības jāizvērtē atsevišķi.</p></div></div><div class="step"><div class="num">4</div><div><b>Sāc uzskaitīt darījumus</b><p>Reģistrē ieņēmumus un ar darbību saistītos izdevumus, saglabājot pamatojošos dokumentus.</p></div></div></div><div class="actions"><button class="btn secondary" onclick="resetApp()">Sākt no jauna</button><button class="btn primary" onclick="openTab('records')">Atvērt uzskaiti →</button></div>`}
-const tabData={
-overview:`<h2>Pārskats</h2><p class="muted">Tavas darbības galvenie rādītāji vienā skatā.</p><div class="tiles"><div class="tile"><span>Ieņēmumi šomēnes</span><b>0,00 €</b></div><div class="tile"><span>Izdevumi šomēnes</span><b>0,00 €</b></div><div class="tile"><span>Atlikums pirms nodokļiem</span><b>—</b></div></div><div class="rowline"><span>Uzskaites ieraksti</span><span class="pill good">Gatavs sākt</span></div><div class="rowline"><span>Nākamais solis</span><b>Pievieno pirmo darījumu</b></div><p class="muted">Pēc darījumu ievades šeit būs kopsavilkums. Nodokļu aprēķini tiks aktivizēti tikai pēc juridiskās loģikas pārbaudes.</p>`,
-records:`<h2>Ienākumi un izdevumi</h2><p class="muted">Vienkārša darījumu uzskaite. Ieraksti šajā demonstrācijā saglabājas tikai atvērtās lapas sesijā.</p><div class="field"><label>Darījuma veids</label><select id="kind"><option>Ieņēmums</option><option>Izdevums</option></select></div><div class="field"><label>Apraksts</label><input id="desc" placeholder="Piemēram, klienta automašīnas remonts"></div><div class="field"><label>Summa (€)</label><input id="amount" type="number" min="0" step=".01" placeholder="0,00"></div><div class="field"><label>Maksājuma veids</label><select id="pay"><option>Bankas pārskaitījums</option><option>Skaidrā naudā</option><option>Kartē</option></select></div><button class="btn primary" onclick="addRecord()">Pievienot darījumu</button><div id="recordlist" style="margin-top:15px"></div>`,
-tax:`<h2>Nodokļi un termiņi</h2><p class="muted">Šeit būs nodokļu kalendārs, aprēķina pamatojums un summa, ko rezervēt maksājumiem.</p><div class="notice" style="margin:15px 0">Aprēķini vēl nav aktivizēti. Jāpārbauda aktuālās likmes, sliekšņi, izņēmumi, režīmi un deklarēšanas termiņi.</div><div class="rowline"><span>Izvēlētais nodokļu režīms</span><span class="pill warn">Jāprecizē</span></div><div class="rowline"><span>Nākamais deklarācijas termiņš</span><span class="pill">Nav noteikts</span></div><div class="rowline"><span>Nodokļu rezerve</span><b>—</b></div><h3>Plānotās izmaiņas</h3><p class="muted">VID 2026. gada oktobra pārskatā norādīts, ka iesācēju MUN režīms mazajai saimnieciskajai darbībai paredzēts no 2027. gada 1. aprīļa. Tas nav jāuzrāda kā šobrīd pieejama izvēle. Pirms ieviešanas jāpārbauda spēkā stāšanās noteikumi un kritēriji.</p><a href="https://www.vid.gov.lv/lv/jaunums/parskats-par-nodoklu-normativajiem-aktiem-2026-gada-oktobri" target="_blank" rel="noopener">VID: 2026. gada oktobra normatīvo aktu pārskats ↗</a>`,
-social:`<h2>Sociālā aizsardzība</h2><p class="muted">Parādi, kā faktiskās sociālās iemaksas un apdrošināšanas veids ietekmē tiesības.</p><div class="notice" style="margin:15px 0">Reģistrēšanās pati par sevi negarantē visas sociālās garantijas. Tās ir atkarīgas no faktiskajām iemaksām, apdrošināšanas veida un likuma nosacījumiem.</div><div class="rowline"><span>Pensiju apdrošināšana</span><span class="pill">Jāpārbauda iemaksas</span></div><div class="rowline"><span>Invaliditātes, slimības un maternitātes apdrošināšana</span><span class="pill">Atkarīgs no statusa</span></div><div class="rowline"><span>Bezdarba apdrošināšana</span><span class="pill">Jāpārbauda nosacījumi</span></div>`,
-eds:`<h2>VID / EDS palīgs</h2><p class="muted">Soli pa solim norādes, ko sagatavot un kur EDS veikt darbības.</p><div class="steps"><div class="step"><div class="num">1</div><div><b>Pieslēdzies VID EDS</b><p>Atver oficiālo VID EDS vietni un pārbaudi savu profilu.</p></div></div><div class="step"><div class="num">2</div><div><b>Pārbaudi reģistrēto darbību</b><p>Pārliecinies par darbības veidu, NACE kodu un nodokļu režīmu.</p></div></div><div class="step"><div class="num">3</div><div><b>Sagatavo uzskaites datus</b><p>Šis prototips nav savienots ar EDS un neko neiesniedz.</p></div></div></div><p><a href="https://eds.vid.gov.lv/" target="_blank" rel="noopener">Atvērt VID EDS ↗</a></p>`,
-help:`<h2>Palīdzība un oficiālie avoti</h2><p class="muted">Jautājumi vienkāršā valodā. Juridiskās atbildes jāatjauno, mainoties VID skaidrojumiem un normatīvajiem aktiem.</p><div class="rowline"><span>Vai man vajadzīgs kases aparāts?</span><span class="pill warn">Atkarīgs no situācijas</span></div><div class="rowline"><span>Vai drīkstu atskaitīt izdevumus?</span><span class="pill">Atkarīgs no režīma</span></div><div class="rowline"><span>Kad jāmaksā VSAOI?</span><span class="pill">Atkarīgs no ienākumiem un statusa</span></div><div class="rowline"><span>Kā izvēlēties NACE kodu?</span><span class="pill">Pēc faktiskās darbības</span></div><h3>Avoti, pārbaudīti 13.11.2026.</h3><div class="steps"><div class="step"><div class="num">1</div><div><b>Reģistrācija un darbības sākšana</b><p><a href="https://www.vid.gov.lv/lv/ka-registret-un-veikt-saimniecisko-darbibu" target="_blank" rel="noopener">VID: Kā reģistrēt un veikt saimniecisko darbību ↗</a></p></div></div><div class="step"><div class="num">2</div><div><b>Reģistrācijas pakalpojumi</b><p><a href="https://www.vid.gov.lv/lv/registracijas-pakalpojumi-uznemejiem-un-saimnieciskas-darbibas-veicejiem" target="_blank" rel="noopener">VID: Reģistrācijas pakalpojumi ↗</a></p></div></div><div class="step"><div class="num">3</div><div><b>Kases aparāti un kvītis</b><p><a href="https://www.vid.gov.lv/lv/kases-aparati-un-kases-sistemas" target="_blank" rel="noopener">VID: Kases aparātu prasības un izņēmumi ↗</a></p></div></div><div class="step"><div class="num">4</div><div><b>Sociālās iemaksas un apdrošināšana</b><p><a href="https://www.vsaa.gov.lv/lv/par-iemaksam" target="_blank" rel="noopener">VSAA: Par iemaksām ↗</a> · <a href="https://www.vsaa.gov.lv/lv/jaunums/izmainas-attieciba-uz-valsts-socialas-apdrosinasanas-minimalajam-obligatajam-iemaksam-pasnodarbinatajiem-un-darba-devejiem" target="_blank" rel="noopener">VSAA: 2026. gada izmaiņas ↗</a></p></div></div><div class="notice" style="margin:16px 0">Svarīga pārbaudes piezīme: VSAA vispārīgajā iemaksu lapā un atsevišķajā 2026. gada izmaiņu paziņojumā ir atšķirīgi formulējumi par minimālo iemaksu objektu pašnodarbinātajiem. Pirms jebkāda aprēķina ieviešanas šī juridiskā redakcija jāsalīdzina ar spēkā esošo likumu un VID/VSAA skaidrojumiem.</div><p class="muted">Prototipā nav nodokļu aprēķinu, EDS savienojuma vai automātiskas juridisko noteikumu atjaunināšanas.</p>`
+const STORAGE_KEY='mansdarbs_demo_records_v1';
+let editingIndex=null;
+
+function vsaoiQuarterKey(q){return 'mansdarbs-vsaoi-2026-q'+q}
+function loadVsaoiQuarter(){
+ const q=document.getElementById('vsaoiQuarter').value;
+ let saved={};
+ try{saved=JSON.parse(localStorage.getItem(vsaoiQuarterKey(q))||'{}')}catch(e){}
+ [1,2,3].forEach(i=>document.getElementById('profit'+i).value=saved.values?saved.values[i-1]??'':'');
+ document.getElementById('contributionBase').value=saved.base||'780';
+ syncIinFromVsaoi();
+}
+function syncIinFromVsaoi(){
+ let annualProfit=0,annualVsaoi=0;
+ for(let q=1;q<=4;q++){
+  let saved={};
+  try{saved=JSON.parse(localStorage.getItem(vsaoiQuarterKey(q))||'{}')}catch(e){}
+  if(saved.rows){
+   annualProfit+=saved.rows.reduce((s,r)=>s+Number(r.profit||0),0);
+   annualVsaoi+=saved.rows.reduce((s,r)=>s+Number(r.total||0),0);
+  }
+ }
+ document.getElementById('annualProfit').value=annualProfit.toFixed(2);
+ document.getElementById('annualVsaoi').value=annualVsaoi.toFixed(2);
+}
+function calculateVsaoi(){
+ const values=[1,2,3].map(i=>Number(document.getElementById('profit'+i).value||0));
+ const chosenBase=Number(document.getElementById('contributionBase').value||780);
+ if(values.some(v=>!Number.isFinite(v)||v<0)){alert(uiText('Ievadi korektu peļņu — 0 vai lielāku summu.','Enter a valid profit amount (0 or more).'));return}
+ if(!Number.isFinite(chosenBase)||chosenBase<780){alert(uiText('VSAOI objektam jābūt vismaz 780 €.','The VSAOI contribution base must be at least €780.'));return}
+ const rows=values.map((profit,i)=>{
+  const base=profit>=780?Math.min(profit,chosenBase):0;
+  const full=base*0.3107;
+  const pension=profit>=780?(profit-base)*0.10:profit*0.10;
+  return {month:i+1,profit,base,full,pension,total:full+pension};
+ });
+ const total=rows.reduce((s,r)=>s+r.total,0);
+ const quarter=document.getElementById('vsaoiQuarter').value;
+ localStorage.setItem(vsaoiQuarterKey(quarter),JSON.stringify({values,base:chosenBase,rows}));
+ syncIinFromVsaoi();
+ const en=document.documentElement.lang==='en';const body=rows.map(r=>'<div class="record"><div><strong>'+(en?'Month ':'')+r.month+(en?'':' . mēnesis')+'</strong><small>'+(en?'Profit: ':'Peļņa: ')+money(r.profit)+' · '+(en?'VSAOI base: ':'VSAOI objekts: ')+money(r.base)+' · 31.07%: '+money(r.full)+' · 10%: '+money(r.pension)+'</small></div><div class="amount">'+money(r.total)+'</div></div>').join('');
+ document.getElementById('vsaoiResult').innerHTML='<h3 style="margin:0 0 8px">'+(en?'Calculation result':'Aprēķina rezultāts')+'</h3>'+body+'<div class="record"><strong>'+(en?'Quarter total':'Kopā par ceturksni')+'</strong><strong class="amount">'+money(total)+'</strong></div><p class="privacy">'+(en?'Submit the self-employed report in VID EDS by the 17th of January (for Q4), April (for Q1), July (for Q2) and October (for Q3). VSAOI is generally due by the 23rd of the relevant month. Always confirm the exact deadline and amount in VID EDS.':'Pašnodarbinātā ziņojums EDS jāiesniedz līdz 17. datumam šajos mēnešos: janvārī (par 4. ceturksni), aprīlī (par 1. ceturksni), jūlijā (par 2. ceturksni) un oktobrī (par 3. ceturksni). VSAOI parasti jāsamaksā līdz attiecīgā mēneša 23. datumam. Precīzu termiņu un maksājamo summu vienmēr pārbaudi VID EDS.')+'</p>';
+}
+function progressiveIin(amount){
+ const x=Math.max(0,amount);
+ const first=Math.min(x,105300)*0.255;
+ const second=Math.max(0,x-105300)*0.33;
+ const additional=Math.max(0,x-200000)*0.03;
+ return first+second+additional;
+}
+function calculateIin(){
+ const read=id=>Number(document.getElementById(id).value||0);
+ const profit=read('annualProfit'),vsaoi=read('annualVsaoi'),other=read('otherTaxableIncome'),minimum=read('annualAllowance'),deductions=read('otherDeductions');
+ const minimumIinExempt=document.getElementById('minimumIinExempt').checked;
+ const vals=[profit,vsaoi,other,minimum,deductions];
+ if(vals.some(v=>!Number.isFinite(v)||v<0)){alert(uiText('Lūdzu, ievadi korektas summas — 0 vai lielākas.','Please enter valid amounts (0 or more).'));return}
+ const businessTaxable=Math.max(0,profit-vsaoi);
+ const totalBeforeRelief=other+businessTaxable;
+ const relief=Math.min(totalBeforeRelief,minimum+deductions);
+ const taxableTotal=Math.max(0,totalBeforeRelief-relief);
+ const taxableOther=Math.max(0,other-Math.min(other,minimum+deductions));
+ const totalTax=progressiveIin(taxableTotal);
+ const taxWithoutBusiness=progressiveIin(taxableOther);
+ const progressiveBusinessTax=Math.max(0,totalTax-taxWithoutBusiness);
+ const minimumIinApplied=!minimumIinExempt&&progressiveBusinessTax<50;
+ const businessIin=minimumIinApplied?50:progressiveBusinessTax;
+ const afterTax=profit-vsaoi-businessIin;
+ const en=document.documentElement.lang==='en';document.getElementById('iinResult').innerHTML='<h3 style="margin:0 0 10px">'+(en?'Your estimated annual tax':'Tava aptuvenā gada prognoze')+'</h3><div class="record"><span>'+(en?'Business profit':'Saimnieciskās darbības peļņa')+'</span><strong class="amount">'+money(profit)+'</strong></div><div class="record"><span>'+(en?'Deductible VSAOI':'Atņemamās VSAOI')+'</span><strong class="amount">− '+money(vsaoi)+'</strong></div><div class="record"><span>'+(en?'Business income included in the IIN tax base':'Saimnieciskās darbības ienākuma daļa IIN bāzē')+'</span><strong class="amount">'+money(businessTaxable)+'</strong></div><div class="record"><span>'+(en?'IIN at progressive rates':'IIN pēc kopējām progresīvajām likmēm')+'</span><strong class="amount">'+money(progressiveBusinessTax)+'</strong></div><div class="record"><span>'+(en?'€50 minimum IIN':'Minimālā IIN piemērošana')+'</span><strong class="amount">'+(minimumIinApplied?'50,00 €':(minimumIinExempt?(en?'Exemption selected':'Atbrīvojums atzīmēts'):(en?'Not required':'Nav nepieciešama')))+'</strong></div><div class="record"><strong>'+(en?'Estimated IIN on business income':'Aprēķinātais IIN no saimnieciskās darbības')+'</strong><strong class="amount">'+money(businessIin)+'</strong></div><div class="record"><strong>'+(en?'Estimated amount left after VSAOI and IIN':'Aptuveni paliek pēc VSAOI un IIN')+'</strong><strong class="amount">'+money(afterTax)+'</strong></div><p class="privacy">'+(en?'Total taxable income after entered deductions: ':'Kopējais apliekamais ienākums pēc ievadītajiem atskaitījumiem: ')+money(taxableTotal)+'. '+(en?'Total IIN on all entered income before advance payments: ':'Kopējais IIN no visiem ievadītajiem ienākumiem pirms avansa maksājumu ieskaita: ')+money(totalTax)+'. '+(en?'The €50 minimum IIN is a separate obligation and is not reduced by the tax-free allowance or other reliefs.':'Minimālais 50 € IIN ir atsevišķs pienākums un netiek samazināts ar neapliekamo minimumu vai citiem atvieglojumiem.')+'</p>';
+}
+function resetIin(){['otherTaxableIncome','otherDeductions'].forEach(id=>document.getElementById(id).value='');document.getElementById('annualAllowance').value='6600';document.getElementById('minimumIinExempt').checked=false;syncIinFromVsaoi();document.getElementById('iinResult').textContent=uiText('Ievadi citus ienākumus un atvieglojumus, lai aprēķinātu prognozi. Peļņa un VSAOI tiek pārnestas no ceturkšņu aprēķina.','Enter other income and reliefs to estimate your tax. Profit and VSAOI are carried over from the quarterly calculator.')}
+function resetVsaoi(){[1,2,3].forEach(i=>document.getElementById('profit'+i).value='');document.getElementById('contributionBase').value='780';document.getElementById('vsaoiResult').textContent=uiText('Ievadi peļņu visiem trim ceturkšņa mēnešiem, lai redzētu orientējošo aprēķinu.','Enter profit for all three months to see an estimate.')}
+
+function initVsaoi(){loadVsaoiQuarter();syncIinFromVsaoi()}
+function showCalculatorPanel(panel){
+ const overview=document.getElementById('calculatorOverview');
+ const vsaoi=document.getElementById('nodokli');
+ const iin=document.getElementById('iin');
+ overview.style.display=panel==='overview'?'block':'none';
+ vsaoi.classList.toggle('active',panel==='vsaoi');
+ iin.classList.toggle('active',panel==='iin');
+ if(panel!=='overview')window.scrollTo({top:0,behavior:'smooth'});
+}
+function showAccounting(){const mode=localStorage.getItem('mansdarbs_accounting_mode');showView(mode==='sia'?'sia':mode==='self'||mode==='zs'?'records':'choice')}
+function setAccountingMode(mode){localStorage.setItem('mansdarbs_accounting_mode',mode);document.getElementById('accountingModeLabel').textContent=mode==='sia'?'SIA':'Pašnodarbinātais';document.getElementById('accountingModeLabelSia').textContent=mode==='sia'?'SIA':'Pašnodarbinātais';refreshInvoiceForMode();showView(mode==='sia'?'sia':'records')}
+function changeAccountingMode(){if(confirm(uiText('Mainīt uzskaites veidu? Saglabātie dati netiks dzēsti.','Change the tracking type? Your saved data will not be deleted.')))showView('choice')}
+function showAccountingSection(section){
+ const kind=section==='income'?'Ienākums':section==='expense'?'Izdevums':'all';
+ const filter=document.getElementById('recordKindFilter');
+ const entryKind=document.getElementById('kind');
+ if(filter&&filter.value!==kind){filter.value=kind;renderRecords();}
+ if(entryKind&&(section==='income'||section==='expense'))entryKind.value=kind;
+ document.querySelectorAll('[data-accounting-section]').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.accountingSection===section)));
+ const targets={overview:'records',income:'uzskaite',expense:'uzskaite',invoices:'invoiceTool',data:'recordsDataActions'};
+ const target=document.getElementById(targets[section]||'records');
+ if(target)target.scrollIntoView({behavior:'smooth',block:'start'});
+}
+function showView(name){if(name==='calculator')showCalculatorPanel('overview');document.getElementById('homeView').classList.remove('guide-mode');document.getElementById('guide').classList.remove('open');document.querySelector('.shell').classList.toggle('home-screen',name==='home');const ids={home:'homeView',calculator:'calculatorView',records:'recordsView',sia:'siaView',choice:'accountingChoiceView'};Object.entries(ids).forEach(([key,id])=>document.getElementById(id).classList.toggle('active',key===name));const zsMode=localStorage.getItem('mansdarbs_accounting_mode')==='zs';document.getElementById('uzskaite').style.display=name==='records'&&zsMode?'none':'';document.getElementById('zsInvoiceHeader').style.display=name==='records'&&zsMode?'flex':'none';document.getElementById('invoiceEyebrow').textContent=name==='records'&&zsMode?uiText('Z/S · bezmaksas rēķini','Farm · free invoices'):uiText('Uzskaite · rēķini','Records · invoices');document.querySelectorAll('.nav button').forEach(b=>{const activeName=name==='sia'||name==='choice'?'records':name;if(b.dataset.view===activeName)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current')});window.scrollTo({top:0,behavior:'smooth'});}
+function showGuide(){const home=document.getElementById('homeView'),guide=document.getElementById('guide');const opening=!guide.classList.contains('open');home.classList.toggle('guide-mode',opening);guide.classList.toggle('open',opening);if(opening){selectStartRoute('resident');updateBusinessChecklist()}window.scrollTo({top:0,behavior:'smooth'});}
+function selectStartRoute(route){const resident=route!=='moving';document.getElementById('residentPath').classList.toggle('hidden',!resident);document.getElementById('movingPath').classList.toggle('hidden',resident);document.getElementById('routeResidentButton').classList.toggle('active',resident);document.getElementById('routeMovingButton').classList.toggle('active',!resident);}
+function updateBusinessChecklist(){const food=document.getElementById('startBusinessType')?.value==='food';document.getElementById('foodBusinessInfo')?.classList.toggle('hidden',!food);document.getElementById('otherBusinessInfo')?.classList.toggle('hidden',food);}
+function getRecords(){try{const data=JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]');return Array.isArray(data)?data.filter(x=>x&&['Ienākums','Izdevums'].includes(x.kind)&&Number.isFinite(Number(x.amount))&&Number(x.amount)>0&&typeof x.date==='string').map(x=>({...x,category:typeof x.category==='string'?x.category:''})):[]}catch(e){return []}}
+function saveRecords(items){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(items));return true}catch(e){alert(uiText('Neizdevās saglabāt ierakstu. Pārbaudi pārlūka privātuma iestatījumus vai brīvo vietu ierīcē.','Could not save the entry. Check your browser privacy settings or available device storage.'));if(window.mansdarbsHelpFailure)window.mansdarbsHelpFailure('storage');return false}}
+function money(n){const lang=document.documentElement.lang==='en'?'en-IE':'lv-LV';return Number(n).toLocaleString(lang,{minimumFractionDigits:2,maximumFractionDigits:2})+' €'}
+function updateRecordCategories(selected=''){
+ const kind=document.getElementById('kind')?.value||'Ienākums',field=document.getElementById('category');if(!field)return;
+ const income=['Pakalpojums','Preču pārdošana','Cits ienākums'];
+ const expense=['Materiāli un preces','Transports','Instrumenti un aprīkojums','Sakari','Telpas un komunālie','Pakalpojumi','Citi izdevumi'];
+ const options=kind==='Ienākums'?income:expense;
+ field.innerHTML='<option value="">Bez kategorijas</option>'+options.map(x=>'<option value="'+escapeHtml(x)+'">'+escapeHtml(x)+'</option>').join('');
+ field.value=options.includes(selected)?selected:'';
+}
+function renderRecords(){
+ const items=getRecords(),root=document.getElementById('records');
+ const selected=document.getElementById('monthFilter')?.value||'all';
+ const selectedKind=document.getElementById('recordKindFilter')?.value||'all';
+ const search=document.getElementById('recordSearch')?.value||'';
+ const availableMonths=[...new Set(items.map(x=>x.date.slice(0,7)).filter(x=>/^\d{4}-\d{2}$/.test(x)))].sort().reverse();
+ const monthOptions='<option value="all">Visi periodi</option>'+availableMonths.map(key=>{
+  const p=key.split('-'),label=new Date(Number(p[0]),Number(p[1])-1,1).toLocaleDateString(document.documentElement.lang==='en'?'en-GB':'lv-LV',{year:'numeric',month:'long'});
+  return '<option value="'+key+'" '+(selected===key?'selected':'')+'>'+escapeHtml(label)+'</option>';
+ }).join('');
+ const filtered=items.filter(x=>(selected==='all'||x.date.slice(0,7)===selected)&&(selectedKind==='all'||x.kind===selectedKind));
+ let income=0,expense=0;const months={};
+ filtered.forEach(x=>{
+  if(x.kind==='Ienākums')income+=Number(x.amount);else expense+=Number(x.amount);
+  const key=x.date.slice(0,7);if(!months[key])months[key]={income:0,expense:0};
+  if(x.kind==='Ienākums')months[key].income+=Number(x.amount);else months[key].expense+=Number(x.amount);
+ });
+ const monthlyHtml=Object.keys(months).sort().reverse().map(key=>{
+  const p=key.split('-'),label=new Date(Number(p[0]),Number(p[1])-1,1).toLocaleDateString(document.documentElement.lang==='en'?'en-GB':'lv-LV',{year:'numeric',month:'long'}),m=months[key];
+  return '<div class="record"><div><strong>'+escapeHtml(label)+'</strong><small>Ienākumi: '+money(m.income)+' · Izdevumi: '+money(m.expense)+'</small></div><div class="amount">'+money(m.income-m.expense)+'</div></div>';
+ }).join('');
+ const recordHtml=filtered.map(x=>({x,index:items.indexOf(x)})).reverse().map(({x,index})=>{
+  const searchText=[x.kind,x.date,x.category,x.note].join(' ').toLocaleLowerCase('lv-LV');
+  return '<article class="record record-entry" data-search="'+escapeHtml(searchText)+'"><div class="record-main"><strong>'+escapeHtml(x.kind)+'</strong><div class="record-meta"><span>'+escapeHtml(x.date)+'</span>'+(x.category?'<span class="record-category">'+escapeHtml(x.category)+'</span>':'')+(x.note?'<span>'+escapeHtml(x.note)+'</span>':'')+'</div><div class="record-actions"><button class="textlink" style="border:0;background:none;padding:0;cursor:pointer" onclick="editRecord('+index+')">Labot</button><button class="textlink" style="border:0;background:none;padding:0;cursor:pointer;color:#a33" onclick="deleteRecord('+index+')">Dzēst</button></div></div><div class="amount">'+(x.kind==='Izdevums'?'−':'+')+money(x.amount)+'</div></article>';
+ }).join('');
+ const noEntries=!items.length?'<div class="empty">Pagaidām nav neviena ieraksta. Pievieno pirmo, kad esi gatavs.</div>':!filtered.length?'<div class="empty">Šajā periodā izvēlētajam veidam ierakstu nav.</div>':'';
+ root.innerHTML='<div class="records-toolbar"><div class="field"><label for="monthFilter">Periods</label><select id="monthFilter" onchange="renderRecords()">'+monthOptions+'</select></div><div class="field"><label for="recordKindFilter">Ieraksta veids</label><select id="recordKindFilter" onchange="renderRecords()"><option value="all">Visi</option><option value="Ienākums" '+(selectedKind==='Ienākums'?'selected':'')+'>Ienākumi</option><option value="Izdevums" '+(selectedKind==='Izdevums'?'selected':'')+'>Izdevumi</option></select></div><div class="field"><label for="recordSearch">Meklēt ierakstos</label><input id="recordSearch" type="search" value="'+escapeHtml(search)+'" placeholder="Ieraksta meklēšana" oninput="filterRecordRows(this.value)"></div></div><div class="cards" style="margin-bottom:14px"><div class="card" style="box-shadow:none;padding:14px"><small class="muted">Ienākumi kopā</small><div class="amount">'+money(income)+'</div></div><div class="card" style="box-shadow:none;padding:14px"><small class="muted">Izdevumi kopā</small><div class="amount">'+money(expense)+'</div></div><div class="card" style="box-shadow:none;padding:14px"><small class="muted">Starpība</small><div class="amount">'+money(income-expense)+'</div></div></div><h3 style="margin:22px 0 5px">Pārskats pa mēnešiem</h3><p class="muted" style="font-size:13px;margin:0 0 8px">Kopsavilkums atbilstoši izvēlētajam periodam un ieraksta veidam.</p>'+(monthlyHtml||'<div class="empty">Vēl nav datu mēnešu pārskatam.</div>')+'<h3 style="margin:22px 0 5px">Ieraksti</h3><p class="records-toolbar-count" id="recordSearchCount"></p>'+(recordHtml||noEntries);
+ filterRecordRows(search);
+}
+function filterRecordRows(value){
+ const query=String(value||'').trim().toLocaleLowerCase('lv-LV');let visible=0;
+ document.querySelectorAll('#records .record-entry').forEach(row=>{const match=!query||(row.dataset.search||'').includes(query);row.style.display=match?'flex':'none';if(match)visible++});
+ const counter=document.getElementById('recordSearchCount');if(counter)counter.textContent=query?('Atrasti ieraksti: '+visible):'';
+}
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function updateIinWarning(){
+ const warning=document.getElementById('taxWarning');
+ if(!warning)return;
+ const date=document.getElementById('date').value;
+ const year=date?date.slice(0,4):String(new Date().getFullYear());
+ const month=date?date.slice(0,7):new Date().toISOString().slice(0,7);
+ const items=getRecords();
+ const raw=document.getElementById('amount').value;
+ const amount=raw===''?0:Number(raw);
+ const kind=document.getElementById('kind').value;
+ let annual=0,monthly=0;
+ items.forEach((item,index)=>{
+  if(index===editingIndex)return;
+  const value=item.kind==='Ienākums'?Number(item.amount):-Number(item.amount);
+  if(item.date.slice(0,4)===year)annual+=value;
+  if(item.date.slice(0,7)===month)monthly+=value;
+ });
+ const delta=kind==='Ienākums'?amount:-amount;
+ annual+=delta;
+ monthly+=delta;
+ const monthlyExceeded=monthly>550;
+ const annualExceeded=annual>6600;
+ if(monthlyExceeded||annualExceeded){
+  warning.hidden=false;
+  const reasons=[];
+  if(monthlyExceeded)reasons.push(document.documentElement.lang==='en'?'Recorded profit this month is '+money(monthly)+', above the €550 monthly reference amount.':'Šajā mēnesī uzskaitītā peļņa ir '+money(monthly)+', pārsniedzot 550 € mēneša orientieri.');
+  if(annualExceeded)reasons.push(document.documentElement.lang==='en'?'Recorded profit this year is '+money(annual)+', above the €6,600 annual reference amount.':'Šī gada uzskaitītā peļņa ir '+money(annual)+', pārsniedzot 6600 € gada orientieri.');
+  warning.innerHTML='<strong>⚠ '+(document.documentElement.lang==='en'?'Possible IIN liability — please check!':'Iespējams IIN pienākums — pievērs uzmanību!')+'</strong>'+reasons.join(' ')+'<small>'+(document.documentElement.lang==='en'?'€550 per month and €6,600 per year are reference amounts for the tax-free allowance, not automatic tax thresholds. IIN is based on total taxable income for the year, taking other income, eligible expenses, VSAOI and any unused allowance into account. Check the annual estimate under “Calculators”.':'550 € mēnesī un 6600 € gadā ir neapliekamā minimuma orientieri, nevis automātiskas nodokļa robežas. IIN nosaka pēc kopējiem gada apliekamajiem ienākumiem, ņemot vērā citus ienākumus, attaisnotos izdevumus, VSAOI un neizmantoto neapliekamo minimumu. Pārbaudi gada prognozi sadaļā “Aprēķini”.')+'</small>';
+ }else{
+  warning.hidden=true;
+  warning.textContent='';
+ }
+}
+function addRecord(){
+ const amount=Number(document.getElementById('amount').value),date=document.getElementById('date').value,kind=document.getElementById('kind').value,note=document.getElementById('note').value.trim(),category=document.getElementById('category').value;
+ if(!Number.isFinite(amount)||amount<=0){alert(uiText('Ievadi summu, kas lielāka par 0.','Enter an amount greater than 0.'));if(window.mansdarbsHelpFailure)window.mansdarbsHelpFailure('records');return}
+ if(!date){alert(uiText('Izvēlies datumu.','Choose a date.'));if(window.mansdarbsHelpFailure)window.mansdarbsHelpFailure('records');return}
+ const items=getRecords(),record={kind,amount:Math.round(amount*100)/100,date,note,category};
+ if(editingIndex===null)items.push(record);else items[editingIndex]=record;
+ if(!saveRecords(items))return;
+ cancelEdit();renderRecords();
+}
+function editRecord(index){
+ const item=getRecords()[index];if(!item)return;
+ editingIndex=index;document.getElementById('kind').value=item.kind;updateRecordCategories(item.category||'');
+ document.getElementById('amount').value=Number(item.amount).toFixed(2);updateIinWarning();
+ document.getElementById('date').value=item.date;document.getElementById('note').value=item.note||'';
+ document.getElementById('saveRecordButton').textContent='Saglabāt izmaiņas';document.getElementById('cancelEditButton').classList.remove('hidden');
+ document.getElementById('amount').scrollIntoView({behavior:'smooth',block:'center'});
+}
+function cancelEdit(){
+ editingIndex=null;document.getElementById('amount').value='';document.getElementById('note').value='';document.getElementById('category').value='';
+ updateIinWarning();document.getElementById('saveRecordButton').textContent='Pievienot ierakstu';document.getElementById('cancelEditButton').classList.add('hidden');
+}
+function deleteRecord(index){
+ const items=getRecords();if(!items[index])return;
+ if(!confirm(uiText('Vai dzēst šo ierakstu?','Delete this entry?')))return;
+ items.splice(index,1);if(!saveRecords(items))return;
+ if(editingIndex===index)cancelEdit();else if(editingIndex!==null&&editingIndex>index)editingIndex--;
+ renderRecords();
+}
+function clearRecords(){if(!getRecords().length)return;if(confirm(uiText('Vai tiešām dzēst visus šīs ierīces demonstrācijas ierakstus?','Delete all demo entries on this device?'))){try{localStorage.removeItem(STORAGE_KEY);cancelEdit();renderRecords()}catch(e){alert(uiText('Neizdevās dzēst ierakstus pārlūka ierobežojumu dēļ.','Could not delete entries due to browser restrictions.'))}}}
+function exportCsv(){
+ const items=getRecords();if(!items.length){alert(uiText('Nav ierakstu, ko eksportēt.','There are no entries to export.'));return}
+ const quote=v=>'"'+String(v??'').replace(/"/g,'""')+'"',en=document.documentElement.lang==='en';
+ const rows=[[en?'Date':'Datums',en?'Type':'Veids',en?'Category':'Kategorija',en?'Amount (EUR)':'Summa EUR',en?'Description':'Apraksts'],...items.map(x=>[x.date,en?(x.kind==='Ienākums'?'Income':'Expense'):x.kind,x.category||'',Number(x.amount).toFixed(2),x.note||''])];
+ const csv='\uFEFF'+rows.map(row=>row.map(quote).join(';')).join('\r\n');
+ const blob=new Blob([csv],{type:'text/csv;charset=utf-8;'}),url=URL.createObjectURL(blob),a=document.createElement('a');
+ a.href=url;a.download='mansdarbs-uzskaite.csv';document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);
+}
+function exportRecordsBackup(){
+ const items=getRecords();if(!items.length){alert(uiText('Nav ierakstu, ko saglabāt kopijā.','There are no entries to back up.'));return}
+ const backup={app:'Mansdarbs',version:1,exportedAt:new Date().toISOString(),records:items};
+ const blob=new Blob([JSON.stringify(backup,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');
+ a.href=url;a.download='mansdarbs-uzskaite-rezerves-kopija.json';document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);
+}
+function importRecordsBackup(event){
+ const input=event.target,file=input.files&&input.files[0];if(!file)return;
+ const reader=new FileReader();
+ reader.onload=()=>{
+  try{
+   const backup=JSON.parse(String(reader.result||'')),source=Array.isArray(backup)?backup:backup&&backup.records;
+   if(!Array.isArray(source)||!source.length)throw new Error('empty');
+   const restored=source.map(x=>{
+    if(!x||!['Ienākums','Izdevums'].includes(x.kind)||!Number.isFinite(Number(x.amount))||Number(x.amount)<=0||typeof x.date!=='string'||!/^\d{4}-\d{2}-\d{2}$/.test(x.date))throw new Error('invalid');
+    return {kind:x.kind,amount:Math.round(Number(x.amount)*100)/100,date:x.date,category:typeof x.category==='string'?x.category.slice(0,80):'',note:typeof x.note==='string'?x.note.slice(0,120):''};
+   });
+   if(!confirm(uiText('Atjaunot ierakstus no rezerves kopijas? Pašreizējie ieraksti tiks aizstāti.','Restore entries from this backup? Your current entries will be replaced.')))return;
+   if(saveRecords(restored)){cancelEdit();renderRecords();alert(uiText('Rezerves kopija veiksmīgi atjaunota.','Backup restored successfully.'))}
+  }catch(e){alert(uiText('Šī nav derīga Mansdarbs uzskaites rezerves kopija. Esošie ieraksti nav mainīti.','This is not a valid Mansdarbs records backup. Your existing entries have not been changed.'))}
+  finally{input.value=''}
+ };
+ reader.onerror=()=>{alert(uiText('Neizdevās nolasīt failu.','Could not read the file.'));input.value=''};
+ reader.readAsText(file);
+}
+const SIA_KEY='mansdarbs_sia_prototype_v1';
+let siaActiveCompany=null;
+function siaLoad(){try{const x=JSON.parse(localStorage.getItem(SIA_KEY)||'{"companies":[],"transactions":[]}');return x&&Array.isArray(x.companies)&&Array.isArray(x.transactions)?x:{companies:[],transactions:[]}}catch(e){return {companies:[],transactions:[]}}}
+function siaSave(data){try{localStorage.setItem(SIA_KEY,JSON.stringify(data));return true}catch(e){alert('Neizdevās saglabāt SIA datus šajā pārlūkā.');if(window.mansdarbsHelpFailure)window.mansdarbsHelpFailure('storage');return false}}
+function siaUpdateVatOptions(){
+ const vat=document.getElementById('siaTxVat');
+ vat.disabled=false;
+ document.getElementById('siaExpenseAccountField').hidden=document.getElementById('siaTxKind').value!=='expense';
+}
+function siaAddTransaction(){
+ const data=siaLoad(),c=data.companies.find(x=>x.id===siaActiveCompany);if(!c){alert('Neizdevās atvērt SIA uzskaiti. Pārlādē lapu un mēģini vēlreiz.');return}
+ const kind=document.getElementById('siaTxKind').value,date=document.getElementById('siaTxDate').value,description=document.getElementById('siaTxDescription').value.trim(),amount=Number(document.getElementById('siaTxAmount').value),rate=Number(document.getElementById('siaTxVat').value),account=kind==='expense'?document.getElementById('siaExpenseAccount').value:'6110';
+ if(!date||!description||!Number.isFinite(amount)||amount<=0){alert('Aizpildi datumu, aprakstu un summu, kas lielāka par 0.');if(window.mansdarbsHelpFailure)window.mansdarbsHelpFailure('sia');return}
+ const net=Math.round(amount*100)/100,vat=Math.round(net*rate)/100,total=Math.round((net+vat)*100)/100;
+ data.transactions.push({id:Date.now(),companyId:c.id,kind,date,description,net,rate,vat,total,account});
+ if(!siaSave(data))return;
+ document.getElementById('siaTxDescription').value='';document.getElementById('siaTxAmount').value='';siaRender();
+}
+function siaRender(){
+ const data=siaLoad();
+ if(!data.companies.length){
+  const company={id:'sia-default',name:'Mans SIA',reg:'',address:'',vat:'unknown',role:'owner',createdAt:new Date().toISOString()};
+  data.companies.push(company);
+  if(!siaSave(data))return;
+ }
+ if(!siaActiveCompany||!data.companies.some(c=>c.id===siaActiveCompany))siaActiveCompany=data.companies[0].id;
+ const c=data.companies.find(x=>x.id===siaActiveCompany);
+ document.getElementById('siaCompanyInfo').textContent=c.name==='Mans SIA'&&!c.reg?'Uzņēmuma rekvizīti nav ievadīti — tos varēsi pievienot vēlāk, izrakstot rēķinu.':'Aktīvais uzņēmums: '+c.name+(c.reg?' · Reģ. Nr. '+c.reg:'');
+ const tx=data.transactions.filter(x=>x.companyId===c.id).sort((a,b)=>b.date.localeCompare(a.date)||b.id-a.id);
+ const income=tx.filter(x=>x.kind==='income').reduce((s,x)=>s+x.net,0),expenses=tx.filter(x=>x.kind==='expense').reduce((s,x)=>s+x.net,0),outVat=tx.filter(x=>x.kind==='income').reduce((s,x)=>s+x.vat,0),inVat=tx.filter(x=>x.kind==='expense').reduce((s,x)=>s+x.vat,0);
+ document.getElementById('siaIncome').textContent=money(income);document.getElementById('siaExpenses').textContent=money(expenses);document.getElementById('siaProfit').textContent=money(income-expenses);document.getElementById('siaVatDue').textContent=money(outVat-inVat);
+ document.getElementById('siaTransactions').innerHTML=tx.length?'<div style="overflow-x:auto"><table class="invoice-lines"><thead><tr><th>Datums</th><th>Veids / apraksts</th><th>Bez PVN</th><th>PVN</th><th>Kopā</th></tr></thead><tbody>'+tx.map(x=>'<tr><td>'+escapeHtml(x.date)+'</td><td><strong>'+(x.kind==='income'?'Ieņēmumi':'Izdevumi')+'</strong><br>'+escapeHtml(x.description)+'</td><td>'+money(x.net)+'</td><td>'+money(x.vat)+'</td><td><strong>'+money(x.total)+'</strong></td></tr>').join('')+'</tbody></table></div>':'<div class="empty">Pagaidām darījumu nav. Pievieno pirmo darījumu augstāk.</div>';
+ const rows=[];
+ tx.forEach(x=>{
+  if(x.kind==='income'){rows.push({date:x.date,desc:x.description,account:'2310 · Pircēju parādi',debit:x.total,credit:0});rows.push({date:x.date,desc:x.description,account:'6110 · Ieņēmumi',debit:0,credit:x.net});if(x.vat)rows.push({date:x.date,desc:x.description,account:'5721 · Aprēķinātais PVN',debit:0,credit:x.vat})}
+  else{rows.push({date:x.date,desc:x.description,account:x.account+' · Izdevumi',debit:x.net,credit:0});if(x.vat)rows.push({date:x.date,desc:x.description,account:'5721 · Priekšnodoklis',debit:x.vat,credit:0});rows.push({date:x.date,desc:x.description,account:'5310 · Piegādātāju parādi',debit:0,credit:x.total})}
+ });
+ document.getElementById('siaJournal').innerHTML=rows.length?'<div style="overflow-x:auto"><table class="invoice-lines"><thead><tr><th>Datums</th><th>Konts</th><th>Debets</th><th>Kredīts</th></tr></thead><tbody>'+rows.map(x=>'<tr><td>'+escapeHtml(x.date)+'</td><td>'+escapeHtml(x.account)+'<br><small>'+escapeHtml(x.desc)+'</small></td><td>'+money(x.debit)+'</td><td>'+money(x.credit)+'</td></tr>').join('')+'</tbody></table></div><p class="privacy">Debeta kopsumma: '+money(rows.reduce((s,x)=>s+x.debit,0))+' · Kredīta kopsumma: '+money(rows.reduce((s,x)=>s+x.credit,0))+'</p>':'<div class="empty">Grāmatojumi parādīsies pēc pirmā darījuma.</div>';
+ siaUpdateVatOptions();
+}
+
+function invoiceStorageKey(){return localStorage.getItem('mansdarbs_accounting_mode')==='zs'?'mansdarbs_demo_invoices_zs_v1':'mansdarbs_demo_invoices_v1'}
+function invoiceSellerStorageKey(){return localStorage.getItem('mansdarbs_accounting_mode')==='zs'?'mansdarbs_invoice_seller_zs_v1':'mansdarbs_invoice_seller_v1'}
+function loadInvoiceSeller(){
+ try{return JSON.parse(localStorage.getItem(invoiceSellerStorageKey())||'{}')}catch(e){return {}}
+}
+function saveInvoiceSeller(x){
+ const profile={seller:x.seller||'',reg:x.reg||'',address:x.address||'',bank:x.bank||'',email:x.email||''};
+ if(Object.values(profile).some(v=>v))try{localStorage.setItem(invoiceSellerStorageKey(),JSON.stringify(profile))}catch(e){}
+}
+function refreshInvoiceForMode(){
+ const seller=loadInvoiceSeller();
+ document.getElementById('invSeller').value=seller.seller||'';
+ document.getElementById('invReg').value=seller.reg||'';
+ document.getElementById('invAddress').value=seller.address||'';
+ document.getElementById('invBank').value=seller.bank||'';
+ document.getElementById('invEmail').value=seller.email||'';
+ document.getElementById('invNumber').value=invoiceNumberNext();
+ renderInvoices();
+}
+function invoiceValue(id){return document.getElementById(id).value.trim()}
+function invoiceNumberNext(){
+ let list=[];
+ try{list=JSON.parse(localStorage.getItem(invoiceStorageKey())||'[]')}catch(e){}
+ const year=new Date().getFullYear(),prefix='R-'+year+'-';
+ const max=list.reduce((n,x)=>{
+  const number=String(x.number||'');
+  if(!number.startsWith(prefix))return n;
+  const suffix=Number(number.slice(prefix.length));
+  return Number.isInteger(suffix)?Math.max(n,suffix):n;
+ },0);
+ return prefix+String(max+1).padStart(3,'0');
+}
+function invoiceData(){
+ const qty=Number(invoiceValue('invQty')),price=Number(invoiceValue('invPrice')),vatOn=document.getElementById('invVat').checked,rate=vatOn?Number(invoiceValue('invVatRate')):0;
+ if(!invoiceValue('invSeller')||!invoiceValue('invBuyer')||!invoiceValue('invDescription')){alert(uiText('Aizpildi izrakstītāja, saņēmēja un pakalpojuma/preces nosaukuma laukus.','Complete the issuer, recipient and service/product fields.'));if(window.mansdarbsHelpFailure)window.mansdarbsHelpFailure('invoice');return null}
+ if(!Number.isFinite(qty)||qty<=0||!Number.isFinite(price)||price<0){alert(uiText('Pārbaudi daudzumu un vienības cenu.','Check the quantity and unit price.'));if(window.mansdarbsHelpFailure)window.mansdarbsHelpFailure('invoice');return null}
+ const net=Math.round(qty*price*100)/100,vat=Math.round(net*rate)/100,total=net+vat;
+ return {number:invoiceValue('invNumber'),date:invoiceValue('invDate'),due:invoiceValue('invDue'),seller:invoiceValue('invSeller'),reg:invoiceValue('invReg'),address:invoiceValue('invAddress'),bank:invoiceValue('invBank'),email:invoiceValue('invEmail'),buyer:invoiceValue('invBuyer'),buyerReg:invoiceValue('invBuyerReg'),buyerAddress:invoiceValue('invBuyerAddress'),description:invoiceValue('invDescription'),qty,price,net,vat,rate,total,currency:'EUR'};
+}
+function updateInvoiceTotals(){
+ const vatOn=document.getElementById('invVat').checked;
+ document.getElementById('vatRateField').hidden=!vatOn;
+ const qty=Number(invoiceValue('invQty'))||0,price=Number(invoiceValue('invPrice'))||0,rate=vatOn?(Number(invoiceValue('invVatRate'))||0):0;
+ const net=qty*price,vat=net*rate/100;
+ document.getElementById('invoiceTotals').textContent=document.documentElement.lang==='en'?'Subtotal excl. VAT: '+money(net)+' · VAT: '+money(vat)+' · Total: '+money(net+vat):'Summa bez PVN: '+money(net)+' · PVN: '+money(vat)+' · Kopā: '+money(net+vat);
+}
+function invoicePrintHtml(x){
+ const line=(label,value)=>value?'<p><strong>'+label+':</strong> '+escapeHtml(value)+'</p>':'';
+ const vatSummary=x.rate>0?'<p>Summa bez PVN: <strong>'+money(x.net)+'</strong></p><p>PVN '+x.rate+'%: <strong>'+money(x.vat)+'</strong></p>':'<p>PVN netiek piemērots.</p>';
+ return '<div><h1>RĒĶINS</h1><h2>'+escapeHtml(x.number)+'</h2><p>Izrakstīšanas datums: '+escapeHtml(x.date)+' · Apmaksas termiņš: '+escapeHtml(x.due||'Nav norādīts')+'</p><div style="display:flex;gap:50px;margin-top:24px"><div style="flex:1"><h3>Izrakstītājs</h3><p><strong>'+escapeHtml(x.seller)+'</strong></p>'+line('Reģ. Nr.',x.reg)+line('Adrese',x.address)+line('Kontakti',x.email)+line('IBAN',x.bank)+'</div><div style="flex:1"><h3>Saņēmējs</h3><p><strong>'+escapeHtml(x.buyer)+'</strong></p>'+line('Reģ. Nr.',x.buyerReg)+line('Adrese',x.buyerAddress)+'</div></div><table><thead><tr><th>Apraksts</th><th>Daudzums</th><th>Cena</th><th>Summa</th></tr></thead><tbody><tr><td>'+escapeHtml(x.description)+'</td><td>'+x.qty+'</td><td>'+money(x.price)+'</td><td>'+money(x.net)+'</td></tr></tbody></table><div class="invoice-total">'+vatSummary+'<h2>Kopā apmaksai: '+money(x.total)+'</h2></div><p style="margin-top:24px">Paldies par sadarbību!</p><div class="invoice-footer">Dokuments ir sagatavots elektroniski un ir derīgs bez paraksta.</div></div>';
+}
+function runInvoicePrint(){
+ applyLanguage();
+ const el=document.getElementById('invoicePrint');if(!el)return;
+ const parent=el.parentNode,next=el.nextSibling;
+ document.body.appendChild(el);
+ document.body.classList.add('invoice-printing');
+ const restore=()=>{document.body.classList.remove('invoice-printing');if(parent)parent.insertBefore(el,next);window.removeEventListener('afterprint',restore)};
+ window.addEventListener('afterprint',restore);
+ window.print();
+ setTimeout(()=>{if(document.body.classList.contains('invoice-printing'))restore()},3000);
+}
+function previewInvoice(){
+ const x=invoiceData();if(!x)return;
+ document.getElementById('invoicePrint').innerHTML=invoicePrintHtml(x);
+ runInvoicePrint();
+}
+function saveInvoice(){
+ const x=invoiceData();if(!x)return;
+ if(!x.number||!x.date){alert(uiText('Norādi rēķina numuru un izrakstīšanas datumu.','Enter an invoice number and issue date.'));if(window.mansdarbsHelpFailure)window.mansdarbsHelpFailure('invoice');return}
+ saveInvoiceSeller(x);
+ let list=[];try{list=JSON.parse(localStorage.getItem(invoiceStorageKey())||'[]')}catch(e){}
+ if(list.some(i=>i.number===x.number)){alert(uiText('Šāds rēķina numurs jau ir saglabāts.','This invoice number has already been used.'));if(window.mansdarbsHelpFailure)window.mansdarbsHelpFailure('invoice');return}
+ list.push({...x,id:Date.now(),savedAt:new Date().toISOString()});
+ try{localStorage.setItem(invoiceStorageKey(),JSON.stringify(list))}catch(e){alert('Neizdevās saglabāt rēķinu pārlūkā.');if(window.mansdarbsHelpFailure)window.mansdarbsHelpFailure('storage');return}
+ renderInvoices();document.getElementById('invoicePrint').innerHTML=invoicePrintHtml(x);document.getElementById('invNumber').value=invoiceNumberNext();
+ alert(uiText('Rēķins saglabāts šajā pārlūkā.','Invoice saved in this browser.'));
+}
+function renderInvoices(){
+ let list=[];try{list=JSON.parse(localStorage.getItem(invoiceStorageKey())||'[]')}catch(e){}
+ const root=document.getElementById('savedInvoices');if(!root)return;
+ root.innerHTML='<h3 style="margin:20px 0 5px">Saglabātie rēķini</h3>'+(list.length?list.slice().reverse().map(x=>'<div class="invoice-saved"><div><strong>'+escapeHtml(x.number)+'</strong><small class="muted" style="display:block">'+escapeHtml(x.buyer)+' · '+escapeHtml(x.date)+'</small></div><div style="text-align:right"><strong>'+money(x.total)+'</strong><div><button class="textlink" style="border:0;background:none;padding:4px;cursor:pointer" onclick="printSavedInvoice('+Number(x.id)+')">Drukāt</button> <button class="textlink" style="border:0;background:none;padding:4px;cursor:pointer;color:#a33" onclick="deleteInvoice('+Number(x.id)+')">Dzēst</button></div></div></div>').join(''):'<div class="empty">Pagaidām nav saglabātu rēķinu.</div>');
+}
+function printSavedInvoice(id){
+ let list=[];try{list=JSON.parse(localStorage.getItem(invoiceStorageKey())||'[]')}catch(e){}
+ const x=list.find(i=>i.id===id);if(!x)return;
+ document.getElementById('invoicePrint').innerHTML=invoicePrintHtml(x);runInvoicePrint();
+}
+function deleteInvoice(id){
+ if(!confirm(uiText('Vai dzēst šo rēķinu?','Delete this invoice?')))return;
+ let list=[];try{list=JSON.parse(localStorage.getItem(invoiceStorageKey())||'[]')}catch(e){}
+ try{localStorage.setItem(invoiceStorageKey(),JSON.stringify(list.filter(i=>i.id!==id)))}catch(e){}
+ renderInvoices();
+}
+function resetInvoiceForm(){
+ ['invSeller','invReg','invAddress','invBank','invEmail','invBuyer','invBuyerReg','invBuyerAddress','invDescription','invPrice'].forEach(id=>document.getElementById(id).value='');
+ document.getElementById('invQty').value='1';document.getElementById('invVat').checked=false;updateInvoiceTotals();
+}
+function initInvoice(){
+ const now=new Date(),date=[now.getFullYear(),String(now.getMonth()+1).padStart(2,'0'),String(now.getDate()).padStart(2,'0')].join('-');
+ document.getElementById('invDate').value=date;document.getElementById('invNumber').value=invoiceNumberNext();
+ const seller=loadInvoiceSeller();
+ document.getElementById('invSeller').value=seller.seller||'';
+ document.getElementById('invReg').value=seller.reg||'';
+ document.getElementById('invAddress').value=seller.address||'';
+ document.getElementById('invBank').value=seller.bank||'';
+ document.getElementById('invEmail').value=seller.email||'';
+ document.getElementById('invQty').addEventListener('input',updateInvoiceTotals);document.getElementById('invPrice').addEventListener('input',updateInvoiceTotals);renderInvoices();updateInvoiceTotals();
+}
+
+const today=new Date();document.getElementById('date').value=[today.getFullYear(),String(today.getMonth()+1).padStart(2,'0'),String(today.getDate()).padStart(2,'0')].join('-');
+updateRecordCategories();
+document.getElementById('kind').addEventListener('change',updateIinWarning);
+document.getElementById('date').addEventListener('change',updateIinWarning);
+renderRecords();
+updateIinWarning();
+initVsaoi();
+initInvoice();
+document.getElementById('siaTxDate').value=[today.getFullYear(),String(today.getMonth()+1).padStart(2,'0'),String(today.getDate()).padStart(2,'0')].join('-');
+siaRender();
+
+</script>
+<script>
+const LANGUAGE_KEY='mansdarbs_language_v1';
+const EN_TRANSLATIONS={"Kategorija (nav obligāta)":"Category (optional)","Bez kategorijas":"Uncategorised","Pakalpojums":"Service","Preču pārdošana":"Sale of goods","Cits ienākums":"Other income","Materiāli un preces":"Materials and goods","Transports":"Transport","Instrumenti un aprīkojums":"Tools and equipment","Sakari":"Communications","Telpas un komunālie":"Premises and utilities","Citi izdevumi":"Other expenses","Visi periodi":"All periods","Periods":"Period","Ieraksta veids":"Entry type","Meklēt aprakstā":"Search description","Meklēt ierakstos":"Search records","Ienākumi kopā":"Total income","Izdevumi kopā":"Total expenses","Starpība":"Difference","Pārskats pa mēnešiem":"Monthly overview","Kopsavilkums atbilstoši izvēlētajam periodam un ieraksta veidam.":"Summary for the selected period and entry type.","Ieraksti":"Entries","Visi":"All","Ienākumi":"Income","Izdevumi":"Expenses","Pagaidām nav neviena ieraksta. Pievieno pirmo, kad esi gatavs.":"No entries yet. Add your first one when you are ready.","Pievieno pirmo, kad esi gatavs.":"Add your first one when you are ready.","Ieraksta meklēšana":"Search entries","Atrasti ieraksti: ":"Entries found: ","Datu rezerves kopija":"Data backup","Atjaunot kopiju":"Restore backup","Lejupielādēt CSV":"Download CSV","Dzēst visus ierakstus":"Delete all entries","CSV paredzēts darbam izklājlapā. JSON rezerves kopija ļauj atjaunot ierakstus arī citā ierīcē.":"Use CSV in a spreadsheet. The JSON backup can restore your entries on another device.","Šajā periodā izvēlētajam veidam ierakstu nav.":"No entries for this type in the selected period.","Vēl nav datu mēnešu pārskatam.":"No monthly data yet.","Sākums":"Home","Aprēķini":"Calculators","Uzskaite":"Records","Vienkāršāks ikdienas palīgs pašnodarbinātajiem":"A simpler everyday toolkit for self-employed people","Sāc savu darbību.":"Start your own activity.","Vai sakārto jau esošo.":"We’ll organise the rest.","Neatkarīgi no tā, vai tikai plāno strādāt patstāvīgi vai jau pieņem pasūtījumus un kārto saimniecisko darbību — šeit atradīsi saprotamus skaidrojumus, aprēķinus un ikdienas uzskaites rīkus.":"Whether you are planning to work independently or already take on jobs and manage a business, you will find clear guidance, calculations and everyday tools here.","Bezmaksas sākums":"Free to get started","Bez Mansdarbs konta":"No account needed","EDS dati paliek VID":"Your EDS data stays with VID","Vēl tikai plāno sākt?":"Planning to get started?","Uzzini, kā reģistrēt saimniecisko darbību, ko ņemt vērā un kādi ir pirmie soļi.":"Learn how to register your business activity and what the first steps are.","Uzzināt, kā sākt":"Learn how to get started","Jau strādā patstāvīgi?":"Already self-employed?","Seko ienākumiem un izdevumiem, veic aprēķinus un sakārto ikdienas uzskaiti.":"Track income and expenses, calculate taxes and keep your records organised.","Atvērt uzskaiti":"Open records","Tavs ceļš līdz reģistrācijai":"Your path to registration","Reģistrācija nav jāveic Mansdarbs.":"Registration is not done through Mansdarbs.","Mansdarbs palīdz sagatavoties. Oficiālo reģistrāciju tu pats veic VID EDS sistēmā.":"Mansdarbs helps you prepare. You complete the official registration yourself in the VID EDS system.","Saproti, ko vēlies darīt":"Decide what you want to do","Padomā, kādu pakalpojumu vai darbu piedāvāsi. Šajā posmā nav jāaizpilda gara anketa un nekas nav jāiesniedz.":"Think about the service or work you want to offer. There is no long form to fill in at this stage.","Iepazīsties ar VID skaidrojumu":"Read the VID guidance","VID oficiālajā lapā ir aprakstīts, kā reģistrēt un veikt saimniecisko darbību.":"The official VID website explains how to register and carry out business activity.","Lasīt VID reģistrācijas ceļvedi ↗":"Read the VID registration guide ↗","Reģistrējies VID EDS":"Register with VID EDS","Atver VID EDS un veic reģistrāciju oficiālajā sistēmā. Mansdarbs neprasa un neglabā tavu EDS paroli vai piekļuves datus.":"Open VID EDS and complete your registration. Mansdarbs does not ask for or store your EDS password or login details.","Atvērt VID EDS ↗":"Open VID EDS ↗","Atgriezies, kad esi gatavs":"Come back when you are ready","Vari izmantot Mansdarbs ienākumu un izdevumu uzskaitei, pārskatiem un citiem ikdienas rīkiem. Kontu sākumā veidot nav nepieciešams.":"Use Mansdarbs to track income and expenses and access everyday tools. No account is needed to get started.","Izmēģināt uzskaiti →":"Try the records tool →","Tev nav jāizlemj viss uzreiz.":"You do not have to decide everything right away.","Vēlos sākt strādāt oficiāli":"I want to work legally","Vēlos saprast, kā reģistrēt saimniecisko darbību un kas jādara vispirms.":"I want to understand how to register my business activity and what to do first.","Iepriekš minētie soļi palīdzēs saprast, ar ko sākt.":"The steps above will help you understand where to begin.","Pašnodarbinātais":"Self-employed","Mainīt":"Change","SIA uzskaite":"Company records","Ienākumi bez PVN":"Income excluding VAT","Izdevumi bez PVN":"Expenses excluding VAT","Reģistrēt darījumu":"Record a transaction","Darījuma veids":"Transaction type","Pārdošana / ieņēmumi":"Sale / income","Pirkums / izdevumi":"Purchase / expense","Datums":"Date","Darījuma apraksts":"Transaction description","Summa bez PVN (€)":"Amount excluding VAT (€)","PVN likme":"VAT rate","Izdevumu konts":"Expense account","Pievienot darījumu":"Add transaction","Uzskaite · sākuma izvēle":"Records · initial choice","Kādu darbības veidu vēlies uzskaitīt?":"Which type of activity would you like to track?","Bezmaksas rīks · bez konta":"Free tool · no account required","Vienkārša ienākumu un izdevumu uzskaite":"Simple income and expense tracking","Ieraksta veids":"Entry type","Ienākums":"Income","Izdevums":"Expense","Summa (€)":"Amount (€)","Apraksts (nav obligāts)":"Description (optional)","Pievienot ierakstu":"Add entry","Atcelt labošanu":"Cancel edit","Notīrīt uzskaiti":"Clear records","Lejupielādēt uzskaiti":"Download records","Rēķina izveide":"Create an invoice","Rēķina numurs":"Invoice number","Izrakstīšanas datums":"Issue date","Apmaksas termiņš":"Payment due date","Valūta":"Currency","Rēķina izrakstītājs":"Invoice issuer","Vārds, uzvārds / uzņēmums":"Full name / company","Reģistrācijas numurs (ja attiecas)":"Registration number (if applicable)","Adrese":"Address","Bankas konts (IBAN)":"Bank account (IBAN)","E-pasts / tālrunis":"Email / phone","Rēķina saņēmējs":"Invoice recipient","Pakalpojums vai prece":"Service or product","Nosaukums / apraksts":"Name / description","Daudzums":"Quantity","Cena par vienību (€)":"Price per unit (€)","Esmu PVN maksātājs — piemērot PVN":"I am VAT-registered — apply VAT","PVN likme (%)":"VAT rate (%)","Saglabāt rēķinu":"Save invoice","Priekšskatīt / drukāt":"Preview / print","Notīrīt formu":"Clear form","Nodokļu palīgs · 2026":"Tax assistant · 2026","Ko vēlies aprēķināt?":"What would you like to calculate?","VSAOI aprēķins":"Social contributions (VSAOI)","IIN prognoze":"Personal income tax estimate","Atvērt aprēķinu":"Open calculator","Īsumā par nodokļiem":"A brief guide to taxes","Ceturksnis":"Quarter","Aprēķināt VSAOI":"Calculate VSAOI","Notīrīt":"Clear","Aprēķināt IIN":"Calculate IIN","Galvenā navigācija":"Main navigation","Vienkāršākai saimnieciskajai darbībai Latvijā":"Business made simpler in Latvia","Izvēlies, ar ko sākt":"Choose where to start","Uzņēmumu grāmatvedība · SIA":"Company bookkeeping · SIA","Sāc uzskaiti uzreiz. Uzņēmuma nosaukumu, reģistrācijas numuru, adresi un citus rekvizītus ievadīsi tikai tad, kad tie būs vajadzīgi, piemēram, izrakstot pirmo rēķinu.":"Start tracking straight away. Add your company name, registration number, address and other details only when you need them, for example when issuing your first invoice.","Uzņēmuma rekvizīti vēl nav ievadīti. Tie nav nepieciešami, lai sāktu uzskaiti.":"Company details have not been added yet. You can start tracking without them.","Rezultāts pirms nodokļiem":"Profit before tax","PVN starpība":"VAT balance","Ievadītā summa ir bez PVN. PVN likmi izvēlies atbilstoši konkrētajam darījumam.":"Enter the amount excluding VAT. Choose the VAT rate that applies to this transaction.","Materiāli un preces":"Materials and goods","Pakalpojumi":"Services","Transporta izdevumi":"Transport costs","Citi saimnieciskie izdevumi":"Other business expenses","Darījumu žurnāls":"Transaction log","Pagaidām darījumu nav.":"No transactions yet.","Grāmatojumu pārskats":"Journal entries","Katram darījumam tiek izveidots līdzsvarots debeta un kredīta ieraksts. Kontu numuri šajā prototipā ir sākotnēji piemēri.":"Each transaction creates a balanced debit and credit entry. Account codes are examples used in this prototype.","Grāmatojumi parādīsies pēc pirmā darījuma.":"Journal entries will appear after your first transaction.","Svarīgi: šī ir pirmā SIA funkcijas prototipa versija. Dati tiek glabāti tikai šajā pārlūkā (localStorage), nav piesaistīti kontam vai sinhronizēti ar grāmatvedi. Tā vēl nav pilnvērtīga vai juridiski pārbaudīta grāmatvedības sistēma; pirms reālas uzskaites jāievieš servera datubāze, lietotāju piekļuves tiesības, pilns kontu plāns, dokumentu piesaiste, labojumu/auditācijas žurnāls un normatīvo prasību pārbaude.":"Important: this is an early SIA bookkeeping prototype. Data is stored only in this browser (localStorage), is not linked to an account and is not synced with an accountant. It is not yet a complete or legally reviewed accounting system. Before using it for real accounts, server-side storage, access controls, a full chart of accounts, document attachments, an audit trail and legal compliance checks must be added.","Uzskaite · sākuma izvēle":"Records · setup","Izvēlies vienu reizi. Mansdarbs turpmāk atvērs atbilstošo uzskaites vidi. Izvēli vēlāk varēsi mainīt.":"Choose once. Mansdarbs will open the right workspace next time. You can change this later.","Ienākumu un izdevumu uzskaite, nodokļu aprēķini un rēķini.":"Track income and expenses, estimate taxes and create invoices.","Uzņēmuma darījumi, PVN pārskats un divkāršās grāmatvedības prototips.":"Company transactions, VAT overview and a double-entry bookkeeping prototype.","Izvēlēties pašnodarbināto":"Choose self-employed","Izvēlēties SIA":"Choose SIA","Bezmaksas rīks · bez konta":"Free tool · no account needed","Ievadi summu. Aprakstu vari atstāt tukšu. Nav jānorāda, kur, kam vai par ko saņēmi naudu.":"Enter an amount. The description is optional. You do not need to say where, from whom or why you received the money.","Vari atstāt tukšu":"Leave blank if you like","Pagaidām nav neviena ieraksta. Pievieno pirmo, kad esi gatavs.":"No entries yet. Add your first one whenever you're ready.","Privātums: šī demonstrācijas versija datus saglabā tikai tavā pārlūkprogrammā šajā ierīcē. Tie netiek nosūtīti Mansdarbs serverim. Iztīrot pārlūka datus vai mainot ierīci, ieraksti var pazust. Šis rīks vēl nav oficiāls grāmatvedības reģistrs un neveic nodokļu aprēķinus.":"Privacy: this demo stores data only in your browser on this device. Nothing is sent to the Mansdarbs server. Entries may be lost if you clear browser data or switch devices. This is not an official accounting register and does not calculate taxes.","Uzskaite · rēķini":"Records · invoices","Aizpildi informāciju, saglabā rēķinu un izdrukā to vai saglabā PDF formātā. Rēķini tiek glabāti tikai šajā pārlūkā.":"Fill in the details, save your invoice, then print it or save it as a PDF. Invoices are stored only in this browser.","Tavs vārds vai uzņēmuma nosaukums":"Your name or company name","Reģistrācijas numurs":"Registration number","Juridiskā vai deklarētā adrese":"Registered or declared address","Kontakti (nav obligāti)":"Contact details (optional)","Klienta vārds vai uzņēmuma nosaukums":"Customer name or company name","Klienta adrese":"Customer address","Piemēram, traktora remonta pakalpojums":"For example, tractor repair service","Kopā: 0,00 €":"Total: €0.00","Pirms izsūtīšanas pārbaudi rekvizītus, darījuma aprakstu, PVN piemērošanu un citus obligātos laukus atbilstoši konkrētajam darījumam. Ja neesi PVN maksātājs, PVN neatzīmē. Šis ir vienkāršs rēķina sagatavošanas rīks, nevis grāmatvedības vai juridiskās atbilstības pārbaude.":"Before sending, check the details, transaction description, VAT treatment and any other required fields for your situation. If you are not VAT-registered, leave VAT unchecked. This is a basic invoice tool, not an accounting or legal compliance check.","Izvēlies sev vajadzīgo aprēķinu. Vispirms īsi iepazīsties ar pamatprincipu — detalizētās ievades tabulas atvērsies tikai tad, kad tās izvēlēsies.":"Choose the calculation you need. Start with a quick overview; detailed input fields open only when you select a calculator.","Ceturkšņa sociālās iemaksas un pensiju apdrošināšana":"Quarterly social contributions and pension insurance","Gada ienākuma nodokļa aptuvenais aprēķins":"Estimated annual personal income tax","VSAOI ir sociālās apdrošināšanas iemaksas, bet IIN ir iedzīvotāju ienākuma nodoklis. Tie ir divi atšķirīgi aprēķini. VSAOI dati pēc aprēķina tiek izmantoti arī IIN prognozē, lai nebūtu viss jāievada atkārtoti.":"VSAOI are social insurance contributions; IIN is personal income tax. These are separate calculations. Saved VSAOI results are carried into the IIN estimate, so you do not have to enter them again.","← Atpakaļ uz aprēķinu izvēli":"← Back to calculators","Orientējošs aprēķins · 2026":"Estimate · 2026","VSAOI aprēķins par ceturksni":"Quarterly VSAOI estimate","Ievadi katra mēneša peļņu — ieņēmumi mīnus ar saimniecisko darbību saistītie izdevumi. Aprēķins paredzēts vispārējā režīma pašnodarbinātajam, kuram piemēro standarta 31,07% likmi.":"Enter your profit for each month — income minus business-related expenses. This calculator is for self-employed people under the general tax regime using the standard 31.07% rate.","1. ceturksnis (janvāris–marts)":"Q1 (January–March)","2. ceturksnis (aprīlis–jūnijs)":"Q2 (April–June)","3. ceturksnis (jūlijs–septembris)":"Q3 (July–September)","4. ceturksnis (oktobris–decembris)":"Q4 (October–December)","Katru ceturksni saglabā atsevišķi. IIN prognozē automātiski ieskaitīsies visi saglabātie ceturkšņi.":"Each quarter is saved separately. All saved quarters are automatically included in the IIN estimate.","Izvēlētais VSAOI objekts mēnesī (€)":"Monthly VSAOI contribution base (€)","Vismaz 780 €. Vari izvēlēties lielāku summu, ja vēlies maksāt pilno VSAOI no lielākas peļņas daļas.":"At least €780. You can choose a higher amount if you want full VSAOI to cover a larger share of your profit.","1. mēneša peļņa (€)":"Month 1 profit (€)","2. mēneša peļņa (€)":"Month 2 profit (€)","3. mēneša peļņa (€)":"Month 3 profit (€)","Ievadi peļņu visiem trim ceturkšņa mēnešiem, lai redzētu orientējošo aprēķinu.":"Enter profit for all three months to see an estimate.","Ja mēneša peļņa nepārsniedz 780 €":"If monthly profit is below €780","VSAOI pensiju apdrošināšanai ir 10% no visas mēneša peļņas. Piemēram, ja peļņa ir 550 €, iemaksa ir 55 €. 550 € nav VSAOI slieksnis — tā ir 2026. gada IIN neapliekamā minimuma summa. Ja peļņa sasniedz vismaz 780 €, standarta gadījumā 31,07% maksā no izvēlētā VSAOI objekta (vismaz 780 €), bet 10% — no peļņas daļas virs šī objekta. No 2026. gada pašnodarbinātajiem vairs nepiemēro minimālo VSAOI piemaksu par nepietiekamiem ienākumiem.":"When monthly profit is below €780, the pension insurance contribution is 10% of the full monthly profit. For example, €550 profit means a €55 contribution. €550 is not a VSAOI threshold; it is the 2026 IIN tax-free allowance per month. From profit of €780 or more, the standard 31.07% applies to the chosen contribution base (at least €780), and 10% applies to profit above that base. From 2026, self-employed people are no longer charged a minimum VSAOI top-up for low income.","VID skaidrojums par VSAOI ↗":"VID guidance on VSAOI ↗","Aprēķins ir orientējošs un neņem vērā īpašos statusus un atšķirīgas likmes; EDS aprēķins ir noteicošais.":"This is an estimate and does not account for special statuses or different rates. The calculation in VID EDS takes precedence.","IIN prognoze par gadu":"Annual IIN estimate","Aprēķins parāda, cik papildu IIN varētu radīt saimnieciskā darbība, ņemot vērā arī citus tavus gada apliekamos ienākumus.":"Estimate the additional IIN your business activity may generate, taking your other taxable income for the year into account.","Saimnieciskās darbības peļņa gadā (€)":"Annual business profit (€)","Automātiski no saglabātajiem VSAOI ceturkšņiem.":"Filled in from saved VSAOI quarters.","VSAOI IIN prognozei (€)":"VSAOI for IIN estimate (€)","Automātiski no saglabātajiem ceturkšņu aprēķiniem. Pirms deklarācijas salīdzini ar faktiski samaksāto summu EDS.":"Filled in from saved quarterly calculations. Before filing, compare this with the amount actually paid in VID EDS.","Ievadi tikai to VSAOI summu, kas vēl nav iekļauta saimnieciskās darbības izdevumos.":"Enter only VSAOI contributions not already included in your business expenses.","Citi gada apliekamie ienākumi (€)":"Other taxable income for the year (€)","Piemēram, darba alga pēc darba ņēmēja VSAOI, pirms neapliekamā minimuma un atvieglojumiem.":"For example, salary after employee social contributions, before the tax-free allowance and reliefs.","Neapliekamais minimums gadā (€)":"Annual tax-free allowance (€)","2026. gadā līdz 6600 €. Ja tas jau izmantots citur, ievadi 0 vai neizmantoto daļu.":"Up to €6,600 in 2026. If it has already been used elsewhere, enter 0 or the unused portion.","Citi atvieglojumi un attaisnotie izdevumi (€)":"Other tax reliefs and eligible expenses (€)","Ievadi tikai summu, ko vēlies ņemt vērā šajā aptuvenajā aprēķinā.":"Enter only the amount you want included in this estimate.","Man ir tiesības uz atbrīvojumu no minimālā 50 € IIN":"I qualify for an exemption from the €50 minimum IIN","Atzīmē, ja attiecīgajā gadā esi veicis VSAOI par sevi vai darbiniekiem, maksājis IIN, tas ir pirmais vai nākamais gads pēc reģistrācijas, vai gads, kurā darbību izbeidzi. Īpašie proporcionālie izņēmumi (bērna kopšana līdz 2 gadu vecumam un darbnespējas lapa B) šajā vienkāršotajā rīkā nav aprēķināti.":"Tick this if, during the year, you paid VSAOI for yourself or employees, paid IIN, it is your first or second year after registration, or the year you ceased activity. Special prorated exemptions (parental care until age 2 and a B-type sick leave certificate) are not covered by this simplified tool.","Ievadi gada peļņu un, ja nepieciešams, arī citus ienākumus, lai aprēķinātu prognozi.":"Enter annual profit and, if relevant, other income to calculate an estimate.","Aprēķins izmanto 2026. gada progresīvās IIN likmes: 25,5% līdz 105 300 € un 33% virs šīs summas, kā arī 3% papildu likmi ienākumu daļai virs 200 000 €. Pašnodarbinātā VSAOI, kas nav iekļautas izdevumos, tiek atskaitītas no saimnieciskās darbības peļņas. Neapliekamais minimums pēc noklusējuma ir 6600 € gadā. Ja IIN no saimnieciskās darbības nepārsniedz 50 € un nav piemērojams VID noteikts izņēmums, aprēķinā tiek piemērots minimālais 50 € IIN. Atzīmē atbrīvojumu tikai tad, ja atbilsti kādam no VID noteiktajiem nosacījumiem. Aprēķins neietver iepriekšējo gadu zaudējumus, pilnu individuālo atvieglojumu un attaisnoto izdevumu ierobežojumu izvērtējumu, kā arī īpašos proporcionālos izņēmumus. Rezultāts ir informatīvs, nevis VID aprēķins.":"This estimate uses Latvia's 2026 progressive IIN rates: 25.5% up to €105,300, 33% above that, plus an additional 3% on income above €200,000. Self-employed VSAOI not included in expenses are deducted from business profit. The default tax-free allowance is €6,600 per year. If IIN from business activity is below €50 and no VID exemption applies, a minimum €50 IIN is included. Tick the exemption only if you meet VID's conditions. This estimate does not include losses from previous years, a full assessment of personal relief and eligible expense limits, or special prorated exemptions. It is for guidance only and is not an official VID calculation.","VID metodiskais materiāls par IIN no saimnieciskās darbības ↗":"VID guide to IIN on business income ↗","VID IIN likmes ↗":"VID IIN rates ↗","VID oficiālā informācija":"Official VID information","Atbalstīt Mansdarbs izstrādi":"Support Mansdarbs development","Paldies, ka palīdzi Mansdarbs augt!":"Thank you for helping Mansdarbs grow!","Mansdarbs pamatfunkcijas paliks bez maksas. Ja šis rīks tev noder, nākotnē varēsi brīvprātīgi atbalstīt tā uzturēšanu, serveru izmaksas un jaunu funkciju izstrādi.":"Mansdarbs core features will remain free. If you find this tool useful, you will be able to voluntarily support its maintenance, server costs and development of new features.","Atbalsta maksājumu rekvizīti un dokumentu noformēšanas kārtība tiks publicēta pēc juridiski korekta saņēmēja un uzskaites modeļa sakārtošanas. Līdz tam maksājumus neveic.":"Support payment details and documentation procedures will be published once the legally appropriate recipient and accounting model are in place. Please do not make payments before then.","Ja plāno maksāt no uzņēmuma konta, pirms pārskaitījuma saskaņo maksājuma pamatojumu un nodokļu uzskaiti ar savu grāmatvedi. Brīvprātīgs atbalsts automātiski nav atskaitāms uzņēmuma izdevums vai nodokļu ziņā atskaitāms ziedojums.":"If you plan to pay from a company account, confirm the payment purpose and tax treatment with your accountant before transferring. Voluntary support is not automatically a deductible business expense or a tax-deductible donation.","Mansdarbs · Palīgs saimnieciskās darbības sākšanai un ikdienas uzskaitei · ":"Mansdarbs · Tools to start and manage self-employment · ","Apmeklējumu skaitam izmantots ārējs skaitītājs. Tas saņem tehniskos pieprasījuma datus; Mansdarbs tam nenosūta tavus ienākumu, izdevumu vai rēķinu datus.":"An external counter measures visits using technical request data. Mansdarbs does not send it your income, expense or invoice data.","Jau esi reģistrējies?":"Already registered?","Atvērt uzskaiti":"Open records","Aprēķini":"Calculators","Visi mēneši":"All months","Ienākumi:":"Income:","Izdevumi:":"Expenses:","Labot":"Edit","Dzēst":"Delete","Rādīt periodu":"Show period","Ienākumi kopā":"Total income","Izdevumi kopā":"Total expenses","Starpība":"Balance","Pārskats pa mēnešiem":"Monthly overview","Pozitīva vai negatīva starpība starp reģistrētajiem ienākumiem un izdevumiem.":"Difference between recorded income and expenses.","Ieraksti":"Entries","Šajā mēnesī ierakstu nav.":"No entries for this month.","⚠ Iespējams IIN pienākums — pievērs uzmanību!":"⚠ Possible IIN liability — please check!","Šajā mēnesī uzskaitītā peļņa ir ":"Recorded profit this month is "," pārsniedzot 550 € mēneša orientieri.":" , above the €550 monthly reference amount.","Šī gada uzskaitītā peļņa ir ":"Recorded profit this year is "," pārsniedzot 6600 € gada orientieri.":" , above the €6,600 annual reference amount.","550 € mēnesī un 6600 € gadā ir neapliekamā minimuma orientieri, nevis automātiskas nodokļa robežas. IIN nosaka pēc kopējiem gada apliekamajiem ienākumiem, ņemot vērā citus ienākumus, attaisnotos izdevumus, VSAOI un neizmantoto neapliekamo minimumu. Pārbaudi gada prognozi sadaļā “Aprēķini”.":"€550 per month and €6,600 per year are reference amounts for the tax-free allowance, not automatic tax thresholds. IIN is based on total taxable income for the year, taking other income, eligible expenses, VSAOI and any unused allowance into account. Check the annual estimate under “Calculators”.","Vai dzēst šo ierakstu?":"Delete this entry?","Vai tiešām dzēst visus šīs ierīces demonstrācijas ierakstus?":"Delete all demo entries on this device?","Nav ierakstu, ko eksportēt.":"There are no entries to export.","Veids":"Type","Summa EUR":"Amount (EUR)","Uzņēmuma rekvizīti nav ievadīti — tos varēsi pievienot vēlāk, izrakstot rēķinu.":"Company details are not set up yet. You can add them later when creating an invoice.","Aktīvais uzņēmums: ":"Active company: ","Ieņēmumi":"Income","Izdevumi":"Expenses","Bez PVN":"Excl. VAT","Kopā":"Total","Pircēju parādi":"Accounts receivable","Aprēķinātais PVN":"Output VAT","Priekšnodoklis":"Input VAT","Piegādātāju parādi":"Accounts payable","Debeta kopsumma: ":"Total debits: ","Kredīta kopsumma: ":"Total credits: ","Summa bez PVN: ":"Subtotal excl. VAT: ","PVN: ":"VAT: ","PVN netiek piemērots.":"VAT not applied.","RĒĶINS":"INVOICE","Izrakstīšanas datums: ":"Issue date: ","Apmaksas termiņš: ":"Due date: ","Nav norādīts":"Not specified","Izrakstītājs":"From","Saņēmējs":"Bill to","Apraksts":"Description","Cena":"Unit price","Summa":"Amount","Kopā apmaksai: ":"Total due: ","Paldies par sadarbību!":"Thank you for your business!","Dokuments ir sagatavots elektroniski un ir derīgs bez paraksta.":"This document was generated electronically and is valid without a signature.","Saglabātie rēķini":"Saved invoices","Pagaidām nav saglabātu rēķinu.":"No saved invoices yet.","Drukāt":"Print","Vai dzēst šo rēķinu?":"Delete this invoice?","Aizpildi izrakstītāja, saņēmēja un pakalpojuma/preces nosaukuma laukus.":"Complete the issuer, recipient and service/product fields.","Pārbaudi daudzumu un vienības cenu.":"Check the quantity and unit price.","Norādi rēķina numuru un izrakstīšanas datumu.":"Enter an invoice number and issue date.","Šāds rēķina numurs jau ir saglabāts.":"This invoice number has already been used.","Rēķins saglabāts šajā pārlūkā.":"Invoice saved in this browser.","Ievadi summu, kas lielāka par 0.":"Enter an amount greater than 0.","Izvēlies datumu.":"Choose a date.","Saglabāt izmaiņas":"Save changes","Vai mainīt uzskaites veidu? Saglabātie dati netiks dzēsti.":"Change the tracking type? Your saved data will not be deleted.","Neizdevās saglabāt ierakstu. Pārbaudi pārlūka privātuma iestatījumus vai brīvo vietu ierīcē.":"Could not save the entry. Check your browser privacy settings or available device storage.","Neizdevās dzēst ierakstus pārlūka ierobežojumu dēļ.":"Could not delete entries due to browser restrictions.","Neizdevās saglabāt SIA datus šajā pārlūkā.":"Could not save company data in this browser.","Neizdevās atvērt SIA uzskaiti. Pārlādē lapu un mēģini vēlreiz.":"Could not open company records. Reload the page and try again.","Aizpildi datumu, aprakstu un summu, kas lielāka par 0.":"Enter a date, description and an amount greater than 0.","Neizdevās saglabāt rēķinu pārlūkā.":"Could not save the invoice in this browser.","Kontakti":"Contact details","Reģ. Nr.":"Reg. no.","Uzskaites veids: ":"Accounting mode: ","Ieņēmumi bez PVN":"Revenue excl. VAT","Summa bez PVN: ":"Subtotal excl. VAT: ","Kopā: ":"Total: ","Palīgs saimnieciskās darbības sākšanai un ikdienas uzskaitei":"Tools to start and manage self-employment","Zemnieku saimniecība (Z/S)":"Farm (Z/S)","Bezmaksas rēķinu izrakstīšana un saglabāšana. Z/S specifiska grāmatvedības uzskaite tiks pievienota atsevišķi.":"Create and save invoices for free. Dedicated farm bookkeeping features will be added separately.","Izvēlēties Z/S":"Choose farm (Z/S)","Z/S · bezmaksas rēķini":"Farm · free invoices","7210 · Materiāli un preces":"7210 · Materials and goods","7440 · Pakalpojumi":"7440 · Services","7550 · Transporta izdevumi":"7550 · Transport costs","7610 · Citi saimnieciskie izdevumi":"7610 · Other business expenses","Valsts sociālās apdrošināšanas obligātās iemaksas (VSAOI)":"Latvian social insurance contributions (VSAOI)","iedzīvotāju ienākuma nodoklis (IIN)":"Latvian personal income tax (IIN)","Tavs ceļš līdz oficiālam biznesam Latvijā":"Your path to starting a business in Latvia","Sāc savu biznesu Latvijā — soli pa solim.":"Start a business in Latvia — step by step.","Izvēlies, vai jau dzīvo Latvijā vai plāno pārcelties. Mansdarbs palīdzēs saprast secību un atrast oficiālās iestādes. Reģistrāciju un atļaujas izsniedz valsts iestādes, nevis Mansdarbs.":"Choose whether you already live in Latvia or plan to move here. Mansdarbs explains the steps and points you to official authorities. Registrations and permits are issued by public authorities, not Mansdarbs.","Es jau dzīvoju Latvijā":"I already live in Latvia","Vēlos sākt legālu uzņēmējdarbību šeit.":"I want to start a legal business here.","Vēlos pārcelties uz Latviju":"I want to move to Latvia","Vēlos noskaidrot uzturēšanās un biznesa sākšanas iespējas.":"I want to understand my residence and business options.","Ja jau dzīvo Latvijā":"If you already live in Latvia","Pārbaudi savas tiesības strādāt":"Check your right to work","Ja neesi Latvijas vai ES/EEZ pilsonis, pārbaudi, vai tava vīza vai uzturēšanās atļauja ļauj veikt tieši šādu uzņēmējdarbību. Tiesības uzturēties Latvijā automātiski nenozīmē tiesības strādāt jebkurā veidā.":"If you are not a Latvian or EU/EEA citizen, check whether your visa or residence permit allows this type of business activity. The right to stay in Latvia does not automatically mean you can work in any capacity.","Izvēlies uzņēmējdarbības formu":"Choose a business structure","Vienkāršākai individuālai darbībai var derēt reģistrācija VID kā saimnieciskās darbības veicējam. Ja plāno restorānu, darbiniekus, partnerus vai lielāku risku, izvērtē SIA. Izvēle atkarīga no darbības un atbildības.":"For solo work, registering as self-employed with VID may be suitable. If you plan to open a restaurant, hire staff, work with partners or take on greater business risks, consider an SIA (limited liability company). The right choice depends on your activity and liability.","Reģistrē darbību un uzņēmuma adresi":"Register your activity and business address","Pašnodarbinātie reģistrē saimniecisko darbību VID. SIA reģistrē Uzņēmumu reģistrā un nokārto nodokļu pienākumus VID. Ja veikals vai ēdināšanas vieta atrodas citā adresē, pārbaudi arī struktūrvienības reģistrāciju.":"Self-employed people register their activity with VID. An SIA is registered with the Register of Enterprises, followed by tax registration with VID. If your shop or restaurant operates at another address, check whether the business location must also be registered.","Sakārto nozarei vajadzīgās atļaujas":"Get any permits required for your industry","Prasības atšķiras pēc tā, ko pārdosi vai kādu pakalpojumu sniegsi. Pārtikas uzņēmumam pirms darba sākšanas jāsakārto PVD reģistrācija vai atzīšana.":"Requirements depend on what you sell or which services you provide. Food businesses must complete the relevant PVD registration or approval before starting operations.","Sagatavo nodokļus un ikdienas uzskaiti":"Set up taxes and daily bookkeeping","Pārbaudi PVN pienākumu, kases aparāta prasības, darbinieku reģistrāciju un grāmatvedību. Mansdarbs var palīdzēt ar ikdienas uzskaiti un orientējošiem aprēķiniem.":"Check VAT obligations, cash register rules, employee registration and accounting. Mansdarbs can help with everyday records and indicative calculations.","Ja vēlies pārcelties uz Latviju":"If you plan to move to Latvia","Svarīgi — vispirms noskaidro uzturēšanās pamatu.":"Important — check your residence route first.","Uzņēmuma reģistrēšana pati par sevi nedod tiesības pārcelties uz Latviju vai šeit strādāt. Pirms maksā par telpām, dibini uzņēmumu vai pērc biļeti, pārbaudi savu konkrēto uzturēšanās un darba tiesību ceļu PMLP vai Latvijas pārstāvniecībā.":"Registering a company does not by itself give you the right to move to or work in Latvia. Before renting premises, setting up a company or booking travel, confirm your specific residence and work route with OCMA (PMLP) or a Latvian embassy.","Noskaidro, kāds uzturēšanās pamats tev var būt piemērots":"Find out which residence route may apply to you","Ja esi Indijas pilsonis, tu esi trešās valsts pilsonis. Noteikumi atšķiras atkarībā no tā, vai plāno būt pašnodarbinātais, individuālais komersants, uzņēmuma valdes loceklis vai darbinieks. Vienkārši kļūt par SIA īpašnieku nav tas pats, kas iegūt uzturēšanās atļauju.":"If you are a foreign citizen, you are a non-EU national. The rules differ depending on whether you plan to be self-employed, a registered individual merchant, a company board member or an employee. Simply owning shares in an SIA is not the same as qualifying for a residence permit.","Pārbaudi pašnodarbinātā vai uzņēmēja nosacījumus":"Check the self-employed or business-owner requirements","PMLP publicē atsevišķas prasības pašnodarbinātajiem un komersantiem. Pašnodarbinātā uzturēšanās atļaujas ceļā var būt vajadzīgs zvērināta revidenta apstiprināts biznesa plāns, pietiekami finanšu līdzekļi un citi dokumenti. Atļaujas termiņš un nosacījumi ir atkarīgi no konkrētā pamata.":"OCMA publishes separate requirements for self-employed people and business owners. The self-employed residence route may require a business plan approved by a sworn auditor, sufficient funds and other documents. Permit duration and conditions depend on the legal basis.","Sazinies ar PMLP pirms uzņēmuma dibināšanas":"Contact OCMA before setting up a company","Nosūti savas ieceres aprakstu un pajautā, kurš uzturēšanās pamats attiecas uz tavu situāciju, kādi ir aktuālie finanšu kritēriji un kādi dokumenti jāiesniedz no Indijas. Nepaļaujies uz veciem blogiem vai vispārīgu padomu internetā.":"Describe your plan and ask which residence route applies to you, what financial criteria are currently in force and which documents must be provided from India. Do not rely on old blog posts or generic online advice.","Sagatavo biznesa plānu un budžetu":"Prepare a business plan and budget","Aprēķini telpu īri, aprīkojumu, preces, algas, nodokļus, atļaujas un dzīvošanas izmaksas. Ja tavs uzturēšanās pamats prasa biznesa plānu vai kapitālu, pārbaudi prasības ar PMLP un profesionālu konsultantu.":"Estimate rent, equipment, stock, wages, taxes, permits and living costs. If your residence route requires a business plan or investment, confirm the requirements with OCMA and a qualified adviser.","Pēc atļaujas — reģistrē un sāc darbību":"Once authorised, register and start operating","Kad ir skaidrs, ka drīksti dzīvot un strādāt Latvijā, seko vietējai uzņēmuma reģistrācijai, VID, PVD un citām konkrētās nozares prasībām.":"Once your right to live and work in Latvia is confirmed, follow the local company registration, VID, PVD and any other industry-specific requirements.","Izvēlies savu biznesa ideju":"Choose your business idea","Kādu uzņēmumu vēlies sākt?":"What kind of business do you want to start?","Izvēlies darbības veidu, lai redzētu papildu prasības.":"Choose an activity to see additional requirements.","Biznesa veids":"Business type","Kafejnīca, restorāns vai cits ēdināšanas uzņēmums":"Café, restaurant or other food business","Veikals vai preču tirdzniecība":"Shop or retail business","Remonts, uzkopšana vai citi pakalpojumi":"Repairs, cleaning or other services","Cits biznesa veids":"Other business","Ja vēlies atvērt kafejnīcu, restorānu vai citu ēdināšanas uzņēmumu":"If you plan to open a café, restaurant or other food business","Tev būs jāatrod telpas, kuras drīkst izmantot šādai darbībai, jāsagatavo telpu plāns un dokumenti par tiesībām telpas izmantot, jāreģistrē pārtikas uzņēmums PVD un jāizpilda higiēnas prasības. Ēdiena gatavošanas uzņēmumam, kuram nav vajadzīga atzīšana, PVD veic pirmsreģistrācijas pārbaudi. PVD reģistrācijas process sākas pēc atbilstošu dokumentu iesniegšanas; nesāc ēdiena gatavošanu komerciālai pārdošanai, kamēr nav izpildītas visas prasības.":"You will need suitable premises, a floor plan and proof that you can use the premises, PVD food business registration and compliance with hygiene rules. For food preparation businesses that do not require approval, PVD carries out a pre-registration inspection. The PVD process starts after the required documents are submitted. Do not start preparing food for commercial sale until all requirements are met.","Pārbaudi savas nozares noteikumus":"Check the rules for your industry","Veikalam, tirdzniecībai un pakalpojumiem var būt atšķirīgas prasības, piemēram, kases aparāts, licence, darba aizsardzība vai īpašas kvalifikācijas apliecinājums. Pārbaudi konkrēto darbības veidu VID un attiecīgajā uzraudzības iestādē, pirms sāc darbu.":"Retail and service businesses may have specific requirements, such as a cash register, licence, workplace safety measures or proof of qualifications. Check your exact activity with VID and the relevant regulator before opening.","Mansdarbs ir ceļvedis, nevis valsts iestāde.":"Mansdarbs is a guide, not a government authority.","Prasības var atšķirties pēc pilsonības, uzturēšanās statusa, uzņēmējdarbības formas un nozares. Pirms svarīga lēmuma pārbaudi jaunāko informāciju pie VID, Uzņēmumu reģistra, PMLP un PVD. Mansdarbs neprasa tavu EDS paroli un neveic reģistrāciju tavā vietā.":"Requirements vary by nationality, residence status, business structure and industry. Before making important decisions, confirm the latest rules with VID, the Register of Enterprises, OCMA and PVD. Mansdarbs never asks for your EDS password and does not register your business for you.","PMLP: tiesības strādāt Latvijā ↗":"PMLP: rights to work in Latvia ↗",
+"VID: pirmie soļi uzņēmējiem ↗":"VID: First steps for entrepreneurs ↗",
+"Reģistrēt SIA ↗":"Register an SIA ↗",
+"VID: saimnieciskās darbības reģistrācija ↗":"VID: Self-employed registration ↗",
+"VID: struktūrvienības reģistrācija ↗":"VID: business location registration ↗",
+"VID: uzņēmējdarbības kontrolsaraksts ↗":"VID: business checklist ↗",
+"PMLP: uzturēšanās atļaujas ↗":"PMLP: residence permits ↗",
+"PMLP: ārzemnieku tiesības strādāt ↗":"PMLP: work rights for foreigners ↗",
+"PMLP: pašnodarbinātā persona ↗":"PMLP: self-employed person ↗",
+"PMLP: individuālais komersants ↗":"PMLP: individual merchant ↗",
+"PMLP oficiālā informācija ↗":"PMLP official information ↗",
+"PVD: pārtikas uzņēmuma reģistrācija ↗":"PVD: register a food business ↗",
+"PVD: telpas un pirmsreģistrācijas pārbaude ↗":"PVD: premises and pre-registration inspection ↗",
 };
-function openTab(t){document.querySelectorAll('#nav button').forEach(b=>b.classList.toggle('active',b.dataset.tab===t));$('tabcontent').innerHTML=tabData[t]}
-$('nav').addEventListener('click',e=>{let b=e.target.closest('button[data-tab]');if(b)openTab(b.dataset.tab)});
-function addRecord(){let a=Number($('amount').value);if(!a||a<=0){alert('Ievadi derīgu summu.');return}let row=document.createElement('div');row.className='rowline';let left=document.createElement('span');left.textContent=$('kind').value+': '+($('desc').value||'Bez apraksta')+' · '+$('pay').value;let right=document.createElement('b');right.textContent=a.toFixed(2)+' €';row.append(left,right);$('recordlist').prepend(row);$('amount').value='';$('desc').value=''}
-function resetApp(){$('workspace').classList.add('hidden');$('home').classList.remove('hidden')}
-openTab('overview');
-function sendAnalytics() { fetch('/api/track', { method: 'POST', credentials: 'same-origin', keepalive: true }).catch(() => {}); }
-function setAnalyticsConsent(allowed) { try { localStorage.setItem('mansdarbs_analytics_consent', allowed ? 'yes' : 'no'); } catch (_) {} $('analyticsConsent').classList.add('hidden'); if (allowed) sendAnalytics(); }
-try { const consent = localStorage.getItem('mansdarbs_analytics_consent'); if (consent === 'yes') sendAnalytics(); else if (consent !== 'no') $('analyticsConsent').classList.remove('hidden'); } catch (_) {}
-</script></body></html>
+function uiText(lv,en){return document.documentElement.lang==='en'?en:lv}
+function setLanguage(lang){
+ const value=lang==='en'?'en':'lv';
+ try{localStorage.setItem(LANGUAGE_KEY,value)}catch(_){}
+ document.documentElement.lang=value;
+ document.getElementById('langLv')?.setAttribute('aria-pressed',String(value==='lv'));
+ document.getElementById('langEn')?.setAttribute('aria-pressed',String(value==='en'));
+ applyLanguage();
+  if(typeof updateInvoiceTotals==='function')updateInvoiceTotals();
+}
+function applyLanguage(){
+ const english=document.documentElement.lang==='en';
+ const walker=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);
+ let node;
+ while((node=walker.nextNode())){
+  if(!node.__lvOriginal)node.__lvOriginal=node.nodeValue;
+  const original=node.__lvOriginal,trimmed=original.trim();
+  if(!trimmed)continue;
+  const translated=EN_TRANSLATIONS[trimmed];
+  const nextValue=english&&translated?original.replace(trimmed,translated):original;if(node.nodeValue!==nextValue)node.nodeValue=nextValue;
+ }
+ document.querySelectorAll('select option').forEach(el=>{if(!el.dataset.lvOption)el.dataset.lvOption=el.firstChild?.__lvOriginal||el.textContent;const original=el.dataset.lvOption;const translated=english?(EN_TRANSLATIONS[original]||original):original;if(el.textContent!==translated)el.textContent=translated;});
+  document.querySelectorAll('[placeholder]').forEach(el=>{
+  if(!el.dataset.lvPlaceholder)el.dataset.lvPlaceholder=el.getAttribute('placeholder');
+  const value=el.dataset.lvPlaceholder;
+  el.setAttribute('placeholder',english?(EN_TRANSLATIONS[value]||value):value);
+ });
+}
+(function(){
+ let lang='lv';try{lang=localStorage.getItem(LANGUAGE_KEY)||'lv'}catch(_){}
+ document.documentElement.lang=lang==='en'?'en':'lv';
+ document.addEventListener('DOMContentLoaded',()=>{
+  document.getElementById('langLv')?.setAttribute('aria-pressed',String(lang!=='en'));
+  document.getElementById('langEn')?.setAttribute('aria-pressed',String(lang==='en'));
+  applyLanguage();
+ });
+ const observer=new MutationObserver(()=>{if(document.documentElement.lang==='en')applyLanguage()});
+ observer.observe(document.body,{childList:true,subtree:true,characterData:true});
+})();
+
+
+</script>
+<script src="contextual-help.js?v=1"></script>
+<script src="industry-modules.js?v=80a1e8e"></script>
+</body>
+</html>
