@@ -1,47 +1,383 @@
 <!doctype html>
-<html lang="lv"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#f5f7f4"><title>Mansdarbs — saruna par oficiālu darba sākšanu</title>
+<html lang="lv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#f5f7f4">
+<title>Mansdarbs — konsultants</title>
 <style>
-:root{--bg:#f5f7f4;--paper:#fff;--ink:#17231f;--muted:#64716b;--line:#e1e8e2;--green:#176b50;--pale:#e8f3ec;--amber:#fff4d8;--amberink:#765315}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}button,textarea{font:inherit}button{cursor:pointer}.shell{max-width:850px;margin:auto;padding:16px 18px 48px}.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}.brand{display:flex;align-items:center;gap:10px;font-size:19px;font-weight:800}.logo{width:38px;height:38px;border-radius:12px;background:var(--green);color:white;display:grid;place-items:center}.back,.secondary{border:0;background:#e9eeea;padding:10px 14px;border-radius:10px;color:var(--ink);font-weight:700}.intro{padding:20px 4px}.eyebrow{font-size:12px;letter-spacing:1px;text-transform:uppercase;color:var(--green);font-weight:800}.intro h1{font-size:clamp(29px,5vw,42px);line-height:1.12;letter-spacing:-1.3px;margin:9px 0}.intro p,.muted{color:var(--muted)}.privacy{background:#edf4ef;border:1px solid #dbe9df;border-radius:14px;padding:13px 15px;color:#355746;font-size:13px;margin:12px 0}.chat{background:var(--paper);border:1px solid var(--line);border-radius:20px;padding:clamp(15px,3vw,25px);min-height:380px}.chathead{display:flex;justify-content:space-between;border-bottom:1px solid var(--line);padding-bottom:13px;margin-bottom:18px}.status{font-size:12px;color:var(--muted)}.messages{display:flex;flex-direction:column;gap:12px;min-height:170px}.msg{max-width:92%;padding:12px 15px;border-radius:16px;white-space:pre-wrap;overflow-wrap:anywhere}.bot{align-self:flex-start;background:#f0f4f0;border-bottom-left-radius:5px}.user{align-self:flex-end;background:var(--pale);border-bottom-right-radius:5px}.choices{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0 8px}.choice{border:1px solid var(--line);background:white;border-radius:999px;padding:9px 13px;color:var(--ink)}.choice:hover{border-color:var(--green);background:var(--pale)}.entry{display:flex;gap:9px;margin-top:15px}.entry textarea{flex:1;resize:vertical;min-height:48px;border:1px solid #d5ded7;border-radius:12px;padding:12px;min-width:0}.send,.primary{border:0;background:var(--green);color:white;border-radius:12px;padding:11px 17px;font-weight:750}.skip{border:0;background:transparent;color:var(--muted);text-decoration:underline;padding:10px 0}.hidden{display:none!important}.error{color:#9b332c;background:#fff0ee;border:1px solid #f2d1cc;border-radius:11px;padding:10px 12px;font-size:13px;margin-top:10px}.plan{display:grid;gap:10px;margin:16px 0}.item{display:flex;gap:12px;border:1px solid var(--line);border-radius:13px;padding:13px}.num{width:29px;height:29px;flex:0 0 29px;border-radius:9px;background:var(--pale);color:var(--green);font-weight:800;display:grid;place-items:center}.item p{margin:3px 0 0;color:var(--muted);font-size:14px}.warning{background:var(--amber);color:var(--amberink);padding:13px 15px;border-radius:12px;font-size:13px}.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:18px}.footer{text-align:center;color:#87928b;font-size:12px;margin:20px 0}
-@media(max-width:560px){.shell{padding:12px}.entry{flex-direction:column}.send{width:100%}.msg{max-width:98%}}
-</style></head><body><main class="shell">
-<header class="top"><div class="brand"><div class="logo">M</div>Mansdarbs</div><button class="back" onclick="location.href='index.html'">← Sākums</button></header>
-<section class="intro"><div class="eyebrow">SĀKAM AR SARUNU</div><h1>Pastāsti, ko tu dari.<br>Mēs palīdzēsim saprast, kā sākt oficiāli.</h1><p>Nav jāzina nodokļu termini vai jāaizpilda sarežģīta anketa. Atbildi saviem vārdiem — jautāsim pa vienam un beigās apkoposim nākamos soļus.</p></section>
-<div class="privacy"><strong>Tava informācija paliek tavā kontrolē.</strong> Demonstrācijas prototips apstrādā atbildes tikai šajā pārlūka lapā. Tās netiek saglabātas vai sūtītas serverim un netiek iesniegtas VID. Neievadi paroles, personas kodu, bankas datus vai klientu identificējošu informāciju.</div>
-<section class="chat" aria-label="Saruna ar Mansdarbs konsultantu"><div class="chathead"><strong>💬 Mansdarbs konsultants</strong><span class="status" id="status">Sarunas sākums</span></div><div class="messages" id="messages" aria-live="polite"></div><div id="options" class="choices"></div>
-<div class="entry" id="entry"><textarea id="answer" rows="2" maxlength="600" placeholder="Uzraksti atbildi saviem vārdiem…" aria-label="Tava atbilde"></textarea><button class="send" id="send">Nosūtīt</button></div><button class="skip" id="skip">Izlaist šo jautājumu</button><div id="error" class="error hidden" role="alert"></div><div id="result" class="hidden"></div></section>
-<footer class="footer">Mansdarbs · demonstrācijas saruna · nav savienojuma ar VID vai EDS</footer></main>
+:root{--bg:#f5f7f4;--paper:#fff;--ink:#17231f;--muted:#64716b;--line:#e1e8e2;--green:#176b50;--pale:#e8f3ec;--amber:#fff4d8;--amberink:#765315;--red:#9b332c}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}
+button,textarea{font:inherit}button{cursor:pointer}
+.shell{max-width:900px;margin:auto;padding:14px 16px 46px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px}
+.brand{display:flex;align-items:center;gap:10px;font-size:19px;font-weight:800}
+.logo{width:38px;height:38px;border-radius:12px;background:var(--green);color:#fff;display:grid;place-items:center}
+.top-label{font-size:12px;color:var(--muted);background:#e9eeea;padding:7px 10px;border-radius:99px}
+.close{border:0;background:#e9eeea;padding:10px 13px;border-radius:10px;color:var(--ink);font-weight:700}
+.intro{padding:18px 4px 12px}
+.eyebrow{font-size:12px;letter-spacing:1px;text-transform:uppercase;color:var(--green);font-weight:800}
+.intro h1{font-size:clamp(29px,5vw,43px);line-height:1.1;letter-spacing:-1.2px;margin:9px 0}
+.intro p,.muted{color:var(--muted)}
+.privacy{background:#edf4ef;border:1px solid #dbe9df;border-radius:14px;padding:14px 16px;color:#355746;font-size:13px;margin:12px 0 17px}
+.privacy p{margin:5px 0 0}
+.chat,.result{background:var(--paper);border:1px solid var(--line);border-radius:20px;padding:clamp(16px,3vw,26px);box-shadow:0 10px 30px rgba(24,45,35,.05)}
+.chat-head{display:flex;align-items:center;justify-content:space-between;gap:10px;border-bottom:1px solid var(--line);padding-bottom:13px;margin-bottom:17px}
+.chat-head strong{font-size:16px}
+.demo{font-size:12px;color:var(--amberink);background:var(--amber);padding:5px 9px;border-radius:99px;white-space:nowrap}
+.progress-wrap{margin:8px 0 18px}
+.progress{height:7px;background:#edf1ed;border-radius:99px;overflow:hidden}
+.progress span{display:block;height:100%;width:0;background:var(--green);transition:width .2s}
+.progress-text{font-size:12px;color:var(--muted);margin-top:6px}
+.messages{display:flex;flex-direction:column;gap:11px;min-height:110px;margin-bottom:15px}
+.msg{max-width:94%;padding:12px 15px;border-radius:15px;white-space:pre-wrap;overflow-wrap:anywhere}
+.bot{align-self:flex-start;background:#f0f4f0;border-bottom-left-radius:5px}
+.user{align-self:flex-end;background:var(--pale);border-bottom-right-radius:5px}
+.choices{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+.choice{border:1px solid var(--line);background:#fff;border-radius:999px;padding:9px 13px;color:var(--ink);text-align:left}
+.choice:hover,.choice:focus-visible{border-color:var(--green);background:var(--pale)}
+.entry{margin-top:13px}
+textarea{display:block;width:100%;min-height:88px;resize:vertical;border:1px solid #d5ded7;border-radius:12px;padding:12px;background:#fff;color:var(--ink)}
+textarea:focus{outline:2px solid #9bb9a8;outline-offset:1px}
+.entry-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:8px}
+.counter{font-size:12px;color:var(--muted)}
+.primary,.secondary,.skip{border:0;border-radius:11px;padding:11px 15px;font-weight:750}
+.primary{background:var(--green);color:#fff}
+.secondary{background:#edf1ed;color:var(--ink)}
+.skip{background:transparent;color:var(--muted);text-decoration:underline;padding:8px 0}
+.controls{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-top:14px}
+.controls button:disabled{opacity:.4;cursor:not-allowed}
+.error{color:var(--red);background:#fff0ee;border:1px solid #f2d1cc;border-radius:11px;padding:10px 12px;font-size:13px;margin-top:12px}
+.result h2{font-size:clamp(23px,4vw,30px);line-height:1.2;margin:0 0 8px}
+.summary{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin:17px 0 22px}
+.summary-item{border:1px solid var(--line);border-radius:12px;padding:11px 13px;min-width:0}
+.summary-item strong{display:block;font-size:13px}
+.summary-item span{display:block;color:var(--muted);font-size:14px;overflow-wrap:anywhere;margin-top:3px}
+.plan{display:grid;gap:10px;margin:13px 0 20px}
+.plan-item{display:flex;gap:12px;border:1px solid var(--line);border-radius:13px;padding:13px}
+.num{width:29px;height:29px;flex:0 0 29px;border-radius:9px;background:var(--pale);color:var(--green);font-weight:800;display:grid;place-items:center}
+.plan-item p{margin:3px 0 0;color:var(--muted);font-size:14px}
+.warning{background:var(--amber);color:var(--amberink);padding:13px 15px;border-radius:12px;font-size:13px;margin:15px 0}
+.links{display:flex;flex-wrap:wrap;gap:15px;margin:16px 0}
+a{color:var(--green);font-weight:650}
+.result-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:18px}
+.footer{text-align:center;color:#87928b;font-size:12px;margin:18px 0 0}
+.hidden{display:none!important}
+@media(max-width:600px){.shell{padding:11px 12px 34px}.top-label{display:none}.chat-head{align-items:flex-start}.demo{white-space:normal;text-align:right}.msg{max-width:100%}.summary{grid-template-columns:1fr}.entry-foot{align-items:flex-start;flex-direction:column}.entry-foot .primary{width:100%}.controls{align-items:stretch}.controls button{flex:1}}
+</style>
+</head>
+<body>
+<main class="shell">
+<header class="top">
+  <div class="brand"><div class="logo" aria-hidden="true">M</div>Mansdarbs</div>
+  <span class="top-label">Tavs darbs · skaidri nākamie soļi</span>
+  <button class="close" id="closeConsultant" type="button">Aizvērt konsultantu</button>
+</header>
+<section class="intro">
+  <div class="eyebrow">Atbalsts, nevis pārbaude</div>
+  <h1>Pastāsti, kā tu strādā.</h1>
+  <p>Atbildi saviem vārdiem. Uzdosim pa vienam jautājumam, paskaidrosim, kāpēc tas vajadzīgs, un beigās izveidosim sākotnēju rīcības plānu.</p>
+</section>
+<aside class="privacy">
+  <strong>Tava informācija paliek tavā kontrolē.</strong>
+  <p>Šis demonstrācijas prototips atbildes apstrādā tikai šīs lapas atmiņā. Tās netiek sūtītas Mansdarbs serverim vai VID, netiek saglabātas pārlūkā un netiek iesniegtas tavā vārdā. Aizverot lapu, sarunas atbildes pazūd. Vietnes hostings var apstrādāt tehniskus lapas pieprasījumu žurnālus, bet šis prototips tajos nenosūta sarunas atbildes.</p>
+  <p>Neievadi paroles, personas kodu, bankas konta vai kartes datus, klientu vārdus vai citu identificējošu informāciju.</p>
+</aside>
+<section class="chat" aria-label="Saruna ar Mansdarbs konsultantu">
+  <div class="chat-head"><strong>💬 Mansdarbs konsultants</strong><span class="demo">Demonstrācija · nav īsts MI</span></div>
+  <div class="progress-wrap" id="progressWrap"><div class="progress" role="progressbar" aria-label="Sarunas progress" aria-valuemin="0" aria-valuemax="7" aria-valuenow="0"><span id="progressBar"></span></div><div class="progress-text" id="progressText">Jautājums 1 no 7</div></div>
+  <div class="messages" id="messages" aria-live="polite"></div>
+  <div id="questionArea">
+    <div class="choices" id="choices"></div>
+    <div class="entry">
+      <textarea id="answer" rows="3" maxlength="600" placeholder="Uzraksti atbildi saviem vārdiem…" aria-label="Tava atbilde"></textarea>
+      <div class="entry-foot"><span class="counter" id="counter">0 / 600 rakstzīmes</span><button class="primary" id="send" type="button">Nosūtīt atbildi</button></div>
+    </div>
+    <div class="controls">
+      <button class="secondary" id="back" type="button" disabled>← Iepriekšējais jautājums</button>
+      <button class="skip" id="skip" type="button">Izlaist šo jautājumu</button>
+    </div>
+    <div class="error hidden" id="error" role="alert"></div>
+  </div>
+  <section class="result hidden" id="result" aria-live="polite"></section>
+</section>
+<footer class="footer">Mansdarbs · testa prototips · nav savienojuma ar VID vai EDS</footer>
+</main>
 <script>
-const $=id=>document.getElementById(id);
-const state={i:0,a:{}};
-const qs=[
-{key:"work",q:"Kādus darbus vai pakalpojumus tu sniedz vai plāno sniegt?",why:"Tas palīdz saprast, kāda veida darbība jānoformē.",placeholder:"Piemēram, remontēju traktorus, veidoju reklāmas video vai izgatavoju rotas."},
-{key:"frequency",q:"Cik bieži tev ir vai varētu būt šādi pasūtījumi?",why:"Regularitāte palīdz saprast, vai tā ir gadījuma nodarbe vai pastāvīga darbība.",opts:["Gandrīz katru nedēļu","Dažas reizes mēnesī","Dažas reizes gadā","Pagaidām tikai plānoju","Grūti pateikt"]},
-{key:"income",q:"Aptuveni cik lielus ieņēmumus mēnesī tu sagaidi vai jau saņem?",why:"Aptuvens apjoms palīdz sagatavot piemērotākos nākamos jautājumus. Tā nav deklarācija.",opts:["Līdz 300 €","300–780 €","780–1 500 €","1 500–3 000 €","Vairāk par 3 000 €","Mainās / nezinu"],placeholder:"Vari arī ierakstīt aptuvenu summu."},
-{key:"expenses",q:"Vai darba veikšanai tev pašam jāpērk materiāli, instrumenti, degviela vai citas lietas?",why:"Izdevumi var būt svarīgi, salīdzinot nodokļu režīmus un plānojot peļņu.",opts:["Jā, izdevumi ir ievērojami","Jā, bet nelieli","Praktiski nav izdevumu","Vēl nezinu"]},
-{key:"customers",q:"Kam tu pārsvarā sniedz pakalpojumu vai pārdod preces?",why:"Prasības dažkārt atšķiras atkarībā no tā, vai klients ir privātpersona vai uzņēmums.",opts:["Privātpersonām","Uzņēmumiem","Abiem","Vēl nav klientu / nezinu"]},
-{key:"payment",q:"Kā parasti saņem vai plāno saņemt samaksu?",why:"Tas palīdz vēlāk pārbaudīt rēķinu, kvīšu un skaidras naudas norēķinu prasības.",opts:["Bankas pārskaitījums","Skaidrā naudā","Ar karti","Dažādi veidi","Vēl nezinu"]},
-{key:"registration",q:"Vai saimnieciskā darbība tev jau ir reģistrēta VID?",why:"Lai ieteiktu pareizo nākamo soli, jāzina, vai sākam no nulles vai sakārtojam esošo darbību.",opts:["Nē, vēl neesmu reģistrējies","Jā, esmu reģistrējies","Nezinu / vēlos pārbaudīt"]}
+const $ = id => document.getElementById(id);
+const questions = [
+  {key:"work",prompt:"Kādus darbus vai pakalpojumus tu sniedz vai plāno sniegt?",why:"Tas palīdz saprast, kāda veida darbība jānoformē un kādi noteikumi varētu būt svarīgi.",placeholder:"Piemēram, remontēju traktorus, veidoju reklāmas video, šuju apģērbu vai izgatavoju rotas."},
+  {key:"frequency",prompt:"Cik bieži tev ir vai varētu būt pasūtījumi?",why:"Pasūtījumu regularitāte palīdz saprast, vai darbība ir pastāvīga, sezonāla vai tikai gadījuma.",options:["Gandrīz katru nedēļu","Dažas reizes mēnesī","Dažas reizes gadā","Sezonāli","Pagaidām tikai plānoju","Grūti pateikt"]},
+  {key:"income",prompt:"Aptuveni cik lielus ieņēmumus mēnesī tu saņem vai sagaidi?",why:"Aptuvens apjoms palīdz saprast, ko vēl vajadzētu pārbaudīt. Tā nav deklarācija un šeit nekas netiek aprēķināts.",options:["Līdz 300 €","300–780 €","780–1 500 €","1 500–3 000 €","Vairāk par 3 000 €","Mainās / nezinu"],placeholder:"Vari ierakstīt arī aptuvenu summu, piemēram, 650 € mēnesī."},
+  {key:"expenses",prompt:"Aptuveni cik mēnesī iztērē darba veikšanai?",why:"Piemēram, materiāli, instrumenti, degviela, transports vai telpu izmaksas. Izdevumi var būt būtiski, salīdzinot nodokļu režīmus.",options:["Praktiski nav izdevumu","Līdz 50 €","50–200 €","200–500 €","Vairāk par 500 €","Mainās / nezinu"],placeholder:"Vari ierakstīt arī aptuvenu summu un īsu piemēru."},
+  {key:"customers",prompt:"Kam tu pārsvarā sniedz pakalpojumu vai pārdod preces?",why:"Dažas dokumentu un nodokļu prasības var atšķirties atkarībā no tā, vai klients ir privātpersona vai uzņēmums.",options:["Privātpersonām","Uzņēmumiem","Abiem","Vēl nav klientu / nezinu"]},
+  {key:"payment",prompt:"Kā parasti saņem vai plāno saņemt samaksu?",why:"Norēķinu veids palīdz noteikt, kuras rēķinu, kvīšu vai kases aparāta prasības jāpārbauda.",options:["Bankas pārskaitījums","Skaidrā naudā","Ar maksājumu karti","Dažādi veidi","Vēl nezinu"]},
+  {key:"registration",prompt:"Vai saimnieciskā darbība tev jau ir reģistrēta VID?",why:"Tas palīdz saprast, vai jāsāk ar reģistrāciju vai jāpārbauda jau esošā informācija.",options:["Nē, vēl neesmu reģistrējies","Jā, esmu reģistrējies","Nezinu / vēlos pārbaudīt"]}
 ];
-function message(t,who){const d=document.createElement("div");d.className="msg "+who;d.textContent=t;$("messages").append(d);}
-function error(t){$("error").textContent=t;$("error").classList.remove("hidden");}
-function clearError(){$("error").textContent="";$("error").classList.add("hidden");}
-function render(){const q=qs[state.i];$("status").textContent="Jautājums "+(state.i+1)+" no "+qs.length;message(q.q+"\n\n"+q.why,"bot");$("options").replaceChildren();(q.opts||[]).forEach(v=>{const b=document.createElement("button");b.className="choice";b.textContent=v;b.onclick=()=>submit(v);$("options").append(b);});$("answer").value="";$("answer").placeholder=q.placeholder||"Uzraksti atbildi saviem vārdiem…";$("entry").classList.remove("hidden");$("skip").classList.remove("hidden");$("result").classList.add("hidden");}
-function submit(v){clearError();v=String(v||"").trim();if(!v){error("Ieraksti atbildi vai izvēlies izlaist jautājumu.");return;}if(v.length>600){error("Saīsini atbildi līdz 600 rakstzīmēm.");return;}state.a[qs[state.i].key]=v;message(v,"user");advance();}
-function advance(){state.i++;if(state.i<qs.length)render();else plan();}
-$("send").onclick=()=>submit($("answer").value);$("answer").onkeydown=e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();submit($("answer").value);}};$("skip").onclick=()=>{clearError();message("Šo jautājumu izlaidīšu.","user");advance();};
-function plan(){const a=state.a;$("status").textContent="Tavs kopsavilkums";$("messages").classList.add("hidden");$("options").replaceChildren();$("entry").classList.add("hidden");$("skip").classList.add("hidden");const r=$("result");r.classList.remove("hidden");r.replaceChildren();
-const h=document.createElement("h2");h.textContent="Tev jau ir skaidrāks nākamais solis.";r.append(h);const p=document.createElement("p");p.className="muted";p.textContent="Šis ir sākotnējs orientieris, kas veidots no tavām atbildēm — nevis juridisks vai nodokļu slēdziens.";r.append(p);
-const summary=document.createElement("div");summary.className="plan";[["Ko dari",a.work],["Pasūtījumu biežums",a.frequency],["Aptuvenie ieņēmumi",a.income],["Darba izdevumi",a.expenses],["Klienti",a.customers],["Samaksas veids",a.payment],["Reģistrācijas statuss",a.registration]].forEach(([k,v])=>{if(v){const d=document.createElement("div");d.className="item";const c=document.createElement("div");const b=document.createElement("strong");b.textContent=k;const t=document.createElement("p");t.textContent=v;c.append(b,t);d.append(c);summary.append(d);}});r.append(summary);
-const title=document.createElement("h3");title.textContent="Ieteicamā secība";r.append(title);const steps=[];
-steps.push((!a.registration||/Nē|Nezinu/i.test(a.registration))?["Noskaidro un reģistrē darbību VID EDS","Pārbaudi, vai darbība jāreģistrē, un izvēlies faktiskajai darbībai atbilstošu NACE kodu."]:["Pārbaudi esošo reģistrāciju","Pārliecinies, ka reģistrētā darbība, NACE kods un nodokļu režīms atbilst tam, ko faktiski dari."]);
-steps.push(["Salīdzini nodokļu režīmus","Izvēle atkarīga no faktiskajiem izdevumiem, klientu veida, ienākumiem un citiem apstākļiem."]);
-steps.push(["Sakārto darījumu dokumentus","Noskaidro, vai konkrētajā norēķinu modelī vajadzīgs rēķins, kvīts vai kases aparāts."]);
-steps.push(["Noskaidro sociālās iemaksas un termiņus","Saistības atkarīgas no ienākumiem, statusa un izvēlētā režīma. Pārbaudi aktuālos noteikumus pirms maksājuma."]);
-const list=document.createElement("div");list.className="plan";steps.forEach((s,i)=>{const d=document.createElement("div");d.className="item";const n=document.createElement("div");n.className="num";n.textContent=i+1;const c=document.createElement("div");const b=document.createElement("strong");b.textContent=s[0];const t=document.createElement("p");t.textContent=s[1];c.append(b,t);d.append(n,c);list.append(d);});r.append(list);
-const warn=document.createElement("div");warn.className="warning";warn.textContent="Pirms rīcības pārbaudi aktuālo informāciju VID un normatīvajos aktos. Prototips vēl nav savienots ar MI modeli, VID datiem vai EDS. Nekas netiek iesniegts tavā vārdā.";r.append(warn);
-const links=document.createElement("p");links.innerHTML='<a href="https://www.vid.gov.lv/lv/ka-registret-un-veikt-saimniecisko-darbibu" target="_blank" rel="noopener">VID: kā reģistrēt saimniecisko darbību ↗</a> · <a href="https://eds.vid.gov.lv/" target="_blank" rel="noopener">VID EDS ↗</a>';r.append(links);
-const actions=document.createElement("div");actions.className="actions";const again=document.createElement("button");again.className="secondary";again.textContent="Sākt sarunu no jauna";again.onclick=()=>{state.i=0;state.a={};$("messages").replaceChildren();$("messages").classList.remove("hidden");clearError();render();};const home=document.createElement("button");home.className="primary";home.textContent="Atgriezties sākumā";home.onclick=()=>location.href="index.html";actions.append(again,home);r.append(actions);
+const state = {index:0,answers:{},history:[]};
+
+function addMessage(value,who){
+  const node=document.createElement("div");
+  node.className="msg "+who;
+  node.textContent=value;
+  $("messages").append(node);
 }
-render();
-</script></body></html>
+function clearError(){
+  $("error").textContent="";
+  $("error").classList.add("hidden");
+}
+function showError(value){
+  $("error").textContent=value;
+  $("error").classList.remove("hidden");
+}
+function updateCounter(){
+  $("counter").textContent=$("answer").value.length+" / 600 rakstzīmes";
+}
+function questionText(q){
+  return q.prompt+"\n\n"+q.why;
+}
+function renderQuestion(){
+  const q=questions[state.index];
+  $("progressText").textContent="Jautājums "+(state.index+1)+" no "+questions.length;
+  $("progressBar").style.width=((state.index+1)/questions.length*100)+"%";
+  $("progressBar").parentElement.setAttribute("aria-valuenow",String(state.index+1));
+  addMessage(questionText(q),"bot");
+  $("choices").replaceChildren();
+  (q.options||[]).forEach(option=>{
+    const button=document.createElement("button");
+    button.type="button";
+    button.className="choice";
+    button.textContent=option;
+    button.addEventListener("click",()=>submitAnswer(option));
+    $("choices").append(button);
+  });
+  $("answer").value="";
+  $("answer").placeholder=q.placeholder||"Uzraksti atbildi saviem vārdiem…";
+  updateCounter();
+  $("back").disabled=state.index===0;
+  clearError();
+  $("answer").focus({preventScroll:true});
+}
+function containsSensitive(value){
+  const personalCode=/\b\d{6}-?\d{5}\b/.test(value);
+  const iban=/\b[A-Z]{2}\d{2}[A-Z0-9 ]{11,30}\b/i.test(value);
+  const digits=value.replace(/[^0-9]/g,"");
+  const possibleCard=digits.length>=13&&digits.length<=19&&/[ -]/.test(value);
+  return personalCode||iban||possibleCard;
+}
+function submitAnswer(value){
+  clearError();
+  const answer=String(value||"").trim();
+  if(!answer){showError("Ieraksti atbildi vai izvēlies kādu no variantiem. Ja nezini, vari šo jautājumu izlaist.");$("answer").focus();return;}
+  if(answer.length>600){showError("Atbilde ir pārāk gara. Saīsini to līdz 600 rakstzīmēm.");return;}
+  if(containsSensitive(answer)){
+    $("answer").value="";
+    updateCounter();
+    showError("Atbildē var būt personas kods, konta vai kartes numurs. Tas netika pievienots sarunai. Izdzēs šādus datus un atbildi tikai vispārīgi.");
+    return;
+  }
+  const q=questions[state.index];
+  state.answers[q.key]=answer;
+  state.history.push({key:q.key,value:answer,skipped:false});
+  addMessage(answer,"user");
+  advance();
+}
+function skipQuestion(){
+  clearError();
+  const q=questions[state.index];
+  state.answers[q.key]=null;
+  state.history.push({key:q.key,value:null,skipped:true});
+  addMessage("Šo jautājumu izlaidu.","user");
+  advance();
+}
+function advance(){
+  state.index++;
+  if(state.index<questions.length){renderQuestion();return;}
+  showPlan();
+}
+function rebuildMessages(){
+  $("messages").replaceChildren();
+  state.history.forEach((entry,index)=>{
+    addMessage(questionText(questions[index]),"bot");
+    addMessage(entry.skipped?"Šo jautājumu izlaidu.":entry.value,"user");
+  });
+}
+function goBack(){
+  if(state.index===0||!state.history.length)return;
+  const previous=state.history.pop();
+  delete state.answers[previous.key];
+  state.index--;
+  rebuildMessages();
+  renderQuestion();
+}
+function addSummaryItem(parent,label,value){
+  const item=document.createElement("div");
+  item.className="summary-item";
+  const title=document.createElement("strong");
+  title.textContent=label;
+  const content=document.createElement("span");
+  content.textContent=value||"Nav norādīts";
+  item.append(title,content);
+  parent.append(item);
+}
+function addPlanItem(parent,index,title,description){
+  const item=document.createElement("div");
+  item.className="plan-item";
+  const number=document.createElement("div");
+  number.className="num";
+  number.textContent=String(index);
+  const content=document.createElement("div");
+  const heading=document.createElement("strong");
+  heading.textContent=title;
+  const text=document.createElement("p");
+  text.textContent=description;
+  content.append(heading,text);
+  item.append(number,content);
+  parent.append(item);
+}
+function buildPlan(a){
+  const steps=[];
+  const registration=(a.registration||"").toLowerCase();
+  const frequency=(a.frequency||"").toLowerCase();
+  const expenses=(a.expenses||"").toLowerCase();
+  const payment=(a.payment||"").toLowerCase();
+  const customers=(a.customers||"").toLowerCase();
+  if(registration.includes("neesmu")||registration.startsWith("nē")){
+    steps.push(["Pārbaudi, kā pareizi reģistrēt darbību","Pirms darba turpināšanas noskaidro, vai tava konkrētā darbība jāreģistrē VID un kādu darbības veidu/NACE kodu izvēlēties."]);
+  }else if(registration.startsWith("jā")){
+    steps.push(["Pārbaudi esošo reģistrāciju","VID EDS pārliecinies, ka reģistrētā darbība, NACE kods un nodokļu režīms atbilst tam, ko faktiski dari."]);
+  }else{
+    steps.push(["Noskaidro savu reģistrācijas statusu","Pārbaudi VID EDS, vai saimnieciskā darbība jau ir reģistrēta, pirms izvēlies nākamo soli."]);
+  }
+  if(frequency.includes("katru nedēļu")||frequency.includes("mēnesī")||frequency.includes("sezonāli")){
+    steps.push(["Ievies regulāru darījumu uzskaiti","Tā kā pasūtījumi atkārtojas, izveido vienkāršu kārtību, kā reģistrēt katru ieņēmumu, izdevumu un pamatojošo dokumentu."]);
+  }else if(frequency.includes("gadā")||frequency.includes("plānoju")){
+    steps.push(["Precizē darbības regularitāti","Ja darbi būs reti vai tikai plānošanas stadijā, VID noskaidro, kā tieši jānoformē tavs konkrētais darbības modelis."]);
+  }else{
+    steps.push(["Fiksē pasūtījumu biežumu","Pieraksti, cik bieži ir pasūtījumi un kā tie tiek apmaksāti. Tas palīdzēs precīzāk izvērtēt pienākumus."]);
+  }
+  if(expenses.includes("200–500")||expenses.includes("vairāk")){
+    steps.push(["Salīdzini režīmus, ņemot vērā izdevumus","Tā kā darba izdevumi var būt būtiski, salīdzini režīmus pēc faktiskās peļņas un attaisnoto izdevumu uzskaites. Neizvēlies tikai pēc vienas nodokļa likmes."]);
+  }else if(expenses.includes("praktiski")||expenses.includes("līdz 50")){
+    steps.push(["Salīdzini režīmus pēc kopējās situācijas","Tā kā norādītie izdevumi ir nelieli, izvērtē ne tikai nodokļa likmi, bet arī sociālās iemaksas, uzskaites pienākumus un citus ienākumus."]);
+  }else{
+    steps.push(["Sāc pierakstīt faktiskos izdevumus","Ja izdevumi mainās vai vēl nav zināmi, dažas nedēļas fiksē materiālus, degvielu, instrumentus un citus ar darbu saistītus tēriņus."]);
+  }
+  if(payment.includes("skaidrā")||payment.includes("kart")){
+    steps.push(["Pārbaudi norēķinu dokumentu prasības","Tā kā izmanto skaidru naudu vai karti, VID noskaidro, vai tavā konkrētajā situācijā vajadzīga kvīts, kases aparāts vai cits dokuments."]);
+  }else if(payment.includes("pārskait")){
+    steps.push(["Sakārto rēķinu un maksājumu pierādījumus","Pārbaudi, kā noformēt rēķinus un saglabā bankas maksājumu apliecinājumus kopā ar darījuma dokumentiem."]);
+  }else{
+    steps.push(["Noskaidro norēķinu dokumentu prasības","Pirms pirmā darījuma noskaidro, kādi dokumenti vajadzīgi izvēlētajam maksājuma veidam."]);
+  }
+  if(customers.includes("uzņēmumiem")||customers.includes("abiem")){
+    steps.push(["Pārbaudi darījumus ar uzņēmumiem un PVN","Ja klienti ir uzņēmumi, pārbaudi rēķinu noformēšanu, līgumu vajadzību un PVN reģistrācijas nosacījumus atbilstoši darījumiem un apgrozījumam."]);
+  }else{
+    steps.push(["Pārbaudi klientiem izsniedzamos dokumentus","Noskaidro, kāds darījuma dokuments jāizsniedz privātpersonām un kā saglabāt darījumu pamatojumus."]);
+  }
+  steps.push(["Pārbaudi nodokļus, sociālās iemaksas un termiņus","VID oficiālajos skaidrojumos pārbaudi IIN, VSAOI, iespējamos PVN pienākumus un deklarēšanas termiņus tieši savai situācijai. Ja atbilde nav skaidra, uzdod VID konkrētu jautājumu."]);
+  return steps;
+}
+function showPlan(){
+  $("progressWrap").classList.add("hidden");
+  $("messages").classList.add("hidden");
+  $("questionArea").classList.add("hidden");
+  const result=$("result");
+  result.classList.remove("hidden");
+  result.replaceChildren();
+  const heading=document.createElement("h2");
+  heading.textContent="Tavs sākotnējais rīcības plāns";
+  result.append(heading);
+  const intro=document.createElement("p");
+  intro.className="muted";
+  intro.textContent="Plāns ir pielāgots tavām atbildēm. Tas palīdz sagatavoties nākamajiem soļiem, bet neaizstāj VID skaidrojumu vai profesionālu konsultāciju.";
+  result.append(intro);
+  const summary=document.createElement("div");
+  summary.className="summary";
+  addSummaryItem(summary,"Darbi / pakalpojumi",state.answers.work);
+  addSummaryItem(summary,"Pasūtījumu biežums",state.answers.frequency);
+  addSummaryItem(summary,"Mēneša ieņēmumi",state.answers.income);
+  addSummaryItem(summary,"Mēneša izdevumi",state.answers.expenses);
+  addSummaryItem(summary,"Klienti",state.answers.customers);
+  addSummaryItem(summary,"Maksājuma veids",state.answers.payment);
+  addSummaryItem(summary,"Reģistrācija VID",state.answers.registration);
+  result.append(summary);
+  const title=document.createElement("h3");
+  title.textContent="Ieteicamā secība";
+  result.append(title);
+  const plan=document.createElement("div");
+  plan.className="plan";
+  buildPlan(state.answers).forEach((item,index)=>addPlanItem(plan,index+1,item[0],item[1]));
+  result.append(plan);
+  const warning=document.createElement("div");
+  warning.className="warning";
+  warning.textContent="Svarīgi: šis ir noteikumos balstīts demonstrācijas prototips, nevis īsts MI. Tas negarantē juridisku vai nodokļu rezultātu, neveic aprēķinus un neiesniedz dokumentus. Pirms rīcības pārbaudi aktuālos VID avotus un normatīvos aktus.";
+  result.append(warning);
+  const links=document.createElement("div");
+  links.className="links";
+  const registrationLink=document.createElement("a");
+  registrationLink.href="https://www.vid.gov.lv/lv/ka-registret-un-veikt-saimniecisko-darbibu";
+  registrationLink.target="_blank";
+  registrationLink.rel="noopener noreferrer";
+  registrationLink.textContent="VID: kā reģistrēt saimniecisko darbību ↗";
+  const edsLink=document.createElement("a");
+  edsLink.href="https://eds.vid.gov.lv/";
+  edsLink.target="_blank";
+  edsLink.rel="noopener noreferrer";
+  edsLink.textContent="VID EDS ↗";
+  links.append(registrationLink,edsLink);
+  result.append(links);
+  const actions=document.createElement("div");
+  actions.className="result-actions";
+  const edit=document.createElement("button");
+  edit.type="button";edit.className="secondary";edit.textContent="Labot pēdējo atbildi";edit.addEventListener("click",editLastAnswer);
+  const restart=document.createElement("button");
+  restart.type="button";restart.className="secondary";restart.textContent="Sākt sarunu no jauna";restart.addEventListener("click",resetConversation);
+  const close=document.createElement("button");
+  close.type="button";close.className="primary";close.textContent="Aizvērt konsultantu";close.addEventListener("click",closeConsultant);
+  actions.append(edit,restart,close);
+  result.append(actions);
+}
+function editLastAnswer(){
+  if(!state.history.length)return;
+  const previous=state.history.pop();
+  delete state.answers[previous.key];
+  state.index=questions.length-1;
+  $("result").classList.add("hidden");
+  $("progressWrap").classList.remove("hidden");
+  $("messages").classList.remove("hidden");
+  $("questionArea").classList.remove("hidden");
+  rebuildMessages();
+  renderQuestion();
+}
+function resetConversation(){
+  state.index=0;
+  state.answers={};
+  state.history=[];
+  $("messages").replaceChildren();
+  $("result").classList.add("hidden");
+  $("progressWrap").classList.remove("hidden");
+  $("messages").classList.remove("hidden");
+  $("questionArea").classList.remove("hidden");
+  renderQuestion();
+}
+function closeConsultant(){
+  const referrer=document.referrer;
+  try{
+    if(referrer&&new URL(referrer).origin===location.origin){history.back();return;}
+  }catch(_){}
+  location.replace("index.html");
+}
+$("send").addEventListener("click",()=>submitAnswer($("answer").value));
+$("answer").addEventListener("input",updateCounter);
+$("answer").addEventListener("keydown",event=>{
+  if(event.key==="Enter"&&!event.shiftKey){event.preventDefault();submitAnswer($("answer").value);}
+});
+$("skip").addEventListener("click",skipQuestion);
+$("back").addEventListener("click",goBack);
+$("closeConsultant").addEventListener("click",closeConsultant);
+renderQuestion();
+</script>
+</body>
+</html>
