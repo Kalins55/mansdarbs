@@ -6,6 +6,7 @@
   const attempts = Object.create(null);
   let panel;
   let expanded = false;
+  let currentType = null;
 
   const copy = {
     records: {
@@ -65,23 +66,34 @@
     return panel;
   }
 
+  function renderPanelLanguage() {
+    if (!panel || panel.hidden || !currentType) return;
+    const root = panel;
+    root.setAttribute('aria-label', text('Papildu palīdzība', 'Additional help'));
+    root.querySelector('.md-context-help__title').textContent = expanded
+      ? text('Pamēģināsim soli pa solim', 'Let’s go through it step by step')
+      : text('Vai vēlies palīdzību saprast, kā rīkoties tālāk?', 'Would you like help understanding what to do next?');
+    root.querySelector('.md-context-help__message').textContent = expanded
+      ? copy[currentType][document.documentElement.lang === 'en' ? 'en' : 'lv']
+      : text('Varu parādīt dažus konkrētus soļus šīs situācijas atrisināšanai.', 'I can show a few practical steps to resolve this.');
+    root.dataset.helpText = copy[currentType][document.documentElement.lang === 'en' ? 'en' : 'lv'];
+    root.querySelector('.md-context-help__accept').textContent = text('Jā, parādīt', 'Yes, show me');
+    root.querySelector('.md-context-help__later').textContent = text('Aizvērt', 'Close');
+  }
+
+  const languageObserver = new MutationObserver(renderPanelLanguage);
+  languageObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['lang'] });
+
   window.mansdarbsHelpFailure = function (type) {
     if (!copy[type]) return;
     attempts[type] = (attempts[type] || 0) + 1;
     if (type !== 'storage' && attempts[type] < 2) return;
 
-    const root = ensurePanel();
-    root.dataset.helpText = copy[type][document.documentElement.lang === 'en' ? 'en' : 'lv'];
-    root.querySelector('.md-context-help__title').textContent =
-      text('Vai vēlies palīdzību saprast, kā rīkoties tālāk?', 'Would you like help understanding what to do next?');
-    root.querySelector('.md-context-help__message').textContent =
-      text('Varu parādīt dažus konkrētus soļus šīs situācijas atrisināšanai.', 'I can show a few practical steps to resolve this.');
-    root.querySelector('.md-context-help__accept').textContent =
-      text('Jā, parādīt', 'Yes, show me');
-    root.querySelector('.md-context-help__later').textContent =
-      text('Vēlāk', 'Later');
-    root.hidden = false;
+    ensurePanel();
+    currentType = type;
     expanded = false;
-    root.querySelector('.md-context-help__accept').hidden = false;
+    panel.hidden = false;
+    panel.querySelector('.md-context-help__accept').hidden = false;
+    renderPanelLanguage();
   };
 })();
