@@ -128,10 +128,44 @@
     return {stage: tr(stage[1],stage[2]), need: tr(need[1],need[2]), message: copy[p.stage]?.[p.need] || copy.planning.registration};
   }
 
+  function readIndustryProfile() {
+    try {
+      const value = JSON.parse(localStorage.getItem('mansdarbs_industry_profile_v1') || 'null');
+      if (!value || typeof value !== 'object' || typeof value.sector !== 'string' || typeof value.job !== 'string') return null;
+      return value;
+    } catch (_) { return null; }
+  }
+
+  const sectorNames = {
+    digital:['Digitālie un radošie pakalpojumi','Digital and creative services'],
+    repair:['Remonts un individuālie pakalpojumi','Repair and personal services'],
+    auto:['Auto tirdzniecība un remonts','Vehicle sales and repair'],
+    agri:['Lauksaimniecība un mežsaimniecība','Agriculture and forestry'],
+    fishing:['Zvejniecība un akvakultūra','Fishing and aquaculture'],
+    manufacturing:['Ražošana un amatniecība','Manufacturing and crafts'],
+    construction:['Būvniecība un būvniecības darbi','Construction and building work'],
+    transport:['Transports un loģistika','Transport and logistics'],
+    beauty:['Skaistumkopšana un labsajūta','Beauty and wellness'],
+    health:['Veselība un aprūpe','Health and care'],
+    education:['Izglītība un apmācība','Education and training'],
+    professional:['Profesionālie un konsultāciju pakalpojumi','Professional and consulting services'],
+    realestate:['Nekustamais īpašums','Real estate'],
+    retail:['Mazumtirdzniecība un e-komercija','Retail and e-commerce'],
+    wholesale:['Vairumtirdzniecība','Wholesale'],
+    food:['Ēdināšana un pārtikas pakalpojumi','Food and catering services'],
+    accommodation:['Izmitināšana un tūrisms','Accommodation and tourism'],
+    admin:['Administratīvie un biroja pakalpojumi','Administrative and office services'],
+    cleaning:['Uzkopšana un teritoriju uzturēšana','Cleaning and grounds maintenance'],
+    finance:['Finanses un apdrošināšana','Finance and insurance'],
+    arts:['Māksla, izklaide un sports','Arts, entertainment and sports'],
+    other:['Cita saimnieciskā darbība','Other business activity']
+  };
+
   function showResult(p) {
     const rec = recommendation(p);
     const message = en() ? rec.message[1] : rec.message[0];
     const action = rec.message[2];
+    const industry = readIndustryProfile();
     result.replaceChildren();
     const strong = document.createElement('strong');
     strong.textContent = tr('Ieteicamais nākamais solis','Your suggested next step');
@@ -140,6 +174,22 @@
     const meta = document.createElement('p');
     meta.className = 'context-engine__privacy';
     meta.textContent = tr('Tava situācija: ','Your situation: ') + rec.stage + ' · ' + rec.need;
+    result.append(strong,details,meta);
+
+    const industryNote = document.createElement('p');
+    industryNote.className = 'context-engine__privacy';
+    if (industry) {
+      const sector = sectorNames[industry.sector];
+      industryNote.textContent = tr('Nozares profils: ','Industry profile: ') +
+        (sector ? (en() ? sector[1] : sector[0]) : industry.sector) + ' · ' + industry.job;
+    } else {
+      industryNote.textContent = tr(
+        'Vēl neesi pievienojis nozares profilu. Tas palīdzēs pielāgot uzskaites laukus tavai darbībai.',
+        'You have not added an industry profile yet. It helps tailor record fields to your activity.'
+      );
+    }
+    result.append(industryNote);
+
     const actions = document.createElement('div');
     actions.className = 'context-engine__actions';
     const go = document.createElement('button');
@@ -150,12 +200,19 @@
       else if (action === 'records') window.showAccounting ? window.showAccounting() : window.showView('records');
       else window.showGuide();
     });
+    const industryButton = document.createElement('button');
+    industryButton.type = 'button'; industryButton.className = 'btn secondary';
+    industryButton.textContent = industry ? tr('Atvērt nozares uzskaiti','Open industry records') : tr('Pievienot nozares profilu','Add industry profile');
+    industryButton.addEventListener('click', () => {
+      if (window.showAccounting) window.showAccounting();
+      else if (window.showView) window.showView('records');
+    });
     const edit = document.createElement('button');
     edit.type = 'button'; edit.className = 'btn secondary';
     edit.textContent = tr('Mainīt atbildes','Change answers');
     edit.addEventListener('click', () => { form.hidden = false; stageEl.value = p.stage; needEl.value = p.need; });
-    actions.append(go,edit);
-    result.append(strong,details,meta,actions);
+    actions.append(go,industryButton,edit);
+    result.append(actions);
     result.hidden = false;
     toggle.textContent = tr('Mainīt manu situāciju','Update my situation');
   }
