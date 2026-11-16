@@ -157,13 +157,12 @@ function renderQuestion(){
   updateCounter();
   $("back").disabled=state.index===0;
   clearError();
-  $("answer").focus({preventScroll:true});
 }
 function containsSensitive(value){
   const personalCode=/\b\d{6}-?\d{5}\b/.test(value);
   const iban=/\b[A-Z]{2}\d{2}[A-Z0-9 ]{11,30}\b/i.test(value);
   const digits=value.replace(/[^0-9]/g,"");
-  const possibleCard=digits.length>=13&&digits.length<=19&&/[ -]/.test(value);
+  const possibleCard=digits.length>=13&&digits.length<=19;
   return personalCode||iban||possibleCard;
 }
 function submitAnswer(value){
