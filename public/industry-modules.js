@@ -113,7 +113,7 @@ function init(){
  });
  const savedPayments=read('mansdarbs_payment_profile_v1',{methods:[]});
  document.querySelectorAll('input[name="industryPayment"]').forEach(x=>{x.checked=savedPayments.methods.includes(x.value)});
- if(savedPayments.methods.length)renderPaymentResult(p,savedPayments.methods);
+ if(savedPayments.methods.length)renderPaymentResult({sector:s.value,job:el('industryJob').value},savedPayments.methods);
  renderModule();
 }
 function renderPaymentResult(profile,methods){
