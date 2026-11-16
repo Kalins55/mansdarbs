@@ -99,7 +99,9 @@
 }
 #invoicePrint{display:none}
 .top-right{display:flex;align-items:center;gap:14px}.lang-switch{display:flex;gap:2px;padding:3px;border:1px solid var(--line);border-radius:999px;background:#fff}.lang-switch button{border:0;background:transparent;color:var(--muted);font-size:12px;font-weight:850;padding:6px 9px;border-radius:999px;cursor:pointer}.lang-switch button[aria-pressed="true"]{background:var(--green);color:#fff}@media(max-width:680px){.top-right{gap:7px}.lang-switch button{padding:6px 8px}.topnote{display:none}}.start-route-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:18px 0}.start-route-choice{appearance:none;text-align:left;color:var(--ink);font:inherit;cursor:pointer;box-shadow:none;display:flex;flex-direction:column;gap:7px}.start-route-choice .icon{margin:0}.start-route-choice small{color:var(--muted)}.start-route-choice.active{border-color:var(--green);background:#f2f8f3;box-shadow:0 0 0 2px rgba(23,107,80,.12)}.start-route-panel{margin-top:16px}.start-route-panel h3{font-size:20px;margin:0 0 14px}.start-route-panel .steps{margin-top:12px}.start-route-panel .step{background:#fff}.start-route-panel .callout{margin-top:12px}@media(max-width:680px){.start-route-grid{grid-template-columns:1fr}.start-route-choice{min-height:0;padding:15px}.start-route-panel .step{padding:12px;gap:10px}}
-.md-context-help{position:fixed;z-index:50;left:14px;right:14px;bottom:14px;max-width:560px;margin:0 auto;padding:16px;background:#fff;border:1px solid #cbd9ce;border-radius:16px;box-shadow:0 12px 36px rgba(24,45,35,.18);display:flex;align-items:flex-start;justify-content:space-between;gap:14px}.md-context-help[hidden]{display:none}.md-context-help__copy{min-width:0}.md-context-help__title{display:block;font-size:15px;line-height:1.35}.md-context-help__message{font-size:13px;color:var(--muted);margin:6px 0 0}.md-context-help__actions{display:flex;flex-shrink:0;gap:7px;align-items:center}.md-context-help__actions button{border:0;border-radius:9px;padding:9px 11px;font:inherit;font-size:13px;font-weight:800;cursor:pointer}.md-context-help__accept{background:var(--green);color:#fff}.md-context-help__later{background:#edf1ed;color:var(--ink)}@media(max-width:540px){.md-context-help{display:block}.md-context-help__actions{margin-top:12px}.md-context-help__actions button{flex:1}.md-context-help__actions{display:flex}}</style>
+.md-context-help{position:fixed;z-index:50;left:14px;right:14px;bottom:14px;max-width:560px;margin:0 auto;padding:16px;background:#fff;border:1px solid #cbd9ce;border-radius:16px;box-shadow:0 12px 36px rgba(24,45,35,.18);display:flex;align-items:flex-start;justify-content:space-between;gap:14px}.md-context-help[hidden]{display:none}.md-context-help__copy{min-width:0}.md-context-help__title{display:block;font-size:15px;line-height:1.35}.md-context-help__message{font-size:13px;color:var(--muted);margin:6px 0 0}.md-context-help__actions{display:flex;flex-shrink:0;gap:7px;align-items:center}.md-context-help__actions button{border:0;border-radius:9px;padding:9px 11px;font:inherit;font-size:13px;font-weight:800;cursor:pointer}.md-context-help__accept{background:var(--green);color:#fff}.md-context-help__later{background:#edf1ed;color:var(--ink)}@media(max-width:540px){.md-context-help{display:block}.md-context-help__actions{margin-top:12px}.md-context-help__actions button{flex:1}.md-context-help__actions{display:flex}}
+.records-toolbar{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:18px 0 14px}.records-toolbar .field{min-width:0}.records-toolbar label{font-size:13px}.records-toolbar input,.records-toolbar select{width:100%;min-width:0;border:1px solid #d5ded7;border-radius:11px;padding:11px;background:#fff;color:var(--ink)}.record-entry{align-items:flex-start}.record-entry .record-main{min-width:0}.record-entry .record-meta{display:flex;flex-wrap:wrap;gap:5px 10px;color:var(--muted);font-size:13px}.record-category{display:inline-flex;align-items:center;border-radius:999px;background:#edf4ef;color:var(--green);padding:2px 8px;font-size:11px;font-weight:750}.record-actions{display:flex;gap:12px;margin-top:7px}.record-actions button{font-size:13px}.records-toolbar-count{font-size:12px;color:var(--muted);margin:0 0 8px}.records-actions{display:flex;gap:8px;flex-wrap:wrap}.records-actions .btn{width:auto}.records-help{font-size:12px;color:var(--muted);margin:8px 0 0}@media(max-width:680px){.records-toolbar{grid-template-columns:1fr 1fr;gap:9px}.records-toolbar .field:last-child{grid-column:1/-1}.records-actions{display:grid;grid-template-columns:1fr 1fr}.records-actions .btn{width:100%;padding:10px 9px;font-size:13px}.record-entry{gap:8px}.record-entry .amount{font-size:14px}}
+</style>
 </head>
 <body>
 <div class="shell home-screen">
@@ -238,13 +240,16 @@
 <h2>Vienkārša ienākumu un izdevumu uzskaite</h2>
 <p class="muted">Ievadi summu. Aprakstu vari atstāt tukšu. Nav jānorāda, kur, kam vai par ko saņēmi naudu.</p>
 <div class="formgrid">
-<div class="field"><label for="kind">Ieraksta veids</label><select id="kind"><option value="Ienākums">Ienākums</option><option value="Izdevums">Izdevums</option></select></div>
-<div class="field"><label for="amount">Summa (€)</label><input id="amount" type="number" min="0.01" step="0.01" inputmode="decimal" placeholder="0,00" oninput="updateIinWarning()"></div>
+<div class="field"><label for="kind">Ieraksta veids</label><select id="kind" onchange="updateRecordCategories();updateIinWarning()"><option value="Ienākums">Ienākums</option><option value="Izdevums">Izdevums</option></select></div>
+<div class="field"><label for="amount">Summa (€)</label><input id="amount" type="number" min="0.01" step="0.01" inputmode="decimal" placeholder="0,00" oninput="updateIinWarning()" autocomplete="off"></div>
 <div class="field"><label for="date">Datums</label><input id="date" type="date"></div>
-<div class="field"><label for="note">Apraksts (nav obligāts)</label><input id="note" type="text" maxlength="120" placeholder="Vari atstāt tukšu"></div>
+<div class="field"><label for="category">Kategorija (nav obligāta)</label><select id="category"><option value="">Bez kategorijas</option></select></div>
+<div class="field full"><label for="note">Apraksts (nav obligāts)</label><input id="note" type="text" maxlength="120" placeholder="Piemēram, klienta darbs vai degviela"></div>
 </div>
 <div id="taxWarning" class="tax-warning" role="status" aria-live="polite" hidden></div>
-<div class="actions" style="justify-content:flex-start"><button class="btn primary" id="saveRecordButton" onclick="addRecord()">Pievienot ierakstu</button><button class="btn secondary hidden" id="cancelEditButton" onclick="cancelEdit()">Atcelt labošanu</button><button class="btn secondary" onclick="clearRecords()">Notīrīt uzskaiti</button><button class="btn secondary" onclick="exportCsv()">Lejupielādēt uzskaiti</button></div>
+<div class="actions records-actions"><button class="btn primary" id="saveRecordButton" onclick="addRecord()">Pievienot ierakstu</button><button class="btn secondary hidden" id="cancelEditButton" onclick="cancelEdit()">Atcelt labošanu</button></div>
+<div class="records-actions" style="margin-top:10px"><button class="btn secondary" onclick="exportCsv()">Lejupielādēt CSV</button><button class="btn secondary" onclick="exportRecordsBackup()">Datu rezerves kopija</button><button class="btn secondary" onclick="document.getElementById('importRecordsFile').click()">Atjaunot kopiju</button><button class="btn secondary" onclick="clearRecords()">Dzēst visus ierakstus</button><input id="importRecordsFile" type="file" accept="application/json,.json" hidden onchange="importRecordsBackup(event)"></div>
+<p class="records-help">CSV paredzēts darbam izklājlapā. JSON rezerves kopija ļauj atjaunot ierakstus arī citā ierīcē.</p>
 <div class="records" id="records"><div class="empty">Pagaidām nav neviena ieraksta. Pievieno pirmo, kad esi gatavs.</div></div>
 <p class="privacy">Privātums: šī demonstrācijas versija datus saglabā tikai tavā pārlūkprogrammā šajā ierīcē. Tie netiek nosūtīti Mansdarbs serverim. Iztīrot pārlūka datus vai mainot ierīci, ieraksti var pazust. Šis rīks vēl nav oficiāls grāmatvedības reģistrs un neveic nodokļu aprēķinus.</p>
 </section>
@@ -433,34 +438,50 @@ function showView(name){if(name==='calculator')showCalculatorPanel('overview');d
 function showGuide(){const home=document.getElementById('homeView'),guide=document.getElementById('guide');const opening=!guide.classList.contains('open');home.classList.toggle('guide-mode',opening);guide.classList.toggle('open',opening);if(opening){selectStartRoute('resident');updateBusinessChecklist()}window.scrollTo({top:0,behavior:'smooth'});}
 function selectStartRoute(route){const resident=route!=='moving';document.getElementById('residentPath').classList.toggle('hidden',!resident);document.getElementById('movingPath').classList.toggle('hidden',resident);document.getElementById('routeResidentButton').classList.toggle('active',resident);document.getElementById('routeMovingButton').classList.toggle('active',!resident);}
 function updateBusinessChecklist(){const food=document.getElementById('startBusinessType')?.value==='food';document.getElementById('foodBusinessInfo')?.classList.toggle('hidden',!food);document.getElementById('otherBusinessInfo')?.classList.toggle('hidden',food);}
-function getRecords(){try{const data=JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]');return Array.isArray(data)?data.filter(x=>x&&['Ienākums','Izdevums'].includes(x.kind)&&Number.isFinite(Number(x.amount))&&Number(x.amount)>0&&typeof x.date==='string'):[]}catch(e){return []}}
-function saveRecords(items){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(items));return true}catch(e){alert('Neizdevās saglabāt ierakstu. Pārbaudi pārlūka privātuma iestatījumus vai brīvo vietu ierīcē.');if(window.mansdarbsHelpFailure)window.mansdarbsHelpFailure('storage');return false}}
-function money(n){const lang=document.documentElement.lang==='en'?'en-IE':'lv-LV';return Number(n).toLocaleString(lang,{minimumFractionDigits:2,maximumFractionDigits:2})+(lang==='en-IE'?' €':' €')}
+function getRecords(){try{const data=JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]');return Array.isArray(data)?data.filter(x=>x&&['Ienākums','Izdevums'].includes(x.kind)&&Number.isFinite(Number(x.amount))&&Number(x.amount)>0&&typeof x.date==='string').map(x=>({...x,category:typeof x.category==='string'?x.category:''})):[]}catch(e){return []}}
+function saveRecords(items){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(items));return true}catch(e){alert(uiText('Neizdevās saglabāt ierakstu. Pārbaudi pārlūka privātuma iestatījumus vai brīvo vietu ierīcē.','Could not save the entry. Check your browser privacy settings or available device storage.'));if(window.mansdarbsHelpFailure)window.mansdarbsHelpFailure('storage');return false}}
+function money(n){const lang=document.documentElement.lang==='en'?'en-IE':'lv-LV';return Number(n).toLocaleString(lang,{minimumFractionDigits:2,maximumFractionDigits:2})+' €'}
+function updateRecordCategories(selected=''){
+ const kind=document.getElementById('kind')?.value||'Ienākums',field=document.getElementById('category');if(!field)return;
+ const income=['Pakalpojums','Preču pārdošana','Cits ienākums'];
+ const expense=['Materiāli un preces','Transports','Instrumenti un aprīkojums','Sakari','Telpas un komunālie','Pakalpojumi','Citi izdevumi'];
+ const options=kind==='Ienākums'?income:expense;
+ field.innerHTML='<option value="">Bez kategorijas</option>'+options.map(x=>'<option value="'+escapeHtml(x)+'">'+escapeHtml(x)+'</option>').join('');
+ field.value=options.includes(selected)?selected:'';
+}
 function renderRecords(){
  const items=getRecords(),root=document.getElementById('records');
- if(!items.length){root.innerHTML='<div class="empty">Pagaidām nav neviena ieraksta. Pievieno pirmo, kad esi gatavs.</div>';return}
  const selected=document.getElementById('monthFilter')?.value||'all';
- const availableMonths=[...new Set(items.map(x=>x.date.slice(0,7)))].sort().reverse();
- const filtered=selected==='all'?items:items.filter(x=>x.date.slice(0,7)===selected);
- let income=0,expense=0;
- const months={};
- filtered.forEach(x=>{
-  if(x.kind==='Ienākums')income+=Number(x.amount);else expense+=Number(x.amount);
-  const key=x.date.slice(0,7);
-  if(!months[key])months[key]={income:0,expense:0};
-  if(x.kind==='Ienākums')months[key].income+=Number(x.amount);else months[key].expense+=Number(x.amount);
- });
- const monthOptions='<option value="all">Visi mēneši</option>'+availableMonths.map(key=>{
+ const selectedKind=document.getElementById('recordKindFilter')?.value||'all';
+ const search=document.getElementById('recordSearch')?.value||'';
+ const availableMonths=[...new Set(items.map(x=>x.date.slice(0,7)).filter(x=>/^\\d{4}-\\d{2}$/.test(x)))].sort().reverse();
+ const monthOptions='<option value="all">Visi periodi</option>'+availableMonths.map(key=>{
   const p=key.split('-'),label=new Date(Number(p[0]),Number(p[1])-1,1).toLocaleDateString(document.documentElement.lang==='en'?'en-GB':'lv-LV',{year:'numeric',month:'long'});
   return '<option value="'+key+'" '+(selected===key?'selected':'')+'>'+escapeHtml(label)+'</option>';
  }).join('');
+ const filtered=items.filter(x=>(selected==='all'||x.date.slice(0,7)===selected)&&(selectedKind==='all'||x.kind===selectedKind));
+ let income=0,expense=0;const months={};
+ filtered.forEach(x=>{
+  if(x.kind==='Ienākums')income+=Number(x.amount);else expense+=Number(x.amount);
+  const key=x.date.slice(0,7);if(!months[key])months[key]={income:0,expense:0};
+  if(x.kind==='Ienākums')months[key].income+=Number(x.amount);else months[key].expense+=Number(x.amount);
+ });
  const monthlyHtml=Object.keys(months).sort().reverse().map(key=>{
-  const parts=key.split('-'),label=new Date(Number(parts[0]),Number(parts[1])-1,1).toLocaleDateString('lv-LV',{year:'numeric',month:'long'});
-  const m=months[key];
+  const p=key.split('-'),label=new Date(Number(p[0]),Number(p[1])-1,1).toLocaleDateString(document.documentElement.lang==='en'?'en-GB':'lv-LV',{year:'numeric',month:'long'}),m=months[key];
   return '<div class="record"><div><strong>'+escapeHtml(label)+'</strong><small>Ienākumi: '+money(m.income)+' · Izdevumi: '+money(m.expense)+'</small></div><div class="amount">'+money(m.income-m.expense)+'</div></div>';
  }).join('');
- const recordHtml=filtered.map(x=>({x,index:items.indexOf(x)})).reverse().map(({x,index})=>'<div class="record"><div><strong>'+escapeHtml(x.kind)+'</strong><small>'+escapeHtml(x.date)+(x.note?' · '+escapeHtml(x.note):'')+'</small><div style="display:flex;gap:12px;margin-top:6px"><button class="textlink" style="border:0;background:none;padding:0;cursor:pointer" onclick="editRecord('+index+')">Labot</button><button class="textlink" style="border:0;background:none;padding:0;cursor:pointer;color:#a33" onclick="deleteRecord('+index+')">Dzēst</button></div></div><div class="amount">'+(x.kind==='Izdevums'?'−':'+')+money(x.amount)+'</div></div>').join('');
- root.innerHTML='<div class="field" style="max-width:280px;margin:0 0 16px"><label for="monthFilter">Rādīt periodu</label><select id="monthFilter" onchange="renderRecords()">'+monthOptions+'</select></div><div class="cards" style="margin-bottom:14px"><div class="card" style="box-shadow:none;padding:14px"><small class="muted">Ienākumi kopā</small><div class="amount">'+money(income)+'</div></div><div class="card" style="box-shadow:none;padding:14px"><small class="muted">Izdevumi kopā</small><div class="amount">'+money(expense)+'</div></div><div class="card" style="box-shadow:none;padding:14px"><small class="muted">Starpība</small><div class="amount">'+money(income-expense)+'</div></div></div><h3 style="margin:22px 0 5px">Pārskats pa mēnešiem</h3><p class="muted" style="font-size:13px;margin:0 0 8px">Pozitīva vai negatīva starpība starp reģistrētajiem ienākumiem un izdevumiem.</p>'+monthlyHtml+'<h3 style="margin:22px 0 5px">Ieraksti</h3>'+(recordHtml||'<div class="empty">Šajā mēnesī ierakstu nav.</div>');
+ const recordHtml=filtered.map(x=>({x,index:items.indexOf(x)})).reverse().map(({x,index})=>{
+  const searchText=[x.kind,x.date,x.category,x.note].join(' ').toLocaleLowerCase('lv-LV');
+  return '<article class="record record-entry" data-search="'+escapeHtml(searchText)+'"><div class="record-main"><strong>'+escapeHtml(x.kind)+'</strong><div class="record-meta"><span>'+escapeHtml(x.date)+'</span>'+(x.category?'<span class="record-category">'+escapeHtml(x.category)+'</span>':'')+(x.note?'<span>'+escapeHtml(x.note)+'</span>':'')+'</div><div class="record-actions"><button class="textlink" style="border:0;background:none;padding:0;cursor:pointer" onclick="editRecord('+index+')">Labot</button><button class="textlink" style="border:0;background:none;padding:0;cursor:pointer;color:#a33" onclick="deleteRecord('+index+')">Dzēst</button></div></div><div class="amount">'+(x.kind==='Izdevums'?'−':'+')+money(x.amount)+'</div></article>';
+ }).join('');
+ const noEntries=!items.length?'<div class="empty">Pagaidām nav neviena ieraksta. Pievieno pirmo, kad esi gatavs.</div>':!filtered.length?'<div class="empty">Šajā periodā izvēlētajam veidam ierakstu nav.</div>':'';
+ root.innerHTML='<div class="records-toolbar"><div class="field"><label for="monthFilter">Periods</label><select id="monthFilter" onchange="renderRecords()">'+monthOptions+'</select></div><div class="field"><label for="recordKindFilter">Ieraksta veids</label><select id="recordKindFilter" onchange="renderRecords()"><option value="all">Visi</option><option value="Ienākums" '+(selectedKind==='Ienākums'?'selected':'')+'>Ienākumi</option><option value="Izdevums" '+(selectedKind==='Izdevums'?'selected':'')+'>Izdevumi</option></select></div><div class="field"><label for="recordSearch">Meklēt aprakstā</label><input id="recordSearch" type="search" value="'+escapeHtml(search)+'" placeholder="Ieraksta meklēšana" oninput="filterRecordRows(this.value)"></div></div><div class="cards" style="margin-bottom:14px"><div class="card" style="box-shadow:none;padding:14px"><small class="muted">Ienākumi kopā</small><div class="amount">'+money(income)+'</div></div><div class="card" style="box-shadow:none;padding:14px"><small class="muted">Izdevumi kopā</small><div class="amount">'+money(expense)+'</div></div><div class="card" style="box-shadow:none;padding:14px"><small class="muted">Starpība</small><div class="amount">'+money(income-expense)+'</div></div></div><h3 style="margin:22px 0 5px">Pārskats pa mēnešiem</h3><p class="muted" style="font-size:13px;margin:0 0 8px">Kopsavilkums atbilstoši izvēlētajam periodam un ieraksta veidam.</p>'+(monthlyHtml||'<div class="empty">Vēl nav datu mēnešu pārskatam.</div>')+'<h3 style="margin:22px 0 5px">Ieraksti</h3><p class="records-toolbar-count" id="recordSearchCount"></p>'+(recordHtml||noEntries);
+ filterRecordRows(search);
+}
+function filterRecordRows(value){
+ const query=String(value||'').trim().toLocaleLowerCase('lv-LV');let visible=0;
+ document.querySelectorAll('#records .record-entry').forEach(row=>{const match=!query||(row.dataset.search||'').includes(query);row.hidden=!match;if(match)visible++});
+ const counter=document.getElementById('recordSearchCount');if(counter)counter.textContent=query?('Atrasti ieraksti: '+visible):'';
 }
 function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function updateIinWarning(){
@@ -497,33 +518,25 @@ function updateIinWarning(){
  }
 }
 function addRecord(){
- const amount=Number(document.getElementById('amount').value),date=document.getElementById('date').value,kind=document.getElementById('kind').value,note=document.getElementById('note').value.trim();
+ const amount=Number(document.getElementById('amount').value),date=document.getElementById('date').value,kind=document.getElementById('kind').value,note=document.getElementById('note').value.trim(),category=document.getElementById('category').value;
  if(!Number.isFinite(amount)||amount<=0){alert(uiText('Ievadi summu, kas lielāka par 0.','Enter an amount greater than 0.'));if(window.mansdarbsHelpFailure)window.mansdarbsHelpFailure('records');return}
  if(!date){alert(uiText('Izvēlies datumu.','Choose a date.'));if(window.mansdarbsHelpFailure)window.mansdarbsHelpFailure('records');return}
- const items=getRecords(),record={kind:kind,amount:Math.round(amount*100)/100,date:date,note:note};
+ const items=getRecords(),record={kind,amount:Math.round(amount*100)/100,date,note,category};
  if(editingIndex===null)items.push(record);else items[editingIndex]=record;
  if(!saveRecords(items))return;
  cancelEdit();renderRecords();
 }
 function editRecord(index){
  const item=getRecords()[index];if(!item)return;
- editingIndex=index;
- document.getElementById('kind').value=item.kind;
- document.getElementById('amount').value=Number(item.amount).toFixed(2);
- updateIinWarning();
- document.getElementById('date').value=item.date;
- document.getElementById('note').value=item.note||'';
- document.getElementById('saveRecordButton').textContent='Saglabāt izmaiņas';
- document.getElementById('cancelEditButton').classList.remove('hidden');
+ editingIndex=index;document.getElementById('kind').value=item.kind;updateRecordCategories(item.category||'');
+ document.getElementById('amount').value=Number(item.amount).toFixed(2);updateIinWarning();
+ document.getElementById('date').value=item.date;document.getElementById('note').value=item.note||'';
+ document.getElementById('saveRecordButton').textContent='Saglabāt izmaiņas';document.getElementById('cancelEditButton').classList.remove('hidden');
  document.getElementById('amount').scrollIntoView({behavior:'smooth',block:'center'});
 }
 function cancelEdit(){
- editingIndex=null;
- document.getElementById('amount').value='';
- document.getElementById('note').value='';
- updateIinWarning();
- document.getElementById('saveRecordButton').textContent='Pievienot ierakstu';
- document.getElementById('cancelEditButton').classList.add('hidden');
+ editingIndex=null;document.getElementById('amount').value='';document.getElementById('note').value='';document.getElementById('category').value='';
+ updateIinWarning();document.getElementById('saveRecordButton').textContent='Pievienot ierakstu';document.getElementById('cancelEditButton').classList.add('hidden');
 }
 function deleteRecord(index){
  const items=getRecords();if(!items[index])return;
@@ -534,16 +547,38 @@ function deleteRecord(index){
 }
 function clearRecords(){if(!getRecords().length)return;if(confirm(uiText('Vai tiešām dzēst visus šīs ierīces demonstrācijas ierakstus?','Delete all demo entries on this device?'))){try{localStorage.removeItem(STORAGE_KEY);cancelEdit();renderRecords()}catch(e){alert(uiText('Neizdevās dzēst ierakstus pārlūka ierobežojumu dēļ.','Could not delete entries due to browser restrictions.'))}}}
 function exportCsv(){
- const items=getRecords();
- if(!items.length){alert(uiText('Nav ierakstu, ko eksportēt.','There are no entries to export.'));return}
- const quote=v=>'"'+String(v??'').replace(/"/g,'""')+'"';
- const en=document.documentElement.lang==='en';const rows=[[en?'Date':'Datums',en?'Type':'Veids',en?'Amount (EUR)':'Summa EUR',en?'Description':'Apraksts'],...items.map(x=>[x.date,en?(x.kind==='Ienākums'?'Income':'Expense'):x.kind,Number(x.amount).toFixed(2),x.note||''])];
- const csv='\uFEFF'+rows.map(row=>row.map(quote).join(';')).join('\r\n');
+ const items=getRecords();if(!items.length){alert(uiText('Nav ierakstu, ko eksportēt.','There are no entries to export.'));return}
+ const quote=v=>'"'+String(v??'').replace(/"/g,'""')+'"',en=document.documentElement.lang==='en';
+ const rows=[[en?'Date':'Datums',en?'Type':'Veids',en?'Category':'Kategorija',en?'Amount (EUR)':'Summa EUR',en?'Description':'Apraksts'],...items.map(x=>[x.date,en?(x.kind==='Ienākums'?'Income':'Expense'):x.kind,x.category||'',Number(x.amount).toFixed(2),x.note||''])];
+ const csv='\\uFEFF'+rows.map(row=>row.map(quote).join(';')).join('\\r\\n');
  const blob=new Blob([csv],{type:'text/csv;charset=utf-8;'}),url=URL.createObjectURL(blob),a=document.createElement('a');
  a.href=url;a.download='mansdarbs-uzskaite.csv';document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);
 }
-
-
+function exportRecordsBackup(){
+ const items=getRecords();if(!items.length){alert(uiText('Nav ierakstu, ko saglabāt kopijā.','There are no entries to back up.'));return}
+ const backup={app:'Mansdarbs',version:1,exportedAt:new Date().toISOString(),records:items};
+ const blob=new Blob([JSON.stringify(backup,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');
+ a.href=url;a.download='mansdarbs-uzskaite-rezerves-kopija.json';document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);
+}
+function importRecordsBackup(event){
+ const input=event.target,file=input.files&&input.files[0];if(!file)return;
+ const reader=new FileReader();
+ reader.onload=()=>{
+  try{
+   const backup=JSON.parse(String(reader.result||'')),source=Array.isArray(backup)?backup:backup&&backup.records;
+   if(!Array.isArray(source)||!source.length)throw new Error('empty');
+   const restored=source.map(x=>{
+    if(!x||!['Ienākums','Izdevums'].includes(x.kind)||!Number.isFinite(Number(x.amount))||Number(x.amount)<=0||typeof x.date!=='string'||!/^\\d{4}-\\d{2}-\\d{2}$/.test(x.date))throw new Error('invalid');
+    return {kind:x.kind,amount:Math.round(Number(x.amount)*100)/100,date:x.date,category:typeof x.category==='string'?x.category.slice(0,80):'',note:typeof x.note==='string'?x.note.slice(0,120):''};
+   });
+   if(!confirm(uiText('Atjaunot ierakstus no rezerves kopijas? Pašreizējie ieraksti tiks aizstāti.','Restore entries from this backup? Your current entries will be replaced.')))return;
+   if(saveRecords(restored)){cancelEdit();renderRecords();alert(uiText('Rezerves kopija veiksmīgi atjaunota.','Backup restored successfully.'))}
+  }catch(e){alert(uiText('Šī nav derīga Mansdarbs uzskaites rezerves kopija. Esošie ieraksti nav mainīti.','This is not a valid Mansdarbs records backup. Your existing entries have not been changed.'))}
+  finally{input.value=''}
+ };
+ reader.onerror=()=>{alert(uiText('Neizdevās nolasīt failu.','Could not read the file.'));input.value=''};
+ reader.readAsText(file);
+}
 const SIA_KEY='mansdarbs_sia_prototype_v1';
 let siaActiveCompany=null;
 function siaLoad(){try{const x=JSON.parse(localStorage.getItem(SIA_KEY)||'{"companies":[],"transactions":[]}');return x&&Array.isArray(x.companies)&&Array.isArray(x.transactions)?x:{companies:[],transactions:[]}}catch(e){return {companies:[],transactions:[]}}}
@@ -696,6 +731,7 @@ function initInvoice(){
 }
 
 const today=new Date();document.getElementById('date').value=[today.getFullYear(),String(today.getMonth()+1).padStart(2,'0'),String(today.getDate()).padStart(2,'0')].join('-');
+updateRecordCategories();
 document.getElementById('kind').addEventListener('change',updateIinWarning);
 document.getElementById('date').addEventListener('change',updateIinWarning);
 renderRecords();
