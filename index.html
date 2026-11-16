@@ -98,7 +98,8 @@
  body.invoice-printing #invoicePrint>div{page-break-inside:avoid;break-inside:avoid}
 }
 #invoicePrint{display:none}
-.top-right{display:flex;align-items:center;gap:14px}.lang-switch{display:flex;gap:2px;padding:3px;border:1px solid var(--line);border-radius:999px;background:#fff}.lang-switch button{border:0;background:transparent;color:var(--muted);font-size:12px;font-weight:850;padding:6px 9px;border-radius:999px;cursor:pointer}.lang-switch button[aria-pressed="true"]{background:var(--green);color:#fff}@media(max-width:680px){.top-right{gap:7px}.lang-switch button{padding:6px 8px}.topnote{display:none}}.start-route-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:18px 0}.start-route-choice{appearance:none;text-align:left;color:var(--ink);font:inherit;cursor:pointer;box-shadow:none;display:flex;flex-direction:column;gap:7px}.start-route-choice .icon{margin:0}.start-route-choice small{color:var(--muted)}.start-route-choice.active{border-color:var(--green);background:#f2f8f3;box-shadow:0 0 0 2px rgba(23,107,80,.12)}.start-route-panel{margin-top:16px}.start-route-panel h3{font-size:20px;margin:0 0 14px}.start-route-panel .steps{margin-top:12px}.start-route-panel .step{background:#fff}.start-route-panel .callout{margin-top:12px}@media(max-width:680px){.start-route-grid{grid-template-columns:1fr}.start-route-choice{min-height:0;padding:15px}.start-route-panel .step{padding:12px;gap:10px}}</style>
+.top-right{display:flex;align-items:center;gap:14px}.lang-switch{display:flex;gap:2px;padding:3px;border:1px solid var(--line);border-radius:999px;background:#fff}.lang-switch button{border:0;background:transparent;color:var(--muted);font-size:12px;font-weight:850;padding:6px 9px;border-radius:999px;cursor:pointer}.lang-switch button[aria-pressed="true"]{background:var(--green);color:#fff}@media(max-width:680px){.top-right{gap:7px}.lang-switch button{padding:6px 8px}.topnote{display:none}}.start-route-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:18px 0}.start-route-choice{appearance:none;text-align:left;color:var(--ink);font:inherit;cursor:pointer;box-shadow:none;display:flex;flex-direction:column;gap:7px}.start-route-choice .icon{margin:0}.start-route-choice small{color:var(--muted)}.start-route-choice.active{border-color:var(--green);background:#f2f8f3;box-shadow:0 0 0 2px rgba(23,107,80,.12)}.start-route-panel{margin-top:16px}.start-route-panel h3{font-size:20px;margin:0 0 14px}.start-route-panel .steps{margin-top:12px}.start-route-panel .step{background:#fff}.start-route-panel .callout{margin-top:12px}@media(max-width:680px){.start-route-grid{grid-template-columns:1fr}.start-route-choice{min-height:0;padding:15px}.start-route-panel .step{padding:12px;gap:10px}}
+.md-context-help{position:fixed;z-index:50;left:14px;right:14px;bottom:14px;max-width:560px;margin:0 auto;padding:16px;background:#fff;border:1px solid #cbd9ce;border-radius:16px;box-shadow:0 12px 36px rgba(24,45,35,.18);display:flex;align-items:flex-start;justify-content:space-between;gap:14px}.md-context-help[hidden]{display:none}.md-context-help__copy{min-width:0}.md-context-help__title{display:block;font-size:15px;line-height:1.35}.md-context-help__message{font-size:13px;color:var(--muted);margin:6px 0 0}.md-context-help__actions{display:flex;flex-shrink:0;gap:7px;align-items:center}.md-context-help__actions button{border:0;border-radius:9px;padding:9px 11px;font:inherit;font-size:13px;font-weight:800;cursor:pointer}.md-context-help__accept{background:var(--green);color:#fff}.md-context-help__later{background:#edf1ed;color:var(--ink)}@media(max-width:540px){.md-context-help{display:block}.md-context-help__actions{margin-top:12px}.md-context-help__actions button{flex:1}.md-context-help__actions{display:flex}}</style>
 </head>
 <body>
 <div class="shell home-screen">
@@ -433,7 +434,7 @@ function showGuide(){const home=document.getElementById('homeView'),guide=docume
 function selectStartRoute(route){const resident=route!=='moving';document.getElementById('residentPath').classList.toggle('hidden',!resident);document.getElementById('movingPath').classList.toggle('hidden',resident);document.getElementById('routeResidentButton').classList.toggle('active',resident);document.getElementById('routeMovingButton').classList.toggle('active',!resident);}
 function updateBusinessChecklist(){const food=document.getElementById('startBusinessType')?.value==='food';document.getElementById('foodBusinessInfo')?.classList.toggle('hidden',!food);document.getElementById('otherBusinessInfo')?.classList.toggle('hidden',food);}
 function getRecords(){try{const data=JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]');return Array.isArray(data)?data.filter(x=>x&&['Ienākums','Izdevums'].includes(x.kind)&&Number.isFinite(Number(x.amount))&&Number(x.amount)>0&&typeof x.date==='string'):[]}catch(e){return []}}
-function saveRecords(items){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(items));return true}catch(e){alert('Neizdevās saglabāt ierakstu. Pārbaudi pārlūka privātuma iestatījumus vai brīvo vietu ierīcē.');return false}}
+function saveRecords(items){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(items));return true}catch(e){alert('Neizdevās saglabāt ierakstu. Pārbaudi pārlūka privātuma iestatījumus vai brīvo vietu ierīcē.');if(window.mansdarbsHelpFailure)window.mansdarbsHelpFailure('storage');return false}}
 function money(n){const lang=document.documentElement.lang==='en'?'en-IE':'lv-LV';return Number(n).toLocaleString(lang,{minimumFractionDigits:2,maximumFractionDigits:2})+(lang==='en-IE'?' €':' €')}
 function renderRecords(){
  const items=getRecords(),root=document.getElementById('records');
@@ -497,8 +498,8 @@ function updateIinWarning(){
 }
 function addRecord(){
  const amount=Number(document.getElementById('amount').value),date=document.getElementById('date').value,kind=document.getElementById('kind').value,note=document.getElementById('note').value.trim();
- if(!Number.isFinite(amount)||amount<=0){alert(uiText('Ievadi summu, kas lielāka par 0.','Enter an amount greater than 0.'));return}
- if(!date){alert(uiText('Izvēlies datumu.','Choose a date.'));return}
+ if(!Number.isFinite(amount)||amount<=0){alert(uiText('Ievadi summu, kas lielāka par 0.','Enter an amount greater than 0.'));if(window.mansdarbsHelpFailure)window.mansdarbsHelpFailure('records');return}
+ if(!date){alert(uiText('Izvēlies datumu.','Choose a date.'));if(window.mansdarbsHelpFailure)window.mansdarbsHelpFailure('records');return}
  const items=getRecords(),record={kind:kind,amount:Math.round(amount*100)/100,date:date,note:note};
  if(editingIndex===null)items.push(record);else items[editingIndex]=record;
  if(!saveRecords(items))return;
@@ -546,7 +547,7 @@ function exportCsv(){
 const SIA_KEY='mansdarbs_sia_prototype_v1';
 let siaActiveCompany=null;
 function siaLoad(){try{const x=JSON.parse(localStorage.getItem(SIA_KEY)||'{"companies":[],"transactions":[]}');return x&&Array.isArray(x.companies)&&Array.isArray(x.transactions)?x:{companies:[],transactions:[]}}catch(e){return {companies:[],transactions:[]}}}
-function siaSave(data){try{localStorage.setItem(SIA_KEY,JSON.stringify(data));return true}catch(e){alert('Neizdevās saglabāt SIA datus šajā pārlūkā.');return false}}
+function siaSave(data){try{localStorage.setItem(SIA_KEY,JSON.stringify(data));return true}catch(e){alert('Neizdevās saglabāt SIA datus šajā pārlūkā.');if(window.mansdarbsHelpFailure)window.mansdarbsHelpFailure('storage');return false}}
 function siaUpdateVatOptions(){
  const vat=document.getElementById('siaTxVat');
  vat.disabled=false;
@@ -555,7 +556,7 @@ function siaUpdateVatOptions(){
 function siaAddTransaction(){
  const data=siaLoad(),c=data.companies.find(x=>x.id===siaActiveCompany);if(!c){alert('Neizdevās atvērt SIA uzskaiti. Pārlādē lapu un mēģini vēlreiz.');return}
  const kind=document.getElementById('siaTxKind').value,date=document.getElementById('siaTxDate').value,description=document.getElementById('siaTxDescription').value.trim(),amount=Number(document.getElementById('siaTxAmount').value),rate=Number(document.getElementById('siaTxVat').value),account=kind==='expense'?document.getElementById('siaExpenseAccount').value:'6110';
- if(!date||!description||!Number.isFinite(amount)||amount<=0){alert('Aizpildi datumu, aprakstu un summu, kas lielāka par 0.');return}
+ if(!date||!description||!Number.isFinite(amount)||amount<=0){alert('Aizpildi datumu, aprakstu un summu, kas lielāka par 0.');if(window.mansdarbsHelpFailure)window.mansdarbsHelpFailure('sia');return}
  const net=Math.round(amount*100)/100,vat=Math.round(net*rate)/100,total=Math.round((net+vat)*100)/100;
  data.transactions.push({id:Date.now(),companyId:c.id,kind,date,description,net,rate,vat,total,account});
  if(!siaSave(data))return;
@@ -618,8 +619,8 @@ function invoiceNumberNext(){
 }
 function invoiceData(){
  const qty=Number(invoiceValue('invQty')),price=Number(invoiceValue('invPrice')),vatOn=document.getElementById('invVat').checked,rate=vatOn?Number(invoiceValue('invVatRate')):0;
- if(!invoiceValue('invSeller')||!invoiceValue('invBuyer')||!invoiceValue('invDescription')){alert(uiText('Aizpildi izrakstītāja, saņēmēja un pakalpojuma/preces nosaukuma laukus.','Complete the issuer, recipient and service/product fields.'));return null}
- if(!Number.isFinite(qty)||qty<=0||!Number.isFinite(price)||price<0){alert(uiText('Pārbaudi daudzumu un vienības cenu.','Check the quantity and unit price.'));return null}
+ if(!invoiceValue('invSeller')||!invoiceValue('invBuyer')||!invoiceValue('invDescription')){alert(uiText('Aizpildi izrakstītāja, saņēmēja un pakalpojuma/preces nosaukuma laukus.','Complete the issuer, recipient and service/product fields.'));if(window.mansdarbsHelpFailure)window.mansdarbsHelpFailure('invoice');return null}
+ if(!Number.isFinite(qty)||qty<=0||!Number.isFinite(price)||price<0){alert(uiText('Pārbaudi daudzumu un vienības cenu.','Check the quantity and unit price.'));if(window.mansdarbsHelpFailure)window.mansdarbsHelpFailure('invoice');return null}
  const net=Math.round(qty*price*100)/100,vat=Math.round(net*rate)/100,total=net+vat;
  return {number:invoiceValue('invNumber'),date:invoiceValue('invDate'),due:invoiceValue('invDue'),seller:invoiceValue('invSeller'),reg:invoiceValue('invReg'),address:invoiceValue('invAddress'),bank:invoiceValue('invBank'),email:invoiceValue('invEmail'),buyer:invoiceValue('invBuyer'),buyerReg:invoiceValue('invBuyerReg'),buyerAddress:invoiceValue('invBuyerAddress'),description:invoiceValue('invDescription'),qty,price,net,vat,rate,total,currency:'EUR'};
 }
@@ -653,12 +654,12 @@ function previewInvoice(){
 }
 function saveInvoice(){
  const x=invoiceData();if(!x)return;
- if(!x.number||!x.date){alert(uiText('Norādi rēķina numuru un izrakstīšanas datumu.','Enter an invoice number and issue date.'));return}
+ if(!x.number||!x.date){alert(uiText('Norādi rēķina numuru un izrakstīšanas datumu.','Enter an invoice number and issue date.'));if(window.mansdarbsHelpFailure)window.mansdarbsHelpFailure('invoice');return}
  saveInvoiceSeller(x);
  let list=[];try{list=JSON.parse(localStorage.getItem(invoiceStorageKey())||'[]')}catch(e){}
- if(list.some(i=>i.number===x.number)){alert(uiText('Šāds rēķina numurs jau ir saglabāts.','This invoice number has already been used.'));return}
+ if(list.some(i=>i.number===x.number)){alert(uiText('Šāds rēķina numurs jau ir saglabāts.','This invoice number has already been used.'));if(window.mansdarbsHelpFailure)window.mansdarbsHelpFailure('invoice');return}
  list.push({...x,id:Date.now(),savedAt:new Date().toISOString()});
- try{localStorage.setItem(invoiceStorageKey(),JSON.stringify(list))}catch(e){alert('Neizdevās saglabāt rēķinu pārlūkā.');return}
+ try{localStorage.setItem(invoiceStorageKey(),JSON.stringify(list))}catch(e){alert('Neizdevās saglabāt rēķinu pārlūkā.');if(window.mansdarbsHelpFailure)window.mansdarbsHelpFailure('storage');return}
  renderInvoices();document.getElementById('invoicePrint').innerHTML=invoicePrintHtml(x);document.getElementById('invNumber').value=invoiceNumberNext();
  alert(uiText('Rēķins saglabāts šajā pārlūkā.','Invoice saved in this browser.'));
 }
@@ -763,6 +764,7 @@ function applyLanguage(){
 
 
 </script>
+<script src="contextual-help.js?v=1"></script>
 <script src="industry-modules.js?v=80a1e8e"></script>
 </body>
 </html>
