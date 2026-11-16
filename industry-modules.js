@@ -154,8 +154,8 @@ function saveEntry(){
 function renderUnifiedOverview(){
  const root=el('unifiedFinanceSummary');if(!root)return;
  const safeRead=key=>{try{const v=JSON.parse(localStorage.getItem(key)||'[]');return Array.isArray(v)?v:[]}catch(_){return []}};
- const basic=safeRead('mansdarbs_demo_records_v1').filter(x=>x&&['Ienākums','Izdevums'].includes(x.kind)&&Number(x.amount)>0&&Number.isFinite(Number(x.amount))&&/^\\d{4}-\\d{2}-\\d{2}$/.test(x.date||'')).map(x=>({date:x.date,amount:Number(x.amount),flow:x.kind==='Ienākums'?'income':'expense'}));
- const industry=safeRead(RECORDS_KEY).filter(x=>x&&Number(x.amount)>0&&Number.isFinite(Number(x.amount))&&/^\\d{4}-\\d{2}-\\d{2}$/.test(x.date||'')).map(x=>({date:x.date,amount:Number(x.amount),flow:x.flow||'income'}));
+ const basic=safeRead('mansdarbs_demo_records_v1').filter(x=>x&&['Ienākums','Izdevums'].includes(x.kind)&&Number(x.amount)>0&&Number.isFinite(Number(x.amount))&&/^\d{4}-\d{2}-\d{2}$/.test(x.date||'')).map(x=>({date:x.date,amount:Number(x.amount),flow:x.kind==='Ienākums'?'income':'expense'}));
+ const industry=safeRead(RECORDS_KEY).filter(x=>x&&Number(x.amount)>0&&Number.isFinite(Number(x.amount))&&/^\d{4}-\d{2}-\d{2}$/.test(x.date||'')).map(x=>({date:x.date,amount:Number(x.amount),flow:x.flow||'income'}));
  const rows=basic.concat(industry),totals={income:0,expense:0,refund:0};
  rows.forEach(x=>{if(x.flow==='expense')totals.expense+=x.amount;else if(x.flow==='refund')totals.refund+=x.amount;else totals.income+=x.amount;});
  const net=totals.income-totals.expense-totals.refund;
