@@ -30,6 +30,7 @@ Katram jautājumam ir īss paskaidrojums, kāpēc informācija vajadzīga. Lieto
 - Lietotājam tiek skaidri lūgts neievadīt paroles, personas kodu, bankas vai kartes datus un klientu identificējošu informāciju.
 - Vietnes hostings var apstrādāt tehniskus lapas pieprasījumu žurnālus. Sarunas atbildes netiek pievienotas šiem pieprasījumiem.
 - Nekas netiek automātiski nosūtīts VID vai iesniegts lietotāja vārdā.
+- Atsevišķi no konsultanta sarunas sākumlapas prototips nosūta izvēlēto darbības veidu kopējā aktivitāšu kataloga veidošanai, skaita fiksētus lietošanas notikumus un reģistrē lapas apmeklējumu skaitu. Šie signāli nesatur konsultanta atbildes; pirms publiskas palaišanas tiem jābūt skaidri aprakstītiem privātuma paziņojumā.
 
 ## Demonstrācijas ierobežojumi
 
