@@ -67,6 +67,7 @@
       <div class="context-engine__actions">
         <button type="button" class="btn primary" id="contextSave">${tr('Saglabāt un parādīt nākamo soli','Save and show my next step')}</button>
         <button type="button" class="btn secondary" id="contextCancel">${tr('Atcelt','Cancel')}</button>
+        <button type="button" class="btn secondary" id="contextDelete">${tr('Dzēst manu profilu','Delete my profile')}</button>
       </div>
       <p class="context-engine__privacy">${tr('Atbildes tiek saglabātas tikai šajā pārlūkā. Tās netiek sūtītas serverim un netiek izmantotas apmeklējumu analītikā.','Your answers are stored only in this browser. They are not sent to a server or used for visit analytics.')}</p>
     </div>
@@ -164,6 +165,12 @@
     if (!form.hidden && profile) { stageEl.value = profile.stage; needEl.value = profile.need; }
   });
   section.querySelector('#contextCancel').addEventListener('click', () => { form.hidden = true; });
+  section.querySelector('#contextDelete').addEventListener('click', () => {
+    try { localStorage.removeItem(KEY); } catch (_) {}
+    profile = null; result.hidden = true; form.hidden = true;
+    stageEl.value = 'planning'; needEl.value = 'registration';
+    toggle.textContent = tr('Pielāgot Mansdarbs','Personalise Mansdarbs');
+  });
   section.querySelector('#contextSave').addEventListener('click', () => {
     const next = {stage: stageEl.value, need: needEl.value, updatedAt: new Date().toISOString()};
     try { localStorage.setItem(KEY, JSON.stringify(next)); }
