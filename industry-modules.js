@@ -96,7 +96,7 @@ function init(){
  document.addEventListener('mansdarbs:records-updated',renderUnifiedOverview);
  const p=getProfile();s.value=sectors.some(x=>x.id===p.sector)?p.sector:'food';fillJobs(p.job);
  s.addEventListener('change',()=>{fillJobs('');renderModule()});el('industryJob').addEventListener('change',renderModule);
- const languageObserver=new MutationObserver(()=>{const selectedSector=s.value,selectedJob=el('industryJob').value;s.innerHTML=sectors.map(x=>'<option value="'+x.id+'">'+esc(sectorLabel(x))+'</option>').join('');s.value=selectedSector;fillJobs(selectedJob);renderModule();renderEntries();});
+ const languageObserver=new MutationObserver(()=>{const selectedSector=s.value,selectedJob=el('industryJob').value;s.innerHTML=sectors.map(x=>'<option value="'+x.id+'">'+esc(sectorLabel(x))+'</option>').join('');s.value=selectedSector;fillJobs(selectedJob);renderModule();renderEntries();renderUnifiedOverview();});
  languageObserver.observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
  function saveProfile(){
   const list=read('mansdarbs_industry_profiles_v1',[]),profile={sector:s.value,job:el('industryJob').value};
