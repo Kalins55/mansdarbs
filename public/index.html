@@ -144,6 +144,18 @@
 #mansdarbs-vid-assistant .mva-done{text-align:center;padding:24px 0}
 @media(max-width:480px){#mansdarbs-vid-assistant .mva-top{padding-left:15px;padding-right:15px}#mansdarbs-vid-assistant .mva-main{width:calc(100% - 28px);padding-top:22px}#mansdarbs-vid-assistant .mva-actions{flex-direction:column-reverse}#mansdarbs-vid-assistant .mva-actions button{width:100%}}
 
+
+#mansdarbs-vid-assistant .mva-ask{width:100%;margin-top:16px;background:#edf2ee;color:#24533d}
+#mansdarbs-vid-assistant .mva-chat{margin-top:14px;border-top:1px solid #e1e8e2;padding-top:16px}
+#mansdarbs-vid-assistant .mva-chatlog{display:grid;gap:10px;margin-bottom:14px}
+#mansdarbs-vid-assistant .mva-chat-message{padding:12px 14px;border-radius:13px;white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.6;font-size:14px}
+#mansdarbs-vid-assistant .mva-chat-user{background:#e8f3ec;margin-left:8%}
+#mansdarbs-vid-assistant .mva-chat-agent{background:#f3f5f3;margin-right:8%}
+#mansdarbs-vid-assistant .mva-chat-sources{display:grid;gap:6px;margin-top:9px;font-size:12px}
+#mansdarbs-vid-assistant .mva-chat-sources a{overflow-wrap:anywhere}
+#mansdarbs-vid-assistant .mva-chat textarea{display:block;width:100%;min-height:88px;max-width:100%;resize:vertical;border:1px solid #d5ded7;border-radius:11px;padding:12px;font:inherit}
+#mansdarbs-vid-assistant .mva-chat small{display:block;color:#6d7b72;font-size:12px;margin-top:8px}
+
 </style>
 </head>
 <body>
@@ -923,11 +935,56 @@ function applyLanguage(){
     '<div class="mva-card" id="mvaSetup"><label for="mvaProfile">Tava situācija</label><select id="mvaProfile"><option value="general">Pašnodarbinātais — vispārējais režīms</option><option value="mun">Mikrouzņēmumu nodokļa maksātājs</option><option value="unknown">Vēl nezinu / vēlos pārbaudīt</option></select>'+
     '<label for="mvaTask">Ko vēlies paveikt VID?</label><select id="mvaTask"><option value="register">Reģistrēt saimniecisko darbību</option><option value="quarterly">Iesniegt pašnodarbinātā ziņojumu</option><option value="annual">Aizpildīt gada ienākumu deklarāciju</option><option value="check">Pārbaudīt savus reģistrācijas datus</option></select>'+
     '<button type="button" class="mva-primary" id="mvaStart" style="width:100%;margin-top:20px">Sākt ceļvedi</button></div>'+
-    '<div class="mva-card" id="mvaGuide" hidden><div class="mva-step" id="mvaCount"></div><div class="mva-progress"><span id="mvaBar"></span></div><h2 id="mvaStepTitle"></h2><p id="mvaStepText"></p><div class="mva-tip" id="mvaTip"></div><a class="mva-vidlink" id="mvaVidLink" href="'+VID_URL+'" target="_blank" rel="noopener">Pārslēgties uz VID EDS ↗</a><div class="mva-actions"><button type="button" class="mva-secondary" id="mvaBack">Atpakaļ</button><button type="button" class="mva-primary" id="mvaNext">Nākamais solis</button></div></div>'+
+    '<div class="mva-card" id="mvaGuide" hidden><div class="mva-step" id="mvaCount"></div><div class="mva-progress"><span id="mvaBar"></span></div><h2 id="mvaStepTitle"></h2><p id="mvaStepText"></p><div class="mva-tip" id="mvaTip"></div><a class="mva-vidlink" id="mvaVidLink" href="'+VID_URL+'" target="_blank" rel="noopener">Pārslēgties uz VID EDS ↗</a><div class="mva-actions"><button type="button" class="mva-secondary" id="mvaBack">Atpakaļ</button><button type="button" class="mva-primary" id="mvaNext">Nākamais solis</button></div><button type="button" class="mva-ask" id="mvaAskToggle">Uzdot papildu jautājumu</button><div class="mva-chat" id="mvaChat" hidden><div class="mva-chatlog" id="mvaChatLog" aria-live="polite"></div><label for="mvaQuestion">Kas tev nav skaidrs?</label><textarea id="mvaQuestion" maxlength="1800" placeholder="Apraksti, ko redzi VID EDS vai kurā solī esi apstājies…"></textarea><button type="button" class="mva-primary" id="mvaSend" style="width:100%;margin-top:10px">Nosūtīt jautājumu</button><small>Nesūti paroles, personas kodu, Smart-ID kodus vai bankas datus. Jautājums tiks nosūtīts AI pakalpojumam, ja servera savienojums ir aktivizēts.</small></div></div>'+
     '<div class="mva-card mva-done" id="mvaDone" hidden><div class="mva-eyebrow">Ceļvedis pabeigts</div><h2>Labs darbs!</h2><p>Tagad pārbaudi VID EDS, vai darbība ir pabeigta un dokuments ir pieņemts. Mansdarbs nevar piekļūt tavam EDS kontam vai pārbaudīt iesnieguma statusu.</p><button type="button" class="mva-primary" id="mvaAgain">Sākt citu uzdevumu</button></div>'+
-    '<p style="font-size:12px;margin-top:18px">Šis ir noteikumos balstīts ceļvedis, nevis pieslēgts MI modelis vai VID sistēma. Nekopē šeit paroles, personas kodu vai citus sensitīvus datus. Ja VID ekrāns atšķiras, vadies pēc oficiālās VID informācijas.</p></main>';
+    '<p style="font-size:12px;margin-top:18px">Soli pa solim ceļvedis darbojas arī bez AI savienojuma. Papildu jautājumu atbildes tiek ģenerētas tikai tad, ja serverim ir pieslēgts AI pakalpojums. Nekopē šeit paroles, personas kodu vai citus sensitīvus datus. Ja VID ekrāns atšķiras, vadies pēc oficiālās VID informācijas.</p></main>';
   document.body.appendChild(root);
   var profile=root.querySelector('#mvaProfile'),task=root.querySelector('#mvaTask'),setup=root.querySelector('#mvaSetup'),guide=root.querySelector('#mvaGuide'),done=root.querySelector('#mvaDone'),index=0,current='register',popupBlocked=false;
+  var chatHistory=[];
+  var chatLog=root.querySelector('#mvaChatLog');
+  function addChatMessage(role,text,sources){
+    var bubble=document.createElement('div');
+    bubble.className='mva-chat-message '+(role==='user'?'mva-chat-user':'mva-chat-agent');
+    bubble.textContent=text;
+    chatLog.appendChild(bubble);
+    if(Array.isArray(sources)&&sources.length){
+      var list=document.createElement('div');list.className='mva-chat-sources';
+      sources.forEach(function(source){
+        try{
+          var url=new URL(source.url);
+          if(url.protocol!=='https:')return;
+          var link=document.createElement('a');link.href=url.href;link.target='_blank';link.rel='noopener';link.textContent=source.title||url.hostname+' ↗';list.appendChild(link);
+        }catch(e){}
+      });
+      if(list.childNodes.length)chatLog.appendChild(list);
+    }
+    bubble.scrollIntoView({block:'nearest'});
+  }
+  async function sendQuestion(){
+    var field=root.querySelector('#mvaQuestion'),send=root.querySelector('#mvaSend'),question=field.value.trim();
+    if(!question)return;
+    chatHistory.push({role:'user',content:question});
+    addChatMessage('user',question);
+    field.value='';send.disabled=true;send.textContent='Meklēju atbildi…';
+    var pending=document.createElement('div');pending.className='mva-chat-message mva-chat-agent';pending.textContent='Pārbaudu oficiālos avotus un sagatavoju atbildi…';chatLog.appendChild(pending);
+    try{
+      var response=await fetch('/api/vid-assistant',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:chatHistory,profile:profile.value,task:current})});
+      var data=await response.json();pending.remove();
+      if(!response.ok)throw new Error(data.error||'Neizdevās saņemt atbildi.');
+      chatHistory.push({role:'assistant',content:data.answer});
+      if(chatHistory.length>8)chatHistory=chatHistory.slice(-8);
+      addChatMessage('assistant',data.answer,data.sources);
+    }catch(error){
+      pending.textContent=error.message||'AI palīgs pašlaik nav pieejams. Turpini ar soli pa solim ceļvedi.';
+    }finally{send.disabled=false;send.textContent='Nosūtīt jautājumu';}
+  }
+  root.querySelector('#mvaAskToggle').addEventListener('click',function(){
+    var panel=root.querySelector('#mvaChat');panel.hidden=!panel.hidden;
+    if(!panel.hidden)root.querySelector('#mvaQuestion').focus();
+  });
+  root.querySelector('#mvaSend').addEventListener('click',sendQuestion);
+  root.querySelector('#mvaQuestion').addEventListener('keydown',function(event){if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendQuestion();}});
+
   function show(){root.hidden=false;document.body.dataset.mvaPreviousOverflow=document.body.style.overflow;document.body.style.overflow='hidden';root.scrollTop=0;}
   function close(){root.hidden=true;document.body.style.overflow=document.body.dataset.mvaPreviousOverflow||'';}
   function render(){
