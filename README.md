@@ -7,8 +7,21 @@ Vienkāršs, mobilajām ierīcēm pielāgots palīgs saimnieciskās darbības s�
 - Viena statiska lapa: `index.html`.
 - Nav nepieciešama kompilēšana vai pakotņu instalēšana.
 - Demonstrācijas ieraksti tiek glabāti tikai lietotāja pārlūkprogrammā (`localStorage`).
-- Dati netiek nosūtīti uz serveri un netiek sinhronizēti starp ierīcēm.
+- Ienākumu, izdevumu un rēķinu dati paliek lietotāja pārlūkprogrammā un netiek nosūtīti serverim.
+- Ja lietotājs pats atver VID palīga jautājumu sadaļu un nosūta ziņu, tās saturs tiek nosūtīts uz `/api/vid-assistant` un tālāk uz OpenAI API atbildes sagatavošanai; saruna netiek saglabāta Mansdarbs serverī.
 - Šī demonstrācija nav oficiāls grāmatvedības reģistrs un neveic nodokļu aprēķinus.
+
+
+## VID palīgs un AI savienojums
+
+- Klikšķis uz galvenās VID / EDS saites atver VID EDS jaunā cilnē un Mansdarbs pilnekrāna VID ceļvedi pašreizējā cilnē.
+- Ceļvedis darbojas arī bez AI savienojuma; lietotājs var izvēlēties reģistrāciju, pašnodarbinātā ziņojumu, gada deklarāciju vai reģistrācijas datu pārbaudi.
+- Papildu jautājumu atbildes nodrošina Cloudflare Pages Function `/api/vid-assistant`, izmantojot OpenAI Responses API un oficiālo Latvijas iestāžu avotu meklēšanu.
+- Lai aktivizētu AI atbildes, Cloudflare Pages projekta iestatījumos jāpievieno slepenais mainīgais `OPENAI_API_KEY`. Pēc noklusējuma tiek izmantots `gpt-6-luna`; to var mainīt ar neobligātu `OPENAI_MODEL`.
+- API atslēga nekad nedrīkst atrasties HTML, JavaScript klienta kodā vai GitHub repozitorijā.
+- AI jautājumu saturs tiek nosūtīts ārējam AI pakalpojumam. Lietotājam pirms nosūtīšanas tiek atgādināts neiekļaut paroles, personas kodu, Smart-ID kodus vai bankas datus.
+- EDS pieslēgšanās, dokumentu iesniegšana un konta pārbaude vienmēr paliek paša lietotāja ziņā. Mansdarbs neprasa EDS piekļuves datus un neveic darbības lietotāja vietā.
+- AI atbildēm jābalstās uz VID, likumi.lv, VSAA, Uzņēmumu reģistra, Finanšu ministrijas un Latvija.gov.lv avotiem; neskaidrās situācijās jānorāda uz nepieciešamību precizēt informāciju pie VID.
 
 ## Cloudflare Pages iestatījumi
 
