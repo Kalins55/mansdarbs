@@ -454,7 +454,7 @@ function renderRecords(){
  const selected=document.getElementById('monthFilter')?.value||'all';
  const selectedKind=document.getElementById('recordKindFilter')?.value||'all';
  const search=document.getElementById('recordSearch')?.value||'';
- const availableMonths=[...new Set(items.map(x=>x.date.slice(0,7)).filter(x=>/^\\d{4}-\\d{2}$/.test(x)))].sort().reverse();
+ const availableMonths=[...new Set(items.map(x=>x.date.slice(0,7)).filter(x=>/^\d{4}-\d{2}$/.test(x)))].sort().reverse();
  const monthOptions='<option value="all">Visi periodi</option>'+availableMonths.map(key=>{
   const p=key.split('-'),label=new Date(Number(p[0]),Number(p[1])-1,1).toLocaleDateString(document.documentElement.lang==='en'?'en-GB':'lv-LV',{year:'numeric',month:'long'});
   return '<option value="'+key+'" '+(selected===key?'selected':'')+'>'+escapeHtml(label)+'</option>';
@@ -550,7 +550,7 @@ function exportCsv(){
  const items=getRecords();if(!items.length){alert(uiText('Nav ierakstu, ko eksportēt.','There are no entries to export.'));return}
  const quote=v=>'"'+String(v??'').replace(/"/g,'""')+'"',en=document.documentElement.lang==='en';
  const rows=[[en?'Date':'Datums',en?'Type':'Veids',en?'Category':'Kategorija',en?'Amount (EUR)':'Summa EUR',en?'Description':'Apraksts'],...items.map(x=>[x.date,en?(x.kind==='Ienākums'?'Income':'Expense'):x.kind,x.category||'',Number(x.amount).toFixed(2),x.note||''])];
- const csv='\\uFEFF'+rows.map(row=>row.map(quote).join(';')).join('\\r\\n');
+ const csv='\uFEFF'+rows.map(row=>row.map(quote).join(';')).join('\r\n');
  const blob=new Blob([csv],{type:'text/csv;charset=utf-8;'}),url=URL.createObjectURL(blob),a=document.createElement('a');
  a.href=url;a.download='mansdarbs-uzskaite.csv';document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);
 }
@@ -568,7 +568,7 @@ function importRecordsBackup(event){
    const backup=JSON.parse(String(reader.result||'')),source=Array.isArray(backup)?backup:backup&&backup.records;
    if(!Array.isArray(source)||!source.length)throw new Error('empty');
    const restored=source.map(x=>{
-    if(!x||!['Ienākums','Izdevums'].includes(x.kind)||!Number.isFinite(Number(x.amount))||Number(x.amount)<=0||typeof x.date!=='string'||!/^\\d{4}-\\d{2}-\\d{2}$/.test(x.date))throw new Error('invalid');
+    if(!x||!['Ienākums','Izdevums'].includes(x.kind)||!Number.isFinite(Number(x.amount))||Number(x.amount)<=0||typeof x.date!=='string'||!/^\d{4}-\d{2}-\d{2}$/.test(x.date))throw new Error('invalid');
     return {kind:x.kind,amount:Math.round(Number(x.amount)*100)/100,date:x.date,category:typeof x.category==='string'?x.category.slice(0,80):'',note:typeof x.note==='string'?x.note.slice(0,120):''};
    });
    if(!confirm(uiText('Atjaunot ierakstus no rezerves kopijas? Pašreizējie ieraksti tiks aizstāti.','Restore entries from this backup? Your current entries will be replaced.')))return;
