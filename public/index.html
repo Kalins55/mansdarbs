@@ -113,6 +113,37 @@
 .accounting-accordion .tool{margin:0;padding:0;border:0;box-shadow:none}
 .accounting-accordion:focus-within{border-color:#9bb9a8}
 @media(max-width:680px){.accounting-accordion{margin:8px 0 11px}.accounting-accordion>summary{padding:15px;font-size:15px}.accounting-accordion-content{padding:13px}}
+
+/* VID guide assistant — mobile-first, vertical scrolling only */
+#mansdarbs-vid-assistant{position:fixed;inset:0;z-index:10000;background:#f5f7f4;color:#17231f;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom);font:16px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}
+#mansdarbs-vid-assistant *{box-sizing:border-box;min-width:0}
+#mansdarbs-vid-assistant .mva-top{position:sticky;top:0;z-index:2;background:rgba(255,255,255,.96);backdrop-filter:blur(12px);border-bottom:1px solid #e1e8e2;padding:12px max(18px,calc((100vw - 760px)/2));display:flex;align-items:center;justify-content:space-between;gap:12px}
+#mansdarbs-vid-assistant .mva-brand{font-weight:850;letter-spacing:-.4px}
+#mansdarbs-vid-assistant .mva-tag{font-size:11px;font-weight:750;color:#176b50;background:#e8f3ec;padding:6px 10px;border-radius:99px}
+#mansdarbs-vid-assistant .mva-main{width:min(100% - 32px,680px);margin:0 auto;padding:28px 0 42px}
+#mansdarbs-vid-assistant .mva-eyebrow{font-size:12px;color:#176b50;font-weight:850;letter-spacing:1px;text-transform:uppercase}
+#mansdarbs-vid-assistant h1{font-size:clamp(28px,7vw,42px);line-height:1.08;letter-spacing:-1.2px;margin:10px 0 12px;overflow-wrap:anywhere}
+#mansdarbs-vid-assistant h2{font-size:clamp(24px,6vw,34px);line-height:1.14;letter-spacing:-.8px;margin:12px 0}
+#mansdarbs-vid-assistant p{color:#5e6d64;line-height:1.65}
+#mansdarbs-vid-assistant .mva-card{background:#fff;border:1px solid #e1e8e2;border-radius:18px;padding:clamp(18px,4vw,26px);margin-top:20px;box-shadow:0 10px 30px rgba(24,45,35,.05)}
+#mansdarbs-vid-assistant label{display:block;font-size:13px;font-weight:750;margin:18px 0 7px}
+#mansdarbs-vid-assistant select{width:100%;max-width:100%;padding:13px;border:1px solid #d5ded7;border-radius:11px;background:#fff;color:#17231f}
+#mansdarbs-vid-assistant .mva-progress{height:5px;background:#e9efea;border-radius:9px;overflow:hidden;margin:18px 0 26px}
+#mansdarbs-vid-assistant .mva-progress span{display:block;height:100%;width:0;background:#176b50;transition:width .2s}
+#mansdarbs-vid-assistant .mva-step{font-size:12px;color:#176b50;font-weight:850;letter-spacing:.9px;text-transform:uppercase}
+#mansdarbs-vid-assistant .mva-tip{background:#e8f3ec;color:#315b43;border-radius:13px;padding:14px 15px;margin:18px 0;font-size:14px;line-height:1.6;overflow-wrap:anywhere}
+#mansdarbs-vid-assistant .mva-warning{background:#fff4d8;color:#765315;border-radius:12px;padding:12px 14px;font-size:13px;margin:14px 0}
+#mansdarbs-vid-assistant .mva-actions{display:flex;gap:10px;margin-top:22px}
+#mansdarbs-vid-assistant .mva-actions button{flex:1}
+#mansdarbs-vid-assistant button{border:0;border-radius:11px;padding:13px 16px;font:inherit;font-weight:800;cursor:pointer}
+#mansdarbs-vid-assistant .mva-primary{background:#176b50;color:#fff}
+#mansdarbs-vid-assistant .mva-secondary{background:#e9efea;color:#17231f}
+#mansdarbs-vid-assistant button:disabled{opacity:.4;cursor:not-allowed}
+#mansdarbs-vid-assistant .mva-vidlink{display:inline-flex;margin-top:8px;color:#176b50;font-weight:800;text-decoration:none;overflow-wrap:anywhere}
+#mansdarbs-vid-assistant .mva-close{background:transparent;color:#52635a;padding:8px 10px;font-size:13px}
+#mansdarbs-vid-assistant .mva-done{text-align:center;padding:24px 0}
+@media(max-width:480px){#mansdarbs-vid-assistant .mva-top{padding-left:15px;padding-right:15px}#mansdarbs-vid-assistant .mva-main{width:calc(100% - 28px);padding-top:22px}#mansdarbs-vid-assistant .mva-actions{flex-direction:column-reverse}#mansdarbs-vid-assistant .mva-actions button{width:100%}}
+
 </style>
 </head>
 <body>
@@ -374,7 +405,7 @@
 </section>
 </div>
 
-<footer class="footer">Mansdarbs · Palīgs saimnieciskās darbības sākšanai un ikdienas uzskaitei · <a href="https://www.vid.gov.lv/" target="_blank" rel="noopener">VID oficiālā informācija</a><br>Apmeklējumu skaitam izmantots ārējs skaitītājs. Tas saņem tehniskos pieprasījuma datus; Mansdarbs tam nenosūta tavus ienākumu, izdevumu vai rēķinu datus.<br><details style="max-width:560px;margin:16px auto 0;text-align:left;font-size:12px;color:#89958e"><summary style="display:inline-block;cursor:pointer;color:var(--green);font-size:12px">♡ Atbalstīt Mansdarbs izstrādi</summary><div style="margin-top:9px;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:var(--surface);color:var(--muted);line-height:1.55"><strong style="color:var(--text)">Paldies, ka palīdzi Mansdarbs augt!</strong><p style="margin:6px 0">Mansdarbs pamatfunkcijas paliks bez maksas. Ja šis rīks tev noder, nākotnē varēsi brīvprātīgi atbalstīt tā uzturēšanu, serveru izmaksas un jaunu funkciju izstrādi.</p><p style="margin:6px 0">Atbalsta maksājumu rekvizīti un dokumentu noformēšanas kārtība tiks publicēta pēc juridiski korekta saņēmēja un uzskaites modeļa sakārtošanas. Līdz tam maksājumus neveic.</p><p style="margin:6px 0">Ja plāno maksāt no uzņēmuma konta, pirms pārskaitījuma saskaņo maksājuma pamatojumu un nodokļu uzskaiti ar savu grāmatvedi. Brīvprātīgs atbalsts automātiski nav atskaitāms uzņēmuma izdevums vai nodokļu ziņā atskaitāms ziedojums.</p></div></details><span style="display:inline-block;margin-top:12px;font-size:11px;color:#9aa49e">Jau esi reģistrējies? <button type="button" style="border:0;background:none;padding:0;color:var(--green);text-decoration:underline;cursor:pointer;font:inherit" onclick="showView('records')">Atvērt uzskaiti</button> · <button type="button" style="border:0;background:none;padding:0;color:var(--green);text-decoration:underline;cursor:pointer;font:inherit" onclick="showView('calculator')">Aprēķini</button></span></footer>
+<footer class="footer">Mansdarbs · Palīgs saimnieciskās darbības sākšanai un ikdienas uzskaitei · <a href="https://www.vid.gov.lv/" target="_blank" rel="noopener" aria-label="Atvērt VID EDS un soli pa solim palīgu">VID / EDS palīgs ↗</a><br>Apmeklējumu skaitam izmantots ārējs skaitītājs. Tas saņem tehniskos pieprasījuma datus; Mansdarbs tam nenosūta tavus ienākumu, izdevumu vai rēķinu datus.<br><details style="max-width:560px;margin:16px auto 0;text-align:left;font-size:12px;color:#89958e"><summary style="display:inline-block;cursor:pointer;color:var(--green);font-size:12px">♡ Atbalstīt Mansdarbs izstrādi</summary><div style="margin-top:9px;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:var(--surface);color:var(--muted);line-height:1.55"><strong style="color:var(--text)">Paldies, ka palīdzi Mansdarbs augt!</strong><p style="margin:6px 0">Mansdarbs pamatfunkcijas paliks bez maksas. Ja šis rīks tev noder, nākotnē varēsi brīvprātīgi atbalstīt tā uzturēšanu, serveru izmaksas un jaunu funkciju izstrādi.</p><p style="margin:6px 0">Atbalsta maksājumu rekvizīti un dokumentu noformēšanas kārtība tiks publicēta pēc juridiski korekta saņēmēja un uzskaites modeļa sakārtošanas. Līdz tam maksājumus neveic.</p><p style="margin:6px 0">Ja plāno maksāt no uzņēmuma konta, pirms pārskaitījuma saskaņo maksājuma pamatojumu un nodokļu uzskaiti ar savu grāmatvedi. Brīvprātīgs atbalsts automātiski nav atskaitāms uzņēmuma izdevums vai nodokļu ziņā atskaitāms ziedojums.</p></div></details><span style="display:inline-block;margin-top:12px;font-size:11px;color:#9aa49e">Jau esi reģistrējies? <button type="button" style="border:0;background:none;padding:0;color:var(--green);text-decoration:underline;cursor:pointer;font:inherit" onclick="showView('records')">Atvērt uzskaiti</button> · <button type="button" style="border:0;background:none;padding:0;color:var(--green);text-decoration:underline;cursor:pointer;font:inherit" onclick="showView('calculator')">Aprēķini</button></span></footer>
 </div>
 <script>
 const STORAGE_KEY='mansdarbs_demo_records_v1';
@@ -845,5 +876,93 @@ function applyLanguage(){
 </script>
 <script src="contextual-help.js?v=1"></script>
 <script src="industry-modules.js?v=80a1e8e"></script>
+
+<script>
+(function(){
+  'use strict';
+  var VID_URL='https://eds.vid.gov.lv/';
+  var footerLink=document.querySelector('footer.footer a[href="https://www.vid.gov.lv/"]');
+  if(!footerLink)return;
+  var guides={
+    register:{name:'Saimnieciskās darbības reģistrācija',steps:[
+      ['Pieslēdzies VID EDS','Jaunajā cilnē pieslēdzies VID EDS ar sev pieejamo autentifikācijas veidu.','Piekļuves datus ievadi tikai oficiālajā VID vietnē. Mansdarbs tos neprasa un neredz.'],
+      ['Atrodi reģistrācijas pakalpojumu','EDS meklē reģistrācijas pakalpojumus un saimnieciskās darbības veicēja reģistrācijas pieteikumu.','VID izvēļņu nosaukumi var mainīties. Ja neatrodi vajadzīgo sadaļu, izmanto EDS meklēšanu vai VID konsultāciju.'],
+      ['Aizpildi darbības informāciju','Pirms aizpildīšanas sagatavo darbības sākuma datumu, adresi un faktisko darbības veidu. Izvēlies NACE kodu, kas atbilst tam, ko reāli darīsi.','Neizvēlies kodu tikai pēc nosaukuma līdzības. Ja veic vairākus atšķirīgus darbus, pārbaudi, vai jānorāda vairākas darbības.'],
+      ['Pārbaudi nodokļu režīmu un datus','Pārliecinies, ka saproti izvēlētā nodokļu režīma pienākumus un ka visi pieteikuma dati ir pareizi.','Vispārējais režīms un mikrouzņēmumu nodoklis atšķiras. Ja neesi pārliecināts, neiesniedz pieteikumu uz minējuma pamata.'],
+      ['Iesniedz pieteikumu un saglabā apliecinājumu','Pārskati pieteikumu, iesniedz to EDS un pēc tam pārbaudi EDS paziņojumus un reģistrācijas statusu.','Ceļvedis nevar redzēt tavu EDS kontu vai apstiprināt, ka pieteikums pieņemts. Saglabā oficiālo iesniegšanas apliecinājumu.']
+    ]},
+    quarterly:{name:'Pašnodarbinātā ziņojums',steps:[
+      ['Pieslēdzies VID EDS','Atver EDS cilni un pieslēdzies savam kontam.','Piekļuves datus ievadi tikai oficiālajā VID vietnē.'],
+      ['Atrodi pašnodarbinātā ziņojumu','EDS dokumentu sadaļā meklē pašnodarbinātā ziņojumu un izvēlies pareizo taksācijas gadu un ceturksni.','Pārliecinies, ka izvēlētais periods atbilst tam, par kuru iesniedz ziņojumu.'],
+      ['Sagatavo datus par katru mēnesi','Salīdzini mēnešu ienākumus, ar saimniecisko darbību saistītos izdevumus un citus ziņojumam vajadzīgos datus ar savu uzskaiti.','Neievadi summas pēc atmiņas. Pārbaudi tās pret rēķiniem, čekiem un bankas izrakstiem.'],
+      ['Pārbaudi aprēķinu EDS','Pārskati EDS aprēķināto VSAOI objektu un maksājamās iemaksas. Salīdzini ar savu situāciju un aktuālajiem VID noteikumiem.','Ja ir darba alga, vairāki ienākumu veidi, atbrīvojums vai īpašs statuss, aprēķins var atšķirties.'],
+      ['Iesniedz un pārbaudi statusu','Pirms iesniegšanas izlasi visus brīdinājumus. Pēc iesniegšanas pārbaudi, vai dokuments ir pieņemts, un saglabā apliecinājumu.','Mansdarbs nevar pārbaudīt EDS iesnieguma statusu. Ja EDS uzrāda kļūdu, vispirms to noskaidro.']
+    ]},
+    annual:{name:'Gada ienākumu deklarācija',steps:[
+      ['Pieslēdzies VID EDS','Atver EDS cilni un pieslēdzies savam kontam.','Piekļuves datus ievadi tikai oficiālajā VID vietnē.'],
+      ['Atver gada ienākumu deklarāciju','Atrodi gada ienākumu deklarācijas dokumentu un izvēlies pareizo taksācijas gadu.','Pārbaudi, vai deklarācija ir par vajadzīgo gadu un vai ir pieejami automātiski ielasītie dati.'],
+      ['Salīdzini ienākumus un izdevumus','Salīdzini deklarācijā norādītos saimnieciskās darbības ienākumus un izdevumus ar savu uzskaiti un pamatojošajiem dokumentiem.','Pārliecinies, ka izdevumi ir saistīti ar saimniecisko darbību un tiem ir attaisnojuma dokumenti.'],
+      ['Pārbaudi atvieglojumus un aprēķinu','Pārskati deklarācijas kopsavilkumu, nodokļa aprēķinu un iespējamo piemaksu vai pārmaksu.','Ja ir citi ienākumi, atvieglojumi vai īpaši apstākļi, pārbaudi, vai tie ir pareizi atspoguļoti.'],
+      ['Iesniedz deklarāciju','Pirms iesniegšanas izlasi paziņojumus. Iesniedz deklarāciju un saglabā apliecinājumu.','Ceļvedis nevar redzēt tavu EDS kontu. Pārliecinies, ka EDS statuss apliecina dokumenta pieņemšanu.']
+    ]},
+    check:{name:'Reģistrācijas datu pārbaude',steps:[
+      ['Pieslēdzies VID EDS','Atver EDS cilni un pieslēdzies savam kontam.','Piekļuves datus ievadi tikai oficiālajā VID vietnē.'],
+      ['Atrodi savus nodokļu maksātāja datus','Atver EDS sadaļu, kur redzami nodokļu maksātāja reģistrācijas dati un saimnieciskās darbības informācija.','Izvēļņu nosaukumi var mainīties; izmanto EDS meklēšanu, ja sadaļu neatrodi.'],
+      ['Pārbaudi darbības veidu un adresi','Salīdzini reģistrēto darbības veidu, NACE kodu, adresi un darbības sākuma datumu ar faktisko situāciju.','Ja dati neatbilst faktiskajai darbībai, noskaidro, kā iesniegt izmaiņas VID.'],
+      ['Pārbaudi nodokļu režīmu','Pārliecinies, kāds nodokļu režīms tev ir reģistrēts un kādi pienākumi no tā izriet.','Ja neesi pārliecināts par režīma piemērotību, pirms izmaiņu veikšanas salīdzini VID skaidrojumus.']
+    ]}
+  };
+  var root=document.createElement('section');
+  root.id='mansdarbs-vid-assistant';
+  root.hidden=true;
+  root.setAttribute('aria-label','VID soli pa solim palīgs');
+  root.innerHTML=
+    '<header class="mva-top"><div class="mva-brand">Mansdarbs <span style="color:#64716b">· VID palīgs</span></div><button type="button" class="mva-close" id="mvaClose">Atgriezties Mansdarbs</button></header>'+
+    '<main class="mva-main"><div class="mva-eyebrow">Soli pa solim</div><h1 id="mvaHeading">Palīdzēšu paveikt VID uzdevumu</h1><p id="mvaIntro">Izvēlies savu situāciju un to, ko vēlies izdarīt. VID EDS ir atvērts atsevišķā cilnē.</p>'+
+    '<div class="mva-warning" id="mvaPopupNote" hidden>VID cilni neizdevās atvērt automātiski. Atver to ar zemāk redzamo saiti.</div>'+
+    '<div class="mva-card" id="mvaSetup"><label for="mvaProfile">Tava situācija</label><select id="mvaProfile"><option value="general">Pašnodarbinātais — vispārējais režīms</option><option value="mun">Mikrouzņēmumu nodokļa maksātājs</option><option value="unknown">Vēl nezinu / vēlos pārbaudīt</option></select>'+
+    '<label for="mvaTask">Ko vēlies paveikt VID?</label><select id="mvaTask"><option value="register">Reģistrēt saimniecisko darbību</option><option value="quarterly">Iesniegt pašnodarbinātā ziņojumu</option><option value="annual">Aizpildīt gada ienākumu deklarāciju</option><option value="check">Pārbaudīt savus reģistrācijas datus</option></select>'+
+    '<button type="button" class="mva-primary" id="mvaStart" style="width:100%;margin-top:20px">Sākt ceļvedi</button></div>'+
+    '<div class="mva-card" id="mvaGuide" hidden><div class="mva-step" id="mvaCount"></div><div class="mva-progress"><span id="mvaBar"></span></div><h2 id="mvaStepTitle"></h2><p id="mvaStepText"></p><div class="mva-tip" id="mvaTip"></div><a class="mva-vidlink" id="mvaVidLink" href="'+VID_URL+'" target="_blank" rel="noopener">Pārslēgties uz VID EDS ↗</a><div class="mva-actions"><button type="button" class="mva-secondary" id="mvaBack">Atpakaļ</button><button type="button" class="mva-primary" id="mvaNext">Nākamais solis</button></div></div>'+
+    '<div class="mva-card mva-done" id="mvaDone" hidden><div class="mva-eyebrow">Ceļvedis pabeigts</div><h2>Labs darbs!</h2><p>Tagad pārbaudi VID EDS, vai darbība ir pabeigta un dokuments ir pieņemts. Mansdarbs nevar piekļūt tavam EDS kontam vai pārbaudīt iesnieguma statusu.</p><button type="button" class="mva-primary" id="mvaAgain">Sākt citu uzdevumu</button></div>'+
+    '<p style="font-size:12px;margin-top:18px">Šis ir noteikumos balstīts ceļvedis, nevis pieslēgts MI modelis vai VID sistēma. Nekopē šeit paroles, personas kodu vai citus sensitīvus datus. Ja VID ekrāns atšķiras, vadies pēc oficiālās VID informācijas.</p></main>';
+  document.body.appendChild(root);
+  var profile=root.querySelector('#mvaProfile'),task=root.querySelector('#mvaTask'),setup=root.querySelector('#mvaSetup'),guide=root.querySelector('#mvaGuide'),done=root.querySelector('#mvaDone'),index=0,current='register',popupBlocked=false;
+  function show(){root.hidden=false;document.body.dataset.mvaPreviousOverflow=document.body.style.overflow;document.body.style.overflow='hidden';root.scrollTop=0;}
+  function close(){root.hidden=true;document.body.style.overflow=document.body.dataset.mvaPreviousOverflow||'';}
+  function render(){
+    var data=guides[current],step=data.steps[index],profileNote='';
+    if(profile.value==='mun')profileNote=' Izvēlēts MUN režīms — deklarēšanas un maksāšanas kārtība atšķiras no vispārējā režīma; pārbaudi katru soli atbilstoši savam režīmam.';
+    else if(profile.value==='unknown')profileNote=' Ja nezini savu režīmu, vispirms pārbaudi to EDS. Neiesniedz dokumentu, kamēr neesi pārliecinājies, ka izvēlētais ceļš attiecas uz tevi.';
+    else profileNote=' Ceļvedis orientēts uz pašnodarbināto vispārējā režīmā.';
+    root.querySelector('#mvaCount').textContent='SOLIS '+(index+1)+' NO '+data.steps.length;
+    root.querySelector('#mvaStepTitle').textContent=step[0];
+    root.querySelector('#mvaStepText').textContent=step[1];
+    root.querySelector('#mvaTip').textContent=step[2]+profileNote;
+    root.querySelector('#mvaBar').style.width=((index+1)/data.steps.length*100)+'%';
+    root.querySelector('#mvaBack').disabled=index===0;
+    root.querySelector('#mvaNext').textContent=index===data.steps.length-1?'Pabeigt ceļvedi':'Nākamais solis';
+    root.querySelector('#mvaVidLink').textContent='Pārslēgties uz VID EDS ↗';
+    try{sessionStorage.setItem('mansdarbsVidGuide',JSON.stringify({profile:profile.value,task:current,index:index}))}catch(e){}
+  }
+  function start(){current=task.value;index=0;setup.hidden=true;done.hidden=true;guide.hidden=false;root.querySelector('#mvaHeading').textContent=guides[current].name;root.querySelector('#mvaIntro').textContent='Izpildi norādīto soli VID EDS cilnē, pēc tam atgriezies šeit un spied “Nākamais solis”.';render();}
+  footerLink.addEventListener('click',function(event){
+    event.preventDefault();
+    var vidTab=window.open(VID_URL,'_blank');
+    if(vidTab){try{vidTab.opener=null}catch(e){}root.querySelector('#mvaPopupNote').hidden=true;}
+    else{root.querySelector('#mvaPopupNote').hidden=false;}
+    show();
+  });
+  root.querySelector('#mvaClose').addEventListener('click',close);
+  root.querySelector('#mvaStart').addEventListener('click',start);
+  root.querySelector('#mvaBack').addEventListener('click',function(){if(index>0){index--;render();}});
+  root.querySelector('#mvaNext').addEventListener('click',function(){if(index<guides[current].steps.length-1){index++;render();}else{guide.hidden=true;done.hidden=false;try{sessionStorage.removeItem('mansdarbsVidGuide')}catch(e){}}});
+  root.querySelector('#mvaAgain').addEventListener('click',function(){done.hidden=true;guide.hidden=true;setup.hidden=false;root.querySelector('#mvaHeading').textContent='Palīdzēšu paveikt VID uzdevumu';root.querySelector('#mvaIntro').textContent='Izvēlies savu situāciju un to, ko vēlies izdarīt. VID EDS ir atvērts atsevišķā cilnē.';});
+  root.querySelector('#mvaVidLink').addEventListener('click',function(){var w=window.open(VID_URL,'_blank');if(w){try{w.opener=null}catch(e){}}});
+  try{var saved=JSON.parse(sessionStorage.getItem('mansdarbsVidGuide')||'null');if(saved&&guides[saved.task]&&Number.isInteger(saved.index)){profile.value=saved.profile||'general';task.value=saved.task;current=saved.task;index=Math.max(0,Math.min(saved.index,guides[current].steps.length-1));}}catch(e){}
+  root.addEventListener('keydown',function(e){if(e.key==='Escape'&&!root.hidden)close();});
+})();
+</script>
+
 </body>
 </html>
