@@ -8,6 +8,7 @@ Vienkāršs, mobilajām ierīcēm pielāgots palīgs saimnieciskās darbības s�
 - Nav nepieciešama kompilēšana vai pakotņu instalēšana.
 - Demonstrācijas ieraksti tiek glabāti tikai lietotāja pārlūkprogrammā (`localStorage`).
 - Sākumlapā pieejams neobligāts situācijas profils (darbības stadija un aktuālā vajadzība), kas parāda pielāgotu nākamo soli; profils tiek glabāts tikai pārlūkprogrammā, to var mainīt vai dzēst, un tas netiek izmantots analītikai.
+- Situācijas profils nolasa arī atsevišķi saglabāto nozares profilu un sākumlapā parāda izvēlēto nozari/nodarbošanos vai aicina to pievienot; abi profili paliek atsevišķi un tiek glabāti lokāli pārlūkā.
 - Ienākumu, izdevumu un rēķinu dati paliek lietotāja pārlūkprogrammā un netiek nosūtīti serverim.
 - Ja lietotājs pats atver VID palīga jautājumu sadaļu un nosūta ziņu, tās saturs tiek nosūtīts uz `/api/vid-assistant` un tālāk uz OpenAI API atbildes sagatavošanai; saruna netiek saglabāta Mansdarbs serverī.
 - Šī demonstrācija nav oficiāls grāmatvedības reģistrs un neveic nodokļu aprēķinus.
