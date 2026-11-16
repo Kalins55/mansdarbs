@@ -239,7 +239,7 @@ function exportCsv(){
  const rows=[['Datums','Veids','Summa EUR','Apraksts'],...items.map(x=>[x.date,x.kind,Number(x.amount).toFixed(2),x.note||''])];
  const csv='\uFEFF'+rows.map(row=>row.map(quote).join(';')).join('\r\n');
  const blob=new Blob([csv],{type:'text/csv;charset=utf-8;'}),url=URL.createObjectURL(blob),a=document.createElement('a');
- a.href=url;a.download='mansdarbs-uzskaite.csv';document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);
+ a.href=url;a.download='mansdarbs-uzskaite.csv';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
 }
 const today=new Date();document.getElementById('date').value=[today.getFullYear(),String(today.getMonth()+1).padStart(2,'0'),String(today.getDate()).padStart(2,'0')].join('-');
 renderRecords();
