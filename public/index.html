@@ -41,7 +41,7 @@
 <section id="flow" class="panel hidden"><div class="eyebrow" id="flowtag">SĀKUMA IZVĒRTĒJUMS</div><div class="progress"><span id="progress"></span></div><div id="flowbody"></div><div class="actions"><button class="btn secondary" onclick="prevStep()">Atpakaļ</button><button class="btn primary" id="next" onclick="nextStep()">Turpināt</button></div></section>
 <section id="workspace" class="hidden"><div class="eyebrow">TAVA DARBA VIDE</div><h1 style="font-size:clamp(28px,4vw,38px);letter-spacing:-1px;margin:7px 0">Viss svarīgais vienuviet.</h1><p class="muted">Pārskats un rīki ikdienas darbam. Demonstrācijas dati nav nodokļu aprēķins.</p><div class="appgrid">
 <nav class="side" id="nav"><button class="active" data-tab="overview">Pārskats</button><button data-tab="records">Ienākumi un izdevumi</button><button data-tab="tax">Nodokļi un termiņi</button><button data-tab="social">Sociālā aizsardzība</button><button data-tab="eds">VID / EDS palīgs</button><button data-tab="help">Palīdzība</button></nav><div class="content" id="tabcontent"></div></div></section>
-<div class="footer">MansDarbs · koncepts · dati netiek sūtīti serverim · nekas netiek iesniegts VID</div></div>
+<div class="footer">MansDarbs · prototips · konsultanta atbildes netiek sūtītas serverim · sākuma prototipa darbības veida izvēle un fiksēti lietošanas notikumi tiek apkopoti atsevišķi · nekas netiek iesniegts VID</div></div>
 <script>
 const $=id=>document.getElementById(id);let route='new',step=0,answers={activity:'Remontdarbi',status:'',income:'',payments:''};
 // Privacy-first improvement signals: fixed event names only; no answers, names, IDs, cookies or IPs are added by the app.
