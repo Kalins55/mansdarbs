@@ -230,7 +230,7 @@ function clearRecords(){if(!getRecords().length)return;if(confirm('Vai tiešām 
 function exportCsv(){
  const items=getRecords();
  if(!items.length){alert('Nav ierakstu, ko eksportēt.');return}
- const quote=v=>{let value=String(v??'');if(/^[\\s]*[=+\\-@]/.test(value))value="'"+value;return '"'+value.replace(/"/g,'""')+'"'};
+ const quote=v=>{let value=String(v??'');if(/^\s*[=+\-@]/.test(value))value="'"+value;return '"'+value.replace(/"/g,'""')+'"'};
  const rows=[['Datums','Veids','Summa EUR','Apraksts'],...items.map(x=>[x.date,x.kind,Number(x.amount).toFixed(2),x.note||''])];
  const csv='\uFEFF'+rows.map(row=>row.map(quote).join(';')).join('\r\n');
  const blob=new Blob([csv],{type:'text/csv;charset=utf-8;'}),url=URL.createObjectURL(blob),a=document.createElement('a');
