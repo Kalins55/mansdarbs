@@ -51,3 +51,8 @@ Svarīgi: šis ir statisks HTML prototips. To nevajag konfigurēt kā Vite/React
 ## Drošības robežas
 
 Nekad neievietot repozitorijā VID/EDS paroles, API atslēgas, piekļuves tokenus vai reālu lietotāju personas/nodokļu datus. Pirms kontu, servera datubāzes vai analītikas ieviešanas jāizstrādā atsevišķs privātuma un datu aizsardzības risinājums.
+
+
+### Nozares uzskaites ienākumu un izdevumu kopsavilkums
+
+Nozares ierakstos katram darījumam var norādīt ienākumu, izdevumu vai klientam veiktu atmaksu. Nozares skatā tiek aprēķinātas šo kategoriju kopsummas un atlikums pirms nodokļiem. Vecie ieraksti paliek lasāmi un tiek saglabāti kā ienākumi, jo iepriekš tiem nebija atsevišķa darījuma veida. Šis kopsavilkums nav nodokļu aprēķins.
