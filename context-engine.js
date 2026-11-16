@@ -217,6 +217,12 @@
     toggle.textContent = tr('Mainīt manu situāciju','Update my situation');
   }
 
+  document.addEventListener('mansdarbs:industry-profile-updated', () => {
+    if (profile && stages.some(x => x[0] === profile.stage) && needs.some(x => x[0] === profile.need)) {
+      showResult(profile);
+    }
+  });
+
   toggle.addEventListener('click', () => {
     form.hidden = !form.hidden;
     if (!form.hidden && profile) { stageEl.value = profile.stage; needEl.value = profile.need; }
