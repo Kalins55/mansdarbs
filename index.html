@@ -672,7 +672,7 @@ function getVatThresholdSummary(items,year){
   return sum+(Number.isFinite(amount)&&amount>0?amount:0);
  },0);
  const rounded=Math.round((total+Number.EPSILON)*100)/100;
- return {total:rounded,remaining:Math.max(0,50000-rounded),level:rounded>=45000?'high':rounded>=40000?'notice':'none'};
+ return {total:rounded,remaining:Math.max(0,50000-rounded),level:rounded>=50000?'exceeded':rounded>=45000?'high':rounded>=40000?'notice':'none'};
 }
 function updateIinWarning(){
  const warning=document.getElementById('taxWarning');
@@ -706,8 +706,8 @@ function updateIinWarning(){
  }
  if(vat.level!=='none'){
   const pct=Math.round(vat.total/50000*100);
-  const heading=vat.level==='high'?(en?'VAT registration threshold is close':'Tuvojies PVN reģistrācijas slieksnim'):(en?'VAT turnover threshold reminder':'Atgādinājums par PVN apgrozījuma slieksni');
-  const body=en?'Marked qualifying transactions this calendar year: '+money(vat.total)+' ('+pct+'% of €50,000). Remaining to the threshold: '+money(vat.remaining)+'.':'Šajā kalendāra gadā atzīmētie slieksnī ieskaitāmie darījumi: '+money(vat.total)+' ('+pct+'% no 50 000 €). Līdz slieksnim: '+money(vat.remaining)+'.';
+  const heading=vat.level==='exceeded'?(en?'Check your VAT registration obligation now':'Pārbaudi PVN reģistrācijas pienākumu'):(vat.level==='high'?(en?'VAT registration threshold is close':'Tuvojies PVN reģistrācijas slieksnim'):(en?'VAT turnover threshold reminder':'Atgādinājums par PVN apgrozījuma slieksni'));
+  const body=en?'Marked qualifying transactions this calendar year: '+money(vat.total)+' ('+pct+'% of €50,000). '+(vat.level==='exceeded'?'The marked amount has reached or exceeded the threshold.':'Remaining to the threshold: '+money(vat.remaining)+'.'):'Šajā kalendāra gadā atzīmētie slieksnī ieskaitāmie darījumi: '+money(vat.total)+' ('+pct+'% no 50 000 €). '+(vat.level==='exceeded'?'Atzīmētais apjoms ir sasniedzis vai pārsniedzis slieksni.':'Līdz slieksnim: '+money(vat.remaining)+'.');
   const note=en?'The €50,000 threshold is generally calculated by calendar year and includes only specified transactions. Some exempt transactions and mandatory registration cases have special rules. Verify your transaction types and current obligations with VID.':'50 000 € slieksni parasti vērtē kalendāra gadā, un tajā ieskaita tikai noteiktus darījumus. Dažiem neapliekamiem darījumiem un obligātās reģistrācijas gadījumiem ir īpaši noteikumi. Pārbaudi darījumu veidu un pienākumus VID.';
   messages.push('<strong>⚠ '+heading+'</strong>'+body+'<small>'+note+' <a href="https://www.vid.gov.lv/lv/biezak-uzdotie-jautajumi-katalogs/pievienotas-vertibas-nodokla-jautajumi-par-registraciju-un-ipasajiem-rezimiem-esmu-pvn-maksatajs" target="_blank" rel="noopener">VID skaidrojums</a></small>');
  }
