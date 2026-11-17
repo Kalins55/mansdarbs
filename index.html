@@ -881,34 +881,48 @@ function exportCsv(){
  const blob=new Blob([csv],{type:'text/csv;charset=utf-8;'}),url=URL.createObjectURL(blob),a=document.createElement('a');
  a.href=url;a.download='mansdarbs-uzskaite.csv';document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);
 }
+const BACKUP_DATA_KEYS=['mansdarbs_demo_records_v1','mansdarbs_industry_records_v1','mansdarbs-vsaoi-2026-q1','mansdarbs-vsaoi-2026-q2','mansdarbs-vsaoi-2026-q3','mansdarbs-vsaoi-2026-q4','mansdarbs_vsaoi_iin_manual_v1','mansdarbs_accounting_mode','mansdarbs_sia_prototype_v1','mansdarbs_demo_invoices_v1','mansdarbs_demo_invoices_zs_v1','mansdarbs_invoice_seller_v1','mansdarbs_invoice_seller_zs_v1','mansdarbs_language_v1','mansdarbs_context_profile_v1','mansdarbs_industry_profile_v1','mansdarbs_industry_profiles_v1','mansdarbs_payment_profile_v1'];
+const BACKUP_MAX_BYTES=5*1024*1024;
+function validBackupDate(value){if(typeof value!=='string'||!/^\\d{4}-\\d{2}-\\d{2}$/.test(value))return false;const d=new Date(value+'T00:00:00Z');return !Number.isNaN(d.getTime())&&d.toISOString().slice(0,10)===value}
+function validateBackupData(data){
+ if(!data||typeof data!=='object'||Array.isArray(data))throw new Error('data');
+ const keys=Object.keys(data);if(!keys.length||keys.some(k=>!BACKUP_DATA_KEYS.includes(k)))throw new Error('keys');
+ for(const key of keys){const value=data[key];
+  if(['mansdarbs_demo_records_v1','mansdarbs_industry_records_v1','mansdarbs_industry_profiles_v1','mansdarbs_demo_invoices_v1','mansdarbs_demo_invoices_zs_v1'].includes(key)){if(!Array.isArray(value)||value.length>50000)throw new Error('array')}
+  else if(key.startsWith('mansdarbs-vsaoi-2026-q')){if(!value||typeof value!=='object'||Array.isArray(value)||(value.values!==undefined&&(!Array.isArray(value.values)||value.values.length!==3))||(value.rows!==undefined&&(!Array.isArray(value.rows)||value.rows.length!==3)))throw new Error('quarter')}
+  else if(key==='mansdarbs_sia_prototype_v1'){if(!value||typeof value!=='object'||Array.isArray(value)||!Array.isArray(value.companies)||!Array.isArray(value.transactions))throw new Error('sia')}
+  else if(['mansdarbs_context_profile_v1','mansdarbs_industry_profile_v1','mansdarbs_payment_profile_v1','mansdarbs_invoice_seller_v1','mansdarbs_invoice_seller_zs_v1'].includes(key)){if(!value||typeof value!=='object'||Array.isArray(value))throw new Error('object')}
+  else if(typeof value!=='string'||value.length>10000)throw new Error('string');
+  if(Array.isArray(value))value.forEach(item=>{if(!item||typeof item!=='object'||Array.isArray(item))throw new Error('item');if(item.date!==undefined&&!validBackupDate(item.date))throw new Error('date')});
+ }
+ return keys;
+}
 function exportRecordsBackup(){
- const items=getRecords();if(!items.length){alert(uiText('Nav ierakstu, ko saglabāt kopijā.','There are no entries to back up.'));return}
- const backup={app:'Mansdarbs',version:1,exportedAt:new Date().toISOString(),records:items};
- const blob=new Blob([JSON.stringify(backup,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');
- a.href=url;a.download='mansdarbs-uzskaite-rezerves-kopija.json';document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);
+ try{const data={};BACKUP_DATA_KEYS.forEach(key=>{const raw=localStorage.getItem(key);if(raw!==null)data[key]=JSON.parse(raw)});
+  if(!Object.keys(data).length){alert(uiText('Nav datu, ko saglabāt rezerves kopijā.','There is no data to back up.'));return}
+  validateBackupData(data);const backup={app:'Mansdarbs',version:2,exportedAt:new Date().toISOString(),data};
+  const blob=new Blob([JSON.stringify(backup,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='mansdarbs-pilna-rezerves-kopija.json';document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);
+ }catch(e){alert(uiText('Neizdevās izveidot rezerves kopiju. Pārbaudi pārlūka datus un mēģini vēlreiz.','Could not create the backup. Check your browser data and try again.'))}
 }
 function importRecordsBackup(event){
- const input=event.target,file=input.files&&input.files[0];if(!file)return;
- const reader=new FileReader();
- reader.onload=()=>{
-  try{
-   const backup=JSON.parse(String(reader.result||''));
-   if(!Array.isArray(backup)&&(!backup||backup.app!=='Mansdarbs'||backup.version!==1))throw new Error('format');
-   const source=Array.isArray(backup)?backup:backup.records;
-   if(!Array.isArray(source)||!source.length)throw new Error('empty');
-   const restored=source.map(x=>{
-    const dateParts=x&&typeof x.date==='string'?x.date.match(/^(\d{4})-(\d{2})-(\d{2})$/):null;
-    const validDate=dateParts&&(()=>{const parsed=new Date(x.date+'T00:00:00Z');return !Number.isNaN(parsed.getTime())&&parsed.toISOString().slice(0,10)===x.date})();
-    if(!x||!['Ienākums','Izdevums'].includes(x.kind)||!Number.isFinite(Number(x.amount))||Number(x.amount)<=0||!validDate)throw new Error('invalid');
-    return {kind:x.kind,amount:Math.round(Number(x.amount)*100)/100,date:x.date,category:typeof x.category==='string'?x.category.slice(0,80):'',note:typeof x.note==='string'?x.note.slice(0,120):'',vatThreshold:x.kind==='Ienākums'&&x.vatThreshold===true};
-   });
-   if(!confirm(uiText('Atjaunot ierakstus no rezerves kopijas? Pašreizējie ieraksti tiks aizstāti.','Restore entries from this backup? Your current entries will be replaced.')))return;
-   if(saveRecords(restored)){cancelEdit();renderRecords();alert(uiText('Rezerves kopija veiksmīgi atjaunota.','Backup restored successfully.'))}
-  }catch(e){alert(uiText('Šī nav derīga Mansdarbs uzskaites rezerves kopija. Esošie ieraksti nav mainīti.','This is not a valid Mansdarbs records backup. Your existing entries have not been changed.'))}
-  finally{input.value=''}
- };
- reader.onerror=()=>{alert(uiText('Neizdevās nolasīt failu.','Could not read the file.'));input.value=''};
- reader.readAsText(file);
+ const input=event.target,file=input.files&&input.files[0];if(!file)return;const reader=new FileReader();
+ reader.onload=()=>{try{
+  if(file.size>BACKUP_MAX_BYTES)throw new Error('size');const backup=JSON.parse(String(reader.result||''));
+  if(Array.isArray(backup)||(backup&&backup.app==='Mansdarbs'&&backup.version===1)){
+   const source=Array.isArray(backup)?backup:backup.records;if(!Array.isArray(source)||!source.length)throw new Error('empty');
+   const restored=source.map(x=>{if(!x||!['Ienākums','Izdevums'].includes(x.kind)||!Number.isFinite(Number(x.amount))||Number(x.amount)<=0||!validBackupDate(x.date))throw new Error('invalid');return {kind:x.kind,amount:Math.round(Number(x.amount)*100)/100,date:x.date,category:typeof x.category==='string'?x.category.slice(0,80):'',note:typeof x.note==='string'?x.note.slice(0,120):'',vatThreshold:x.kind==='Ienākums'&&x.vatThreshold===true}});
+   if(!confirm(uiText('Atjaunot vecās versijas uzskaites ierakstus? Pašreizējie pamata ieraksti tiks aizstāti.','Restore records from this legacy backup? Your current main records will be replaced.')))return;
+   if(saveRecords(restored)){cancelEdit();renderRecords();alert(uiText('Rezerves kopija veiksmīgi atjaunota.','Backup restored successfully.'))}return;
+  }
+  if(!backup||backup.app!=='Mansdarbs'||backup.version!==2)throw new Error('format');
+  const keys=validateBackupData(backup.data),counts={};keys.forEach(key=>{const value=backup.data[key],label=key.includes('invoice')?'rēķini':key.includes('vsaoi')?'VSAOI dati':key.includes('sia')?'SIA dati':key.includes('seller')?'izrakstītāja rekvizīti':key.includes('profile')||key.includes('payment')?'profili':key.includes('records')?'ieraksti':key.includes('language')?'valoda':'uzskaites režīms';counts[label]=(counts[label]||0)+(Array.isArray(value)?value.length:1)});
+  const summary=Object.entries(counts).map(([k,v])=>v+' '+k).join(', ');
+  if(!confirm(uiText('Atjaunot datus no pilnās rezerves kopijas? Tiks aizstāti tikai failā iekļautie datu veidi; pārējie pašreizējie dati paliks neskarti. Iekļauts: ','Restore this full backup? Only data categories included in the file will be replaced; other current data will remain unchanged. Included: ')+summary+'.'))return;
+  const snapshot={};keys.forEach(key=>snapshot[key]=localStorage.getItem(key));
+  try{keys.forEach(key=>localStorage.setItem(key,JSON.stringify(backup.data[key])))}catch(writeError){keys.forEach(key=>{try{if(snapshot[key]===null)localStorage.removeItem(key);else localStorage.setItem(key,snapshot[key])}catch(rollbackError){}});throw new Error('storage')}
+  cancelEdit();renderRecords();renderInvoices();siaRender();loadVsaoiQuarter();syncIinFromVsaoi();alert(uiText('Pilnā rezerves kopija veiksmīgi atjaunota.','Full backup restored successfully.'));
+ }catch(e){alert(uiText('Šī nav derīga Mansdarbs rezerves kopija vai pārlūka krātuvē nepietiek vietas. Esošie dati nav mainīti.','This is not a valid Mansdarbs backup or browser storage is insufficient. Existing data has not been changed.'))}finally{input.value=''}};
+ reader.onerror=()=>{alert(uiText('Neizdevās nolasīt failu.','Could not read the file.'));input.value=''};reader.readAsText(file);
 }
 const SIA_KEY='mansdarbs_sia_prototype_v1';
 let siaActiveCompany=null;
