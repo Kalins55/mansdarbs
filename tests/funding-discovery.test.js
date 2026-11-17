@@ -134,15 +134,20 @@ test('local matching merges opportunities across multiple saved industry profile
   assert.ok(matches.every(item => item.profileMatchCount === 1));
 });
 
-test('public funding catalogue loader validates the versioned JSON structure', async () => {
+test('public funding catalogue loader validates and combines programme and source registries', async () => {
   const catalog = { schemaVersion: 1, programs: [] };
+  const sourceRegistry = { sources: [{ id: 'lad-support-catalogue', name: 'LAD' }] };
   const loaded = await api.loadFundingCatalog(async url => ({
     ok: true,
-    json: async () => catalog
+    json: async () => url === '/funding-programs.json' ? catalog : sourceRegistry
   }));
-  assert.deepEqual(loaded, catalog);
+  assert.deepEqual(loaded.programs, catalog.programs);
+  assert.deepEqual(loaded.sources, sourceRegistry.sources);
   await assert.rejects(
-    api.loadFundingCatalog(async () => ({ ok: true, json: async () => ({ schemaVersion: 2, programs: [] }) })),
+    api.loadFundingCatalog(async url => ({
+      ok: true,
+      json: async () => url === '/funding-programs.json' ? { schemaVersion: 2, programs: [] } : sourceRegistry
+    })),
     /unsupported format/
   );
 });
