@@ -44,11 +44,18 @@ test('VAT threshold issues an early reminder at 80 percent', () => {
   assert.deepEqual(result, { total: 40000, remaining: 10000, level: 'notice' });
 });
 
-test('VAT threshold issues a stronger warning at 90 percent and caps remaining at zero', () => {
+test('VAT threshold issues a stronger warning at 90 percent', () => {
+  const result = getSummary([
+    { kind: 'Ienākums', amount: 45000, date: '2026-10-01', vatThreshold: true }
+  ], 2026);
+  assert.deepEqual(result, { total: 45000, remaining: 5000, level: 'high' });
+});
+
+test('VAT threshold crossing is distinguished from approaching the threshold', () => {
   const result = getSummary([
     { kind: 'Ienākums', amount: 51000, date: '2026-10-01', vatThreshold: true }
   ], 2026);
-  assert.deepEqual(result, { total: 51000, remaining: 0, level: 'high' });
+  assert.deepEqual(result, { total: 51000, remaining: 0, level: 'exceeded' });
 });
 
 test('unmarked legacy records do not silently enter the VAT threshold calculation', () => {
