@@ -79,3 +79,12 @@ test('comparison rejects VSAOI above annual profit', () => {
   });
   assert.match(result.textContent, /VSAOI summa pārsniedz peļņu/);
 });
+
+test('MUN is not recommended at or above the €50,000 turnover threshold', () => {
+  const result = runComparison({
+    regimeTurnover: 50000, regimeExpenses: 10000, regimeVsaoi: 5000,
+    regimeOtherIncome: 0, regimeAllowance: 6600, regimeDeductions: 0
+  });
+  assert.match(result.innerHTML, /MUN izvēli nevar droši ieteikt/);
+  assert.match(result.innerHTML, /sasniedz vai pārsniedz 50 000/);
+});
