@@ -601,6 +601,15 @@ function syncTaxRegimeInputs(){
   if(el.value===''||el.dataset.synced!=='manual'){el.value=value;el.dataset.synced='auto';}
  });
 }
+function getIndustryTaxComparisonRecords(){
+ try{
+  const saved=JSON.parse(localStorage.getItem('mansdarbs_industry_records_v1')||'[]');
+  return Array.isArray(saved)?saved.filter(item=>item&&['income','expense','refund'].includes(item.flow)&&typeof item.date==='string').map(item=>({
+   kind:item.flow==='income'?'Ienākums':item.flow==='expense'?'Izdevums':'Atmaksa',
+   amount:item.amount,date:item.date,source:'industry'
+  })):[];
+ }catch(_){return[];}
+}
 function clearRegimeRecordPrefill(){
  let cleared=0;
  ['regimeTurnover','regimeExpenses'].forEach(id=>{const el=document.getElementById(id);if(el&&el.dataset.synced==='records'){el.value='';el.dataset.synced='';cleared++;}});
@@ -611,21 +620,26 @@ function fillRegimeFromRecords(){
  const year=Number(yearField.value);
  const status=document.getElementById('regimeRecordsStatus');
  if(!Number.isInteger(year)||year<2020||year>2100){status.textContent='Ievadi derīgu uzskaites gadu.';return;}
- const yearRecords=getRecords().filter(item=>typeof item.date==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(item.date)&&Number(item.date.slice(0,4))===year);
+ const baseRecords=getRecords().map(item=>({...item,source:'records'}));
+ const yearRecords=baseRecords.concat(getIndustryTaxComparisonRecords()).filter(item=>typeof item.date==='string'&&/^\\d{4}-\\d{2}-\\d{2}$/.test(item.date)&&Number(item.date.slice(0,4))===year);
  if(!yearRecords.length){const cleared=clearRegimeRecordPrefill();status.textContent='Uzskaitē nav atrasts neviens ienākumu vai izdevumu ieraksts par '+year+'. gadu.'+(cleared?' Iepriekš no uzskaites pārņemtās vērtības notīrītas.':'');return;}
- const records=yearRecords.filter(item=>{
+ const validated=yearRecords.filter(item=>{
   const parts=item.date.split('-').map(Number),date=new Date(Date.UTC(parts[0],parts[1]-1,parts[2]));
   const amount=typeof item.amount==='string'&&item.amount.trim()===''?NaN:Number(item.amount);
-  return date.getUTCFullYear()===parts[0]&&date.getUTCMonth()===parts[1]-1&&date.getUTCDate()===parts[2]&&(item.kind==='Ienākums'||item.kind==='Izdevums')&&Number.isFinite(amount)&&amount>=0;
- });
- const invalidCount=yearRecords.length-records.length;
- if(!records.length){const cleared=clearRegimeRecordPrefill();status.textContent='Atrasti '+yearRecords.length+' ieraksti par '+year+'. gadu, bet to datums, veids vai summa nav korekta. Pārbaudi uzskaites ierakstus.'+(cleared?' Iepriekš no uzskaites pārņemtās vērtības notīrītas.':'');return;}
- const totals=records.reduce((sum,item)=>{if(item.kind==='Ienākums')sum.income+=Number(item.amount);else if(item.kind==='Izdevums')sum.expenses+=Number(item.amount);return sum;},{income:0,expenses:0});
+  return date.getUTCFullYear()===parts[0]&&date.getUTCMonth()===parts[1]-1&&date.getUTCDate()===parts[2]&&Number.isFinite(amount)&&amount>=0;
+ }).map(item=>({...item,amount:Number(item.amount)}));
+ const records=validated.filter(item=>item.kind==='Ienākums'||item.kind==='Izdevums');
+ const refundCount=validated.filter(item=>item.kind==='Atmaksa').length;
+ const invalidCount=yearRecords.length-validated.length;
+ const refundNote=refundCount?' '+refundCount+' klientu atmaksas netika automātiski iekļautas apgrozījumā. Pārbaudi sākotnējā darījuma periodu un, ja nepieciešams, koriģē apgrozījumu manuāli.':'';
+ if(!records.length){const cleared=clearRegimeRecordPrefill();status.textContent='Atrasti '+yearRecords.length+' ieraksti par '+year+'. gadu, bet nav derīgu ienākumu vai izdevumu ierakstu.'+(invalidCount?' Izlaisti '+invalidCount+' nekorekti ieraksti — pārbaudi to datumu un summu.':'')+refundNote+(cleared?' Iepriekš no uzskaites pārņemtās vērtības notīrītas.':'');return;}
+ const totals=records.reduce((sum,item)=>{if(item.kind==='Ienākums')sum.income+=item.amount;else if(item.kind==='Izdevums')sum.expenses+=item.amount;return sum;},{income:0,expenses:0});
  const income=document.getElementById('regimeTurnover'),expenses=document.getElementById('regimeExpenses');
  let preserved=0;
  if(income.dataset.synced!=='manual'){income.value=totals.income.toFixed(2);income.dataset.synced='records';}else preserved++;
  if(expenses.dataset.synced!=='manual'){expenses.value=totals.expenses.toFixed(2);expenses.dataset.synced='records';}else preserved++;
- status.textContent='No uzskaites pārņemti '+year+'. gada dati ('+records.length+' derīgi ieraksti): ieņēmumi '+money(totals.income)+', izdevumi '+money(totals.expenses)+'.'+(invalidCount?' Izlaisti '+invalidCount+' nekorekti ieraksti — pārbaudi to datumu, veidu un summu.':'')+(preserved?' Manuāli ievadītie lauki netika pārrakstīti.':'');
+ const industryCount=records.filter(item=>item.source==='industry').length;
+ status.textContent='No uzskaites pārņemti '+year+'. gada dati ('+records.length+' derīgi ieraksti; nozares uzskaite: '+industryCount+'): ieņēmumi '+money(totals.income)+', izdevumi '+money(totals.expenses)+'.'+(invalidCount?' Izlaisti '+invalidCount+' nekorekti ieraksti — pārbaudi to datumu, veidu un summu.':'')+refundNote+(preserved?' Manuāli ievadītie lauki netika pārrakstīti.':'');
 }
 function resetTaxRegimeComparison(){
  ['regimeTurnover','regimeExpenses','regimeVsaoi','regimeOtherIncome','regimeAllowance','regimeDeductions'].forEach(id=>{const el=document.getElementById(id);el.value='';if(el)el.dataset.synced='';});
