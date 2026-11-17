@@ -260,5 +260,5 @@ test('3% additional IIN uses the separate annual income base before personal rel
   });
   const match = result.innerHTML.match(/Vispārējais režīms — IIN<\/span><strong class="amount">([\d.]+) €/);
   assert.ok(match, 'general-regime IIN row is present');
-  assert.equal(Number(match[1]), 3090);
+  assert.equal(Number(match[1]), 3120);
 });
