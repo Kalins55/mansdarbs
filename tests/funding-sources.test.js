@@ -9,7 +9,7 @@ test('funding source registry contains unique official HTTPS sources with verifi
   const registry = JSON.parse(fs.readFileSync(path.join(root, 'funding-sources.json'), 'utf8'));
   assert.equal(registry.schemaVersion, 1);
   assert.equal(registry.country, 'LV');
-  assert.match(registry.verifiedAt, /^\\d{4}-\\d{2}-\\d{2}$/);
+  assert.match(registry.verifiedAt, /^\d{4}-\d{2}-\d{2}$/);
   assert.ok(Array.isArray(registry.sources) && registry.sources.length >= 5);
 
   const ids = registry.sources.map(source => source.id);
