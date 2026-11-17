@@ -536,30 +536,35 @@ function toggleManualVsaoiIin(){
  }
 }
 function syncIinFromVsaoi(){
- let annualProfit=0,annualVsaoi=0,annualSpecialProfit=0,annualSpecialBase=0;
+ let annualProfit=0,annualVsaoi=0,annualSpecialProfit=0,annualSpecialBase=0,invalidQuarters=0;
  for(let q=1;q<=4;q++){
   let saved={};
-  try{saved=JSON.parse(localStorage.getItem(vsaoiQuarterKey(q))||'{}')}catch(e){}
-  if(saved.rows){
-   saved.rows.forEach(r=>{
-    const profit=Number(r.profit||0),base=Number(r.base||0);
-    annualProfit+=profit;
-    if(saved.activityType==='annual_special'){
-     annualSpecialProfit+=profit;
-     annualSpecialBase+=base;
-     annualVsaoi+=Number(r.full||0);
-    }else{
-     annualVsaoi+=Number(r.full||0)+Number(r.pension||0);
-    }
-   });
-  }
+  try{saved=JSON.parse(localStorage.getItem(vsaoiQuarterKey(q))||'{}')}catch(e){invalidQuarters++;continue}
+  if(!saved||!Array.isArray(saved.rows)||saved.rows.length!==3){if(saved&&Object.keys(saved).length)invalidQuarters++;continue}
+  const activityType=saved.activityType==='annual_special'?'annual_special':'ordinary';
+  const valid=saved.rows.every(r=>r&&typeof r==='object'&&
+   [r.profit,r.base,r.full,r.pension].every(value=>value!==null&&value!==''&&Number.isFinite(Number(value)))&&
+   Number(r.base)>=0&&Number(r.full)>=0&&Number(r.pension)>=0&&
+   (activityType==='annual_special'||Number(r.profit)>=0));
+  if(!valid){invalidQuarters++;continue}
+  saved.rows.forEach(r=>{
+   const profit=Number(r.profit),base=Number(r.base);
+   annualProfit+=profit;
+   if(activityType==='annual_special'){
+    annualSpecialProfit+=profit;
+    annualSpecialBase+=base;
+    annualVsaoi+=Number(r.full);
+   }else{
+    annualVsaoi+=Number(r.full)+Number(r.pension);
+   }
+  });
  }
  const annualSpecialPensionBase=Math.round((Math.max(0,annualSpecialProfit-annualSpecialBase)+Number.EPSILON)*100)/100;
  const annualSpecialPension=Math.round((annualSpecialPensionBase*0.10+Number.EPSILON)*100)/100;
  annualVsaoi+=annualSpecialPension;
  document.getElementById('annualProfit').value=annualProfit.toFixed(2);
  if(!document.getElementById('manualVsaoiIin').checked)document.getElementById('annualVsaoi').value=annualVsaoi.toFixed(2);
- return {annualSpecialProfit,annualSpecialBase,annualSpecialPensionBase,annualSpecialPension};
+ return {annualSpecialProfit,annualSpecialBase,annualSpecialPensionBase,annualSpecialPension,invalidQuarters};
 }
 function calculateVsaoi(){
  const values=[1,2,3].map(i=>Number(document.getElementById('profit'+i).value||0));
