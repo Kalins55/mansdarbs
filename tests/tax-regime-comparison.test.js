@@ -48,7 +48,7 @@ test('comparison uses 25% of turnover for MUN, not profit', () => {
     regimeTurnover: 20000, regimeExpenses: 0, regimeVsaoi: 5000,
     regimeOtherIncome: 0, regimeAllowance: 6600, regimeDeductions: 0
   });
-  assert.match(result.innerHTML, /5 000\.00 €/);
+  assert.match(result.innerHTML, /5000\.00 €/);
   assert.match(result.innerHTML, /MUN 25% no apgrozījuma/);
   assert.match(result.innerHTML, /MUN nodokļu slogs ir zemāks/);
 });
@@ -59,7 +59,7 @@ test('high business expenses reduce general-regime profit but not MUN tax base',
     regimeOtherIncome: 0, regimeAllowance: 6600, regimeDeductions: 0
   });
   assert.match(result.innerHTML, /Vispārējā režīma nodokļu slogs ir zemāks/);
-  assert.match(result.innerHTML, /5 000\.00 €/);
+  assert.match(result.innerHTML, /5000\.00 €/);
 });
 
 test('MUN is not recommended when VAT registration is selected', () => {
