@@ -98,7 +98,7 @@ test('VID assistant rejects a different scheme on the same host as a cross-origi
     'async function onRequestPost'
   );
   const sandbox = { Response, URL, TextEncoder, TextDecoder, fetch: async () => { upstreamCalls += 1; } };
-  vm.runInNewContext(executable + '\\nthis.onRequestPost = onRequestPost;', sandbox);
+  vm.runInNewContext(executable + '\nthis.onRequestPost = onRequestPost;', sandbox);
   const request = new Request('https://mansdarbs.eu/api/vid-assistant', {
     method: 'POST',
     headers: { Origin: 'http://mansdarbs.eu' },
