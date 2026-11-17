@@ -196,6 +196,57 @@ test('VID assistant rejects JSON values that are not request objects', async () 
   assert.equal(upstreamCalls, 0);
 });
 
+test('VID assistant forwards only consented requests and returns filtered official citations', async () => {
+  const vm = require('node:vm');
+  let upstreamCalls = 0;
+  let upstreamPayload;
+  const executable = api.replace(
+    'export async function onRequestPost',
+    'async function onRequestPost'
+  );
+  const sandbox = {
+    Response, URL, TextEncoder, TextDecoder,
+    fetch: async (url, options) => {
+      upstreamCalls += 1;
+      assert.equal(url, 'https://api.openai.com/v1/responses');
+      upstreamPayload = JSON.parse(options.body);
+      return new Response(JSON.stringify({
+        output: [{
+          type: 'message',
+          content: [
+            { type: 'output_text', text: 'Pārbaudi VID informāciju.' },
+            { type: 'url_citation', annotations: [
+              { type: 'url_citation', url: 'https://vid.gov.lv/lv', title: 'VID' },
+              { type: 'url_citation', url: 'https://example.com/fake', title: 'Fake' }
+            ]}
+          ]
+        }]
+      }), { status: 200, headers: { 'Content-Type': 'application/json' } });
+    }
+  };
+  vm.runInNewContext(executable + '\\nthis.onRequestPost = onRequestPost;', sandbox);
+  const request = new Request('https://mansdarbs.eu/api/vid-assistant', {
+    method: 'POST',
+    headers: { Origin: 'https://mansdarbs.eu', 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      consent: true,
+      profile: 'general',
+      task: 'check',
+      messages: [{ role: 'user', content: 'Kur pārbaudīt?' }]
+    })
+  });
+
+  const response = await sandbox.onRequestPost({ request, env: { OPENAI_API_KEY: 'test-key' } });
+  const result = await response.json();
+
+  assert.equal(response.status, 200);
+  assert.equal(upstreamCalls, 1);
+  assert.equal(upstreamPayload.store, false, 'Conversation storage must remain disabled');
+  assert.equal(upstreamPayload.max_output_tokens, 900);
+  assert.equal(result.answer, 'Pārbaudi VID informāciju.');
+  assert.deepEqual(result.sources.map(source => source.url), ['https://vid.gov.lv/lv']);
+});
+
 test('VID assistant API returns 403 and never contacts OpenAI when consent is absent', async () => {
   const vm = require('node:vm');
   let upstreamCalls = 0;
