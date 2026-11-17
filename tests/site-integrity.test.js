@@ -127,3 +127,16 @@ test('Browser code only sends user content through explicitly consented VID assi
     assert.match(html, /sessionStorage\.setItem\(consentKey,'yes'\)/);
   }
 });
+
+
+test('VSAOI help callout is well-formed and explains excluded agricultural support', () => {
+  const html = read('index.html');
+  const start = html.indexOf('<strong>VSAOI aprēķina pamatprincipi</strong>');
+  const end = html.indexOf('</section>', start);
+  assert.notEqual(start, -1);
+  assert.notEqual(end, -1);
+  const callout = html.slice(start, end);
+  assert.doesNotMatch(callout, />undefined\b/);
+  assert.match(callout, /VSAOI objektā neiekļauj valsts un ES atbalstu lauksaimniecībai/);
+  assert.match(callout, /<\/a><\/p><\/div>/);
+});
