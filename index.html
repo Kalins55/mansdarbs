@@ -1304,18 +1304,21 @@ function applyLanguage(){
   root.querySelector('#mvaAskToggle').addEventListener('click',function(){
     var panel=root.querySelector('#mvaChat');panel.hidden=!panel.hidden;
     if(!panel.hidden)root.querySelector('#mvaQuestion').focus();
+    else root.querySelector('#mvaAskToggle').focus();
   });
   root.querySelector('#mvaSend').addEventListener('click',sendQuestion);
   root.querySelector('#mvaQuestion').addEventListener('keydown',function(event){if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendQuestion();}});
 
   var previousFocus=null;
+  root.querySelector('#mvaStepTitle').tabIndex=-1;
+  root.querySelector('#mvaDone h2').tabIndex=-1;
   function getDialogFocusables(){
     return Array.prototype.slice.call(root.querySelectorAll('a[href],button:not([disabled]),input:not([disabled]):not([type="hidden"]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])')).filter(function(element){
       return !element.hidden&&element.getAttribute('aria-hidden')!=='true'&&element.getClientRects().length>0;
     });
   }
-  function show(){
-    previousFocus=document.activeElement;
+  function show(returnFocusTo){
+    previousFocus=returnFocusTo||document.activeElement;
     root.hidden=false;
     document.body.dataset.mvaPreviousOverflow=document.body.style.overflow;
     document.body.style.overflow='hidden';
@@ -1358,19 +1361,19 @@ function applyLanguage(){
     root.querySelector('#mvaVidLink').textContent='Pārslēgties uz VID EDS ↗';
     try{sessionStorage.setItem('mansdarbsVidGuide',JSON.stringify({profile:profile.value,task:current,index:index}))}catch(e){}
   }
-  function start(){current=task.value;index=0;try{var saved=JSON.parse(sessionStorage.getItem('mansdarbsVidGuide')||'null');if(saved&&saved.task===current&&saved.profile===profile.value&&Number.isInteger(saved.index))index=Math.max(0,Math.min(saved.index,guides[current].steps.length-1));}catch(e){}setup.hidden=true;done.hidden=true;guide.hidden=false;root.querySelector('#mvaHeading').textContent=guides[current].name;root.querySelector('#mvaIntro').textContent='Izpildi norādīto soli VID EDS cilnē, pēc tam atgriezies šeit un spied “Nākamais solis”.';render();}
+  function start(){current=task.value;index=0;try{var saved=JSON.parse(sessionStorage.getItem('mansdarbsVidGuide')||'null');if(saved&&saved.task===current&&saved.profile===profile.value&&Number.isInteger(saved.index))index=Math.max(0,Math.min(saved.index,guides[current].steps.length-1));}catch(e){}setup.hidden=true;done.hidden=true;guide.hidden=false;root.querySelector('#mvaHeading').textContent=guides[current].name;root.querySelector('#mvaIntro').textContent='Izpildi norādīto soli VID EDS cilnē, pēc tam atgriezies šeit un spied “Nākamais solis”.';render();root.querySelector('#mvaStepTitle').focus();}
   footerLink.addEventListener('click',function(event){
     event.preventDefault();
     var vidTab=window.open(VID_URL,'_blank');
     if(vidTab){try{vidTab.opener=null}catch(e){}root.querySelector('#mvaPopupNote').hidden=true;}
     else{root.querySelector('#mvaPopupNote').hidden=false;}
-    show();
+    show(footerLink);
   });
   root.querySelector('#mvaClose').addEventListener('click',close);
   root.querySelector('#mvaStart').addEventListener('click',start);
   root.querySelector('#mvaBack').addEventListener('click',function(){if(index>0){index--;render();}});
-  root.querySelector('#mvaNext').addEventListener('click',function(){if(index<guides[current].steps.length-1){index++;render();}else{guide.hidden=true;done.hidden=false;try{sessionStorage.removeItem('mansdarbsVidGuide')}catch(e){}}});
-  root.querySelector('#mvaAgain').addEventListener('click',function(){done.hidden=true;guide.hidden=true;setup.hidden=false;root.querySelector('#mvaHeading').textContent='Palīdzēšu paveikt VID uzdevumu';root.querySelector('#mvaIntro').textContent='Izvēlies savu situāciju un to, ko vēlies izdarīt. VID EDS ir atvērts atsevišķā cilnē.';});
+  root.querySelector('#mvaNext').addEventListener('click',function(){if(index<guides[current].steps.length-1){index++;render();root.querySelector('#mvaStepTitle').focus();}else{guide.hidden=true;done.hidden=false;try{sessionStorage.removeItem('mansdarbsVidGuide')}catch(e){}root.querySelector('#mvaDone h2').focus();}});
+  root.querySelector('#mvaAgain').addEventListener('click',function(){done.hidden=true;guide.hidden=true;setup.hidden=false;root.querySelector('#mvaHeading').textContent='Palīdzēšu paveikt VID uzdevumu';root.querySelector('#mvaIntro').textContent='Izvēlies savu situāciju un to, ko vēlies izdarīt. VID EDS ir atvērts atsevišķā cilnē.';root.querySelector('#mvaProfile').focus();});
   root.querySelector('#mvaVidLink').addEventListener('click',function(event){event.preventDefault();var w=window.open(VID_URL,'_blank');if(w){try{w.opener=null}catch(e){}}else{root.querySelector('#mvaPopupNote').hidden=false;}});
   try{var saved=JSON.parse(sessionStorage.getItem('mansdarbsVidGuide')||'null');if(saved&&guides[saved.task]&&Number.isInteger(saved.index)){profile.value=saved.profile||'general';task.value=saved.task;current=saved.task;index=Math.max(0,Math.min(saved.index,guides[current].steps.length-1));}}catch(e){}
 })();
