@@ -893,6 +893,11 @@ function validateBackupData(data){
    value.forEach(item=>{
     if(!item||typeof item!=='object'||Array.isArray(item))throw new Error('item');
     if(item.date!==undefined&&!validBackupDate(item.date))throw new Error('date');
+    if(['mansdarbs_demo_invoices_v1','mansdarbs_demo_invoices_zs_v1'].includes(key)){
+     if(typeof item.number!=='string'||!item.number.trim()||item.number.length>40||!validBackupDate(item.date)||typeof item.seller!=='string'||!item.seller.trim()||typeof item.buyer!=='string'||!item.buyer.trim()||typeof item.description!=='string'||!item.description.trim())throw new Error('invoice-fields');
+     if(!Number.isFinite(item.qty)||item.qty<=0||!Number.isFinite(item.price)||item.price<0||!Number.isFinite(item.net)||item.net<0||!Number.isFinite(item.rate)||![0,5,12,21].includes(item.rate)||!Number.isFinite(item.vat)||item.vat<0||!Number.isFinite(item.total)||item.total<0||item.currency!=='EUR')throw new Error('invoice-values');
+     if(item.due!==undefined&&item.due!==''&&!validBackupDate(item.due))throw new Error('invoice-due');
+    }
     if(key==='mansdarbs_demo_records_v1'&&(!['Ienākums','Izdevums'].includes(item.kind)||!Number.isFinite(Number(item.amount))||Number(item.amount)<=0||!validBackupDate(item.date)))throw new Error('record');
     if(key==='mansdarbs_industry_records_v1'&&(!Number.isFinite(Number(item.amount))||Number(item.amount)<=0||!validBackupDate(item.date)||!['income','expense'].includes(item.flow)))throw new Error('industry-record');
    });
