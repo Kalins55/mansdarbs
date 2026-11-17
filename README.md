@@ -25,6 +25,19 @@ Vienkāršs, mobilajām ierīcēm pielāgots palīgs saimnieciskās darbības s�
 - Aprēķinu dati tiek glabāti lietotāja pārlūkprogrammā kopā ar pārējiem lokālajiem demonstrācijas datiem.
 - IIN prognozes VSAOI lauku var automātiski aizpildīt no ceturkšņu aprēķiniem vai manuāli pielāgot faktiskajām attiecīgajā kalendāra gadā samaksātajām iemaksām.
 
+## Proaktīvie nodokļu paziņojumi un režīma salīdzināšana
+
+Mansdarbs attīstībā jāievēro šādi principi:
+
+- Lietotājs jāinformē par īpašiem nodokļu aprēķina gadījumiem (piemēram, jauktu lauksaimniecisko un citu saimniecisko darbību), tiklīdz ievadītie dati liecina, ka standarta kalkulators konkrētajai situācijai nav piemērojams.
+- Paziņojumam skaidri jāpasaka, kas tieši jāprecizē, kāpēc tas ir svarīgi un kāds ir drošākais nākamais solis. Ja aprēķins nav atbalstīts, nedrīkst parādīt maldinošu maksājuma summu.
+- Jāseko lietotāja uzskaitītajam apgrozījumam un jābrīdina par tuvošanos būtiskiem nodokļu sliekšņiem, tostarp PVN reģistrācijas slieksnim. Jānorāda, ka apgrozījuma slieksnis un nodokļu režīma izvēle ir atšķirīgi jautājumi.
+- Ja lietotāja dati ir pietiekami, jāsalīdzina vispārējais nodokļu režīms ar pieejamām alternatīvām (tostarp mikrouzņēmumu nodokli), ņemot vērā ieņēmumus, attaisnotos izdevumus, peļņu, citus ienākumus, sociālās apdrošināšanas sekas un tiesības izvēlēties attiecīgo režīmu.
+- Ieteikumu nedrīkst balstīt tikai uz vienu ieņēmumu vai apgrozījuma robežvērtību. Jāparāda pieņēmumi, aptuvenā nodokļu starpība naudā, būtiskākie ierobežojumi un datu trūkumi.
+- Paziņojumi ir informatīvi, nevis automātiska nodokļu režīma maiņa vai garantija par ietaupījumu. Lietotājs pats pieņem lēmumu un pirms reģistrācijas izmaiņām pārbauda aktuālos nosacījumus VID.
+- Paziņojumu biežumam jābūt samērīgam: viens skaidrs brīdinājums pie sliekšņa tuvošanās, nevis atkārtoti uznirstoši paziņojumi katrā apmeklējumā.
+- Finanšu dati pašreizējā prototipā paliek lietotāja pārlūkprogrammā. Proaktīvie brīdinājumi jāaprēķina lokāli; tos nedrīkst saukt par uzvedības analītiku vai servera uzraudzību.
+
 ## Aprēķinu testēšana
 
 Ja datorā ir instalēts Node.js, VSAOI aprēķinu regresijas testus var palaist ar:
