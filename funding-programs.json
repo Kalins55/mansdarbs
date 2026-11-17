@@ -71,7 +71,8 @@
       },
       "lastVerifiedAt": "2026-11-17",
       "evidenceNotes": "LAD kataloga LA 4.1.2. lapa, atjaunota 2026-11-09: 3. kārtas pieteikšanās 2026-11-09 līdz 2026-12-09; pieejamais publiskais finansējums 12 569 464 EUR.",
-      "manualReviewReason": "Pārbaudīt, vai plānotais pirkums vai būvdarbi ir tieši iekļauti LA 4.1.2. attiecināmo investīciju un izmaksu sarakstā, kā arī iepriekš saņemto atbalstu un reģionālo finansējumu."
+      "manualReviewReason": "Pārbaudīt, vai plānotais pirkums vai būvdarbi ir tieši iekļauti LA 4.1.2. attiecināmo investīciju un izmaksu sarakstā, kā arī iepriekš saņemto atbalstu un reģionālo finansējumu. Papildu piesardzība: LAD LA 4.1.2. lapā ir pretrunīgs kārtas statusa teksts; pirms pieteikšanās pārbaudīt, vai EPS pieņem iesniegumus.",
+      "statusEvidenceNote": "Avotu pretruna: LAD lapas augšdaļā un KLP intervences pārskatā kārta norādīta kā atvērta līdz 09.12.2026., bet tās pašas LA 4.1.2. lapas detalizētajā sadaļā vienlaikus redzams teksts “Kārta noslēgusies”. Statuss katalogā saglabāts kā atvērts, balstoties uz LAD KLP pārskatu, bet lietotājam pirms rīcības jāpārbauda aktuālais EPS statuss."
     },
     {
       "id": "lad-la-4-1-1-sheep-goat-prevention-2026",
@@ -229,18 +230,57 @@
       "fundingDetails": {
         "totalPublicBudget": 2127990,
         "applicantMaximum": null,
-        "note": "LAD LA 4.2. lapā norādītais finansējums 2 127 990 EUR. Šis finansējums ir kopējais kooperatīvu finansējums LA 4.1.1., LA 4.1.2., LA 4.1.4. un LA 4.2. intervencēm, nevis tikai LA 4.2. atsevišķi rezervēta summa; tā nav viena pretendenta atbalsta summa."
+        "note": "LAD LA 4.2. lapā norādītais finansējums 2 127 990 EUR. Šis finansējums ir kopējais kooperatīvu finansējums LA 4.1.1., LA 4.1.2., LA 4.1.4. un LA 4.2. intervencēm, nevis tikai LA 4.2. atsevišķi rezervēta summa; tā nav viena pretendenta atbalsta summa. Atbalsta intensitāte kooperatīviem 50–60%; īpašie attiecināmo izmaksu limiti jāvērtē atsevišķi.",
+        "supportIntensity": "50–60%"
       },
       "eligibility": {
         "legalForms": [
           "Kooperatīvā sabiedrība",
           "Kooperatīvo sabiedrību apvienība"
         ],
-        "notes": "Atbalsta pretendents šajā 2026. gada kārtā ir kooperatīvā sabiedrība vai kooperatīvo sabiedrību apvienība. Intervence paredzēta lauksaimniecības produktu pārstrādes efektivitātes un pievienotās vērtības palielināšanai, tostarp augstas pievienotās vērtības un eksportspējīgu produktu ražošanai. Individuāls pašnodarbinātais vai parasta zemnieku saimniecība bez atbilstoša kooperatīva statusa nav automātiski atbilstošs pretendents."
+        "notes": "Atbalsta pretendents šajā 2026. gada kārtā ir kooperatīvā sabiedrība vai kooperatīvo sabiedrību apvienība. Intervence paredzēta lauksaimniecības produktu pārstrādes efektivitātes un pievienotās vērtības palielināšanai, tostarp augstas pievienotās vērtības un eksportspējīgu produktu ražošanai. Individuāls pašnodarbinātais vai parasta zemnieku saimniecība bez atbilstoša kooperatīva statusa nav automātiski atbilstošs pretendents. Kooperatīviem atbalsta intensitāte ir 50–60%; parasti kooperatīvajām sabiedrībām un to apvienībām nav noteikts maksimālais attiecināmo izmaksu ierobežojums, taču kooperatīvam, kas dibināts līdz diviem gadiem pirms pieteikuma iesniegšanas, pirmajam projektam tas nepārsniedz 200 000 EUR. Attīrīšanas iekārtu iegādei un uzstādīšanai attiecināmās izmaksas ir līdz 500 000 EUR."
       },
       "lastVerifiedAt": "2026-11-17",
       "evidenceNotes": "LAD LA 4.2. kataloga lapa, atjaunota 2026-10-10: kooperatīvu kārta 2026-11-09 līdz 2026-12-09; norādīts kopējais finansējums 2 127 990 EUR.",
-      "manualReviewReason": "Pirms pieteikšanās pārbaudīt kooperatīva juridisko statusu, konkrētā pārstrādes projekta attiecināmību un LAD elektroniskajā rīku katalogā noteiktās izmaksas un izņēmumus. Finansējums 2 127 990 EUR ir kopīgs kooperatīvu finansējuma grozs vairākām intervencēm."
+      "manualReviewReason": "Pirms pieteikšanās pārbaudīt kooperatīva juridisko statusu, konkrētā pārstrādes projekta attiecināmību un LAD elektroniskajā rīku katalogā noteiktās izmaksas un izņēmumus. Finansējums 2 127 990 EUR ir kopīgs kooperatīvu finansējuma grozs vairākām intervencēm. Pārbaudīt 50–60% atbalsta intensitāti, īpašo 200 000 EUR attiecināmo izmaksu limitu jaunam kooperatīvam un 500 000 EUR limitu attīrīšanas iekārtām."
+    },
+    {
+      "id": "lad-la-4-3-agri-forestry-infrastructure-2026",
+      "name": "LA 4.3. Atbalsts ieguldījumiem lauksaimniecības un mežsaimniecības infrastruktūras attīstībā",
+      "sourceId": "lad-support-catalogue",
+      "sourceUrl": "https://www.lad.gov.lv/lv/katalogs/la-43-atbalsts-ieguldijumiem-lauksaimniecibas-un-mezsaimniecibas-infrastrukturas-attistiba",
+      "applicationUrl": "https://eps.lad.gov.lv/",
+      "scope": "sector",
+      "sectors": [
+        "agri",
+        "forestry"
+      ],
+      "activityKeywords": [
+        "meliorācija",
+        "lauksaimniecības infrastruktūra",
+        "mežsaimniecības infrastruktūra"
+      ],
+      "supportTypes": [
+        "grant"
+      ],
+      "status": "open",
+      "openingDate": "2024-07-11",
+      "deadline": "2026-12-01",
+      "summary": "Atbalsts lauksaimniecības un mežsaimniecības infrastruktūrai. Pašreizējā atvērtā kārta ar 32,6 miljonu EUR finansējumu paredzēta ZMNĪ un zinātniskajām institūcijām, nevis parastām individuālām lauku saimniecībām.",
+      "fundingDetails": {
+        "totalPublicBudget": 32600000,
+        "note": "32 600 000 EUR paredzēti ZMNĪ / zinātniskajām institūcijām. Pieteikšanās līdz 01.12.2026. vai līdz pieejamā finansējuma pilnīgam izlietojumam."
+      },
+      "eligibility": {
+        "legalForms": [
+          "ZMNĪ",
+          "Zinātniskā institūcija"
+        ],
+        "notes": "Pašreizējā atvērtā kārta attiecas uz ZMNĪ un zinātniskajām institūcijām. LAD norāda atsevišķas agrākas kārtas pašvaldībām, bet tās nav šīs pašreizējās 32,6 miljonu EUR kārtas mērķauditorija."
+      },
+      "lastVerifiedAt": "2026-11-17",
+      "evidenceNotes": "LAD LA 4.3. kataloga lapa atjaunota 18.04.2026.; ES fondu lapa norāda pieteikšanās termiņu 01.12.2026. un 32 600 000 EUR; LAD precizē, ka finansējums paredzēts ZMNĪ / zinātniskajām institūcijām.",
+      "manualReviewReason": "Ļoti šaura pretendentu grupa: pirms iespējas rādīšanas kā atbilstošu jāpārbauda, vai pretendents ir ZMNĪ vai atbilstoša zinātniskā institūcija. Finansējums var tikt izlietots pirms 01.12.2026.; parastām zemnieku saimniecībām un pašnodarbinātajiem šī kārta nav paredzēta."
     }
   ]
 }
