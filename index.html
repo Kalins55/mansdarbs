@@ -484,7 +484,8 @@ function syncIinFromVsaoi(){
 function calculateVsaoi(){
  const values=[1,2,3].map(i=>Number(document.getElementById('profit'+i).value||0));
  const chosenBase=Number(document.getElementById('contributionBase').value||780);
- const status=document.getElementById('contributionStatus').value;\n const rate=status==='pensioner'?0.2936:0.3107;
+ const status=document.getElementById('contributionStatus').value;
+ const rate=status==='pensioner'?0.2936:0.3107;
  if(values.some(v=>!Number.isFinite(v)||v<0)){alert(uiText('Ievadi korektu peļņu — 0 vai lielāku summu.','Enter a valid profit amount (0 or more).'));return}
  if(!Number.isFinite(chosenBase)||chosenBase<780){alert(uiText('VSAOI objektam jābūt vismaz 780 €.','The VSAOI contribution base must be at least €780.'));return}
  const rows=values.map((profit,i)=>{
