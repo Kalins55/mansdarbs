@@ -43,13 +43,25 @@ export async function onRequestPost({ request, env }) {
   const length = Number(request.headers.get("Content-Length") || 0);
   if (length > 14000) return json({ error: "Ziņa ir pārāk gara. Saīsini to un mēģini vēlreiz." }, 413);
 
-  if (!env.OPENAI_API_KEY) {
-    return json({ error: "AI savienojums vēl nav aktivizēts. Pagaidām izmanto soli pa solim ceļvedi." }, 503);
+  let rawBody;
+  try { rawBody = await request.text(); } catch (_) {
+    return json({ error: "Neizdevās nolasīt ziņu." }, 400);
+  }
+  if (new TextEncoder().encode(rawBody).byteLength > 14000) {
+    return json({ error: "Ziņa ir pārāk gara. Saīsini to un mēģini vēlreiz." }, 413);
   }
 
   let body;
-  try { body = await request.json(); } catch (_) {
+  try { body = JSON.parse(rawBody); } catch (_) {
     return json({ error: "Neizdevās nolasīt ziņu." }, 400);
+  }
+
+  if (body?.consent !== true) {
+    return json({ error: "Pirms jautājuma nosūtīšanas nepieciešams apstiprināt datu nosūtīšanu AI pakalpojumam." }, 403);
+  }
+
+  if (!env.OPENAI_API_KEY) {
+    return json({ error: "AI savienojums vēl nav aktivizēts. Pagaidām izmanto soli pa solim ceļvedi." }, 503);
   }
 
   const allowedRoles = new Set(["user", "assistant"]);
