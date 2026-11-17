@@ -1011,12 +1011,20 @@ function applyLanguage(){
   async function sendQuestion(){
     var field=root.querySelector('#mvaQuestion'),send=root.querySelector('#mvaSend'),question=field.value.trim();
     if(!question)return;
+    var consentKey='mansdarbsAiDataConsent';
+    var consentGranted=false;
+    try{consentGranted=sessionStorage.getItem(consentKey)==='yes'}catch(e){}
+    if(!consentGranted){
+      var accepted=window.confirm('Pirms nosūtīšanas: tavs jautājums un līdzšinējā šīs sarunas daļa tiks nosūtīta OpenAI AI pakalpojumam atbildes sagatavošanai. Nesūti personas kodu, paroles, Smart-ID kodus vai bankas datus. Vai piekrīti nosūtīšanai?');
+      if(!accepted)return;
+      try{sessionStorage.setItem(consentKey,'yes')}catch(e){}
+    }
     chatHistory.push({role:'user',content:question});
     addChatMessage('user',question);
     field.value='';send.disabled=true;send.textContent='Meklēju atbildi…';
     var pending=document.createElement('div');pending.className='mva-chat-message mva-chat-agent';pending.textContent='Pārbaudu oficiālos avotus un sagatavoju atbildi…';chatLog.appendChild(pending);
     try{
-      var response=await fetch('/api/vid-assistant',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:chatHistory,profile:profile.value,task:current})});
+      var response=await fetch('/api/vid-assistant',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:chatHistory,profile:profile.value,task:current,consent:true})});
       var data=await response.json();pending.remove();
       if(!response.ok)throw new Error(data.error||'Neizdevās saņemt atbildi.');
       chatHistory.push({role:'assistant',content:data.answer});

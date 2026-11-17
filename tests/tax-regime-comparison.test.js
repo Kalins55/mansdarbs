@@ -35,9 +35,10 @@ function runComparison(values) {
   const money = value => Number(value).toFixed(2) + ' €';
   const run = new Function('document', 'money', 'progressiveIin',
     extractFunction('compareTaxRegimes') + '; return compareTaxRegimes;'
-  )(document, money, amount => {
+  )(document, money, (amount, additionalBase = amount) => {
     const x = Math.max(0, amount);
-    return Math.min(x, 105300) * 0.255 + Math.max(0, x - 105300) * 0.33 + Math.max(0, x - 200000) * 0.03;
+    const y = Math.max(0, additionalBase);
+    return Math.min(x, 105300) * 0.255 + Math.max(0, x - 105300) * 0.33 + Math.max(0, y - 200000) * 0.03;
   });
   run();
   return elements.regimeResult;
@@ -328,4 +329,15 @@ test('comparison import reports when all selected-year records are malformed', (
   assert.match(result.regimeRecordsStatus.textContent, /nav derīgu ienākumu vai izdevumu ierakstu/);
   assert.equal(result.regimeTurnover.value, '');
   assert.equal(result.regimeExpenses.value, '');
+});
+
+
+test('3% additional IIN uses the separate annual income base before personal reliefs', () => {
+  const result = runComparison({
+    regimeTurnover: 10000, regimeExpenses: 0, regimeVsaoi: 1000,
+    regimeOtherIncome: 195000, regimeAllowance: 6600, regimeDeductions: 1000
+  });
+  const match = result.innerHTML.match(/Vispārējais režīms — IIN<\/span><strong class="amount">([\d.]+) €/);
+  assert.ok(match, 'general-regime IIN row is present');
+  assert.equal(Number(match[1]), 3120);
 });

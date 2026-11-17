@@ -24,6 +24,9 @@ Vienkāršs, mobilajām ierīcēm pielāgots palīgs saimnieciskās darbības s�
 - Nekustamā īpašuma apsaimniekotāja īpašā likme un citi individuāli statusi vēl nav pilnībā ieviesti. Īpašos gadījumos summas jāpārbauda VID EDS.
 - Aprēķinu dati tiek glabāti lietotāja pārlūkprogrammā kopā ar pārējiem lokālajiem demonstrācijas datiem.
 - IIN prognozes VSAOI lauku var automātiski aizpildīt no ceturkšņu aprēķiniem vai manuāli pielāgot faktiskajām attiecīgajā kalendāra gadā samaksātajām iemaksām.
+- 2026. gada maksimālais VSAOI objekts ir 105 300 € gadā kopā visos apdrošināšanas statusos; pārsnieguma daļa ir solidaritātes nodokļa objekts. Kalkulators solidaritātes nodokli neaprēķina un brīdina, ja saglabāto pašnodarbinātā pilno iemaksu objektu summa pārsniedz šo robežu.
+- Valsts un ES atbalsts lauksaimniecībai un lauku attīstībai netiek iekļauts VSAOI objektā; konkrētā atbalsta IIN atbrīvojums jāpārbauda pēc tā veida un izlietojuma.
+- IIN prognozē 3% papildu likmes bāze virs 200 000 € tiek vērtēta atsevišķi no neapliekamā minimuma un citiem atvieglojumiem. Tā ir vienkāršota prognoze, nevis pilns visu īpašo ienākumu veidu aprēķins. Negatīvas gada peļņas vai VSAOI, kas pārsniedz peļņu, gadījumā jāprecizē zaudējumu un iemaksu attiecināšana VID EDS.
 
 ## Proaktīvie nodokļu paziņojumi un režīma salīdzināšana
 
@@ -42,6 +45,14 @@ Mansdarbs attīstībā jāievēro šādi principi:
 - Paziņojumu biežumam jābūt samērīgam: viens skaidrs brīdinājums pie sliekšņa tuvošanās, nevis atkārtoti uznirstoši paziņojumi katrā apmeklējumā.
 - Finanšu dati pašreizējā prototipā paliek lietotāja pārlūkprogrammā. Proaktīvie brīdinājumi jāaprēķina lokāli; tos nedrīkst saukt par uzvedības analītiku vai servera uzraudzību.
 
+## Lokālo datu rezerves kopijas
+
+- Pilnā rezerves kopija izmanto JSON formāta v2 un ietver atbalstītās pārlūka lokālās uzskaites kategorijas, VSAOI ceturkšņus, rēķinus, SIA prototipa datus, profilus un iestatījumus.
+- Rezerves kopija tiek veidota un atjaunota lietotāja pārlūkā. Sesijas dati, AI piekrišana, servera konfigurācija un nezināmas glabātuves atslēgas netiek eksportētas.
+- Eksporta un importa faila maksimālais izmērs ir 5 MB. Atjaunošana notiek tikai pēc lietotāja apstiprinājuma; tiek aizstātas tikai failā iekļautās kategorijas.
+- Saglabāta iepriekšējā v1 rezerves kopiju importēšanas atpakaļsaderība.
+- Šī funkcija ir prototipa līmeņa datu pārneses rīks; lietotājam jāsaglabā rezerves kopija drošā vietā un jāizmēģina atjaunošana ar kopiju, nevis vienīgo datu failu.
+
 ## Aprēķinu testēšana
 
 Ja datorā ir instalēts Node.js, VSAOI aprēķinu regresijas testus var palaist ar:
@@ -59,7 +70,7 @@ Testi pārbauda VSAOI aprēķinus, vispārējā režīma un MUN salīdzinājuma 
 - Papildu jautājumu atbildes nodrošina Cloudflare Pages Function `/api/vid-assistant`, izmantojot OpenAI Responses API un oficiālo Latvijas iestāžu avotu meklēšanu.
 - Lai aktivizētu AI atbildes, Cloudflare Pages projekta iestatījumos jāpievieno slepenais mainīgais `OPENAI_API_KEY`. Pēc noklusējuma tiek izmantots `gpt-6-luna`; to var mainīt ar neobligātu `OPENAI_MODEL`.
 - API atslēga nekad nedrīkst atrasties HTML, JavaScript klienta kodā vai GitHub repozitorijā.
-- AI jautājumu saturs tiek nosūtīts ārējam AI pakalpojumam. Lietotājam pirms nosūtīšanas tiek atgādināts neiekļaut paroles, personas kodu, Smart-ID kodus vai bankas datus.
+- AI jautājumu saturs un līdzšinējā sarunas daļa tiek nosūtīta ārējam AI pakalpojumam tikai pēc lietotāja skaidra apstiprinājuma pārlūka dialogā. Apstiprinājums tiek saglabāts tikai pašreizējā pārlūka sesijā; to var atsaukt, aizverot sesiju. API serveris pieprasa arī skaidru piekrišanas karodziņu un bez tā pieprasījumu noraida. Lietotājam pirms nosūtīšanas tiek atgādināts neiekļaut paroles, personas kodu, Smart-ID kodus vai bankas datus.
 - EDS pieslēgšanās, dokumentu iesniegšana un konta pārbaude vienmēr paliek paša lietotāja ziņā. Mansdarbs neprasa EDS piekļuves datus un neveic darbības lietotāja vietā.
 - AI atbildēm jābalstās uz VID, likumi.lv, VSAA, Uzņēmumu reģistra, Finanšu ministrijas un Latvija.gov.lv avotiem; neskaidrās situācijās jānorāda uz nepieciešamību precizēt informāciju pie VID.
 
