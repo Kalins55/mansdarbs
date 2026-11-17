@@ -134,9 +134,9 @@ function runPrefill(records, options = {}) {
     elements.regimeExpenses.dataset.synced = 'manual';
   }
   const document = { getElementById: id => elements[id] };
-  const run = new Function('document', 'getRecords', 'money',
+  const run = new Function('document', 'getRecords', 'getIndustryTaxComparisonRecords', 'money',
     extractFunction('clearRegimeRecordPrefill') + ';' + extractFunction('fillRegimeFromRecords') + '; return fillRegimeFromRecords;'
-  )(document, () => records, value => Number(value).toFixed(2) + ' €');
+  )(document, () => records, () => options.industryRecords || [], value => Number(value).toFixed(2) + ' €');
   run();
   return elements;
 }
@@ -150,6 +150,31 @@ test('comparison imports only selected-year income and expenses from local recor
   assert.equal(result.regimeTurnover.value, '1000.00');
   assert.equal(result.regimeExpenses.value, '250.00');
   assert.match(result.regimeRecordsStatus.textContent, /2 derīgi ieraksti/);
+});
+
+test('comparison prefill includes industry income and expenses alongside base records', () => {
+  const result = runPrefill([
+    { kind: 'Ienākums', amount: 1000, date: '2026-01-12' }
+  ], { industryRecords: [
+    { kind: 'Ienākums', amount: 500, date: '2026-02-01' },
+    { kind: 'Izdevums', amount: 125, date: '2026-02-02' },
+    { kind: 'Ienākums', amount: 200, date: '2025-12-31' }
+  ] });
+  assert.equal(result.regimeTurnover.value, '1500.00');
+  assert.equal(result.regimeExpenses.value, '125.00');
+  assert.match(result.regimeRecordsStatus.textContent, /3 derīgi ieraksti/);
+  assert.match(result.regimeRecordsStatus.textContent, /nozares uzskaite: 2/);
+});
+
+test('comparison prefill excludes customer refunds and warns that turnover needs review', () => {
+  const result = runPrefill([
+    { kind: 'Ienākums', amount: 1000, date: '2026-01-12' }
+  ], { industryRecords: [
+    { kind: 'Atmaksa', amount: 100, date: '2026-02-02' }
+  ] });
+  assert.equal(result.regimeTurnover.value, '1000.00');
+  assert.equal(result.regimeExpenses.value, '0.00');
+  assert.match(result.regimeRecordsStatus.textContent, /1 klientu atmaksa netika automātiski iekļauta apgrozījumā/);
 });
 
 test('comparison prefill never overwrites manually entered values', () => {
