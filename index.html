@@ -449,10 +449,10 @@
 <div class="formgrid">
 <div class="field"><label for="regimeTurnover">Gada apgrozījums — ieņēmumi (€)</label><input id="regimeTurnover" type="number" min="0" step="0.01" inputmode="decimal" placeholder="Piemēram, 18000"></div>
 <div class="field"><label for="regimeExpenses">Gada saimnieciskās darbības izdevumi (€)</label><input id="regimeExpenses" type="number" min="0" step="0.01" inputmode="decimal" placeholder="Piemēram, 6000"></div>
-<div class="field"><label for="regimeVsaoi">Vispārējā režīma VSAOI gadā (€)</label><input id="regimeVsaoi" type="number" min="0" step="0.01" inputmode="decimal" placeholder="Ievadi faktisko vai aprēķināto summu"><small class="muted">Vari pārnest summu no VSAOI aprēķina. Bez šīs summas salīdzinājums nebūs pilnīgs.</small></div>
-<div class="field"><label for="regimeOtherIncome">Citi gada apliekamie ienākumi (€)</label><input id="regimeOtherIncome" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0,00"><small class="muted">Ienākumi, kas ietekmē kopējo progresīvo IIN likmi.</small></div>
-<div class="field"><label for="regimeAllowance">Neizmantotais neapliekamais minimums (€)</label><input id="regimeAllowance" type="number" min="0" step="0.01" inputmode="decimal" value="6600"></div>
-<div class="field"><label for="regimeDeductions">Citi piemērojamie atvieglojumi (€)</label><input id="regimeDeductions" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0,00"></div>
+<div class="field"><label for="regimeVsaoi">Vispārējā režīma VSAOI gadā (€)</label><input id="regimeVsaoi" type="number" min="0" step="0.01" inputmode="decimal" placeholder="Ievadi faktisko vai aprēķināto summu" oninput="this.dataset.synced='manual'"><small class="muted">Vari pārnest summu no VSAOI aprēķina. Bez šīs summas salīdzinājums nebūs pilnīgs.</small></div>
+<div class="field"><label for="regimeOtherIncome">Citi gada apliekamie ienākumi (€)</label><input id="regimeOtherIncome" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0,00" oninput="this.dataset.synced='manual'"><small class="muted">Ienākumi, kas ietekmē kopējo progresīvo IIN likmi.</small></div>
+<div class="field"><label for="regimeAllowance">Neizmantotais neapliekamais minimums (€)</label><input id="regimeAllowance" type="number" min="0" step="0.01" inputmode="decimal" value="6600" oninput="this.dataset.synced='manual'"></div>
+<div class="field"><label for="regimeDeductions">Citi piemērojamie atvieglojumi (€)</label><input id="regimeDeductions" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0,00" oninput="this.dataset.synced='manual'"></div>
 <div class="field full"><label for="regimeVatStatus">PVN reģistrācijas situācija</label><select id="regimeVatStatus"><option value="eligible">Esmu pārliecināts, ka neesmu vispārīgi reģistrēts PVN maksātājs un neplānoju reģistrēties</option><option value="registered">Esmu vispārīgi reģistrēts PVN maksātājs vai plānoju reģistrēties</option><option value="unsure">Nezinu / man var būt īpašs PVN reģistrācijas gadījums</option></select><small class="muted">MUN izvēlei ir PVN nosacījumi un izņēmumi. Ja neesi drošs, rezultāts neieteiks režīmu.</small></div>
 <div class="field full"><label><input id="regimeMinimumIinExempt" type="checkbox" style="width:auto;margin-right:8px">Man ir tiesības uz atbrīvojumu no minimālā 50 € IIN vispārējā režīmā</label></div>
 </div>
@@ -608,6 +608,7 @@ function compareTaxRegimes(){
  if(expenses>turnover){result.className='empty';result.textContent='Izdevumi ir lielāki par apgrozījumu. Pārbaudi summas — šo situāciju vienkāršotais salīdzinājums vēl neatbalsta.';return;}
  const profit=turnover-expenses;
  if(profit>0&&vsaoi===0){result.className='empty';result.textContent='Peļņai ir norādītas pozitīvas vērtības, bet VSAOI ir 0 €. Vispirms pārbaudi VSAOI aprēķinu vai ievadi faktiski samaksāto summu, lai salīdzinājums nebūtu maldinošs.';return;}
+ if(vsaoi>profit){result.className='empty';result.textContent='Norādītā VSAOI summa pārsniedz peļņu. Pārbaudi, vai ievadīta pareizā gada summa un vai tajā nav iekļauti citi maksājumi.';return;}
  const taxableBusiness=Math.max(0,profit-vsaoi);
  const totalTaxable=Math.max(0,other+taxableBusiness-Math.min(other+taxableBusiness,allowance+deductions));
  const otherTaxable=Math.max(0,other-Math.min(other,allowance+deductions));
