@@ -144,3 +144,12 @@ test('pensioner agriculture/IP combination is blocked pending special-status rul
   assert.equal(h.runQuarter(3, [800, 790, 785], 'annual_special', 'pensioner'), null);
   assert.equal(h.alerts.length, 1);
 });
+
+
+test('annual VSAOI result warns when the saved full contribution base exceeds the 2026 ceiling', () => {
+  const h = createHarness();
+  h.elements.contributionBase.value = '60000';
+  h.runQuarter(1, [60000, 60000, 0]);
+  assert.match(h.elements.vsaoiResult.innerHTML, /105 300 €/);
+  assert.match(h.elements.vsaoiResult.innerHTML, /solidaritātes nodokļa objekts/);
+});
