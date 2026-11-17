@@ -200,14 +200,14 @@
       "fundingDetails": {
         "totalPublicBudget": 14181117,
         "applicantMaximum": null,
-        "note": "LAD norādītais kopējais publiskais finansējums 14 181 117 EUR; tajā ietilpst biogāzes iekārtas, energoefektivitātes uzlabošana un atjaunīgās enerģijas ražošana. Tā nav viena pretendenta maksimālā atbalsta summa."
+        "note": "LAD norādītais kopējais publiskais finansējums 14 181 117 EUR (7 181 117 EUR biogāzei, 4 000 000 EUR energoefektivitātei un 3 000 000 EUR atjaunīgās enerģijas ražošanai). Maksimālās attiecināmās izmaksas vienam pretendentam — līdz 700 000 EUR; tas nav granta apmērs. Faktisko atbalstu nosaka pēc attiecināmajām izmaksām un atbalsta intensitātes."
       },
       "eligibility": {
-        "notes": "Lauku saimniecība — fiziska vai juridiska persona, kas ražo primāros lauksaimniecības produktus un pēdējā noslēgtajā gadā no lauksaimniecības produktu pārdošanas guvusi vismaz 4 000 EUR ieņēmumus; var pieteikties arī juridiska persona, kas pārstrādā lauksaimniecības produktus, ražojot ES līguma I pielikumā minētu produktu, kā arī lauksaimniecības nozares zinātniskā institūcija, kas nodarbojas ar lauksaimniecisko darbību. Pārstrādes uzņēmumi, kas ražo ārpus ES līguma I pielikuma esošus produktus, nav atbalstāmi."
+        "notes": "Lauku saimniecība — fiziska vai juridiska persona, kas ražo primāros lauksaimniecības produktus un pēdējā noslēgtajā gadā no lauksaimniecības produktu pārdošanas guvusi vismaz 4 000 EUR ieņēmumus; var pieteikties arī juridiska persona, kas pārstrādā lauksaimniecības produktus, ražojot ES līguma I pielikumā minētu produktu, kā arī lauksaimniecības nozares zinātniskā institūcija, kas nodarbojas ar lauksaimniecisko darbību. Atbalsts paredzēts AER tehnoloģijām pašpatēriņam un energoefektivitātes uzlabošanai, nevis jebkurai jaunai ražošanas jaudai."
       },
       "lastVerifiedAt": "2026-11-17",
-      "evidenceNotes": "LAD kataloga LA 4.1.4. lapa, atjaunota 2026-11-09: pieteikšanās 2026-11-09 līdz 2026-12-09; pieejamais publiskais finansējums 14 181 117 EUR.",
-      "manualReviewReason": "Pārbaudīt, vai ieguldījums ir AER tehnoloģija pašpatēriņam vai energoefektivitātes pasākums, kā arī iepriekš saņemto finansējumu un ar pretendentu saistīto personu datus."
+      "evidenceNotes": "LAD LA 4.1.4. kataloga lapa atjaunota 2026-11-09; 5. kārtas periods 2026-11-09 līdz 2026-12-09. LAD norāda finansējuma sadalījumu, atbalstāmās investīcijas, 700 000 EUR maksimālās attiecināmās izmaksas un mērķrādītājus.",
+      "manualReviewReason": "Maksimālās attiecināmās izmaksas vienam pretendentam nepārsniedz 700 000 EUR (tas nav automātiski granta apmērs). AER saražotās enerģijas pašpatēriņam jābūt vismaz 80%; energoefektivitātes projektā jāsasniedz vismaz 20% enerģijas patēriņa samazinājums attiecīgajā patērētāju grupā. Biogāzes izejvielās kūtsmēslu īpatsvaram jābūt vismaz 70%. Jauna būvniecība un jauna ražošanas līnija bez esošās nomaiņas parasti nav attiecināma; graudu kaltes īpatnējais enerģijas patēriņš nedrīkst pārsniegt 1,2 kWh/kg iztvaicētā ūdens. Pārbaudīt MK noteikumu Nr. 303 43.–47. punktu un metodikas."
     }
   ]
 }
