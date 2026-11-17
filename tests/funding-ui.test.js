@@ -13,3 +13,5 @@ test('no-profile state explains local storage and no-account use',()=>{const h=u
 test('programme text is escaped',()=>{const h=ui.renderCard(item({name:'<img src=x onerror=alert(1)>'}),'lv');assert.doesNotMatch(h,/<img src=x/);assert.match(h,/&lt;img/);});
 
 test('mixed grant and non-financial support types are both displayed',()=>{const h=ui.renderCard(item({id:'nostradamus-open-call-1-2026',supportTypes:['grant','non_financial'],supportTypeLabels:['Grants','Nefinansiāls atbalsts']}),'lv');assert.match(h,/Grants/);assert.match(h,/Nefinansiāls atbalsts/);});
+
+test('each support type has a separate label',()=>{const h=ui.renderCard(item({id:'nostradamus-open-call-1-2026',supportTypes:['grant','non_financial'],supportTypeLabels:['Grants','Nefinansiāls atbalsts']}),'lv');assert.ok(h.includes('>Grants</span>'));assert.ok(h.includes('>Nefinansiāls atbalsts</span>'));});
