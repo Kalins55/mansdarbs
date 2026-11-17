@@ -46,8 +46,8 @@ test('VID assistant enforces the request size limit while streaming the body', (
   assert.notEqual(parseBody, -1, 'JSON is parsed only after the bounded read');
   assert.ok(reader < byteLimit && byteLimit < parseBody && parseBody < consent,
     'Body size is enforced before parsing and consent-dependent processing');
-  assert.match(api, /new URL\(origin\)\.origin !== new URL\(request\.url\)\.origin/,
-    'Origin validation compares the complete origin, including scheme and port');
+  assert.match(api, /parsedOrigin\.origin !== new URL\(request\.url\)\.origin \|\| origin !== parsedOrigin\.origin/,
+    'Origin validation requires the exact canonical same-origin value');
 });
 
 test('VID assistant stops reading oversized streamed requests and returns 413', async () => {
@@ -124,7 +124,7 @@ test('VID assistant rejects requests without an Origin header before reading the
     Response, URL, TextEncoder, TextDecoder,
     fetch: async () => { upstreamCalls += 1; }
   };
-  vm.runInNewContext(executable + '\\nthis.onRequestPost = onRequestPost;', sandbox);
+  vm.runInNewContext(executable + '\nthis.onRequestPost = onRequestPost;', sandbox);
   const request = new Request('https://mansdarbs.eu/api/vid-assistant', {
     method: 'POST',
     body: new ReadableStream({
@@ -151,7 +151,7 @@ test('VID assistant rejects non-canonical Origin values containing a path', asyn
     'async function onRequestPost'
   );
   const sandbox = { Response, URL, TextEncoder, TextDecoder, fetch: async () => { throw new Error('Unexpected upstream call'); } };
-  vm.runInNewContext(executable + '\\nthis.onRequestPost = onRequestPost;', sandbox);
+  vm.runInNewContext(executable + '\nthis.onRequestPost = onRequestPost;', sandbox);
   const request = new Request('https://mansdarbs.eu/api/vid-assistant', {
     method: 'POST',
     headers: { Origin: 'https://mansdarbs.eu/other-path' },
