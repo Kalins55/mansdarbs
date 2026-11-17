@@ -88,3 +88,24 @@ test('MUN is not recommended at or above the €50,000 turnover threshold', () =
   assert.match(result.innerHTML, /MUN izvēli nevar droši ieteikt/);
   assert.match(result.innerHTML, /sasniedz vai pārsniedz 50 000/);
 });
+
+test('special VAT registration can retain MUN eligibility below the threshold', () => {
+  const result = runComparison({
+    regimeTurnover: 20000, regimeExpenses: 5000, regimeVsaoi: 1500,
+    regimeOtherIncome: 0, regimeAllowance: 6600, regimeDeductions: 0,
+    regimeVatStatus: 'special'
+  });
+  assert.doesNotMatch(result.innerHTML, /MUN izvēli nevar droši ieteikt/);
+  assert.match(result.innerHTML, /MUN nodokļu slogs/);
+});
+
+test('minimum IIN exemption is applied only when the user confirms actual payment or another exemption', () => {
+  const common = {
+    regimeTurnover: 1000, regimeExpenses: 900, regimeVsaoi: 10,
+    regimeOtherIncome: 0, regimeAllowance: 6600, regimeDeductions: 0
+  };
+  const withoutExemption = runComparison(common);
+  const withExemption = runComparison({ ...common, exempt: true });
+  assert.match(withoutExemption.innerHTML, /Vispārējais režīms — IIN[\s\S]*?50\.00 €/);
+  assert.match(withExemption.innerHTML, /Vispārējais režīms — IIN[\s\S]*?0\.00 €/);
+});
