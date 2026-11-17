@@ -630,8 +630,8 @@ function fillRegimeFromRecords(){
  }).map(item=>({...item,amount:Number(item.amount)}));
  const records=validated.filter(item=>item.kind==='Ienākums'||item.kind==='Izdevums');
  const refundCount=validated.filter(item=>item.kind==='Atmaksa').length;
- const invalidCount=yearRecords.length-validated.length;
- const refundNote=refundCount?' '+refundCount+' klientu atmaksas netika automātiski iekļautas apgrozījumā. Pārbaudi sākotnējā darījuma periodu un, ja nepieciešams, koriģē apgrozījumu manuāli.':'';
+ const invalidCount=yearRecords.length-records.length-refundCount;
+ const refundNote=refundCount?(refundCount===1?' 1 klienta atmaksa netika automātiski iekļauta apgrozījumā. Pārbaudi sākotnējā darījuma periodu un, ja nepieciešams, koriģē apgrozījumu manuāli.':' '+refundCount+' klientu atmaksas netika automātiski iekļautas apgrozījumā. Pārbaudi sākotnējā darījuma periodu un, ja nepieciešams, koriģē apgrozījumu manuāli.') : '';
  if(!records.length){const cleared=clearRegimeRecordPrefill();status.textContent='Atrasti '+yearRecords.length+' ieraksti par '+year+'. gadu, bet nav derīgu ienākumu vai izdevumu ierakstu.'+(invalidCount?' Izlaisti '+invalidCount+' nekorekti ieraksti — pārbaudi to datumu un summu.':'')+refundNote+(cleared?' Iepriekš no uzskaites pārņemtās vērtības notīrītas.':'');return;}
  const totals=records.reduce((sum,item)=>{if(item.kind==='Ienākums')sum.income+=item.amount;else if(item.kind==='Izdevums')sum.expenses+=item.amount;return sum;},{income:0,expenses:0});
  const income=document.getElementById('regimeTurnover'),expenses=document.getElementById('regimeExpenses');
