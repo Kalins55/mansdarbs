@@ -168,3 +168,12 @@ test('comparison prefill reports when no records exist for selected year', () =>
   ]);
   assert.match(result.regimeRecordsStatus.textContent, /nav atrasts neviens/);
 });
+
+test('comparison warns when MUN exceeds profit after expenses', () => {
+  const result = runComparison({
+    regimeTurnover: 10000, regimeExpenses: 9000, regimeVsaoi: 100,
+    regimeOtherIncome: 0, regimeAllowance: 6600, regimeDeductions: 0
+  });
+  assert.match(result.innerHTML, /MUN var pārsniegt peļņu/);
+  assert.match(result.innerHTML, /MUN 2500\.00 € pārsniedz peļņu 1000\.00 €/);
+});
