@@ -24,12 +24,17 @@ function extractFunction(name) {
   throw new Error('Unclosed function: ' + name);
 }
 
-function runImport(contents, initial = {}) {
+function runImport(contents, initial = {}, storageOptions = {}) {
   const input = { value: 'selected.json', files: [{ name: 'backup.json' }] };
   const store = new Map(Object.entries(initial).map(([k,v]) => [k, JSON.stringify(v)]));
+  let setItemCalls = 0;
   const localStorage = {
     getItem: key => store.has(key) ? store.get(key) : null,
-    setItem: (key,value) => store.set(key,String(value)),
+    setItem: (key,value) => {
+      setItemCalls++;
+      if ((storageOptions.failSetItemCalls || []).includes(setItemCalls)) throw new Error('quota');
+      store.set(key,String(value));
+    },
     removeItem: key => store.delete(key)
   };
   let confirmations = 0, alerts = [];
@@ -107,4 +112,17 @@ test('v2 backup rejects invalid bookkeeping amounts and VSAOI row values', () =>
   }}));
   assert.equal(invalidRecord.confirmations, 0);
   assert.equal(invalidQuarter.confirmations, 0);
+});
+
+test('v2 backup warns when browser storage also prevents a complete rollback', () => {
+  const result = runImport(JSON.stringify({app:'Mansdarbs',version:2,data:{
+    mansdarbs_demo_records_v1:[{kind:'Ienākums',amount:25,date:'2026-03-01'}],
+    mansdarbs_demo_invoices_v1:[{number:'R-2026-002'}]
+  }}), {
+    mansdarbs_demo_records_v1:[{kind:'Izdevums',amount:10,date:'2026-02-01'}],
+    mansdarbs_demo_invoices_v1:[{number:'R-2026-001'}]
+  }, {failSetItemCalls:[2,3]});
+  assert.equal(result.confirmations, 1);
+  assert.match(result.alerts[0], /neļāva pilnībā atjaunot|could not fully roll back/i);
+  assert.doesNotMatch(result.alerts[0], /Esošie dati nav mainīti|previous data has been restored/i);
 });
