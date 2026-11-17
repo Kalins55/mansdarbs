@@ -36,9 +36,18 @@
 | `mansdarbsVidGuide` | VID ceļveža pašreizējais solis | Neiekļaut; tas ir īslaicīgs navigācijas stāvoklis |
 | `mansdarbsAiDataConsent` (jāpārbauda faktiskā konstante) | AI datu nosūtīšanas piekrišana sesijā | Nekad neiekļaut; piekrišana nav pārnesama starp ierīcēm vai sesijām |
 
-## Pašreizējais rezerves kopijas ierobežojums
+## Rezerves kopijas versija 2
 
-Pašreizējais `exportRecordsBackup()` eksportē tikai `mansdarbs_demo_records_v1`. Atjaunošana pieņem versijas 1 formātu un aizstāj tikai pamata ierakstus. Tā neaptver iepriekš uzskaitītos nozaru ierakstus, profilus, VSAOI aprēķinus, rēķinus vai SIA prototipa datus.
+Versijas 2 eksports izmanto skaidru atļauto `localStorage` atslēgu sarakstu. Tas aptver pamata un nozares ierakstus, VSAOI ceturkšņus un manuālo IIN vērtību, SIA prototipa datus, abu režīmu rēķinus un izrakstītāja rekvizītus, profilus, uzskaites režīmu un valodu.
+
+- Eksports ir lietotāja sākta lokāla JSON lejupielāde; dati netiek sūtīti uz Mansdarbs serveri.
+- Netiek eksportēts `sessionStorage`, AI piekrišana vai nezināmas atslēgas.
+- Importētājs turpina pieņemt iepriekšējo versijas 1 formātu.
+- Pirms importēšanas tiek pārbaudīts faila izmērs, atļautās atslēgas, datu kopu struktūra, finanšu vērtības un kalendāra datumi.
+- Atjaunošana aizstāj tikai failā iekļautās datu kategorijas; citas lokālās kategorijas paliek neskartas.
+- Pirms rakstīšanas tiek saglabāts esošo vērtību momentuzņēmums. Ja rakstīšana neizdodas, kods mēģina atjaunot iepriekšējās vērtības.
+- Importēšana tiek testēta ar legacy v1 datiem, daļēju v2 atjaunošanu, bojātiem datiem un nederīgām finanšu vērtībām.
+
 
 ## Ieteicamais drošais nākamais solis
 
