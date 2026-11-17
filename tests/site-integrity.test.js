@@ -40,6 +40,8 @@ test('Cloudflare Pages root references existing local scripts and a real PNG sha
   checkSocialPreview(html, root);
   assert.ok(fs.existsSync(path.join(root, 'functions/api/vid-assistant.js')));
   assert.ok(fs.existsSync(path.join(root, 'funding-discovery.js')));
+  assert.ok(fs.existsSync(path.join(root, 'funding-ui.js')));
+  assert.match(html, /id=\"fundingSection\"/);
   assert.ok(fs.existsSync(path.join(root, 'funding-programs.json')));
   assert.ok(fs.existsSync(path.join(root, 'funding-sources.json')));
 });
@@ -50,6 +52,8 @@ test('Worker static-assets copy references existing local scripts and a real PNG
   checkLocalScripts(html, publicDirectory);
   checkSocialPreview(html, publicDirectory);
   assert.ok(fs.existsSync(path.join(publicDirectory, 'funding-discovery.js')));
+  assert.ok(fs.existsSync(path.join(publicDirectory, 'funding-ui.js')));
+  assert.match(html, /id=\"fundingSection\"/);
   assert.ok(fs.existsSync(path.join(publicDirectory, 'funding-programs.json')));
   assert.ok(fs.existsSync(path.join(publicDirectory, 'funding-sources.json')));
 });
