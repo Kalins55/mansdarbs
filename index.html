@@ -681,13 +681,24 @@ function updateIinWarning(){
  const now=new Date();
  const year=date?date.slice(0,4):String(now.getFullYear());
  const month=date?date.slice(0,7):[now.getFullYear(),String(now.getMonth()+1).padStart(2,'0')].join('-');
- const items=getRecords();
+ const baseItems=getRecords();
+ const industryItems=(()=>{
+  try{
+   const saved=JSON.parse(localStorage.getItem('mansdarbs_industry_records_v1')||'[]');
+   return Array.isArray(saved)?saved.filter(item=>item&&Number.isFinite(Number(item.amount))&&Number(item.amount)>0&&/^\\d{4}-\\d{2}-\\d{2}$/.test(item.date||'')).map(item=>({
+    kind:item.flow==='income'?'Ienākums':'Izdevums',
+    amount:Number(item.amount),date:item.date,
+    vatThreshold:item.flow==='income'&&item.vatThreshold===true
+   })):[];
+  }catch(_){return[];}
+ })();
+ const items=baseItems.concat(industryItems);
  const raw=document.getElementById('amount').value;
  const amount=raw===''?0:Number(raw);
  const kind=document.getElementById('kind').value;
  const vatChecked=document.getElementById('vatThreshold')?.checked===true&&kind==='Ienākums';
  let annual=0,monthly=0;
- const relevant=items.filter((item,index)=>index!==editingIndex);
+ const relevant=baseItems.filter((item,index)=>index!==editingIndex).concat(industryItems);
  relevant.forEach(item=>{
   const value=item.kind==='Ienākums'?Number(item.amount):-Number(item.amount);
   if(item.date.slice(0,4)===year)annual+=value;
