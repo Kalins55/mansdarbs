@@ -204,6 +204,8 @@ function evaluate(program, profile) {
     } else reasons.push('Programmas atbalsta mērķis sakrīt ar lietotāja vajadzību.');
   }
 
+  if (program.manualReviewReason) missing.push(String(program.manualReviewReason));
+
   list(rules.requiredProfileFields).forEach(key => {
     if (!hasValue(profile, key)) missing.push(String(key));
   });
