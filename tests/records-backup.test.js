@@ -141,7 +141,7 @@ test('v2 backup preserves existing data when a write fails but rollback succeeds
     mansdarbs_demo_invoices_v1:[{...validInvoice,number:'R-2026-002'}]
   }}), {
     mansdarbs_demo_records_v1:[{kind:'Izdevums',amount:10,date:'2026-02-01'}],
-    mansdarbs_demo_invoices_v1:[{number:'R-2026-001'}]
+    mansdarbs_demo_invoices_v1:[{...validInvoice,number:'R-2026-001'}]
   }, {failSetItemCalls:[2]});
   assert.equal(result.confirmations, 1);
   assert.match(result.alerts[0], /iepriekšējie dati ir atjaunoti|previous data has been restored/i);
@@ -152,7 +152,7 @@ test('v2 backup preserves existing data when a write fails but rollback succeeds
 test('v2 backup warns when browser storage also prevents a complete rollback', () => {
   const result = runImport(JSON.stringify({app:'Mansdarbs',version:2,data:{
     mansdarbs_demo_records_v1:[{kind:'Ienākums',amount:25,date:'2026-03-01'}],
-    mansdarbs_demo_invoices_v1:[{number:'R-2026-002'}]
+    mansdarbs_demo_invoices_v1:[{...validInvoice,number:'R-2026-002'}]
   }}), {
     mansdarbs_demo_records_v1:[{kind:'Izdevums',amount:10,date:'2026-02-01'}],
     mansdarbs_demo_invoices_v1:[{number:'R-2026-001'}]
