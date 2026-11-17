@@ -888,12 +888,28 @@ function validateBackupData(data){
  if(!data||typeof data!=='object'||Array.isArray(data))throw new Error('data');
  const keys=Object.keys(data);if(!keys.length||keys.some(k=>!BACKUP_DATA_KEYS.includes(k)))throw new Error('keys');
  for(const key of keys){const value=data[key];
-  if(['mansdarbs_demo_records_v1','mansdarbs_industry_records_v1','mansdarbs_industry_profiles_v1','mansdarbs_demo_invoices_v1','mansdarbs_demo_invoices_zs_v1'].includes(key)){if(!Array.isArray(value)||value.length>50000)throw new Error('array')}
-  else if(key.startsWith('mansdarbs-vsaoi-2026-q')){if(!value||typeof value!=='object'||Array.isArray(value)||(value.values!==undefined&&(!Array.isArray(value.values)||value.values.length!==3))||(value.rows!==undefined&&(!Array.isArray(value.rows)||value.rows.length!==3)))throw new Error('quarter')}
-  else if(key==='mansdarbs_sia_prototype_v1'){if(!value||typeof value!=='object'||Array.isArray(value)||!Array.isArray(value.companies)||!Array.isArray(value.transactions))throw new Error('sia')}
-  else if(['mansdarbs_context_profile_v1','mansdarbs_industry_profile_v1','mansdarbs_payment_profile_v1','mansdarbs_invoice_seller_v1','mansdarbs_invoice_seller_zs_v1'].includes(key)){if(!value||typeof value!=='object'||Array.isArray(value))throw new Error('object')}
-  else if(typeof value!=='string'||value.length>10000)throw new Error('string');
-  if(Array.isArray(value))value.forEach(item=>{if(!item||typeof item!=='object'||Array.isArray(item))throw new Error('item');if(item.date!==undefined&&!validBackupDate(item.date))throw new Error('date')});
+  if(['mansdarbs_demo_records_v1','mansdarbs_industry_records_v1','mansdarbs_industry_profiles_v1','mansdarbs_demo_invoices_v1','mansdarbs_demo_invoices_zs_v1'].includes(key)){
+   if(!Array.isArray(value)||value.length>50000)throw new Error('array');
+   value.forEach(item=>{
+    if(!item||typeof item!=='object'||Array.isArray(item))throw new Error('item');
+    if(item.date!==undefined&&!validBackupDate(item.date))throw new Error('date');
+    if(key==='mansdarbs_demo_records_v1'&&(!['Ienākums','Izdevums'].includes(item.kind)||!Number.isFinite(Number(item.amount))||Number(item.amount)<=0||!validBackupDate(item.date)))throw new Error('record');
+    if(key==='mansdarbs_industry_records_v1'&&(!Number.isFinite(Number(item.amount))||Number(item.amount)<=0||!validBackupDate(item.date)||!['income','expense'].includes(item.flow)))throw new Error('industry-record');
+   });
+  }else if(key.startsWith('mansdarbs-vsaoi-2026-q')){
+   if(!value||typeof value!=='object'||Array.isArray(value)||(value.values!==undefined&&(!Array.isArray(value.values)||value.values.length!==3||value.values.some(n=>!Number.isFinite(Number(n)))))||(value.rows!==undefined&&(!Array.isArray(value.rows)||value.rows.length!==3||value.rows.some((r,i)=>!r||typeof r!=='object'||r.month!==i+1||['profit','base','full','pension','total'].some(k=>!Number.isFinite(Number(r[k])))))))throw new Error('quarter');
+   if(value.base!==undefined&&(!Number.isFinite(Number(value.base))||Number(value.base)<0))throw new Error('quarter-base');
+  }else if(key==='mansdarbs_sia_prototype_v1'){
+   if(!value||typeof value!=='object'||Array.isArray(value)||!Array.isArray(value.companies)||!Array.isArray(value.transactions)||value.companies.length>10000||value.transactions.length>50000)throw new Error('sia');
+  }else if(['mansdarbs_context_profile_v1','mansdarbs_industry_profile_v1','mansdarbs_payment_profile_v1','mansdarbs_invoice_seller_v1','mansdarbs_invoice_seller_zs_v1'].includes(key)){
+   if(!value||typeof value!=='object'||Array.isArray(value))throw new Error('object');
+  }else if(key==='mansdarbs_vsaoi_iin_manual_v1'){
+   if(typeof value!=='string'||value.length>100||!Number.isFinite(Number(value))||Number(value)<0)throw new Error('manual-vsaoi');
+  }else if(key==='mansdarbs_accounting_mode'){
+   if(!['self','zs','sia'].includes(value))throw new Error('mode');
+  }else if(key==='mansdarbs_language_v1'){
+   if(!['lv','en'].includes(value))throw new Error('language');
+  }else if(typeof value!=='string'||value.length>10000)throw new Error('string');
  }
  return keys;
 }
