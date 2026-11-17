@@ -92,6 +92,13 @@ test('v2 backup rejects unknown keys before confirmation and leaves data unchang
   assert.equal(JSON.parse(result.store.get('mansdarbs_demo_records_v1'))[0].amount, 9);
 });
 
+test('v2 backup validates invoice seller profile field types', () => {
+  const valid = runImport(JSON.stringify({app:'Mansdarbs',version:2,data:{mansdarbs_invoice_seller_v1:{seller:'Pārdevējs',reg:'123',address:'Rīga',bank:'LV00',email:'test@example.com'}}}));
+  const invalid = runImport(JSON.stringify({app:'Mansdarbs',version:2,data:{mansdarbs_invoice_seller_v1:{seller:123}}}));
+  assert.equal(valid.confirmations, 1);
+  assert.equal(invalid.confirmations, 0);
+});
+
 test('v2 backup rejects malformed nested SIA companies and transactions', () => {
   const invalidCompany = runImport(JSON.stringify({app:'Mansdarbs',version:2,data:{
     mansdarbs_sia_prototype_v1:{companies:[{name:'Bez ID'}],transactions:[]}
