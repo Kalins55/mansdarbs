@@ -935,9 +935,19 @@ function importRecordsBackup(event){
   const summary=Object.entries(counts).map(([k,v])=>v+' '+k).join(', ');
   if(!confirm(uiText('Atjaunot datus no pilnās rezerves kopijas? Tiks aizstāti tikai failā iekļautie datu veidi; pārējie pašreizējie dati paliks neskarti. Iekļauts: ','Restore this full backup? Only data categories included in the file will be replaced; other current data will remain unchanged. Included: ')+summary+'.'))return;
   const snapshot={};keys.forEach(key=>snapshot[key]=localStorage.getItem(key));
-  try{keys.forEach(key=>localStorage.setItem(key,JSON.stringify(backup.data[key])))}catch(writeError){keys.forEach(key=>{try{if(snapshot[key]===null)localStorage.removeItem(key);else localStorage.setItem(key,snapshot[key])}catch(rollbackError){}});throw new Error('storage')}
+  try{keys.forEach(key=>localStorage.setItem(key,JSON.stringify(backup.data[key])))}catch(writeError){
+   let rollbackComplete=true;
+   keys.forEach(key=>{try{if(snapshot[key]===null)localStorage.removeItem(key);else localStorage.setItem(key,snapshot[key])}catch(rollbackError){rollbackComplete=false}});
+   if(!rollbackComplete)throw new Error('rollback-failed');
+   throw new Error('storage');
+  }
   cancelEdit();renderRecords();renderInvoices();siaRender();loadVsaoiQuarter();syncIinFromVsaoi();alert(uiText('Pilnā rezerves kopija veiksmīgi atjaunota.','Full backup restored successfully.'));
- }catch(e){alert(uiText('Šī nav derīga Mansdarbs rezerves kopija vai pārlūka krātuvē nepietiek vietas. Esošie dati nav mainīti.','This is not a valid Mansdarbs backup or browser storage is insufficient. Existing data has not been changed.'))}finally{input.value=''}};
+ }catch(e){
+  const message=e&&e.message==='rollback-failed'
+   ?uiText('Atjaunošana pārtrūka, un pārlūks neļāva pilnībā atjaunot iepriekšējos datus. Neveic turpmākas izmaiņas šajā lapā; pirms turpināšanas saglabā pašreizējo stāvokli un sazinies ar atbalstu.','Restore was interrupted and the browser could not fully roll back the previous data. Do not make further changes on this page; preserve the current state and contact support before continuing.')
+   :uiText('Šī nav derīga Mansdarbs rezerves kopija vai pārlūka krātuvē nepietiek vietas. Ja atjaunošana tika pārtraukta, iepriekšējie dati ir atjaunoti.','This is not a valid Mansdarbs backup or browser storage is insufficient. If restoration was interrupted, the previous data has been restored.');
+  alert(message);
+ }finally{input.value=''}};
  reader.onerror=()=>{alert(uiText('Neizdevās nolasīt failu.','Could not read the file.'));input.value=''};reader.readAsText(file);
 }
 const SIA_KEY='mansdarbs_sia_prototype_v1';
