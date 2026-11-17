@@ -181,6 +181,15 @@
 #mansdarbs-vid-assistant .mva-chat textarea{display:block;width:100%;min-height:88px;max-width:100%;resize:vertical;border:1px solid #d5ded7;border-radius:11px;padding:12px;font:inherit}
 #mansdarbs-vid-assistant .mva-chat small{display:block;color:#6d7b72;font-size:12px;margin-top:8px}
 
+/* Pieejamāki skārienmērķi biežāk lietotajām vadīklām */
+.lang-switch button{min-width:44px;min-height:44px}
+.nav button{min-height:44px}
+.shell.home-screen .card .btn{min-height:44px}
+.records-actions .btn{min-height:44px}
+.record-actions button{min-width:44px;min-height:44px;padding:8px 10px}
+.md-context-help__actions button{min-height:44px}
+#mansdarbs-vid-assistant .mva-close{min-width:44px;min-height:44px;padding:8px 12px}
+
 
 /* iPhone sākumlapas kompaktais izkārtojums — saglabā esošo vizuālo stilu */
 @media(max-width:680px){
@@ -793,7 +802,7 @@ function renderRecords(){
  }).join('');
  const recordHtml=filtered.map(x=>({x,index:items.indexOf(x)})).reverse().map(({x,index})=>{
   const searchText=[x.kind,x.date,x.category,x.note].join(' ').toLocaleLowerCase('lv-LV');
-  return '<article class="record record-entry" data-search="'+escapeHtml(searchText)+'"><div class="record-main"><strong>'+escapeHtml(x.kind)+'</strong><div class="record-meta"><span>'+escapeHtml(x.date)+'</span>'+(x.category?'<span class="record-category">'+escapeHtml(x.category)+'</span>':'')+(x.note?'<span>'+escapeHtml(x.note)+'</span>':'')+'</div><div class="record-actions"><button class="textlink" style="border:0;background:none;padding:0;cursor:pointer" onclick="editRecord('+index+')">Labot</button><button class="textlink" style="border:0;background:none;padding:0;cursor:pointer;color:#a33" onclick="deleteRecord('+index+')">Dzēst</button></div></div><div class="amount">'+(x.kind==='Izdevums'?'−':'+')+money(x.amount)+'</div></article>';
+  return '<article class="record record-entry" data-search="'+escapeHtml(searchText)+'"><div class="record-main"><strong>'+escapeHtml(x.kind)+'</strong><div class="record-meta"><span>'+escapeHtml(x.date)+'</span>'+(x.category?'<span class="record-category">'+escapeHtml(x.category)+'</span>':'')+(x.note?'<span>'+escapeHtml(x.note)+'</span>':'')+'</div><div class="record-actions"><button class="textlink" style="border:0;background:none;min-width:44px;min-height:44px;padding:8px 10px;cursor:pointer" onclick="editRecord('+index+')">Labot</button><button class="textlink" style="border:0;background:none;min-width:44px;min-height:44px;padding:8px 10px;cursor:pointer;color:#a33" onclick="deleteRecord('+index+')">Dzēst</button></div></div><div class="amount">'+(x.kind==='Izdevums'?'−':'+')+money(x.amount)+'</div></article>';
  }).join('');
  const noEntries=!items.length?'<div class="empty">Pagaidām nav neviena ieraksta. Pievieno pirmo, kad esi gatavs.</div>':!filtered.length?'<div class="empty">Šajā periodā izvēlētajam veidam ierakstu nav.</div>':'';
  root.innerHTML='<div class="records-toolbar"><div class="field"><label for="monthFilter">Periods</label><select id="monthFilter" onchange="renderRecords()">'+monthOptions+'</select></div><div class="field"><label for="recordKindFilter">Ieraksta veids</label><select id="recordKindFilter" onchange="renderRecords()"><option value="all">Visi</option><option value="Ienākums" '+(selectedKind==='Ienākums'?'selected':'')+'>Ienākumi</option><option value="Izdevums" '+(selectedKind==='Izdevums'?'selected':'')+'>Izdevumi</option></select></div><div class="field"><label for="recordSearch">Meklēt ierakstos</label><input id="recordSearch" type="search" value="'+escapeHtml(search)+'" placeholder="Ieraksta meklēšana" oninput="filterRecordRows(this.value)"></div></div><div class="cards" style="margin-bottom:14px"><div class="card" style="box-shadow:none;padding:14px"><small class="muted">Ienākumi kopā</small><div class="amount">'+money(income)+'</div></div><div class="card" style="box-shadow:none;padding:14px"><small class="muted">Izdevumi kopā</small><div class="amount">'+money(expense)+'</div></div><div class="card" style="box-shadow:none;padding:14px"><small class="muted">Starpība</small><div class="amount">'+money(income-expense)+'</div></div></div><h3 style="margin:22px 0 5px">Pārskats pa mēnešiem</h3><p class="muted" style="font-size:13px;margin:0 0 8px">Kopsavilkums atbilstoši izvēlētajam periodam un ieraksta veidam.</p>'+(monthlyHtml||'<div class="empty">Vēl nav datu mēnešu pārskatam.</div>')+'<h3 style="margin:22px 0 5px">Ieraksti</h3><p class="records-toolbar-count" id="recordSearchCount"></p>'+(recordHtml||noEntries);
@@ -1236,6 +1245,11 @@ function applyLanguage(){
   var root=document.createElement('section');
   root.id='mansdarbs-vid-assistant';
   root.hidden=true;
+  root.setAttribute('role','dialog');
+  root.setAttribute('aria-modal','true');
+  root.setAttribute('aria-labelledby','mvaHeading');
+  root.setAttribute('aria-describedby','mvaIntro');
+  root.tabIndex=-1;
   root.setAttribute('aria-label','VID soli pa solim palīgs');
   root.innerHTML=
     '<header class="mva-top"><div class="mva-brand">Mansdarbs <span style="color:#64716b">· VID palīgs</span></div><button type="button" class="mva-close" id="mvaClose">Atgriezties Mansdarbs</button></header>'+
@@ -1294,8 +1308,41 @@ function applyLanguage(){
   root.querySelector('#mvaSend').addEventListener('click',sendQuestion);
   root.querySelector('#mvaQuestion').addEventListener('keydown',function(event){if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendQuestion();}});
 
-  function show(){root.hidden=false;document.body.dataset.mvaPreviousOverflow=document.body.style.overflow;document.body.style.overflow='hidden';root.scrollTop=0;}
-  function close(){root.hidden=true;document.body.style.overflow=document.body.dataset.mvaPreviousOverflow||'';}
+  var previousFocus=null;
+  function getDialogFocusables(){
+    return Array.prototype.slice.call(root.querySelectorAll('a[href],button:not([disabled]),input:not([disabled]):not([type="hidden"]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])')).filter(function(element){
+      return !element.hidden&&element.getAttribute('aria-hidden')!=='true'&&element.getClientRects().length>0;
+    });
+  }
+  function show(){
+    previousFocus=document.activeElement;
+    root.hidden=false;
+    document.body.dataset.mvaPreviousOverflow=document.body.style.overflow;
+    document.body.style.overflow='hidden';
+    root.scrollTop=0;
+    root.querySelector('#mvaClose').focus();
+  }
+  function close(){
+    root.hidden=true;
+    document.body.style.overflow=document.body.dataset.mvaPreviousOverflow||'';
+    var target=previousFocus;
+    previousFocus=null;
+    if(target&&document.documentElement.contains(target)&&typeof target.focus==='function')target.focus();
+  }
+  function trapDialogFocus(event){
+    if(root.hidden||event.isComposing)return;
+    if(event.key==='Escape'){event.preventDefault();close();return;}
+    if(event.key!=='Tab')return;
+    var focusables=getDialogFocusables();
+    if(!focusables.length){event.preventDefault();root.focus();return;}
+    var first=focusables[0],last=focusables[focusables.length-1];
+    if(event.shiftKey&&(document.activeElement===first||!root.contains(document.activeElement))){
+      event.preventDefault();last.focus();
+    }else if(!event.shiftKey&&(document.activeElement===last||!root.contains(document.activeElement))){
+      event.preventDefault();first.focus();
+    }
+  }
+  document.addEventListener('keydown',trapDialogFocus,true);
   function render(){
     var data=guides[current],step=data.steps[index],profileNote='';
     if(profile.value==='mun')profileNote=' Izvēlēts MUN režīms — deklarēšanas un maksāšanas kārtība atšķiras no vispārējā režīma; pārbaudi katru soli atbilstoši savam režīmam.';
@@ -1326,7 +1373,6 @@ function applyLanguage(){
   root.querySelector('#mvaAgain').addEventListener('click',function(){done.hidden=true;guide.hidden=true;setup.hidden=false;root.querySelector('#mvaHeading').textContent='Palīdzēšu paveikt VID uzdevumu';root.querySelector('#mvaIntro').textContent='Izvēlies savu situāciju un to, ko vēlies izdarīt. VID EDS ir atvērts atsevišķā cilnē.';});
   root.querySelector('#mvaVidLink').addEventListener('click',function(event){event.preventDefault();var w=window.open(VID_URL,'_blank');if(w){try{w.opener=null}catch(e){}}else{root.querySelector('#mvaPopupNote').hidden=false;}});
   try{var saved=JSON.parse(sessionStorage.getItem('mansdarbsVidGuide')||'null');if(saved&&guides[saved.task]&&Number.isInteger(saved.index)){profile.value=saved.profile||'general';task.value=saved.task;current=saved.task;index=Math.max(0,Math.min(saved.index,guides[current].steps.length-1));}}catch(e){}
-  root.addEventListener('keydown',function(e){if(e.key==='Escape'&&!root.hidden)close();});
 })();
 </script>
 
