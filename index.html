@@ -809,9 +809,16 @@ function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':
 function getIndustryTaxRecords(){
  try{
   const saved=JSON.parse(localStorage.getItem('mansdarbs_industry_records_v1')||'[]');
-  return Array.isArray(saved)?saved.filter(item=>item&&Number.isFinite(Number(item.amount))&&Number(item.amount)>0&&typeof item.date==='string').map(item=>({
-   kind:item.flow==='income'?'Ienākums':'Izdevums',
-   amount:Number(item.amount),date:item.date,
+  return Array.isArray(saved)?saved.filter(item=>{
+   if(!item||!['income','expense','refund'].includes(item.flow))return false;
+   const amount=typeof item.amount==='string'&&item.amount.trim()===''?NaN:Number(item.amount);
+   const parts=String(item.date||'').match(/^(\d{4})-(\d{2})-(\d{2})$/);
+   if(!Number.isFinite(amount)||amount<=0||!parts)return false;
+   const y=Number(parts[1]),m=Number(parts[2]),d=Number(parts[3]),date=new Date(y,m-1,d);
+   return date.getFullYear()===y&&date.getMonth()===m-1&&date.getDate()===d;
+  }).map(item=>({
+   kind:item.flow==='income'?'Ienākums':item.flow==='refund'?'Atmaksa':'Izdevums',
+   amount:Math.round(Number(item.amount)*100)/100,date:item.date,
    vatThreshold:item.flow==='income'&&item.vatThreshold===true
   })):[];
  }catch(_){return[];}
