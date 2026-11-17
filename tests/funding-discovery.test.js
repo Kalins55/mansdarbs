@@ -216,3 +216,19 @@ test('LA 4.1.4 is independently discoverable for an agriculture profile', () => 
   assert.equal(energy.status, 'open');
   assert.equal(energy.supportTypeLabels[0], 'Grants');
 });
+
+
+test('LAD programme records include source-backed eligibility checks and investment caveats', () => {
+  const catalogue = JSON.parse(fs.readFileSync(path.join(root, 'funding-programs.json'), 'utf8'));
+  const competitiveness = catalogue.programs.find(item => item.id === 'lad-la-4-1-1-farm-competitiveness-2026');
+  const climate = catalogue.programs.find(item => item.id === 'lad-la-4-1-2-climate-farm-2026');
+  const energy = catalogue.programs.find(item => item.id === 'lad-la-4-1-4-energy-efficiency-2026');
+  assert.match(competitiveness.eligibility.notes, /15 000 EUR/);
+  assert.match(competitiveness.manualReviewReason, /traktoru/);
+  assert.match(climate.eligibility.notes, /4 000 EUR/);
+  assert.match(climate.manualReviewReason, /attiecināmo investīciju/);
+  assert.match(energy.eligibility.notes, /I pielikumā/);
+  assert.equal(competitiveness.sourceUrl, 'https://www.lad.gov.lv/lv/katalogs/la-411-atbalsts-ieguldijumiem-lauku-saimniecibas-konkuretspejai');
+  assert.equal(climate.sourceUrl, 'https://www.lad.gov.lv/lv/katalogs/la-412-atbalsts-ieguldijumiem-seg-un-amonjaka-emisijas-samazinosajiem-pasakumiem-un-klimata-parmainu-mazinasanai-un-pielagosanas-pasakumu-istenosanai-lauku-saimniecibas');
+  assert.equal(energy.sourceUrl, 'https://www.lad.gov.lv/lv/katalogs/la-414-atbalsts-ieguldijumiem-aer-izmantosanai-vai-energoefektivitates-palielinasanai');
+});
