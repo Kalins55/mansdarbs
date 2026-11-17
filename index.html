@@ -452,7 +452,7 @@
 <div class="field"><label for="regimeTurnover">Gada apgrozījums — ieņēmumi (€)</label><input id="regimeTurnover" type="number" min="0" step="0.01" inputmode="decimal" placeholder="Piemēram, 18000" oninput="this.dataset.synced='manual'"></div>
 <div class="field"><label for="regimeExpenses">Gada saimnieciskās darbības izdevumi (€)</label><input id="regimeExpenses" type="number" min="0" step="0.01" inputmode="decimal" placeholder="Piemēram, 6000" oninput="this.dataset.synced='manual'"></div>
 <div class="field"><label for="regimeVsaoi">Vispārējā režīma VSAOI gadā (€)</label><input id="regimeVsaoi" type="number" min="0" step="0.01" inputmode="decimal" placeholder="Ievadi faktisko vai aprēķināto summu" oninput="this.dataset.synced='manual'"><small class="muted">Vari pārnest summu no VSAOI aprēķina. Bez šīs summas salīdzinājums nebūs pilnīgs.</small></div>
-<div class="field"><label for="regimeOtherIncome">Citi gada apliekamie ienākumi (€)</label><input id="regimeOtherIncome" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0,00" oninput="this.dataset.synced='manual'"><small class="muted">Ienākumi, kas ietekmē kopējo progresīvo IIN likmi.</small></div>
+<div class="field"><label for="regimeOtherIncome">Citi gada apliekamie ienākumi (€)</label><input id="regimeOtherIncome" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0,00" oninput="this.dataset.synced='manual'"><small class="muted">Ienākumi, kas ietekmē kopējo progresīvo IIN likmi (piemēram, darba alga pēc darba ņēmēja VSAOI). Neiekļauj MUN ienākumus.</small></div>
 <div class="field"><label for="regimeAllowance">Neizmantotais neapliekamais minimums (€)</label><input id="regimeAllowance" type="number" min="0" step="0.01" inputmode="decimal" value="6600" oninput="this.dataset.synced='manual'"></div>
 <div class="field"><label for="regimeDeductions">Citi piemērojamie atvieglojumi (€)</label><input id="regimeDeductions" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0,00" oninput="this.dataset.synced='manual'"></div>
 <div class="field full"><label for="regimeVatStatus">PVN reģistrācijas situācija</label><select id="regimeVatStatus"><option value="eligible">Neesmu vispārīgi reģistrēts PVN maksātājs un neplānoju reģistrēties</option><option value="special">Esmu reģistrēts vai plānoju reģistrēties īpašajā PVN kārtībā (PVN likuma 139.² pants)</option><option value="registered">Esmu vispārīgi reģistrēts PVN maksātājs vai plānoju reģistrēties</option><option value="unsure">Nezinu / man var būt cits īpašs PVN reģistrācijas gadījums</option></select><small class="muted">Īpašajā PVN kārtībā MUN var saglabāt tikai tad, ja izpildās VID nosacījumi, tostarp apgrozījums Latvijā nepārsniedz 50 000 € un netiek sniegti noteikti pakalpojumi citas ES valsts PVN maksātājiem. Ja neesi drošs, izvēlies “Nezinu”.</small></div>
@@ -477,7 +477,7 @@
 </div>
 <div class="actions" style="justify-content:flex-start"><button class="btn primary" onclick="calculateIin()">Aprēķināt IIN</button><button class="btn secondary" onclick="resetIin()">Notīrīt</button></div>
 <div id="iinResult" class="empty" aria-live="polite">Ievadi gada peļņu un, ja nepieciešams, arī citus ienākumus, lai aprēķinātu prognozi.</div>
-<p class="privacy">Aprēķins izmanto 2026. gada progresīvās IIN likmes: 25,5% līdz 105 300 € un 33% virs šīs summas, kā arī 3% papildu likmi ienākumu daļai virs 200 000 €. Pašnodarbinātā VSAOI, kas nav iekļautas izdevumos, tiek atskaitītas no saimnieciskās darbības peļņas. Neapliekamais minimums pēc noklusējuma ir 6600 € gadā. Ja IIN no saimnieciskās darbības nepārsniedz 50 € un nav piemērojams VID noteikts izņēmums, aprēķinā tiek piemērots minimālais 50 € IIN. Atzīmē atbrīvojumu tikai tad, ja atbilsti kādam no VID noteiktajiem nosacījumiem. Aprēķins neietver iepriekšējo gadu zaudējumus, pilnu individuālo atvieglojumu un attaisnoto izdevumu ierobežojumu izvērtējumu, kā arī īpašos proporcionālos izņēmumus. Rezultāts ir informatīvs, nevis VID aprēķins. <a href="https://www.vid.gov.lv/lv/media/1894/download?attachment=" target="_blank" rel="noopener">VID metodiskais materiāls par IIN no saimnieciskās darbības ↗</a> · <a href="https://www.vid.gov.lv/lv/iedzivotaju-ienakuma-nodokla-likmes" target="_blank" rel="noopener">VID IIN likmes ↗</a></p>
+<p class="privacy">Aprēķins izmanto 2026. gada progresīvās IIN likmes: 25,5% līdz 105 300 € un 33% virs šīs summas, kā arī 3% papildu likmi ienākumu daļai virs 200 000 €. Papildu 3% bāzi nosaka atsevišķi no kopējiem gada ienākumiem, pirms neapliekamā minimuma un citiem atvieglojumiem. Šis rīks to aptuveni nosaka tikai no ievadītajiem ienākumiem; neiekļauj MUN ienākumus un visas īpašās ienākumu kategorijas. Ja kopējie ienākumi tuvojas vai pārsniedz 200 000 €, pārbaudi EDS. Pašnodarbinātā VSAOI, kas nav iekļautas izdevumos, tiek atskaitītas no saimnieciskās darbības peļņas. Neapliekamais minimums pēc noklusējuma ir 6600 € gadā. Ja IIN no saimnieciskās darbības nepārsniedz 50 € un nav piemērojams VID noteikts izņēmums, aprēķinā tiek piemērots minimālais 50 € IIN. Atzīmē atbrīvojumu tikai tad, ja atbilsti kādam no VID noteiktajiem nosacījumiem. Aprēķins neietver iepriekšējo gadu zaudējumus, pilnu individuālo atvieglojumu un attaisnoto izdevumu ierobežojumu izvērtējumu, kā arī īpašos proporcionālos izņēmumus. Rezultāts ir informatīvs, nevis VID aprēķins. <a href="https://www.vid.gov.lv/lv/media/1894/download?attachment=" target="_blank" rel="noopener">VID metodiskais materiāls par IIN no saimnieciskās darbības ↗</a> · <a href="https://www.vid.gov.lv/lv/iedzivotaju-ienakuma-nodokla-likmes" target="_blank" rel="noopener">VID IIN likmes ↗</a></p>
 </section>
 </div>
 
@@ -582,11 +582,12 @@ function calculateVsaoi(){
  }
  document.getElementById('vsaoiResult').innerHTML='<h3 style="margin:0 0 8px">'+(en?'Calculation result':'Aprēķina rezultāts')+'</h3>'+body+'<div class="record"><strong>'+(en?'Quarter total':'Kopā par ceturksni')+'</strong><strong class="amount">'+money(total)+'</strong></div>'+annualNote+annualLimitNote+'<p class="privacy">'+(en?'Submit the self-employed report in VID EDS by the 17th of January (for Q4), April (for Q1), July (for Q2) and October (for Q3). VSAOI is generally due by the 23rd of the relevant month. Always confirm the exact deadline and amount in VID EDS.':'Pašnodarbinātā ziņojums EDS jāiesniedz līdz 17. datumam šajos mēnešos: janvārī (par 4. ceturksni), aprīlī (par 1. ceturksni), jūlijā (par 2. ceturksni) un oktobrī (par 3. ceturksni). VSAOI parasti jāsamaksā līdz attiecīgā mēneša 23. datumam. Precīzu termiņu un maksājamo summu vienmēr pārbaudi VID EDS.')+'</p>';
 }
-function progressiveIin(amount){
+function progressiveIin(amount,additionalBase){
  const x=Math.max(0,amount);
+ const y=additionalBase===undefined?x:Math.max(0,Number(additionalBase)||0);
  const first=Math.min(x,105300)*0.255;
  const second=Math.max(0,x-105300)*0.33;
- const additional=Math.max(0,x-200000)*0.03;
+ const additional=Math.max(0,y-200000)*0.03;
  return first+second+additional;
 }
 function syncTaxRegimeInputs(){
@@ -641,7 +642,7 @@ function compareTaxRegimes(){
  const taxableBusiness=Math.max(0,profit-vsaoi);
  const totalTaxable=Math.max(0,other+taxableBusiness-Math.min(other+taxableBusiness,allowance+deductions));
  const otherTaxable=Math.max(0,other-Math.min(other,allowance+deductions));
- const progressiveBusiness=Math.max(0,progressiveIin(totalTaxable)-progressiveIin(otherTaxable));
+ const progressiveBusiness=Math.max(0,progressiveIin(totalTaxable,totalBeforeRelief)-progressiveIin(otherTaxable,other));
  const exempt=document.getElementById('regimeMinimumIinExempt').checked;
  const generalIin=!exempt&&progressiveBusiness<50?50:progressiveBusiness;
  const generalTax=vsaoi+generalIin;
@@ -682,8 +683,8 @@ function calculateIin(){
  const relief=Math.min(totalBeforeRelief,minimum+deductions);
  const taxableTotal=Math.max(0,totalBeforeRelief-relief);
  const taxableOther=Math.max(0,other-Math.min(other,minimum+deductions));
- const totalTax=progressiveIin(taxableTotal);
- const taxWithoutBusiness=progressiveIin(taxableOther);
+ const totalTax=progressiveIin(taxableTotal,totalBeforeRelief);
+ const taxWithoutBusiness=progressiveIin(taxableOther,other);
  const progressiveBusinessTax=Math.max(0,totalTax-taxWithoutBusiness);
  const minimumIinApplied=!minimumIinExempt&&progressiveBusinessTax<50;
  const businessIin=minimumIinApplied?50:progressiveBusinessTax;
