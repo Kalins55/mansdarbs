@@ -622,12 +622,12 @@ function compareTaxRegimes(){
  const difference=Math.abs(generalTax-munTax);
  const winner=generalTax<munTax?'general':munTax<generalTax?'mun':'equal';
  const status=document.getElementById('regimeVatStatus').value;
- const eligible=(status==='eligible'||status==='special')&&turnover<50000;
+ const eligible=(status==='eligible'||status==='special')&&turnover<=50000;
  const en=document.documentElement.lang==='en';
  const row=(label,value)=>'<div class="record"><span>'+label+'</span><strong class="amount">'+money(value)+'</strong></div>';
  let content='<h3 style="margin:0 0 10px">Aptuvens gada salīdzinājums</h3>'+row('Apgrozījums',turnover)+row('Izdevumi',expenses)+row('Peļņa pirms nodokļiem',profit)+'<hr>'+row('Vispārējais režīms — VSAOI',vsaoi)+row('Vispārējais režīms — IIN',generalIin)+row('Vispārējais režīms — kopā',generalTax)+row('MUN 25% no apgrozījuma',munTax)+row('No MUN sociālajai apdrošināšanai (80%)',munSocial)+row('No MUN IIN daļai (20%)',munIin)+'<hr>'+row('Atlikums vispārējā režīmā',generalNet)+row('Atlikums MUN režīmā',munNet);
  if(!eligible){
-  content+='<p class="privacy"><strong>Šobrīd MUN izvēli nevar droši ieteikt.</strong> '+(turnover>=50000?'Norādītais apgrozījums sasniedz vai pārsniedz 50 000 € PVN reģistrācijas slieksni. ':'')+(status==='registered'?'Norādīta vispārīgā PVN reģistrācija vai nodoms reģistrēties. ':'Norādīta neskaidra PVN situācija. ')+'Pārbaudi tiesības un izņēmumus VID.</p>';
+  content+='<p class="privacy"><strong>Šobrīd MUN izvēli nevar droši ieteikt.</strong> '+(turnover>50000?'Norādītais apgrozījums pārsniedz 50 000 € PVN reģistrācijas slieksni. ':'')+(status==='registered'?'Norādīta vispārīgā PVN reģistrācija vai nodoms reģistrēties. ':'Norādīta neskaidra PVN situācija. ')+'Pārbaudi tiesības un izņēmumus VID.</p>';
  }else if(winner==='equal'){
   content+='<p class="privacy">Aprēķinātais nodokļu slogs abos režīmos ir vienāds. Lēmumā ņem vērā arī sociālās apdrošināšanas aizsardzību un administratīvos pienākumus.</p>';
  }else{
