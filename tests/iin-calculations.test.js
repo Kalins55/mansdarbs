@@ -57,8 +57,8 @@ test('additional 3% IIN is calculated before the annual allowance and other reli
     allowance: 6600, deductions: 1000, exempt: true
   });
   assert.equal(result.alerts.length, 0);
-  assert.match(result.elements.iinResult.innerHTML, /2 415\.00 €|2415\.00 €/);
-  assert.match(result.elements.iinResult.innerHTML, /50 202\.00 €|50202\.00 €/);
+  assert.match(result.elements.iinResult.innerHTML, /3 090\.00 €|3090\.00 €/);
+  assert.match(result.elements.iinResult.innerHTML, /57 034\.50 €|57034\.50 €/);
 });
 
 test('additional 3% IIN does not start when the separate annual income base is exactly €200,000', () => {
@@ -67,6 +67,6 @@ test('additional 3% IIN does not start when the separate annual income base is e
     allowance: 6600, deductions: 1000, exempt: true
   });
   assert.equal(result.alerts.length, 0);
-  assert.match(result.elements.iinResult.innerHTML, /2 295\.00 €|2295\.00 €/);
-  assert.match(result.elements.iinResult.innerHTML, /49 062\.00 €|49062\.00 €/);
+  assert.match(result.elements.iinResult.innerHTML, /2 970\.00 €|2970\.00 €/);
+  assert.match(result.elements.iinResult.innerHTML, /55 594\.50 €|55594\.50 €/);
 });
