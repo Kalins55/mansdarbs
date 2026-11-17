@@ -270,3 +270,39 @@ test('LA 4.2 processing support is limited to cooperatives and shows the shared 
   assert.ok(!soleTrader.some(match => match.id === item.id));
 });
 
+test('LA 4.1.2 catalogue exposes the conflicting official status evidence', () => {
+  const catalogue = JSON.parse(fs.readFileSync(path.join(root, 'funding-programs.json'), 'utf8'));
+  const climate = catalogue.programs.find(item => item.id === 'lad-la-4-1-2-climate-farm-2026');
+  assert.equal(climate.status, 'open');
+  assert.match(climate.statusEvidenceNote, /Kārta noslēgusies/);
+  assert.match(climate.manualReviewReason, /pretrunīgs kārtas statusa teksts/);
+});
+
+test('LA 4.2 cooperative support intensity and special cost limits are disclosed', () => {
+  const catalogue = JSON.parse(fs.readFileSync(path.join(root, 'funding-programs.json'), 'utf8'));
+  const item = catalogue.programs.find(program => program.id === 'lad-la-4-2-cooperative-processing-2026');
+  assert.equal(item.fundingDetails.supportIntensity, '50–60%');
+  assert.match(item.eligibility.notes, /200 000 EUR/);
+  assert.match(item.eligibility.notes, /500 000 EUR/);
+});
+
+test('LA 4.3 institutional call is not matched to an ordinary farm applicant', () => {
+  const catalogue = JSON.parse(fs.readFileSync(path.join(root, 'funding-programs.json'), 'utf8'));
+  const item = catalogue.programs.find(program => program.id === 'lad-la-4-3-agri-forestry-infrastructure-2026');
+  assert.ok(item);
+  assert.equal(item.fundingDetails.totalPublicBudget, 32600000);
+  assert.equal(item.deadline, '2026-12-01');
+  const farm = api.getFundingMatches(
+    { sector: 'agri', activity: 'Meliorācija', legalForm: 'Zemnieku saimniecība' },
+    catalogue,
+    { today: '2026-11-17' }
+  );
+  assert.ok(!farm.some(match => match.id === item.id));
+  const institution = api.getFundingMatches(
+    { sector: 'agri', activity: 'Meliorācija', legalForm: 'ZMNĪ' },
+    catalogue,
+    { today: '2026-11-17' }
+  );
+  assert.ok(institution.some(match => match.id === item.id));
+});
+
