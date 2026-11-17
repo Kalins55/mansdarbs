@@ -243,3 +243,30 @@ test('LA 4.1.4 distinguishes eligible project costs from grant amount', () => {
   assert.match(energy.manualReviewReason, /1,2 kWh\/kg/);
   assert.match(energy.fundingDetails.note, /tas nav granta apmērs/);
 });
+
+test('LA 4.2 processing support is limited to cooperatives and shows the shared budget accurately', () => {
+  const catalogue = JSON.parse(fs.readFileSync(path.join(root, 'funding-programs.json'), 'utf8'));
+  const item = catalogue.programs.find(program => program.id === 'lad-la-4-2-cooperative-processing-2026');
+  assert.ok(item);
+  assert.equal(item.status, 'open');
+  assert.equal(item.openingDate, '2026-11-09');
+  assert.equal(item.deadline, '2026-12-09');
+  assert.equal(item.fundingDetails.totalPublicBudget, 2127990);
+  assert.match(item.fundingDetails.note, /kopējais kooperatīvu finansējums/);
+  assert.deepEqual(item.eligibility.legalForms, ['Kooperatīvā sabiedrība', 'Kooperatīvo sabiedrību apvienība']);
+
+  const cooperative = api.getFundingMatches(
+    { sector: 'agri', activity: 'Pārstrāde', legalForm: 'Kooperatīvā sabiedrība' },
+    catalogue,
+    { today: '2026-11-17' }
+  );
+  assert.ok(cooperative.some(match => match.id === item.id));
+
+  const soleTrader = api.getFundingMatches(
+    { sector: 'agri', activity: 'Pārstrāde', legalForm: 'Saimnieciskās darbības veicējs' },
+    catalogue,
+    { today: '2026-11-17' }
+  );
+  assert.ok(!soleTrader.some(match => match.id === item.id));
+});
+
