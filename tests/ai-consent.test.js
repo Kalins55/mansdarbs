@@ -200,15 +200,17 @@ test('VID assistant forwards only consented requests and returns filtered offici
   const vm = require('node:vm');
   let upstreamCalls = 0;
   let upstreamPayload;
+  let upstreamOptions;
   const executable = api.replace(
     'export async function onRequestPost',
     'async function onRequestPost'
   );
   const sandbox = {
-    Response, URL, TextEncoder, TextDecoder,
+    Response, URL, TextEncoder, TextDecoder, AbortSignal,
     fetch: async (url, options) => {
       upstreamCalls += 1;
       assert.equal(url, 'https://api.openai.com/v1/responses');
+      upstreamOptions = options;
       upstreamPayload = JSON.parse(options.body);
       return new Response(JSON.stringify({
         output: [{
@@ -242,6 +244,7 @@ test('VID assistant forwards only consented requests and returns filtered offici
   assert.equal(response.status, 200);
   assert.equal(upstreamCalls, 1);
   assert.equal(upstreamPayload.store, false, 'Conversation storage must remain disabled');
+  assert.ok(upstreamOptions.signal instanceof AbortSignal, 'The upstream request has a bounded timeout signal');
   assert.equal(upstreamPayload.max_output_tokens, 900);
   assert.equal(result.answer, 'Pārbaudi VID informāciju.');
   assert.deepEqual(result.sources.map(source => source.url), ['https://vid.gov.lv/lv']);
@@ -275,4 +278,70 @@ test('VID assistant API returns 403 and never contacts OpenAI when consent is ab
 
   assert.equal(response.status, 403);
   assert.equal(upstreamCalls, 0, 'The AI provider must not be contacted without consent');
+});
+
+
+test('VID assistant returns a controlled 502 when the provider response has an invalid output shape', async () => {
+  const vm = require('node:vm');
+  const executable = api.replace(
+    'export async function onRequestPost',
+    'async function onRequestPost'
+  );
+  const sandbox = {
+    Response, URL, TextEncoder, TextDecoder, AbortSignal,
+    fetch: async () => new Response(JSON.stringify({ output: { unexpected: true } }), {
+      status: 200,
+      headers: { 'Content-Type': 'application/json' }
+    })
+  };
+  vm.runInNewContext(executable + '\\nthis.onRequestPost = onRequestPost;', sandbox);
+  const request = new Request('https://mansdarbs.eu/api/vid-assistant', {
+    method: 'POST',
+    headers: { Origin: 'https://mansdarbs.eu', 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      consent: true,
+      messages: [{ role: 'user', content: 'Pārbaudes jautājums' }]
+    })
+  });
+
+  const response = await sandbox.onRequestPost({ request, env: { OPENAI_API_KEY: 'test-key' } });
+
+  assert.equal(response.status, 502);
+  assert.deepEqual(await response.json(), { error: 'Saņēmu nesaprotamu atbildi. Mēģini vēlreiz.' });
+});
+
+test('VID assistant ignores malformed citation annotations without losing the answer', async () => {
+  const vm = require('node:vm');
+  const executable = api.replace(
+    'export async function onRequestPost',
+    'async function onRequestPost'
+  );
+  const sandbox = {
+    Response, URL, TextEncoder, TextDecoder, AbortSignal,
+    fetch: async () => new Response(JSON.stringify({
+      output: [{
+        type: 'message',
+        content: [
+          { type: 'output_text', text: 'Atbilde ir pieejama.' , annotations: {} },
+          null
+        ]
+      }]
+    }), { status: 200, headers: { 'Content-Type': 'application/json' } })
+  };
+  vm.runInNewContext(executable + '\\nthis.onRequestPost = onRequestPost;', sandbox);
+  const request = new Request('https://mansdarbs.eu/api/vid-assistant', {
+    method: 'POST',
+    headers: { Origin: 'https://mansdarbs.eu', 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      consent: true,
+      messages: [{ role: 'user', content: 'Pārbaudes jautājums' }]
+    })
+  });
+
+  const response = await sandbox.onRequestPost({ request, env: { OPENAI_API_KEY: 'test-key' } });
+  const result = await response.json();
+
+  assert.equal(response.status, 200);
+  assert.equal(result.answer, 'Atbilde ir pieejama.');
+  assert.deepEqual(result.sources, []);
 });
