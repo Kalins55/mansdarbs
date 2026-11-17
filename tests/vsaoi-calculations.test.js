@@ -18,7 +18,7 @@ function extractFunction(name) {
       else if (ch === quote) quote = null;
       continue;
     }
-    if (ch === "'" || ch === '"' || ch === '`') { quote = ch; continue; }
+    if (ch === "'" || ch === '"' || ch === '\`') { quote = ch; continue; }
     if (ch === '{') depth++;
     else if (ch === '}') {
       depth--;
@@ -32,7 +32,8 @@ function createHarness() {
   const elements = {
     profit1: { value: '0' }, profit2: { value: '0' }, profit3: { value: '0' },
     contributionBase: { value: '780' }, contributionStatus: { value: 'standard' },
-    vsaoiActivityType: { value: 'ordinary' }, vsaoiQuarter: { value: '1' }, manualVsaoiIin: { checked: false },
+    vsaoiActivityType: { value: 'ordinary' }, vsaoiQuarter: { value: '1' },
+    manualVsaoiIin: { checked: false },
     vsaoiResult: { innerHTML: '' }, annualProfit: { value: '' }, annualVsaoi: { value: '' }
   };
   const storage = new Map();
@@ -46,7 +47,8 @@ function createHarness() {
   };
   const localStorage = {
     getItem: key => storage.has(key) ? storage.get(key) : null,
-    setItem: (key, value) => storage.set(key, value),\n    removeItem: key => storage.delete(key)
+    setItem: (key, value) => storage.set(key, value),
+    removeItem: key => storage.delete(key)
   };
   const money = value => Number(value).toFixed(2) + ' €';
   const uiText = lv => lv;
@@ -54,9 +56,11 @@ function createHarness() {
   const source = [
     extractFunction('vsaoiQuarterKey'),
     extractFunction('syncIinFromVsaoi'),
-    extractFunction('calculateVsaoi'),\n    extractFunction('toggleManualVsaoiIin'),\n    extractFunction('saveManualVsaoiIin')
+    extractFunction('calculateVsaoi'),
+    extractFunction('toggleManualVsaoiIin'),
+    extractFunction('saveManualVsaoiIin')
   ].join('\n') + '\nreturn { calculateVsaoi, toggleManualVsaoiIin, saveManualVsaoiIin };';
-  const calculate = new Function('document', 'localStorage', 'money', 'uiText', 'alert', source)(
+  const api = new Function('document', 'localStorage', 'money', 'uiText', 'alert', source)(
     document, localStorage, money, uiText, alert
   );
   function runQuarter(quarter, values, activity = 'ordinary', status = 'standard') {
@@ -68,7 +72,11 @@ function createHarness() {
     const saved = storage.get('mansdarbs-vsaoi-2026-q' + quarter);
     return saved ? JSON.parse(saved) : null;
   }
-  return { elements, storage, alerts, runQuarter, toggleManual: api.toggleManualVsaoiIin, saveManual: api.saveManualVsaoiIin };
+  return {
+    elements, storage, alerts, runQuarter,
+    toggleManual: api.toggleManualVsaoiIin,
+    saveManual: api.saveManualVsaoiIin
+  };
 }
 
 test('ordinary activity: monthly 10% and full VSAOI are rounded to cents', () => {
