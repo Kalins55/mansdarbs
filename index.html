@@ -892,10 +892,14 @@ function importRecordsBackup(event){
  const reader=new FileReader();
  reader.onload=()=>{
   try{
-   const backup=JSON.parse(String(reader.result||'')),source=Array.isArray(backup)?backup:backup&&backup.records;
+   const backup=JSON.parse(String(reader.result||''));
+   if(!Array.isArray(backup)&&(!backup||backup.app!=='Mansdarbs'||backup.version!==1))throw new Error('format');
+   const source=Array.isArray(backup)?backup:backup.records;
    if(!Array.isArray(source)||!source.length)throw new Error('empty');
    const restored=source.map(x=>{
-    if(!x||!['Ienākums','Izdevums'].includes(x.kind)||!Number.isFinite(Number(x.amount))||Number(x.amount)<=0||typeof x.date!=='string'||!/^\d{4}-\d{2}-\d{2}$/.test(x.date))throw new Error('invalid');
+    const dateParts=x&&typeof x.date==='string'?x.date.match(/^(\d{4})-(\d{2})-(\d{2})$/):null;
+    const validDate=dateParts&&(()=>{const parsed=new Date(x.date+'T00:00:00Z');return !Number.isNaN(parsed.getTime())&&parsed.toISOString().slice(0,10)===x.date})();
+    if(!x||!['Ienākums','Izdevums'].includes(x.kind)||!Number.isFinite(Number(x.amount))||Number(x.amount)<=0||!validDate)throw new Error('invalid');
     return {kind:x.kind,amount:Math.round(Number(x.amount)*100)/100,date:x.date,category:typeof x.category==='string'?x.category.slice(0,80):'',note:typeof x.note==='string'?x.note.slice(0,120):'',vatThreshold:x.kind==='Ienākums'&&x.vatThreshold===true};
    });
    if(!confirm(uiText('Atjaunot ierakstus no rezerves kopijas? Pašreizējie ieraksti tiks aizstāti.','Restore entries from this backup? Your current entries will be replaced.')))return;
