@@ -136,7 +136,7 @@ function runPrefill(records, options = {}) {
   const document = { getElementById: id => elements[id] };
   const run = new Function('document', 'getRecords', 'getIndustryTaxComparisonRecords', 'money',
     extractFunction('clearRegimeRecordPrefill') + ';' + extractFunction('fillRegimeFromRecords') + '; return fillRegimeFromRecords;'
-  )(document, () => records, () => options.industryRecords || [], value => Number(value).toFixed(2) + ' €');
+  )(document, () => records, () => (options.industryRecords || []).map(item => ({ ...item, source: 'industry' })), value => Number(value).toFixed(2) + ' €');
   run();
   return elements;
 }
@@ -174,7 +174,7 @@ test('comparison prefill excludes customer refunds and warns that turnover needs
   ] });
   assert.equal(result.regimeTurnover.value, '1000.00');
   assert.equal(result.regimeExpenses.value, '0.00');
-  assert.match(result.regimeRecordsStatus.textContent, /1 klientu atmaksa netika automātiski iekļauta apgrozījumā/);
+  assert.match(result.regimeRecordsStatus.textContent, /1 klienta atmaksa netika automātiski iekļauta apgrozījumā/);
 });
 
 test('comparison prefill never overwrites manually entered values', () => {
@@ -295,7 +295,7 @@ test('comparison import reports when all selected-year records are malformed', (
     { kind: 'Ienākums', amount: -50, date: '2026-01-12' },
     { kind: 'Izdevums', amount: 100, date: '2026-13-01' }
   ]);
-  assert.match(result.regimeRecordsStatus.textContent, /bet to datums, veids vai summa nav korekta/);
+  assert.match(result.regimeRecordsStatus.textContent, /nav derīgu ienākumu vai izdevumu ierakstu/);
   assert.equal(result.regimeTurnover.value, '');
   assert.equal(result.regimeExpenses.value, '');
 });
