@@ -1,5 +1,6 @@
 // Mansdarbs VID assistant API — server-side only; never expose the API key to the browser.
 const MODEL_DEFAULT = "gpt-6-luna";
+const MAX_REQUEST_BYTES = 14000;
 const OFFICIAL_DOMAINS = [
   "vid.gov.lv",
   "likumi.lv",
@@ -19,6 +20,36 @@ Nesniedz galīgu juridisku slēdzienu sarežģītos vai individuālos gadījumos
 Dod vienu konkrētu nākamo soli, nevis garu vispārīgu lekciju. Ja vajadzīgi vairāki soļi, numurē tos. Saglabā atbildi īsu un praktisku.
 `.trim();
 
+async function readLimitedRequestBody(request) {
+  if (!request.body) return "";
+  const reader = request.body.getReader();
+  const chunks = [];
+  let totalBytes = 0;
+  try {
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      if (!value) continue;
+      totalBytes += value.byteLength;
+      if (totalBytes > MAX_REQUEST_BYTES) {
+        try { await reader.cancel(); } catch (_) {}
+        return null;
+      }
+      chunks.push(value);
+    }
+  } finally {
+    reader.releaseLock();
+  }
+
+  const bytes = new Uint8Array(totalBytes);
+  let offset = 0;
+  for (const chunk of chunks) {
+    bytes.set(chunk, offset);
+    offset += chunk.byteLength;
+  }
+  return new TextDecoder().decode(bytes);
+}
+
 function json(data, status = 200) {
   return Response.json(data, {
     status,
@@ -34,7 +65,7 @@ export async function onRequestPost({ request, env }) {
   const origin = request.headers.get("Origin");
   if (origin) {
     try {
-      if (new URL(origin).host !== new URL(request.url).host) return json({ error: "Pieprasījums nav atļauts." }, 403);
+      if (new URL(origin).origin !== new URL(request.url).origin) return json({ error: "Pieprasījums nav atļauts." }, 403);
     } catch (_) {
       return json({ error: "Nederīgs pieprasījums." }, 403);
     }
@@ -44,10 +75,10 @@ export async function onRequestPost({ request, env }) {
   if (length > 14000) return json({ error: "Ziņa ir pārāk gara. Saīsini to un mēģini vēlreiz." }, 413);
 
   let rawBody;
-  try { rawBody = await request.text(); } catch (_) {
+  try { rawBody = await readLimitedRequestBody(request); } catch (_) {
     return json({ error: "Neizdevās nolasīt ziņu." }, 400);
   }
-  if (new TextEncoder().encode(rawBody).byteLength > 14000) {
+  if (rawBody === null) {
     return json({ error: "Ziņa ir pārāk gara. Saīsini to un mēģini vēlreiz." }, 413);
   }
 
