@@ -187,3 +187,32 @@ test('ALTUM start-up support is classified as a repayable loan, not a grant', ()
   assert.equal(loan.status, 'ongoing');
 });
 
+
+
+test('LA 4.1.2 climate funding amount is distinct from LA 4.1.4 energy funding', () => {
+  const catalogue = JSON.parse(fs.readFileSync(path.join(root, 'funding-programs.json'), 'utf8'));
+  const climate = catalogue.programs.find(item => item.id === 'lad-la-4-1-2-climate-farm-2026');
+  const energy = catalogue.programs.find(item => item.id === 'lad-la-4-1-4-energy-efficiency-2026');
+  assert.ok(climate);
+  assert.ok(energy);
+  assert.equal(climate.fundingDetails.totalPublicBudget, 12569464);
+  assert.equal(energy.fundingDetails.totalPublicBudget, 14181117);
+  assert.notEqual(climate.id, energy.id);
+  assert.match(climate.sourceUrl, /la-412-/);
+  assert.match(energy.sourceUrl, /la-414-/);
+  assert.equal(climate.deadline, '2026-12-09');
+  assert.equal(energy.deadline, '2026-12-09');
+});
+
+test('LA 4.1.4 is independently discoverable for an agriculture profile', () => {
+  const catalogue = JSON.parse(fs.readFileSync(path.join(root, 'funding-programs.json'), 'utf8'));
+  const matches = api.getFundingMatches(
+    { sector: 'agri', activity: 'Augkopība' },
+    catalogue,
+    { today: '2026-11-17' }
+  );
+  const energy = matches.find(item => item.id === 'lad-la-4-1-4-energy-efficiency-2026');
+  assert.ok(energy);
+  assert.equal(energy.status, 'open');
+  assert.equal(energy.supportTypeLabels[0], 'Grants');
+});
