@@ -73,8 +73,13 @@ export async function onRequestPost({ request, env }) {
     return json({ error: "Nederīgs pieprasījums." }, 403);
   }
 
+  const contentType = (request.headers.get("Content-Type") || "").split(";")[0].trim().toLowerCase();
+  if (contentType !== "application/json") {
+    return json({ error: "Nederīgs pieprasījuma formāts." }, 415);
+  }
+
   const length = Number(request.headers.get("Content-Length") || 0);
-  if (length > 14000) return json({ error: "Ziņa ir pārāk gara. Saīsini to un mēģini vēlreiz." }, 413);
+  if (length > MAX_REQUEST_BYTES) return json({ error: "Ziņa ir pārāk gara. Saīsini to un mēģini vēlreiz." }, 413);
 
   let rawBody;
   try { rawBody = await readLimitedRequestBody(request); } catch (_) {
@@ -88,8 +93,11 @@ export async function onRequestPost({ request, env }) {
   try { body = JSON.parse(rawBody); } catch (_) {
     return json({ error: "Neizdevās nolasīt ziņu." }, 400);
   }
+  if (!body || typeof body !== "object" || Array.isArray(body)) {
+    return json({ error: "Nederīgs pieprasījuma saturs." }, 400);
+  }
 
-  if (body?.consent !== true) {
+  if (body.consent !== true) {
     return json({ error: "Pirms jautājuma nosūtīšanas nepieciešams apstiprināt datu nosūtīšanu AI pakalpojumam." }, 403);
   }
 
