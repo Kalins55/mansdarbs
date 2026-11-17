@@ -77,3 +77,34 @@ test('Interactive disclosure controls reference unique elements on both site cop
     }
   }
 });
+
+test('Browser code only sends user content through the explicitly consented VID assistant endpoint', () => {
+  const browserFiles = [
+    'index.html',
+    'context-engine.js',
+    'contextual-help.js',
+    'industry-modules.js',
+    'public/index.html',
+    'public/contextual-help.js',
+    'public/industry-modules.js'
+  ];
+  const networkCalls = [];
+
+  for (const relativePath of browserFiles) {
+    const source = read(relativePath);
+    for (const match of source.matchAll(/\\bfetch\\s*\\(/g)) {
+      networkCalls.push({ path: relativePath, line: source.slice(0, match.index).split('\\n').length });
+    }
+    assert.doesNotMatch(source, /\\bXMLHttpRequest\\b|\\bnavigator\\.sendBeacon\\s*\\(|\\bnew\\s+WebSocket\\s*\\(|\\bnew\\s+EventSource\\s*\\(/,
+      relativePath + ' must not introduce an unreviewed browser network channel');
+  }
+
+  assert.deepEqual(networkCalls, [{ path: 'index.html', line: networkCalls[0]?.line }],
+    'Only the main page may make a browser fetch request, through the reviewed VID assistant flow');
+  const html = read('index.html');
+  const request = html.match(/fetch\\(['"]([^'"]+)['"],\\s*\\{[\\s\\S]{0,500}?body:\\s*JSON\\.stringify\\(\\{([^}]+)\\}\\)/);
+  assert.ok(request, 'The reviewed VID assistant request must remain identifiable');
+  assert.equal(request[1], '/api/vid-assistant');
+  assert.match(request[2], /consent\\s*:\\s*true/);
+  assert.match(request[2], /messages\\s*:\\s*chatHistory/);
+});
