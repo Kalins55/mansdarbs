@@ -152,6 +152,23 @@ test('comparison imports only selected-year income and expenses from local recor
   assert.match(result.regimeRecordsStatus.textContent, /2 derīgi ieraksti/);
 });
 
+test('industry comparison records map income, expenses and refunds from local storage', () => {
+  const saved = [
+    { flow: 'income', amount: 500, date: '2026-02-01' },
+    { flow: 'expense', amount: 125, date: '2026-02-02' },
+    { flow: 'refund', amount: 100, date: '2026-02-03' },
+    { flow: 'unknown', amount: 50, date: '2026-02-04' }
+  ];
+  const localStorage = { getItem: key => key === 'mansdarbs_industry_records_v1' ? JSON.stringify(saved) : null };
+  const run = new Function('localStorage', extractFunction('getIndustryTaxComparisonRecords') + '; return getIndustryTaxComparisonRecords;')(localStorage);
+  const result = run();
+  assert.deepEqual(result.map(item => ({ kind: item.kind, amount: item.amount, date: item.date, source: item.source })), [
+    { kind: 'Ienākums', amount: 500, date: '2026-02-01', source: 'industry' },
+    { kind: 'Izdevums', amount: 125, date: '2026-02-02', source: 'industry' },
+    { kind: 'Atmaksa', amount: 100, date: '2026-02-03', source: 'industry' }
+  ]);
+});
+
 test('comparison prefill includes industry income and expenses alongside base records', () => {
   const result = runPrefill([
     { kind: 'Ienākums', amount: 1000, date: '2026-01-12' }
