@@ -8,7 +8,7 @@
 
 Mansdarbs nedrīkst likt klientam meklēt vajadzīgo funkciju, informāciju vai nākamo soli pa izvēlnēm. Kad klients atver lapu, sadaļu vai konkrētu darbplūsmu, sistēmai pašai jāparāda attiecīgajā brīdī vajadzīgā informācija un pieejamās darbības.
 
-Klientam vajadzīgais jāpasniedz izmantojamā formā, nevis tikai jānorāda, kur to varētu atrast. Tas attiecas uz ikvienu klientu neatkarīgi no pieredzes, amata, uzņēmējdarbības formas vai nozares.
+Klientam vajadzīgais jāpasniedz izmantojamā formā, nevis tikai jānorāda, kur to varētu atrast. Tas attiecas uz ikvienu klientu neatkarīgi no pieredzes, amata, uzņēmējdarbības formas vai nozares. Būtiskākajai palīdzībai jābūt redzamai jau tad, kad lietotājs atver attiecīgo lapu vai sadaļu — viņam nav vispirms jāmeklē funkcija vai jāiziet obligāta anketa.
 
 ## Kā sistēmai jāreaģē uz kontekstu
 
@@ -19,6 +19,8 @@ Mansdarbs var izmantot tikai konkrētajai darbībai nepieciešamo kontekstu, pie
 - jau ievadītos datus un darbplūsmas statusu;
 - lietotāja lomu un faktiski piešķirtās atļaujas;
 - attiecīgos termiņus, aprēķinu rezultātus un trūkstošos dokumentus.
+
+Ja lietotājs nav izveidojis situācijas profilu vai nav norādījis savas vajadzības, sistēmai tik un tā jāsniedz droša, vispārīga palīdzība, balstoties uz atvērto sadaļu un pašreizējo darbību. Papildu jautājumu drīkst uzdot tikai tad, ja bez atbildes nav iespējams sniegt pareizu vai drošu nākamo soli; tad jāuzdod viens būtiskākais jautājums, nevis jāpieprasa aizpildīt plašu profilu.
 
 Piemēri:
 
@@ -78,7 +80,8 @@ Sistēmai nav jāpieņem, ka katrs lietotājs ir iesācējs. Pieredzes līmeni v
 
 Funkcija atbilst šim principam, ja:
 
-- atverot attiecīgo sadaļu, lietotājs redz būtiskāko informāciju un pieejamo nākamo darbību bez nepieciešamības to meklēt izvēlnēs;
+- atverot attiecīgo sadaļu, lietotājs redz būtiskāko informāciju un pieejamo nākamo darbību bez nepieciešamības to meklēt izvēlnēs vai vispirms aizpildīt obligātu profilu;
+- ja personalizācijas dati nav pieejami, sistēma joprojām sniedz noderīgu palīdzību, izmantojot pašreizējās lapas kontekstu;
 - ieteikums ir balstīts uz pašreizējo kontekstu, nevis vispārīgu reklāmas tipa paziņojumu;
 - lietotājs saprot, kāpēc ieteikums tiek rādīts un ko tas izraisīs;
 - ieteikums nepiedāvā nepieejamu vai neatļautu darbību;
