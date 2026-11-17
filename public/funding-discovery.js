@@ -266,9 +266,67 @@ function getFundingMatches(profile, catalog, options) {
   return results;
 }
 
+function getLocalFundingMatches(catalog, options) {
+  const profiles = getLocalIndustryProfiles(options && options.storage);
+  const byId = new Map();
+  profiles.forEach(profile => {
+    getFundingMatches(profile, catalog, options).forEach(match => {
+      const matchedProfile = {
+        sector: profile.sector,
+        activity: profile.activity,
+        nace: profile.nace
+      };
+      const existing = byId.get(match.id);
+      if (!existing) {
+        byId.set(match.id, { ...match, matchedProfiles: [matchedProfile], profileMatchCount: 1 });
+        return;
+      }
+      const profileKey = [matchedProfile.sector, matchedProfile.activity, matchedProfile.nace].join('|');
+      if (!existing.matchedProfiles.some(item => [item.sector, item.activity, item.nace].join('|') === profileKey)) {
+        existing.matchedProfiles.push(matchedProfile);
+        existing.profileMatchCount = existing.matchedProfiles.length;
+      }
+      if (match.fitStatus === 'potential_match' && existing.fitStatus !== 'potential_match' || match.score > existing.score) {
+        Object.assign(existing, match);
+        existing.matchedProfiles = existing.matchedProfiles || [matchedProfile];
+        existing.profileMatchCount = existing.matchedProfiles.length;
+      }
+    });
+  });
+  return [...byId.values()].sort((a, b) =>
+    (a.matchType === 'sector_specific' ? 0 : 1) - (b.matchType === 'sector_specific' ? 0 : 1) ||
+    STATUS_ORDER[a.status] - STATUS_ORDER[b.status] ||
+    b.score - a.score ||
+    String(a.name).localeCompare(String(b.name), 'lv')
+  );
+}
+
+async function loadFundingCatalog(fetcher) {
+  const request = fetcher || root.fetch;
+  if (typeof request !== 'function') throw new Error('Funding catalogue fetch is unavailable');
+  const response = await request('/funding-programs.json', {
+    headers: { Accept: 'application/json' }
+  });
+  if (!response || !response.ok) throw new Error('Funding catalogue could not be loaded');
+  const catalog = await response.json();
+  if (!catalog || catalog.schemaVersion !== 1 || !Array.isArray(catalog.programs)) {
+    throw new Error('Funding catalogue has an unsupported format');
+  }
+  return catalog;
+}
+
+async function findLocalFundingMatches(options) {
+  const settings = options || {};
+  const catalog = await loadFundingCatalog(settings.fetcher);
+  return getLocalFundingMatches(catalog, settings);
+}
+
 root.MansdarbsFunding = Object.freeze({
   getLocalIndustryProfiles,
   getFundingMatches,
+  getLocalFundingMatches,
+  loadFundingCatalog,
+  findLocalFundingMatches,
   statusLabels: Object.freeze({ ...STATUS_LABELS }),
   supportTypeLabels: Object.freeze({ ...SUPPORT_LABELS })
 });
