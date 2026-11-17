@@ -76,6 +76,17 @@ test('VID assistant exposes modal semantics and manages keyboard focus', () => {
   assert.ok(html.includes("document.documentElement.contains(target)&&typeof target.focus==='function')target.focus();"));
 });
 
+test('VID assistant keyboard dialog traps focus and closes on Escape', () => {
+  const html = read('index.html');
+  assert.match(html, /if\(event\.key==='Escape'\)\{event\.preventDefault\(\);close\(\);return;\}/);
+  assert.match(html, /if\(event\.key!=='Tab'\)return;/);
+  assert.match(html, /event\.shiftKey&&\(document\.activeElement===first\|\|!root\.contains\(document\.activeElement\)\)/);
+  assert.match(html, /event\.preventDefault\(\);last\.focus\(\);/);
+  assert.match(html, /!event\.shiftKey&&\(document\.activeElement===last\|\|!root\.contains\(document\.activeElement\)\)/);
+  assert.match(html, /event\.preventDefault\(\);first\.focus\(\);/);
+  assert.match(html, /return !element\.hidden&&element\.getAttribute\('aria-hidden'\)!=='true'&&element\.getClientRects\(\)\.length>0;/);
+});
+
 test('VID assistant chat toggle exposes its expanded state to assistive technology', () => {
   const html = read('index.html');
   assert.match(html, /id="mvaAskToggle" aria-controls="mvaChat" aria-expanded="false"/);
