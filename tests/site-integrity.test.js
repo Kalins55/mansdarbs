@@ -76,6 +76,14 @@ test('VID assistant exposes modal semantics and manages keyboard focus', () => {
   assert.ok(html.includes("document.documentElement.contains(target)&&typeof target.focus==='function')target.focus();"));
 });
 
+test('VID assistant chat toggle exposes its expanded state to assistive technology', () => {
+  const html = read('index.html');
+  assert.match(html, /id="mvaAskToggle" aria-controls="mvaChat" aria-expanded="false"/);
+  assert.match(html, /setAttribute\('aria-expanded',String\(!panel\.hidden\)\)/);
+  assert.match(html, /if\(!panel\.hidden\)root\.querySelector\('#mvaQuestion'\)\.focus\(\)/);
+  assert.match(html, /else root\.querySelector\('#mvaAskToggle'\)\.focus\(\)/);
+});
+
 test('frequently used mobile controls have at least 44px touch targets', () => {
   const html = read('index.html');
   assert.ok(html.includes('.lang-switch button{min-width:44px;min-height:44px}'));
