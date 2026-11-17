@@ -59,24 +59,26 @@ test('Worker static-assets copy references existing local scripts and a real PNG
 });
 
 
+
 test('VID assistant exposes modal semantics and manages keyboard focus', () => {
   const html = read('index.html');
-  assert.match(html, /root\\.setAttribute\\('role','dialog'\\)/);
-  assert.match(html, /root\\.setAttribute\\('aria-modal','true'\\)/);
-  assert.match(html, /root\\.setAttribute\\('aria-labelledby','mvaHeading'\\)/);
-  assert.match(html, /root\\.setAttribute\\('aria-describedby','mvaIntro'\\)/);
-  assert.match(html, /previousFocus=document\\.activeElement/);
-  assert.match(html, /document\\.addEventListener\\('keydown',trapDialogFocus,true\\)/);
-  assert.match(html, /event\\.shiftKey/);
-  assert.match(html, /document\\.documentElement\\.contains\\(target\\).*target\\.focus\\(\\)/);
+  assert.ok(html.includes("root.setAttribute('role','dialog')"));
+  assert.ok(html.includes("root.setAttribute('aria-modal','true')"));
+  assert.ok(html.includes("root.setAttribute('aria-labelledby','mvaHeading')"));
+  assert.ok(html.includes("root.setAttribute('aria-describedby','mvaIntro')"));
+  assert.ok(html.includes('previousFocus=document.activeElement'));
+  assert.ok(html.includes("document.addEventListener('keydown',trapDialogFocus,true)"));
+  assert.ok(html.includes('event.shiftKey'));
+  assert.ok(html.includes("document.documentElement.contains(target)&&typeof target.focus==='function')target.focus();"));
 });
 
 test('frequently used mobile controls have at least 44px touch targets', () => {
   const html = read('index.html');
-  assert.match(html, /\\.lang-switch button\\{[^}]*min-width:44px;min-height:44px\\}/);
-  assert.match(html, /\\.nav button\\{min-height:44px\\}/);
-  assert.match(html, /\\.record-actions button\\{min-width:44px;min-height:44px/);
-  assert.match(html, /\\.md-context-help__actions button\\{min-height:44px\\}/);
-  assert.match(html, /#mansdarbs-vid-assistant \\.mva-close\\{min-width:44px;min-height:44px/);
-  assert.match(html, /class="record-actions"><button class="textlink" style="[^"]*min-width:44px;min-height:44px/);
+  assert.ok(html.includes('.lang-switch button{min-width:44px;min-height:44px}'));
+  assert.ok(html.includes('.nav button{min-height:44px}'));
+  assert.ok(html.includes('.shell.home-screen .card .btn{min-height:44px}'));
+  assert.ok(html.includes('.record-actions button{min-width:44px;min-height:44px;padding:8px 10px}'));
+  assert.ok(html.includes('.md-context-help__actions button{min-height:44px}'));
+  assert.ok(html.includes('#mansdarbs-vid-assistant .mva-close{min-width:44px;min-height:44px;padding:8px 12px}'));
+  assert.ok(html.includes('class="record-actions"><button class="textlink" style="border:0;background:none;min-width:44px;min-height:44px'));
 });
