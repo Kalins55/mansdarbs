@@ -597,14 +597,21 @@ function fillRegimeFromRecords(){
  const year=Number(yearField.value);
  const status=document.getElementById('regimeRecordsStatus');
  if(!Number.isInteger(year)||year<2020||year>2100){status.textContent='Ievadi derīgu uzskaites gadu.';return;}
- const records=getRecords().filter(item=>/^\d{4}-\d{2}-\d{2}$/.test(item.date)&&Number(item.date.slice(0,4))===year);
- if(!records.length){status.textContent='Uzskaitē nav atrasts neviens ienākumu vai izdevumu ieraksts par '+year+'. gadu.';return;}
+ const yearRecords=getRecords().filter(item=>typeof item.date==='string'&&/^\\d{4}-\\d{2}-\\d{2}$/.test(item.date)&&Number(item.date.slice(0,4))===year);
+ if(!yearRecords.length){status.textContent='Uzskaitē nav atrasts neviens ienākumu vai izdevumu ieraksts par '+year+'. gadu.';return;}
+ const records=yearRecords.filter(item=>{
+  const parts=item.date.split('-').map(Number),date=new Date(Date.UTC(parts[0],parts[1]-1,parts[2]));
+  const amount=typeof item.amount==='string'&&item.amount.trim()===''?NaN:Number(item.amount);
+  return date.getUTCFullYear()===parts[0]&&date.getUTCMonth()===parts[1]-1&&date.getUTCDate()===parts[2]&&(item.kind==='Ienākums'||item.kind==='Izdevums')&&Number.isFinite(amount)&&amount>=0;
+ });
+ const invalidCount=yearRecords.length-records.length;
+ if(!records.length){status.textContent='Atrasti '+yearRecords.length+' ieraksti par '+year+'. gadu, bet to datums, veids vai summa nav korekta. Pārbaudi uzskaites ierakstus.';return;}
  const totals=records.reduce((sum,item)=>{if(item.kind==='Ienākums')sum.income+=Number(item.amount);else if(item.kind==='Izdevums')sum.expenses+=Number(item.amount);return sum;},{income:0,expenses:0});
  const income=document.getElementById('regimeTurnover'),expenses=document.getElementById('regimeExpenses');
  let preserved=0;
  if(income.dataset.synced!=='manual'){income.value=totals.income.toFixed(2);income.dataset.synced='records';}else preserved++;
  if(expenses.dataset.synced!=='manual'){expenses.value=totals.expenses.toFixed(2);expenses.dataset.synced='records';}else preserved++;
- status.textContent='No uzskaites pārņemti '+year+'. gada dati ('+records.length+' ieraksti): ieņēmumi '+money(totals.income)+', izdevumi '+money(totals.expenses)+'.'+(preserved?' Manuāli ievadītie lauki netika pārrakstīti.':'');
+ status.textContent='No uzskaites pārņemti '+year+'. gada dati ('+records.length+' derīgi ieraksti): ieņēmumi '+money(totals.income)+', izdevumi '+money(totals.expenses)+'.'+(invalidCount?' Izlaisti '+invalidCount+' nekorekti ieraksti — pārbaudi to datumu, veidu un summu.':'')+(preserved?' Manuāli ievadītie lauki netika pārrakstīti.':'');
 }
 function resetTaxRegimeComparison(){
  ['regimeTurnover','regimeExpenses','regimeVsaoi','regimeOtherIncome','regimeDeductions'].forEach(id=>{const el=document.getElementById(id);el.value='';if(el)el.dataset.synced='';});
