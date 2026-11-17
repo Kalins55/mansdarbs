@@ -134,3 +134,10 @@ LIAA portālā **liaa.business.gov.lv** jau ir Latvijas biznesa atbalsta vednis 
 LAD katalogs ļauj meklēt pēc nozares, programmas tipa un kārtas statusa. CFLA 2021–2027 programmu lapa rāda arī izsludinātās un drīzumā plānotās atlases. ALTUM biznesa katalogā ir atsevišķi aizdevumi, garantijas un investīciju fondi — tie nedrīkst tikt klasificēti kā granti.
 
 Sākotnējais pārbaudīto oficiālo avotu reģistrs atrodas `funding-sources.json`. Tas ir avotu saraksts, nevis jau funkcionējošs automātisks finansējuma katalogs. Katras konkrētās programmas statuss, termiņš un nolikums joprojām jāpārbauda tās oficiālajā lapā.
+
+
+## Pirmie pārbaudītie programmu ieraksti (2026-11-17)
+
+`funding-programs.json` tagad satur piecus konkrētus ierakstus, kas pārbaudīti oficiālajos avotos: trīs LAD lauku saimniecību atbalsta kārtas, ALTUM starta aizdevumu un NOSTRADAMUS ES finansēta projekta digitālās lauksaimniecības lietotņu konkursu. Katram ierakstam ir avota saite, pieteikšanās statuss un termiņš, pēdējās pārbaudes datums un skaidrojums par atbilstības robežām.
+
+Svarīgi: publiskais budžets nav tas pats, kas viena pretendenta maksimālā atbalsta summa. ALTUM starta aizdevums ir atmaksājams aizdevums, nevis grants. NOSTRADAMUS atbalstam vajadzīga digitāla atvērtā koda risinājuma iecere; vienkārša lauksaimniecības darbība pati par sevi nenozīmē atbilstību. Šie ieraksti ir sākotnējais izlases katalogs, nevis pilns visu Latvijas vai ES programmu saraksts.
