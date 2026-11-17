@@ -885,41 +885,102 @@ function exportCsv(){
 const BACKUP_DATA_KEYS=['mansdarbs_demo_records_v1','mansdarbs_industry_records_v1','mansdarbs-vsaoi-2026-q1','mansdarbs-vsaoi-2026-q2','mansdarbs-vsaoi-2026-q3','mansdarbs-vsaoi-2026-q4','mansdarbs_vsaoi_iin_manual_v1','mansdarbs_accounting_mode','mansdarbs_sia_prototype_v1','mansdarbs_demo_invoices_v1','mansdarbs_demo_invoices_zs_v1','mansdarbs_invoice_seller_v1','mansdarbs_invoice_seller_zs_v1','mansdarbs_language_v1','mansdarbs_context_profile_v1','mansdarbs_industry_profile_v1','mansdarbs_industry_profiles_v1','mansdarbs_payment_profile_v1'];
 const BACKUP_MAX_BYTES=5*1024*1024;
 function validBackupDate(value){if(typeof value!=='string'||!/^\d{4}-\d{2}-\d{2}$/.test(value))return false;const d=new Date(value+'T00:00:00Z');return !Number.isNaN(d.getTime())&&d.toISOString().slice(0,10)===value}
+function validBackupTimestamp(value){return typeof value==='string'&&/^\d{4}-\d{2}-\d{2}T/.test(value)&&!Number.isNaN(Date.parse(value))}
+function validBackupText(value,max=1000,required=false){return typeof value==='string'&&value.length<=max&&(!required||value.trim().length>0)}
 function validateBackupData(data){
  if(!data||typeof data!=='object'||Array.isArray(data))throw new Error('data');
  const keys=Object.keys(data);if(!keys.length||keys.some(k=>!BACKUP_DATA_KEYS.includes(k)))throw new Error('keys');
+ const paymentMethods=new Set(['cash','bank','terminal','online','platform','invoice']);
+ const contextStages=new Set(['planning','informal','registered','company']);
+ const contextNeeds=new Set(['registration','tax','records','invoices','vat','permits','employees']);
+ const invoiceKeys=['mansdarbs_demo_invoices_v1','mansdarbs_demo_invoices_zs_v1'];
+ const recordKeys=['mansdarbs_demo_records_v1','mansdarbs_industry_records_v1','mansdarbs_industry_profiles_v1',...invoiceKeys];
  for(const key of keys){const value=data[key];
-  if(['mansdarbs_demo_records_v1','mansdarbs_industry_records_v1','mansdarbs_industry_profiles_v1','mansdarbs_demo_invoices_v1','mansdarbs_demo_invoices_zs_v1'].includes(key)){
+  if(recordKeys.includes(key)){
    if(!Array.isArray(value)||value.length>50000)throw new Error('array');
    value.forEach(item=>{
     if(!item||typeof item!=='object'||Array.isArray(item))throw new Error('item');
-    if(item.date!==undefined&&!validBackupDate(item.date))throw new Error('date');
-    if(['mansdarbs_demo_invoices_v1','mansdarbs_demo_invoices_zs_v1'].includes(key)){
-     if(typeof item.number!=='string'||!item.number.trim()||item.number.length>40||!validBackupDate(item.date)||typeof item.seller!=='string'||!item.seller.trim()||typeof item.buyer!=='string'||!item.buyer.trim()||typeof item.description!=='string'||!item.description.trim())throw new Error('invoice-fields');
-     if(!Number.isFinite(item.qty)||item.qty<=0||!Number.isFinite(item.price)||item.price<0||!Number.isFinite(item.net)||item.net<0||!Number.isFinite(item.rate)||![0,5,12,21].includes(item.rate)||!Number.isFinite(item.vat)||item.vat<0||!Number.isFinite(item.total)||item.total<0||item.currency!=='EUR')throw new Error('invoice-values');
-     if(item.due!==undefined&&item.due!==''&&!validBackupDate(item.due))throw new Error('invoice-due');
+    if(key==='mansdarbs_industry_profiles_v1'){
+     if(!validBackupText(item.sector,100,true)||!validBackupText(item.job,120,true))throw new Error('industry-profile');
+     return;
     }
-    if(key==='mansdarbs_demo_records_v1'&&(!['Ienākums','Izdevums'].includes(item.kind)||!Number.isFinite(Number(item.amount))||Number(item.amount)<=0||!validBackupDate(item.date)))throw new Error('record');
-    if(key==='mansdarbs_industry_records_v1'&&(!Number.isFinite(Number(item.amount))||Number(item.amount)<=0||!validBackupDate(item.date)||!['income','expense'].includes(item.flow)))throw new Error('industry-record');
+    if(item.date!==undefined&&!validBackupDate(item.date))throw new Error('date');
+    if(key==='mansdarbs_demo_records_v1'){
+     if(!['Ienākums','Izdevums'].includes(item.kind)||!Number.isFinite(Number(item.amount))||Number(item.amount)<=0||!validBackupDate(item.date))throw new Error('record');
+     if(item.category!==undefined&&!validBackupText(item.category,80))throw new Error('record-category');
+     if(item.note!==undefined&&!validBackupText(item.note,120))throw new Error('record-note');
+     if(item.vatThreshold!==undefined&&typeof item.vatThreshold!=='boolean')throw new Error('record-vat');
+    }else if(key==='mansdarbs_industry_records_v1'){
+     if(!Number.isFinite(Number(item.amount))||Number(item.amount)<=0||!validBackupDate(item.date)||!['income','expense','refund'].includes(item.flow))throw new Error('industry-record');
+     if(item.sector!==undefined&&!validBackupText(item.sector,100,true))throw new Error('industry-sector');
+     if(item.job!==undefined&&!validBackupText(item.job,120,true))throw new Error('industry-job');
+     if(item.kind!==undefined&&!validBackupText(item.kind,120,true))throw new Error('industry-kind');
+     if(item.id!==undefined&&!(validBackupText(item.id,100,true)||Number.isSafeInteger(item.id)))throw new Error('industry-id');
+     if(item.vatThreshold!==undefined&&typeof item.vatThreshold!=='boolean')throw new Error('industry-vat');
+     if(item.createdAt!==undefined&&!validBackupTimestamp(item.createdAt))throw new Error('industry-created');
+     if(item.data!==undefined){
+      if(!item.data||typeof item.data!=='object'||Array.isArray(item.data)||Object.keys(item.data).length>60)throw new Error('industry-data');
+      for(const [field,fieldValue] of Object.entries(item.data)){
+       if(!validBackupText(field,80,true)||!validBackupText(fieldValue,500))throw new Error('industry-data-field');
+      }
+     }
+    }else{
+     if(!validBackupText(item.number,40,true)||!validBackupDate(item.date)||!validBackupText(item.seller,300,true)||!validBackupText(item.buyer,300,true)||!validBackupText(item.description,500,true))throw new Error('invoice-fields');
+     if(!Number.isFinite(item.qty)||item.qty<=0||!Number.isFinite(item.price)||item.price<0||!Number.isFinite(item.net)||item.net<0||!Number.isFinite(item.rate)||![0,5,12,21].includes(item.rate)||!Number.isFinite(item.vat)||item.vat<0||!Number.isFinite(item.total)||item.total<0||item.currency!=='EUR')throw new Error('invoice-values');
+     const expectedNet=Math.round(item.qty*item.price*100)/100;
+     const expectedVat=Math.round(expectedNet*item.rate)/100;
+     if(Math.abs(item.net-expectedNet)>0.011||Math.abs(item.vat-expectedVat)>0.011||Math.abs(item.total-(item.net+item.vat))>0.011)throw new Error('invoice-totals');
+     if(item.due!==undefined&&item.due!==''&&!validBackupDate(item.due))throw new Error('invoice-due');
+     for(const field of ['reg','address','bank','email','buyerReg','buyerAddress'])if(item[field]!==undefined&&!validBackupText(item[field],1000))throw new Error('invoice-optional-field');
+     if(item.id!==undefined&&!Number.isFinite(Number(item.id)))throw new Error('invoice-id');
+     if(item.savedAt!==undefined&&!validBackupTimestamp(item.savedAt))throw new Error('invoice-saved');
+    }
    });
   }else if(key.startsWith('mansdarbs-vsaoi-2026-q')){
-   if(!value||typeof value!=='object'||Array.isArray(value)||(value.values!==undefined&&(!Array.isArray(value.values)||value.values.length!==3||value.values.some(n=>!Number.isFinite(Number(n)))))||(value.rows!==undefined&&(!Array.isArray(value.rows)||value.rows.length!==3||value.rows.some((r,i)=>!r||typeof r!=='object'||r.month!==i+1||['profit','base','full','pension','total'].some(k=>!Number.isFinite(Number(r[k])))))))throw new Error('quarter');
-   if(value.base!==undefined&&(!Number.isFinite(Number(value.base))||Number(value.base)<0))throw new Error('quarter-base');
+   if(!value||typeof value!=='object'||Array.isArray(value))throw new Error('quarter');
+   if(value.values!==undefined&&(!Array.isArray(value.values)||value.values.length!==3||value.values.some(n=>!Number.isFinite(Number(n)))))throw new Error('quarter-values');
+   if(value.base!==undefined&&(!Number.isFinite(Number(value.base))||Number(value.base)<780))throw new Error('quarter-base');
+   if(value.status!==undefined&&!['standard','pensioner'].includes(value.status))throw new Error('quarter-status');
+   if(value.activityType!==undefined&&!['ordinary','annual_special'].includes(value.activityType))throw new Error('quarter-activity');
+   if(value.rows!==undefined){
+    if(!Array.isArray(value.rows)||value.rows.length!==3)throw new Error('quarter-rows');
+    value.rows.forEach((r,i)=>{
+     if(!r||typeof r!=='object'||Array.isArray(r)||r.month!==i+1||!['profit','base','full','pension','total'].every(k=>Number.isFinite(Number(r[k]))))throw new Error('quarter-row');
+     if(['base','full','pension','total'].some(k=>Number(r[k])<0)||(value.activityType!=='annual_special'&&Number(r.profit)<0)||Math.abs(Number(r.total)-(Number(r.full)+Number(r.pension)))>0.011)throw new Error('quarter-row-values');
+     if(value.values&&Math.abs(Number(value.values[i])-Number(r.profit))>0.011)throw new Error('quarter-row-profit');
+    });
+   }
   }else if(key==='mansdarbs_sia_prototype_v1'){
    if(!value||typeof value!=='object'||Array.isArray(value)||!Array.isArray(value.companies)||!Array.isArray(value.transactions)||value.companies.length>10000||value.transactions.length>50000)throw new Error('sia');
-   value.companies.forEach(company=>{if(!company||typeof company!=='object'||Array.isArray(company)||typeof company.id!=='string'||typeof company.name!=='string')throw new Error('sia-company')});
-   value.transactions.forEach(tx=>{if(!tx||typeof tx!=='object'||Array.isArray(tx)||!['income','expense'].includes(tx.kind)||typeof tx.companyId!=='string'||typeof tx.description!=='string'||!validBackupDate(tx.date)||['net','rate','vat','total'].some(k=>!Number.isFinite(Number(tx[k]))||Number(tx[k])<0))throw new Error('sia-transaction')});
-  }else if(['mansdarbs_invoice_seller_v1','mansdarbs_invoice_seller_zs_v1'].includes(key)){
-   if(!value||typeof value!=='object'||Array.isArray(value)||['seller','reg','address','bank','email'].some(k=>value[k]!==undefined&&(typeof value[k]!=='string'||value[k].length>1000)))throw new Error('invoice-seller');
-  }else if(['mansdarbs_context_profile_v1','mansdarbs_industry_profile_v1','mansdarbs_payment_profile_v1'].includes(key)){
-   if(!value||typeof value!=='object'||Array.isArray(value))throw new Error('object');
+   const companyIds=new Set();
+   value.companies.forEach(company=>{
+    if(!company||typeof company!=='object'||Array.isArray(company)||!validBackupText(company.id,100,true)||!validBackupText(company.name,200,true)||companyIds.has(company.id))throw new Error('sia-company');
+    companyIds.add(company.id);
+    for(const field of ['reg','address','vat','role'])if(company[field]!==undefined&&!validBackupText(company[field],1000))throw new Error('sia-company-field');
+    if(company.createdAt!==undefined&&!validBackupTimestamp(company.createdAt))throw new Error('sia-company-created');
+   });
+   value.transactions.forEach(tx=>{
+    if(!tx||typeof tx!=='object'||Array.isArray(tx)||!['income','expense'].includes(tx.kind)||!validBackupText(tx.companyId,100,true)||!companyIds.has(tx.companyId)||!validBackupText(tx.description,500,true)||!validBackupDate(tx.date)||['net','rate','vat','total'].some(k=>!Number.isFinite(Number(tx[k]))||Number(tx[k])<0)||![0,5,12,21].includes(Number(tx.rate))||Math.abs(Number(tx.vat)-Math.round(Number(tx.net)*Number(tx.rate))/100)>0.011||Math.abs(Number(tx.total)-(Number(tx.net)+Number(tx.vat)))>0.011)throw new Error('sia-transaction');
+    if(tx.id!==undefined&&!Number.isFinite(Number(tx.id)))throw new Error('sia-transaction-id');
+    if(tx.account!==undefined&&!validBackupText(tx.account,100))throw new Error('sia-transaction-account');
+   });
+  }else if(key==='mansdarbs_invoice_seller_v1'||key==='mansdarbs_invoice_seller_zs_v1'){
+   if(!value||typeof value!=='object'||Array.isArray(value)||Object.keys(value).some(k=>!['seller','reg','address','bank','email'].includes(k))||['seller','reg','address','bank','email'].some(k=>value[k]!==undefined&&!validBackupText(value[k],1000)))throw new Error('invoice-seller');
+  }else if(key==='mansdarbs_context_profile_v1'){
+   if(!value||typeof value!=='object'||Array.isArray(value)||!contextStages.has(value.stage)||!contextNeeds.has(value.need)||(value.updatedAt!==undefined&&!validBackupTimestamp(value.updatedAt)))throw new Error('context-profile');
+  }else if(key==='mansdarbs_industry_profile_v1'){
+   if(!value||typeof value!=='object'||Array.isArray(value)||!validBackupText(value.sector,100,true)||!validBackupText(value.job,120,true))throw new Error('industry-profile');
+  }else if(key==='mansdarbs_industry_profiles_v1'){
+   if(!Array.isArray(value)||value.length>50000||value.some(x=>!x||typeof x!=='object'||Array.isArray(x)||!validBackupText(x.sector,100,true)||!validBackupText(x.job,120,true)))throw new Error('industry-profiles');
+  }else if(key==='mansdarbs_payment_profile_v1'){
+   if(!value||typeof value!=='object'||Array.isArray(value)||!Array.isArray(value.methods)||value.methods.length>6||value.methods.some(x=>!paymentMethods.has(x))||(value.updatedAt!==undefined&&!validBackupTimestamp(value.updatedAt)))throw new Error('payment-profile');
   }else if(key==='mansdarbs_vsaoi_iin_manual_v1'){
    if(typeof value!=='string'||value.length>100||!Number.isFinite(Number(value))||Number(value)<0)throw new Error('manual-vsaoi');
   }else if(key==='mansdarbs_accounting_mode'){
    if(!['self','zs','sia'].includes(value))throw new Error('mode');
   }else if(key==='mansdarbs_language_v1'){
    if(!['lv','en'].includes(value))throw new Error('language');
-  }else if(typeof value!=='string'||value.length>10000)throw new Error('string');
+  }
  }
  return keys;
 }
@@ -927,8 +988,10 @@ function exportRecordsBackup(){
  try{const data={};BACKUP_DATA_KEYS.forEach(key=>{const raw=localStorage.getItem(key);if(raw!==null)data[key]=JSON.parse(raw)});
   if(!Object.keys(data).length){alert(uiText('Nav datu, ko saglabāt rezerves kopijā.','There is no data to back up.'));return}
   validateBackupData(data);const backup={app:'Mansdarbs',version:2,exportedAt:new Date().toISOString(),data};
-  const blob=new Blob([JSON.stringify(backup,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='mansdarbs-pilna-rezerves-kopija.json';document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);
- }catch(e){alert(uiText('Neizdevās izveidot rezerves kopiju. Pārbaudi pārlūka datus un mēģini vēlreiz.','Could not create the backup. Check your browser data and try again.'))}
+  const serialized=JSON.stringify(backup),blob=new Blob([serialized],{type:'application/json'});
+  if(blob.size>BACKUP_MAX_BYTES)throw new Error('backup-too-large');
+  const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='mansdarbs-pilna-rezerves-kopija.json';document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);
+ }catch(e){const message=e&&e.message==='backup-too-large'?uiText('Rezerves kopija pārsniedz 5 MB un to nevarēs atjaunot. Samazini saglabāto ierakstu apjomu un mēģini vēlreiz.','The backup exceeds 5 MB and cannot be restored. Reduce the amount of saved records and try again.'):uiText('Neizdevās izveidot rezerves kopiju. Pārbaudi pārlūka datus un mēģini vēlreiz.','Could not create the backup. Check your browser data and try again.');alert(message)}
 }
 function importRecordsBackup(event){
  const input=event.target,file=input.files&&input.files[0];if(!file)return;const reader=new FileReader();
