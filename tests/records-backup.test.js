@@ -68,7 +68,7 @@ test('legacy v1 backup remains importable and normalizes records', () => {
 test('v2 backup restores included categories and preserves categories absent from file', () => {
   const backup = {app:'Mansdarbs',version:2,data:{
     mansdarbs_demo_records_v1:[{kind:'Ienākums',amount:25,date:'2026-03-01'}],
-    'mansdarbs-vsaoi-2026-q1':{values:[100,200,300],base:780,status:'standard',activityType:'ordinary',rows:[]}
+    'mansdarbs-vsaoi-2026-q1':{values:[100,200,300],base:780,status:'standard',activityType:'ordinary',rows:[{month:1},{month:2},{month:3}]}
   }};
   const result = runImport(JSON.stringify(backup), {
     mansdarbs_demo_records_v1:[{kind:'Izdevums',amount:10,date:'2026-02-01'}],
