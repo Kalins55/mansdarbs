@@ -643,7 +643,7 @@ function compareTaxRegimes(){
  const totalBeforeRelief=other+taxableBusiness;
  const totalTaxable=Math.max(0,totalBeforeRelief-Math.min(totalBeforeRelief,allowance+deductions));
  const otherTaxable=Math.max(0,other-Math.min(other,allowance+deductions));
- const progressiveBusiness=Math.max(0,progressiveIin(totalTaxable,totalBeforeRelief)-progressiveIin(otherTaxable,other));
+ const progressiveBusiness=Math.max(0,progressiveIin(totalTaxable,other+profit)-progressiveIin(otherTaxable,other));
  const exempt=document.getElementById('regimeMinimumIinExempt').checked;
  const generalIin=!exempt&&progressiveBusiness<50?50:progressiveBusiness;
  const generalTax=vsaoi+generalIin;
@@ -684,7 +684,7 @@ function calculateIin(){
  const relief=Math.min(totalBeforeRelief,minimum+deductions);
  const taxableTotal=Math.max(0,totalBeforeRelief-relief);
  const taxableOther=Math.max(0,other-Math.min(other,minimum+deductions));
- const totalTax=progressiveIin(taxableTotal,totalBeforeRelief);
+ const totalTax=progressiveIin(taxableTotal,other+profit);
  const taxWithoutBusiness=progressiveIin(taxableOther,other);
  const progressiveBusinessTax=Math.max(0,totalTax-taxWithoutBusiness);
  const minimumIinApplied=!minimumIinExempt&&progressiveBusinessTax<50;
