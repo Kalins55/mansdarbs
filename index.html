@@ -878,7 +878,7 @@ function updateIinWarning(){
 function addRecord(){
  const amount=Number(document.getElementById('amount').value),date=document.getElementById('date').value,kind=document.getElementById('kind').value,note=document.getElementById('note').value.trim(),category=document.getElementById('category').value;
  if(!Number.isFinite(amount)||amount<=0||Math.round((amount+Number.EPSILON)*100)/100<=0){alert(uiText('Ievadi derīgu summu, kas pēc noapaļošanas ir vismaz 0,01 €.','Enter a valid amount of at least €0.01 after rounding.'));if(window.mansdarbsHelpFailure)window.mansdarbsHelpFailure('records');return}
- const parts=String(date||'').match(/^(\\d{4})-(\\d{2})-(\\d{2})$/);
+ const parts=String(date||'').match(/^(\d{4})-(\d{2})-(\d{2})$/);
  const validDate=!!parts&&(()=>{const y=Number(parts[1]),m=Number(parts[2]),d=Number(parts[3]),check=new Date(y,m-1,d);return check.getFullYear()===y&&check.getMonth()===m-1&&check.getDate()===d;})();
  if(!validDate){alert(uiText('Izvēlies derīgu datumu.','Choose a valid date.'));if(window.mansdarbsHelpFailure)window.mansdarbsHelpFailure('records');return}
  const items=getRecords(),record={kind,amount:Math.round((amount+Number.EPSILON)*100)/100,date,note,category,vatThreshold:kind==='Ienākums'&&document.getElementById('vatThreshold').checked};
