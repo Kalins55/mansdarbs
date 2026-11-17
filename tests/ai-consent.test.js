@@ -35,17 +35,58 @@ test('VID assistant API rejects requests without explicit consent before process
   assert.ok(guard < upstream, 'Consent is checked before any upstream AI request');
 });
 
-test('VID assistant enforces the request size limit even when Content-Length is absent or inaccurate', () => {
-  const rawBody = api.indexOf('rawBody = await request.text()');
-  const byteLimit = api.indexOf('new TextEncoder().encode(rawBody).byteLength > 14000');
+test('VID assistant enforces the request size limit while streaming the body', () => {
+  const reader = api.indexOf('async function readLimitedRequestBody(request)');
+  const byteLimit = api.indexOf('totalBytes > MAX_REQUEST_BYTES');
   const parseBody = api.indexOf('body = JSON.parse(rawBody)');
   const consent = api.indexOf('if (body?.consent !== true)');
 
-  assert.notEqual(rawBody, -1, 'Request body is read as text');
-  assert.notEqual(byteLimit, -1, 'Actual request bytes are checked against the limit');
-  assert.notEqual(parseBody, -1, 'JSON is parsed only after the byte limit check');
-  assert.ok(rawBody < byteLimit && byteLimit < parseBody && parseBody < consent,
+  assert.notEqual(reader, -1, 'Request body uses a bounded stream reader');
+  assert.notEqual(byteLimit, -1, 'Cumulative bytes are checked as chunks arrive');
+  assert.notEqual(parseBody, -1, 'JSON is parsed only after the bounded read');
+  assert.ok(reader < byteLimit && byteLimit < parseBody && parseBody < consent,
     'Body size is enforced before parsing and consent-dependent processing');
+  assert.match(api, /new URL\(origin\)\.origin !== new URL\(request\.url\)\.origin/,
+    'Origin validation compares the complete origin, including scheme and port');
+});
+
+test('VID assistant stops reading oversized streamed requests and returns 413', async () => {
+  const vm = require('node:vm');
+  let upstreamCalls = 0;
+  let streamCancelled = false;
+  const executable = api.replace(
+    'export async function onRequestPost',
+    'async function onRequestPost'
+  );
+  const sandbox = {
+    Response,
+    URL,
+    TextEncoder,
+    TextDecoder,
+    fetch: async () => { upstreamCalls += 1; throw new Error('Unexpected upstream call'); }
+  };
+  vm.runInNewContext(executable + '\\nthis.onRequestPost = onRequestPost;', sandbox);
+  const stream = new ReadableStream({
+    start(controller) {
+      controller.enqueue(new TextEncoder().encode('a'.repeat(8000)));
+      controller.enqueue(new TextEncoder().encode('b'.repeat(7001)));
+    },
+    cancel() { streamCancelled = true; }
+  });
+  const request = new Request('https://mansdarbs.eu/api/vid-assistant', {
+    method: 'POST',
+    body: stream,
+    duplex: 'half'
+  });
+
+  const response = await sandbox.onRequestPost({
+    request,
+    env: { OPENAI_API_KEY: 'test-key' }
+  });
+
+  assert.equal(response.status, 413);
+  assert.equal(streamCancelled, true, 'The request stream is cancelled immediately after crossing the limit');
+  assert.equal(upstreamCalls, 0, 'Oversized requests must never reach the AI provider');
 });
 
 
