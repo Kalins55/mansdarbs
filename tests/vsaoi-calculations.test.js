@@ -87,6 +87,14 @@ test('ordinary activity: monthly 10% and full VSAOI are rounded to cents', () =>
   assert.equal(h.elements.annualVsaoi.value, '314.35');
 });
 
+test('2026 ordinary activity: no minimum top-up below €780 and exact threshold boundary', () => {
+  const h = createHarness();
+  const saved = h.runQuarter(1, [100, 779.99, 780]);
+  assert.deepEqual(saved.rows.map(row => row.total), [10, 78, 242.35]);
+  assert.deepEqual(saved.rows.map(row => row.base), [0, 0, 780]);
+  assert.deepEqual(saved.rows.map(row => row.pension), [10, 78, 0]);
+});
+
 test('agricultural annual mode: VID example with three months over €780', () => {
   const h = createHarness();
   const saved = h.runQuarter(3, [800, 790, 785], 'annual_special');
