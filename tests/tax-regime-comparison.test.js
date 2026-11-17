@@ -58,7 +58,7 @@ test('high business expenses reduce general-regime profit but not MUN tax base',
     regimeTurnover: 20000, regimeExpenses: 17000, regimeVsaoi: 300,
     regimeOtherIncome: 0, regimeAllowance: 6600, regimeDeductions: 0
   });
-  assert.match(result.innerHTML, /Vispārējā režīma nodokļu slogs ir zemāks/);
+  assert.match(result.innerHTML, /vispārējā režīma nodokļu slogs ir zemāks/i);
   assert.match(result.innerHTML, /5000\.00 €/);
 });
 
