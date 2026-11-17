@@ -228,6 +228,15 @@
 </div>
 </section>
 
+<section class="section funding-section" id="fundingSection" aria-labelledby="fundingHeading">
+<div class="sectionhead">
+<div class="eyebrow">Atbalsta iespējas</div>
+<h2 id="fundingHeading">Pieejamais finansējums un projekti</h2>
+<p>Atrodi atbalstu savai nozarei, darbībai vai biznesa iecerei.</p>
+</div>
+<div class="funding-results" id="fundingResults" aria-live="polite"><div class="empty">Pārbaudu pieejamās iespējas…</div></div>
+</section>
+
 <section class="guide" id="guide">
 <div class="eyebrow">Tavs ceļš līdz oficiālam biznesam Latvijā</div>
 <h2>Sāc savu biznesu Latvijā — soli pa solim.</h2>
@@ -1140,6 +1149,7 @@ const EN_TRANSLATIONS={"Kategorija (nav obligāta)":"Category (optional)","Bez k
 "SVARĪGI — ja ir jaukta saimnieciskā darbība:":"IMPORTANT — if you have mixed business activities:",
 "Ja tajā pašā ceturksnī ir arī citi saimnieciskās darbības ienākumi, VSAOI 10% daļai jāpiemēro VID noteiktais proporcijas aprēķins. Šis kalkulators to vēl neatbalsta. Neievadi abu darbību kopējo peļņu šajā režīmā un neizmanto rezultātu maksājumam — aprēķinu pārbaudi VID EDS.":"If you also have income from other business activities in the same quarter, the VID proportional calculation must be applied to the 10% VSAOI portion. This calculator does not yet support it. Do not enter combined profit from both activities in this mode or use the result for payment — verify the calculation in VID EDS.",
 };
+Object.assign(EN_TRANSLATIONS,{"Atbalsta iespējas":"Support opportunities","Pieejamais finansējums un projekti":"Available funding and projects","Atrodi atbalstu savai nozarei, darbībai vai biznesa iecerei.":"Find support for your industry, activity or business idea.","Pārbaudu pieejamās iespējas…":"Checking available opportunities…"});
 function uiText(lv,en){return document.documentElement.lang==='en'?en:lv}
 function setLanguage(lang){
  const value=lang==='en'?'en':'lv';
@@ -1186,6 +1196,7 @@ function applyLanguage(){
 <script src="industry-modules.js?v=unified4"></script>
 <script src="context-engine.js?v=3"></script>
 <script src="funding-discovery.js?v=1"></script>
+<script src="funding-ui.js?v=1"></script>
 
 <script>
 (function(){
