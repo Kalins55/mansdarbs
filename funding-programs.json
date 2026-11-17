@@ -1,8 +1,196 @@
 {
   "schemaVersion": 1,
   "country": "LV",
-  "updatedAt": null,
+  "updatedAt": "2026-11-17",
   "currency": "EUR",
-  "description": "Pārbaudītu finansējuma programmu katalogs. Neievietot programmu, kamēr nav pārbaudīts oficiālais nolikums un konkrētās atlases statuss.",
-  "programs": []
+  "description": "Sākotnējais atlasīto un oficiālos avotos pārbaudīto finansējuma programmu katalogs. Programmu statuss un termiņi jāpārbauda atkārtoti pirms pieteikšanās.",
+  "programs": [
+    {
+      "id": "lad-la-4-1-1-farm-competitiveness-2026",
+      "name": "LA 4.1.1. Atbalsts ieguldījumiem lauku saimniecībās konkurētspējai",
+      "sourceId": "lad-support-catalogue",
+      "sourceUrl": "https://www.lad.gov.lv/lv/jaunums/lauksaimniekiem-un-kooperativiem-pieejams-atbalsts-investicijam-un-attistibai",
+      "applicationUrl": "https://eps.lad.gov.lv/",
+      "scope": "sector",
+      "sectors": [
+        "agri"
+      ],
+      "supportTypes": [
+        "grant"
+      ],
+      "status": "open",
+      "openingDate": "2026-11-09",
+      "deadline": "2026-12-09",
+      "summary": "Investīciju atbalsts mazajām un vidējām lauku saimniecībām konkurētspējas un darbības uzlabošanai.",
+      "fundingDetails": {
+        "totalPublicBudget": 30500000,
+        "budgetBreakdown": [
+          {
+            "label": "Mazās lauku saimniecības",
+            "amount": 10000000
+          },
+          {
+            "label": "Vidējās lauku saimniecības",
+            "amount": 20500000
+          }
+        ],
+        "applicantMaximum": null,
+        "note": "Norādīts kopējais publiskais finansējums, nevis viena pretendenta maksimālā atbalsta summa."
+      },
+      "eligibility": {
+        "notes": "Paredzēts mazajām un vidējām lauku saimniecībām. Precīzs saimniecības lielums, attiecināmās izmaksas, atbalsta intensitāte un citi kritēriji jāpārbauda konkrētās kārtas nolikumā."
+      },
+      "lastVerifiedAt": "2026-11-17",
+      "evidenceNotes": "LAD 2026-10-12 paziņojums: pieteikšanās 2026-11-09 līdz 2026-12-09; 10 milj. EUR mazajām un 20,5 milj. EUR vidējām saimniecībām."
+    },
+    {
+      "id": "lad-la-4-1-2-climate-farm-2026",
+      "name": "LA 4.1.2. Atbalsts SEG un amonjaka emisiju samazināšanai un klimata pārmaiņu mazināšanai lauku saimniecībās",
+      "sourceId": "lad-support-catalogue",
+      "sourceUrl": "https://www.lad.gov.lv/lv/jaunums/lauksaimniekiem-un-kooperativiem-pieejams-atbalsts-investicijam-un-attistibai",
+      "applicationUrl": "https://eps.lad.gov.lv/",
+      "scope": "sector",
+      "sectors": [
+        "agri"
+      ],
+      "supportTypes": [
+        "grant"
+      ],
+      "status": "open",
+      "openingDate": "2026-11-09",
+      "deadline": "2026-12-09",
+      "summary": "Atbalsts lauku saimniecību klimata ietekmes mazināšanai, energoefektivitātei un atjaunīgās enerģijas ražošanai.",
+      "fundingDetails": {
+        "totalPublicBudget": 14200000,
+        "budgetBreakdown": [
+          {
+            "label": "Biogāzes ražošanas iekārtas",
+            "amount": 7200000
+          },
+          {
+            "label": "Energoefektivitāte",
+            "amount": 4000000
+          },
+          {
+            "label": "Atjaunīgās enerģijas ražošana",
+            "amount": 3000000
+          }
+        ],
+        "applicantMaximum": null,
+        "note": "Norādīts kopējais publiskais finansējums pa ieguldījumu veidiem, nevis viena pretendenta maksimālā atbalsta summa."
+      },
+      "eligibility": {
+        "notes": "LAD norāda, ka atbalstam nevar pieteikties uzņēmumi, kas pārstrādā lauksaimniecības produktus un ražo produktus, kuri nav iekļauti ES līguma I pielikumā. Precīzie nosacījumi jāpārbauda nolikumā."
+      },
+      "lastVerifiedAt": "2026-11-17",
+      "evidenceNotes": "LAD 2026-10-12 paziņojums: pieteikšanās 2026-11-09 līdz 2026-12-09; kopējais publiskais finansējums 14,2 milj. EUR."
+    },
+    {
+      "id": "lad-la-4-1-1-sheep-goat-prevention-2026",
+      "name": "LA 4.1.1. Preventīvie ieguldījumi aitkopības un kazkopības saimniecībām",
+      "sourceId": "lad-support-catalogue",
+      "sourceUrl": "https://www.lad.gov.lv/lv/jaunums/lauksaimniekiem-un-kooperativiem-pieejams-atbalsts-investicijam-un-attistibai",
+      "applicationUrl": "https://eps.lad.gov.lv/",
+      "scope": "sector",
+      "sectors": [
+        "agri"
+      ],
+      "activities": [
+        "Lopkopība"
+      ],
+      "supportTypes": [
+        "grant"
+      ],
+      "status": "open",
+      "openingDate": "2026-11-09",
+      "deadline": "2027-04-09",
+      "summary": "Preventīvi ieguldījumi žogos, tehnikā un iekārtās aitkopības un kazkopības saimniecībām.",
+      "fundingDetails": {
+        "totalPublicBudget": 318200,
+        "applicantMaximum": null,
+        "note": "Kopējais publiskais finansējums; viena pretendenta maksimālā summa avota kopsavilkumā nav norādīta."
+      },
+      "eligibility": {
+        "notes": "Paredzēts aitkopības un kazkopības saimniecībām. Nozaru profils ar vispārīgu lopkopības norādi vēl nenozīmē atbilstību — jāpārbauda dzīvnieku veids, plānotās izmaksas un nolikums."
+      },
+      "manualReviewReason": "Jāpārbauda, vai saimniecība nodarbojas tieši ar aitkopību vai kazkopību un vai plānotās izmaksas ir attiecināmas.",
+      "lastVerifiedAt": "2026-11-17",
+      "evidenceNotes": "LAD 2026-10-12 paziņojums: pieteikšanās 2026-11-09 līdz 2027-04-09; publiskais finansējums 318,2 tūkst. EUR."
+    },
+    {
+      "id": "altum-start-loan-2026",
+      "name": "ALTUM starta aizdevums biznesa uzsācējiem",
+      "sourceId": "altum-business",
+      "sourceUrl": "https://www.altum.lv/pakalpojumi/biznesam/starta-aizdevums/",
+      "applicationUrl": "https://mans.altum.lv/",
+      "scope": "cross_sector",
+      "sectors": [],
+      "excludedSectors": [
+        "agri",
+        "fishing"
+      ],
+      "supportTypes": [
+        "loan"
+      ],
+      "status": "ongoing",
+      "summary": "Aizdevums biznesa uzsācējiem investīcijām, apgrozāmajiem līdzekļiem un nekustamajam īpašumam. Pieteikties var arī pirms uzņēmuma dibināšanas, ja ir skaidrs biznesa plāns.",
+      "fundingDetails": {
+        "maxAmount": 250000,
+        "interestRateFrom": 4.9,
+        "currency": "EUR",
+        "workingCapitalTermYears": 3,
+        "investmentTermYears": 10,
+        "realEstateTermYears": 15,
+        "ownContributionMinimum": 0.1,
+        "note": "ALTUM lapā norādīta fiksēta procentu likme no 4,9%; investīciju projektos minimālā aizņēmēja līdzdalība norādīta vismaz 10% apmērā, bet faktiskie nosacījumi atkarīgi no projekta."
+      },
+      "eligibility": {
+        "stages": [
+          "idea",
+          "not_registered",
+          "new",
+          "operating"
+        ],
+        "notes": "Pieejams arī pašnodarbinātajiem un uzņēmumiem, kas reģistrēti ne senāk kā pirms 7 gadiem; pieteikties iespējams pirms dibināšanas ar skaidru biznesa plānu. Lauksaimniecības un zivsaimniecības nozarēm ALTUM norāda citas atbalsta programmas. Tīkla mārketinga projekti netiek finansēti."
+      },
+      "specialTerms": "Uzņēmumiem Augšdaugavas, Balvu, Krāslavas, Ludzas un Alūksnes novados ALTUM lapā norādīts īpašs 0% piedāvājums jaunajiem aizdevumiem, kas pieteikti līdz 2027-06-30; jāizpilda atsevišķie nosacījumi.",
+      "lastVerifiedAt": "2026-11-17",
+      "evidenceNotes": "ALTUM lapā informācija atjaunota 2026-08-03; norādīts aizdevums līdz 250 000 EUR, likme no 4,9%, uzņēmuma vecums līdz 7 gadiem, pieteikšanās pirms dibināšanas."
+    },
+    {
+      "id": "nostradamus-open-call-1-2026",
+      "name": "NOSTRADAMUS Open Call #1 — digitālās lietotnes ilgtspējīgai lauksaimniecībai",
+      "sourceId": "nostradamus-open-call",
+      "sourceUrl": "https://nostradamus-project.eu/open-call-1/",
+      "applicationUrl": "https://www.f6s.com/nostradamus-open-call-1/apply",
+      "scope": "sector",
+      "sectors": [
+        "agri",
+        "digital"
+      ],
+      "supportTypes": [
+        "grant",
+        "non_financial"
+      ],
+      "status": "open",
+      "openingDate": "2026-09-29",
+      "deadline": "2026-12-02",
+      "summary": "Atbalsts atvērtā koda digitālu lietotņu izstrādei, testēšanai un validēšanai lauku saimniecību lēmumu pieņemšanai, īpaši graudaugu sistēmās.",
+      "fundingDetails": {
+        "maxAmount": 50000,
+        "totalPublicBudget": 250000,
+        "projectCount": 5,
+        "fundingRate": 100,
+        "currency": "EUR",
+        "durationMonths": 12,
+        "note": "Līdz 50 000 EUR katram no pieciem atlasītajiem projektiem; kopējais konkursa budžets 250 000 EUR."
+      },
+      "eligibility": {
+        "notes": "Oficiālā konkursa lapa norāda, ka pieteikumu var iesniegt viena juridiska persona vai konsorcijs līdz divām juridiskām personām; minēti MVU un jaunuzņēmumi. Pirms pieteikšanās jāpārbauda pilnās vadlīnijas, juridiskās personas un tehniskās prasības."
+      },
+      "manualReviewReason": "Jāpārbauda, vai pieteicējs spēj izstrādāt atvērtā koda digitālu risinājumu un vai ideja atbilst vienai no piecām konkursa tēmām.",
+      "lastVerifiedAt": "2026-11-17",
+      "evidenceNotes": "NOSTRADAMUS oficiālā konkursa lapa: 5 projekti, līdz 50 000 EUR katram, termiņš 2026-12-02 plkst. 17.00 CET, 12 mēnešu programma."
+    }
+  ]
 }
