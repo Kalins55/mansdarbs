@@ -11,6 +11,17 @@ function getCookie(request, name) {
 }
 
 export async function onRequestPost({ request, env }) {
+  let body;
+  try {
+    body = await request.json();
+  } catch (_) {
+    return Response.json({ ok: false, error: "invalid_request" }, { status: 400 });
+  }
+
+  if (body?.consent !== true) {
+    return Response.json({ ok: false, error: "consent_required" }, { status: 403 });
+  }
+
   if (!env.VISITS) {
     return Response.json({ ok: false, error: "storage_not_configured" }, { status: 503 });
   }
