@@ -188,6 +188,30 @@ test('comparison clears stale imported values when all selected-year records are
   assert.match(result.regimeRecordsStatus.textContent, /Iepriekš no uzskaites pārņemtās vērtības notīrītas/);
 });
 
+test('comparison clears stale auto-synced IIN values when source fields are blank but preserves manual values', () => {
+  const elements = {
+    regimeVsaoi: { value: '500', dataset: { synced: 'auto' } },
+    regimeOtherIncome: { value: '2000', dataset: { synced: 'auto' } },
+    regimeAllowance: { value: '6600', dataset: { synced: 'auto' } },
+    regimeDeductions: { value: '300', dataset: { synced: 'manual' } },
+    annualVsaoi: { value: '600' },
+    otherTaxableIncome: { value: '' },
+    annualAllowance: { value: '6600' },
+    otherDeductions: { value: '' }
+  };
+  const document = { getElementById: id => elements[id] };
+  const run = new Function('document', extractFunction('syncTaxRegimeInputs') + '; return syncTaxRegimeInputs;')(document);
+  run();
+  assert.equal(elements.regimeVsaoi.value, '600');
+  assert.equal(elements.regimeVsaoi.dataset.synced, 'auto');
+  assert.equal(elements.regimeOtherIncome.value, '');
+  assert.equal(elements.regimeOtherIncome.dataset.synced, '');
+  assert.equal(elements.regimeAllowance.value, '6600');
+  assert.equal(elements.regimeAllowance.dataset.synced, 'auto');
+  assert.equal(elements.regimeDeductions.value, '300');
+  assert.equal(elements.regimeDeductions.dataset.synced, 'manual');
+});
+
 test('comparison reset clears the allowance sync marker so later IIN values can sync', () => {
   const ids = ['regimeTurnover', 'regimeExpenses', 'regimeVsaoi', 'regimeOtherIncome', 'regimeAllowance', 'regimeDeductions'];
   const elements = Object.fromEntries(ids.map(id => [id, { value: '123', dataset: { synced: 'manual' } }]));
