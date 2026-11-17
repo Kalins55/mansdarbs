@@ -26,7 +26,7 @@ test('VID assistant requests clear session consent before adding or sending a qu
 });
 
 test('VID assistant API rejects requests without explicit consent before processing or forwarding messages', () => {
-  const guard = api.indexOf('if (body?.consent !== true)');
+  const guard = api.indexOf('if (body.consent !== true)');
   const messages = api.indexOf('const allowedRoles = new Set(["user", "assistant"]);');
   const upstream = api.indexOf('fetch("https://api.openai.com/v1/responses"');
 
@@ -39,7 +39,7 @@ test('VID assistant enforces the request size limit while streaming the body', (
   const reader = api.indexOf('async function readLimitedRequestBody(request)');
   const byteLimit = api.indexOf('totalBytes > MAX_REQUEST_BYTES');
   const parseBody = api.indexOf('body = JSON.parse(rawBody)');
-  const consent = api.indexOf('if (body?.consent !== true)');
+  const consent = api.indexOf('if (body.consent !== true)');
 
   assert.notEqual(reader, -1, 'Request body uses a bounded stream reader');
   assert.notEqual(byteLimit, -1, 'Cumulative bytes are checked as chunks arrive');
@@ -75,7 +75,7 @@ test('VID assistant stops reading oversized streamed requests and returns 413', 
   });
   const request = new Request('https://mansdarbs.eu/api/vid-assistant', {
     method: 'POST',
-    headers: { Origin: 'https://mansdarbs.eu' },
+    headers: { Origin: 'https://mansdarbs.eu', 'Content-Type': 'application/json' },
     body: stream,
     duplex: 'half'
   });
@@ -162,7 +162,7 @@ test('VID assistant rejects non-JSON content types before reading the request bo
     'async function onRequestPost'
   );
   const sandbox = { Response, URL, TextEncoder, TextDecoder, fetch: async () => { upstreamCalls += 1; } };
-  vm.runInNewContext(executable + '\\nthis.onRequestPost = onRequestPost;', sandbox);
+  vm.runInNewContext(executable + '\nthis.onRequestPost = onRequestPost;', sandbox);
   const request = new Request('https://mansdarbs.eu/api/vid-assistant', {
     method: 'POST',
     headers: { Origin: 'https://mansdarbs.eu', 'Content-Type': 'text/plain' },
@@ -183,7 +183,7 @@ test('VID assistant rejects JSON values that are not request objects', async () 
     'async function onRequestPost'
   );
   const sandbox = { Response, URL, TextEncoder, TextDecoder, fetch: async () => { upstreamCalls += 1; } };
-  vm.runInNewContext(executable + '\\nthis.onRequestPost = onRequestPost;', sandbox);
+  vm.runInNewContext(executable + '\nthis.onRequestPost = onRequestPost;', sandbox);
   const request = new Request('https://mansdarbs.eu/api/vid-assistant', {
     method: 'POST',
     headers: { Origin: 'https://mansdarbs.eu', 'Content-Type': 'application/json' },
@@ -224,7 +224,7 @@ test('VID assistant forwards only consented requests and returns filtered offici
       }), { status: 200, headers: { 'Content-Type': 'application/json' } });
     }
   };
-  vm.runInNewContext(executable + '\\nthis.onRequestPost = onRequestPost;', sandbox);
+  vm.runInNewContext(executable + '\nthis.onRequestPost = onRequestPost;', sandbox);
   const request = new Request('https://mansdarbs.eu/api/vid-assistant', {
     method: 'POST',
     headers: { Origin: 'https://mansdarbs.eu', 'Content-Type': 'application/json' },
