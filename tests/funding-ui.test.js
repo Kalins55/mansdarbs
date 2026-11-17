@@ -11,3 +11,5 @@ test('total programme budgets are clearly distinguished from applicant awards',(
 test('repayable loans and their interest rate are clear',()=>{const h=ui.renderCard(item({supportTypes:['loan'],supportTypeLabels:['Aizdevums — jāatmaksā'],fundingDetails:{maxAmount:250000,interestRateFrom:4.9}}),'lv');assert.match(h,/Aizdevums — jāatmaksā/);assert.match(h,/likme no 4,9%/);});
 test('no-profile state explains local storage and no-account use',()=>{const h=ui.renderFundingContent([],[],null,'lv');assert.match(h,/Pievienot nozares profilu/);assert.match(h,/Konts nav nepieciešams/);});
 test('programme text is escaped',()=>{const h=ui.renderCard(item({name:'<img src=x onerror=alert(1)>'}),'lv');assert.doesNotMatch(h,/<img src=x/);assert.match(h,/&lt;img/);});
+
+test('mixed grant and non-financial support types are both displayed',()=>{const h=ui.renderCard(item({id:'nostradamus-open-call-1-2026',supportTypes:['grant','non_financial'],supportTypeLabels:['Grants','Nefinansiāls atbalsts']}),'lv');assert.match(h,/Grants/);assert.match(h,/Nefinansiāls atbalsts/);});
