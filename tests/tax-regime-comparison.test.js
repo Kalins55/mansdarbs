@@ -180,7 +180,7 @@ test('comparison warns when MUN exceeds profit after expenses', () => {
 
 test('comparison warns when general-regime tax exceeds very low profit', () => {
   const result = runComparison({
-    regimeTurnover: 100, regimeExpenses: 90, regimeVsaoi: 0,
+    regimeTurnover: 100, regimeExpenses: 60, regimeVsaoi: 1,
     regimeOtherIncome: 0, regimeAllowance: 6600, regimeDeductions: 0
   });
   assert.match(result.innerHTML, /vispārējā režīma nodokļu summa pārsniedz norādīto peļņu/i);
