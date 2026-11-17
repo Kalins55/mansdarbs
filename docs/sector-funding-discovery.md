@@ -4,7 +4,7 @@
 
 Mansdarbs palīdz cilvēkam atrast ne tikai vispārīgus uzņēmējdarbības atbalsta pasākumus, bet arī projektus un finansējumu, kas paredzēts tieši viņa nozarei, faktiskajai darbībai vai plānotajam ieguldījumam. Jāmeklē gan Latvijas, gan Eiropas Savienības, gan pašvaldību un starptautiskās programmas, kas pieejamas Latvijā.
 
-Šī ir produkta prasība un attīstības specifikācija. Tā pati par sevi nenozīmē, ka finansējuma datubāze, automātiska uzraudzība vai lietotāja saskarne jau ir ieviesta.
+Šī ir produkta prasība un attīstības specifikācija. Pašreizējā prototipā ir ieviests sākotnējais finansējuma katalogs, lokālā atlase un kompakta sākumlapas sadaļa. Pilns katalogs, automātiska avotu uzraudzība un paziņojumi vēl nav ieviesti.
 
 ## Meklēšanas loģika
 
@@ -141,3 +141,13 @@ Sākotnējais pārbaudīto oficiālo avotu reģistrs atrodas `funding-sources.js
 `funding-programs.json` tagad satur piecus konkrētus ierakstus, kas pārbaudīti oficiālajos avotos: trīs LAD lauku saimniecību atbalsta kārtas, ALTUM starta aizdevumu un NOSTRADAMUS ES finansēta projekta digitālās lauksaimniecības lietotņu konkursu. Katram ierakstam ir avota saite, pieteikšanās statuss un termiņš, pēdējās pārbaudes datums un skaidrojums par atbilstības robežām.
 
 Svarīgi: publiskais budžets nav tas pats, kas viena pretendenta maksimālā atbalsta summa. ALTUM starta aizdevums ir atmaksājams aizdevums, nevis grants. NOSTRADAMUS atbalstam vajadzīga digitāla atvērtā koda risinājuma iecere; vienkārša lauksaimniecības darbība pati par sevi nenozīmē atbilstību. Šie ieraksti ir sākotnējais izlases katalogs, nevis pilns visu Latvijas vai ES programmu saraksts.
+
+
+## Pašreizējā ieviešana (2026-11-17)
+
+- Sākumlapā pievienota sadaļa **“Pieejamais finansējums un projekti”**. Tā parāda iespējas pēc lokāli saglabātā nozares profila un atdala tieši nozarei paredzēto atbalstu no vispārīgām programmām.
+- Ja profils nav saglabāts, lietotājs saņem norādi to pievienot sadaļā “Uzskaite”. Konts nav vajadzīgs.
+- Pārlūkprogramma ielādē publisko programmu un avotu katalogu, bet profila atlase notiek lokāli. Nozares profils un finanšu ieraksti netiek nosūtīti katalogu pieprasījumos.
+- Kartītēs ir atbalsta veids, statuss, termiņš, summa vai kopējais programmas budžets, oficiālā programmas saite un pēdējās pārbaudes datums. Aizdevumi ir marķēti kā atmaksājami.
+- Atbilstības vērtējums ir orientējošs. Ja kritēriji nav pilnībā pārbaudīti, lietotājam tiek parādīts “Jāpārbauda atbilstība”; tas nav finansējuma saņemšanas vai juridiskās atbilstības apliecinājums.
+- Katalogā pašlaik ir pieci sākotnēji pārbaudīti ieraksti. Nav ieviesta automātiska datu atjaunošana, termiņu uzraudzība fonā vai paziņojumi. Pirms pieteikšanās vienmēr jāpārbauda aktuālais oficiālais nolikums.
