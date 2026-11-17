@@ -590,7 +590,16 @@ function progressiveIin(amount){
 }
 function syncTaxRegimeInputs(){
  const map=[['regimeVsaoi','annualVsaoi'],['regimeOtherIncome','otherTaxableIncome'],['regimeAllowance','annualAllowance'],['regimeDeductions','otherDeductions']];
- map.forEach(([target,source])=>{const el=document.getElementById(target),value=document.getElementById(source)?.value;if(el&&value!==undefined&&value!==''&&(el.value===''||el.dataset.synced!=='manual')){el.value=value;el.dataset.synced='auto';}});
+ map.forEach(([target,source])=>{
+  const el=document.getElementById(target),sourceEl=document.getElementById(source);
+  if(!el||!sourceEl)return;
+  const value=sourceEl.value;
+  if(value===''){
+   if(el.dataset.synced==='auto'){el.value='';el.dataset.synced='';}
+   return;
+  }
+  if(el.value===''||el.dataset.synced!=='manual'){el.value=value;el.dataset.synced='auto';}
+ });
 }
 function clearRegimeRecordPrefill(){
  let cleared=0;
