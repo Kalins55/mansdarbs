@@ -65,7 +65,7 @@ test('VID assistant stops reading oversized streamed requests and returns 413', 
     TextDecoder,
     fetch: async () => { upstreamCalls += 1; throw new Error('Unexpected upstream call'); }
   };
-  vm.runInNewContext(executable + '\\nthis.onRequestPost = onRequestPost;', sandbox);
+  vm.runInNewContext(executable + '\nthis.onRequestPost = onRequestPost;', sandbox);
   const stream = new ReadableStream({
     start(controller) {
       controller.enqueue(new TextEncoder().encode('a'.repeat(8000)));
@@ -90,6 +90,27 @@ test('VID assistant stops reading oversized streamed requests and returns 413', 
 });
 
 
+test('VID assistant rejects a different scheme on the same host as a cross-origin request', async () => {
+  const vm = require('node:vm');
+  let upstreamCalls = 0;
+  const executable = api.replace(
+    'export async function onRequestPost',
+    'async function onRequestPost'
+  );
+  const sandbox = { Response, URL, TextEncoder, TextDecoder, fetch: async () => { upstreamCalls += 1; } };
+  vm.runInNewContext(executable + '\\nthis.onRequestPost = onRequestPost;', sandbox);
+  const request = new Request('https://mansdarbs.eu/api/vid-assistant', {
+    method: 'POST',
+    headers: { Origin: 'http://mansdarbs.eu' },
+    body: '{}'
+  });
+
+  const response = await sandbox.onRequestPost({ request, env: { OPENAI_API_KEY: 'test-key' } });
+
+  assert.equal(response.status, 403);
+  assert.equal(upstreamCalls, 0);
+});
+
 test('VID assistant API returns 403 and never contacts OpenAI when consent is absent', async () => {
   const vm = require('node:vm');
   let upstreamCalls = 0;
@@ -101,6 +122,7 @@ test('VID assistant API returns 403 and never contacts OpenAI when consent is ab
     Response,
     URL,
     TextEncoder,
+    TextDecoder,
     fetch: async () => { upstreamCalls += 1; throw new Error('Unexpected upstream call'); }
   };
   vm.runInNewContext(executable + '\nthis.onRequestPost = onRequestPost;', sandbox);
