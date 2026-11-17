@@ -169,6 +169,19 @@ test('industry comparison records map income, expenses and refunds from local st
   ]);
 });
 
+test('industry records in the module storage format import end-to-end into the tax comparison', () => {
+  const saved = [
+    { id: 'income-1', sector: 'agri', job: 'Augkopība', date: '2026-02-01', amount: 500, flow: 'income' },
+    { id: 'expense-1', sector: 'agri', job: 'Augkopība', date: '2026-02-02', amount: 125, flow: 'expense' }
+  ];
+  const localStorage = { getItem: key => key === 'mansdarbs_industry_records_v1' ? JSON.stringify(saved) : null };
+  const read = new Function('localStorage', extractFunction('getIndustryTaxComparisonRecords') + '; return getIndustryTaxComparisonRecords;')(localStorage);
+  const result = runPrefill([], { industryRecords: read() });
+  assert.equal(result.regimeTurnover.value, '500.00');
+  assert.equal(result.regimeExpenses.value, '125.00');
+  assert.match(result.regimeRecordsStatus.textContent, /nozares uzskaite: 2/);
+});
+
 test('comparison prefill includes industry income and expenses alongside base records', () => {
   const result = runPrefill([
     { kind: 'Ienākums', amount: 1000, date: '2026-01-12' }
