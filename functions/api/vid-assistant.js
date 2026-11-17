@@ -52,6 +52,10 @@ export async function onRequestPost({ request, env }) {
     return json({ error: "Neizdevās nolasīt ziņu." }, 400);
   }
 
+  if (body?.consent !== true) {
+    return json({ error: "Pirms jautājuma nosūtīšanas nepieciešams apstiprināt datu nosūtīšanu AI pakalpojumam." }, 403);
+  }
+
   const allowedRoles = new Set(["user", "assistant"]);
   const messages = Array.isArray(body?.messages) ? body.messages.slice(-8).map(item => ({
     role: allowedRoles.has(item?.role) ? item.role : "user",
