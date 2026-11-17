@@ -119,3 +119,18 @@ Parādi arī īsu pamatojumu: kas sakrīt, kas neatbilst un kāda informācija v
 - Neatbilstošas programmas tiek izskaidrotas, nevis paslēptas bez pamatojuma.
 - Nav garantiju par finansējuma saņemšanu.
 - Privātuma pamatprincips — bez obligāta konta un bez finanšu datu nosūtīšanas — tiek saglabāts.
+
+
+## Jau esošie atbalsta meklētāji un Mansdarbs papildu vērtība
+
+LIAA portālā **liaa.business.gov.lv** jau ir Latvijas biznesa atbalsta vednis un vienuviet apkopotas LIAA, ALTUM, CFLA, LAD, Patentu valdes un pašvaldību iespējas. Mansdarbs nedrīkst dublēt šo katalogu, ja informācija jau tiek uzturēta oficiālajā portālā. Tā vietā jāizmanto tas kā viens no galvenajiem avotiem un jārada papildu vērtība ar:
+- precīzāku atbilstību pēc faktiskās darbības un NACE 2.1 koda, ne tikai plaša nozares nosaukuma;
+- atšķirību starp primāro ražošanu, pakalpojumiem, remontu un pārstrādi;
+- skaidru atšķirību starp tieši nozares programmām un starpnozaru programmām;
+- tiešo ES Komisijas Funding & Tenders konkursu meklēšanu;
+- plānoto konkursu un termiņu savlaicīgu uzraudzību;
+- saprotamu skaidrojumu, kāpēc konkrētais atbalsts var vai nevar attiekties uz lietotāju.
+
+LAD katalogs ļauj meklēt pēc nozares, programmas tipa un kārtas statusa. CFLA 2021–2027 programmu lapa rāda arī izsludinātās un drīzumā plānotās atlases. ALTUM biznesa katalogā ir atsevišķi aizdevumi, garantijas un investīciju fondi — tie nedrīkst tikt klasificēti kā granti.
+
+Sākotnējais pārbaudīto oficiālo avotu reģistrs atrodas `funding-sources.json`. Tas ir avotu saraksts, nevis jau funkcionējošs automātisks finansējuma katalogs. Katras konkrētās programmas statuss, termiņš un nolikums joprojām jāpārbauda tās oficiālajā lapā.
