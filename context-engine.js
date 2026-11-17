@@ -202,10 +202,26 @@
     });
     const industryButton = document.createElement('button');
     industryButton.type = 'button'; industryButton.className = 'btn secondary';
-    industryButton.textContent = industry ? tr('Atvērt nozares uzskaiti','Open industry records') : tr('Pievienot nozares profilu','Add industry profile');
+    industryButton.textContent = p.stage === 'company'
+      ? tr('Atvērt uzņēmuma uzskaiti','Open company records')
+      : industry ? tr('Atvērt nozares uzskaiti','Open industry records') : tr('Pievienot nozares profilu','Add industry profile');
     industryButton.addEventListener('click', () => {
       if (window.showAccounting) window.showAccounting();
-      else if (window.showView) window.showView('records');
+      else if (window.showView) window.showView(p.stage === 'company' ? 'sia' : 'records');
+
+      // The industry profile editor lives inside the self-employed records view.
+      // Do not route company users into that separate bookkeeping area.
+      if (p.stage !== 'company') {
+        let mode = '';
+        try { mode = localStorage.getItem('mansdarbs_accounting_mode') || ''; } catch (_) {}
+        if (mode === 'self' || mode === 'zs') {
+          const industrySection = document.getElementById('industrySection');
+          if (industrySection) {
+            industrySection.open = true;
+            industrySection.scrollIntoView({behavior:'smooth', block:'start'});
+          }
+        }
+      }
     });
     const edit = document.createElement('button');
     edit.type = 'button'; edit.className = 'btn secondary';
