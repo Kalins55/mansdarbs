@@ -32,7 +32,7 @@ function createHarness() {
   const elements = {
     profit1: { value: '0' }, profit2: { value: '0' }, profit3: { value: '0' },
     contributionBase: { value: '780' }, contributionStatus: { value: 'standard' },
-    vsaoiActivityType: { value: 'ordinary' }, vsaoiQuarter: { value: '1' },
+    vsaoiActivityType: { value: 'ordinary' }, vsaoiQuarter: { value: '1' }, manualVsaoiIin: { checked: false },
     vsaoiResult: { innerHTML: '' }, annualProfit: { value: '' }, annualVsaoi: { value: '' }
   };
   const storage = new Map();
@@ -46,7 +46,7 @@ function createHarness() {
   };
   const localStorage = {
     getItem: key => storage.has(key) ? storage.get(key) : null,
-    setItem: (key, value) => storage.set(key, value)
+    setItem: (key, value) => storage.set(key, value),\n    removeItem: key => storage.delete(key)
   };
   const money = value => Number(value).toFixed(2) + ' €';
   const uiText = lv => lv;
@@ -54,8 +54,8 @@ function createHarness() {
   const source = [
     extractFunction('vsaoiQuarterKey'),
     extractFunction('syncIinFromVsaoi'),
-    extractFunction('calculateVsaoi')
-  ].join('\n') + '\nreturn calculateVsaoi;';
+    extractFunction('calculateVsaoi'),\n    extractFunction('toggleManualVsaoiIin'),\n    extractFunction('saveManualVsaoiIin')
+  ].join('\n') + '\nreturn { calculateVsaoi, toggleManualVsaoiIin, saveManualVsaoiIin };';
   const calculate = new Function('document', 'localStorage', 'money', 'uiText', 'alert', source)(
     document, localStorage, money, uiText, alert
   );
@@ -64,11 +64,11 @@ function createHarness() {
     elements.vsaoiActivityType.value = activity;
     elements.contributionStatus.value = status;
     values.forEach((value, i) => { elements['profit' + (i + 1)].value = String(value); });
-    calculate();
+    api.calculateVsaoi();
     const saved = storage.get('mansdarbs-vsaoi-2026-q' + quarter);
     return saved ? JSON.parse(saved) : null;
   }
-  return { elements, storage, alerts, runQuarter };
+  return { elements, storage, alerts, runQuarter, toggleManual: api.toggleManualVsaoiIin, saveManual: api.saveManualVsaoiIin };
 }
 
 test('ordinary activity: monthly 10% and full VSAOI are rounded to cents', () => {
@@ -114,4 +114,19 @@ test('ordinary mode rejects losses while annual special mode accepts them', () =
   const saved = h.runQuarter(1, [-100, 0, 0], 'annual_special');
   assert.equal(saved.rows[0].profit, -100);
   assert.equal(h.elements.annualProfit.value, '-100.00');
+});
+
+test('manual paid-VSAOI override persists and can return to automatic estimate', () => {
+  const h = createHarness();
+  h.runQuarter(1, [500, 1000, 0]);
+  h.elements.manualVsaoiIin.checked = true;
+  h.elements.annualVsaoi.value = '400.00';
+  h.saveManual();
+  h.runQuarter(2, [500, 0, 0]);
+  assert.equal(h.elements.annualVsaoi.value, '400.00');
+  assert.equal(h.storage.get('mansdarbs_vsaoi_iin_manual_v1'), '400');
+  h.elements.manualVsaoiIin.checked = false;
+  h.toggleManual();
+  assert.equal(h.elements.annualVsaoi.value, '364.35');
+  assert.equal(h.storage.has('mansdarbs_vsaoi_iin_manual_v1'), false);
 });
