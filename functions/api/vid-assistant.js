@@ -140,7 +140,8 @@ export async function onRequestPost({ request, env }) {
         }],
         max_output_tokens: 900,
         store: false
-      })
+      }),
+      signal: AbortSignal.timeout(25000)
     });
   } catch (_) {
     return json({ error: "AI palīgs pašlaik nav sasniedzams. Mēģini vēlreiz pēc brīža." }, 502);
@@ -156,14 +157,20 @@ export async function onRequestPost({ request, env }) {
     return json({ error: "Saņēmu nesaprotamu atbildi. Mēģini vēlreiz." }, 502);
   }
 
+  if (!result || !Array.isArray(result.output)) {
+    return json({ error: "Saņēmu nesaprotamu atbildi. Mēģini vēlreiz." }, 502);
+  }
+
   const answerParts = [];
   const sources = [];
-  for (const item of result.output || []) {
-    if (item.type !== "message" || !Array.isArray(item.content)) continue;
+  for (const item of result.output) {
+    if (!item || item.type !== "message" || !Array.isArray(item.content)) continue;
     for (const part of item.content) {
+      if (!part || typeof part !== "object") continue;
       if (part.type === "output_text" && typeof part.text === "string") answerParts.push(part.text);
-      for (const annotation of part.annotations || []) {
-        if (annotation.type === "url_citation" && typeof annotation.url === "string") {
+      const annotations = Array.isArray(part.annotations) ? part.annotations : [];
+      for (const annotation of annotations) {
+        if (annotation?.type === "url_citation" && typeof annotation.url === "string") {
           try {
             const url = new URL(annotation.url);
             if (url.protocol === "https:" && OFFICIAL_DOMAINS.some(domain => url.hostname === domain || url.hostname.endsWith("." + domain))) {
