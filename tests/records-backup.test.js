@@ -3,6 +3,7 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
 const html = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
+const validInvoice = {number:'R-2026-001',date:'2026-03-01',due:'2026-03-15',seller:'Pārdevējs',buyer:'Pircējs',description:'Pakalpojums',qty:1,price:100,net:100,rate:21,vat:21,total:121,currency:'EUR'};
 
 function extractFunction(name) {
   const start = html.indexOf('function ' + name + '(');
@@ -77,7 +78,7 @@ test('v2 backup restores included categories and preserves categories absent fro
   }};
   const result = runImport(JSON.stringify(backup), {
     mansdarbs_demo_records_v1:[{kind:'Izdevums',amount:10,date:'2026-02-01'}],
-    mansdarbs_demo_invoices_v1:[{number:'R-2026-001'}]
+    mansdarbs_demo_invoices_v1:[{...validInvoice}]
   });
   assert.equal(result.confirmations, 1);
   assert.equal(JSON.parse(result.store.get('mansdarbs_demo_records_v1'))[0].amount, 25);
@@ -100,6 +101,15 @@ test('v2 backup rejects malformed nested SIA companies and transactions', () => 
   }}));
   assert.equal(invalidCompany.confirmations, 0);
   assert.equal(invalidTransaction.confirmations, 0);
+});
+
+test('v2 backup rejects malformed invoice data and accepts a complete invoice', () => {
+  const valid = runImport(JSON.stringify({app:'Mansdarbs',version:2,data:{mansdarbs_demo_invoices_v1:[{...validInvoice}]}}));
+  const invalidAmount = runImport(JSON.stringify({app:'Mansdarbs',version:2,data:{mansdarbs_demo_invoices_v1:[{...validInvoice,qty:-1}]}}));
+  const invalidDueDate = runImport(JSON.stringify({app:'Mansdarbs',version:2,data:{mansdarbs_demo_invoices_v1:[{...validInvoice,due:'2026-02-30'}]}}));
+  assert.equal(valid.confirmations, 1);
+  assert.equal(invalidAmount.confirmations, 0);
+  assert.equal(invalidDueDate.confirmations, 0);
 });
 
 test('v2 backup rejects invalid dates and malformed dataset shapes', () => {
@@ -128,7 +138,7 @@ test('v2 backup rejects invalid bookkeeping amounts and VSAOI row values', () =>
 test('v2 backup preserves existing data when a write fails but rollback succeeds', () => {
   const result = runImport(JSON.stringify({app:'Mansdarbs',version:2,data:{
     mansdarbs_demo_records_v1:[{kind:'Ienākums',amount:25,date:'2026-03-01'}],
-    mansdarbs_demo_invoices_v1:[{number:'R-2026-002'}]
+    mansdarbs_demo_invoices_v1:[{...validInvoice,number:'R-2026-002'}]
   }}), {
     mansdarbs_demo_records_v1:[{kind:'Izdevums',amount:10,date:'2026-02-01'}],
     mansdarbs_demo_invoices_v1:[{number:'R-2026-001'}]
