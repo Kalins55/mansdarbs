@@ -25,31 +25,25 @@ function extractFunction(name) {
   throw new Error('Unclosed function: ' + name);
 }
 
-test('industry income is included in tax warnings only when marked as VAT-qualifying', () => {
-  const elements = {
-    taxWarning: { hidden: true, innerHTML: '' },
-    date: { value: '2026-11-17' },
-    amount: { value: '' },
-    kind: { value: 'Ienākums' },
-    vatThreshold: { checked: false }
-  };
+test('industry records feed IIN and VAT warnings, with VAT opt-in per transaction', () => {
   const industry = [
     { flow: 'income', amount: 10000, date: '2026-11-10', vatThreshold: true },
     { flow: 'income', amount: 5000, date: '2026-11-11', vatThreshold: false },
     { flow: 'expense', amount: 1000, date: '2026-11-12', vatThreshold: false }
   ];
-  const document = {
-    documentElement: { lang: 'lv' },
-    getElementById: id => elements[id]
+  const localStorage = {
+    getItem: key => key === 'mansdarbs_industry_records_v1' ? JSON.stringify(industry) : null
   };
-  const localStorage = { getItem: key => key === 'mansdarbs_industry_records_v1' ? JSON.stringify(industry) : null };
-  const money = value => Number(value).toFixed(2) + ' €';
-  const run = new Function(
-    'document', 'localStorage', 'getRecords', 'money', 'editingIndex',
-    extractFunction('updateIinWarning') + '; return updateIinWarning;'
-  )(document, localStorage, () => [], money, null);
-  run();
-  assert.match(elements.taxWarning.innerHTML, /10 000\.00 €/);
-  assert.doesNotMatch(elements.taxWarning.innerHTML, /15 000\.00 €/);
-  assert.match(elements.taxWarning.innerHTML, /Iespējams IIN pienākums/);
+  const records = new Function('localStorage', extractFunction('getIndustryTaxRecords') + '; return getIndustryTaxRecords;')(localStorage)();
+  assert.equal(records.length, 3);
+  assert.equal(records[0].kind, 'Ienākums');
+  assert.equal(records[0].vatThreshold, true);
+  assert.equal(records[1].vatThreshold, false);
+  assert.equal(records[2].kind, 'Izdevums');
+
+  const summary = new Function(extractFunction('getVatThresholdSummary') + '; return getVatThresholdSummary;')()(records, 2026);
+  assert.equal(summary.total, 10000);
+  assert.equal(summary.remaining, 40000);
+  assert.match(html, /const industryItems=getIndustryTaxRecords\(\);/);
+  assert.match(html, /baseItems\.concat\(industryItems\)/);
 });
