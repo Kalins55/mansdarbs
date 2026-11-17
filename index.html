@@ -725,11 +725,18 @@ function addRecord(){
 }
 function editRecord(index){
  const item=getRecords()[index];if(!item)return;
- editingIndex=index;document.getElementById('kind').value=item.kind;updateRecordCategories(item.category||'');
- document.getElementById('vatThreshold').checked=item.vatThreshold===true&&item.kind==='Ienākums';document.getElementById('vatThresholdField').hidden=item.kind!=='Ienākums';
- document.getElementById('amount').value=Number(item.amount).toFixed(2);updateIinWarning();
- document.getElementById('date').value=item.date;document.getElementById('note').value=item.note||'';
- document.getElementById('saveRecordButton').textContent='Saglabāt izmaiņas';document.getElementById('cancelEditButton').classList.remove('hidden');
+ editingIndex=index;
+ document.getElementById('kind').value=item.kind;
+ updateRecordCategories(item.category||'');
+ document.getElementById('vatThreshold').checked=item.vatThreshold===true&&item.kind==='Ienākums';
+ document.getElementById('vatThresholdField').hidden=item.kind!=='Ienākums';
+ document.getElementById('date').value=item.date;
+ document.getElementById('amount').value=Number(item.amount).toFixed(2);
+ document.getElementById('note').value=item.note||'';
+ // Recalculate only after the original record's date and values are restored.
+ updateIinWarning();
+ document.getElementById('saveRecordButton').textContent='Saglabāt izmaiņas';
+ document.getElementById('cancelEditButton').classList.remove('hidden');
  document.getElementById('amount').scrollIntoView({behavior:'smooth',block:'center'});
 }
 function cancelEdit(){
