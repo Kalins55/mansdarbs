@@ -70,3 +70,14 @@ test('additional 3% IIN does not start when the separate annual income base is e
   assert.match(result.elements.iinResult.innerHTML, /2 970\.00 €|2970\.00 €/);
   assert.match(result.elements.iinResult.innerHTML, /55 264\.50 €|55264\.50 €/);
 });
+
+
+test('negative annual business profit does not block IIN estimate or reduce other income', () => {
+  const result = runIin({
+    profit: -1000, vsaoi: 0, other: 50000,
+    allowance: 6600, deductions: 0, exempt: true
+  });
+  assert.equal(result.alerts.length, 0);
+  assert.match(result.elements.iinResult.innerHTML, /Saimnieciskās darbības ienākuma daļa IIN bāzē<\/span><strong class="amount">0\.00 €/);
+  assert.match(result.elements.iinResult.innerHTML, /peļņa ir negatīva/);
+});
