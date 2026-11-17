@@ -36,7 +36,7 @@ function runImport(contents, initial = {}) {
   class FileReaderMock {
     readAsText() { this.result = contents; this.onload(); }
   }
-  const helpers = `const BACKUP_MAX_BYTES=5*1024*1024;
+  const helpers = `const BACKUP_MAX_BYTES=5*1024*1024;\nconst BACKUP_DATA_KEYS=['mansdarbs_demo_records_v1','mansdarbs_industry_records_v1','mansdarbs-vsaoi-2026-q1','mansdarbs-vsaoi-2026-q2','mansdarbs-vsaoi-2026-q3','mansdarbs-vsaoi-2026-q4','mansdarbs_vsaoi_iin_manual_v1','mansdarbs_accounting_mode','mansdarbs_sia_prototype_v1','mansdarbs_demo_invoices_v1','mansdarbs_demo_invoices_zs_v1','mansdarbs_invoice_seller_v1','mansdarbs_invoice_seller_zs_v1','mansdarbs_language_v1','mansdarbs_context_profile_v1','mansdarbs_industry_profile_v1','mansdarbs_industry_profiles_v1','mansdarbs_payment_profile_v1'];
 ` + extractFunction('validBackupDate') + extractFunction('validateBackupData');
   const fn = new Function(
     'FileReader','uiText','saveRecords','cancelEdit','renderRecords','renderInvoices',
