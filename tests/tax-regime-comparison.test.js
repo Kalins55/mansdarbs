@@ -96,7 +96,7 @@ test('special VAT registration can retain MUN eligibility below the threshold', 
     regimeVatStatus: 'special'
   });
   assert.doesNotMatch(result.innerHTML, /MUN izvēli nevar droši ieteikt/);
-  assert.match(result.innerHTML, /MUN nodokļu slogs/);
+  assert.match(result.innerHTML, /MUN 25% no apgrozījuma/);
 });
 
 test('minimum IIN exemption is applied only when the user confirms actual payment or another exemption', () => {
