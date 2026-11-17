@@ -112,3 +112,8 @@ Mansdarbs attīstības prasība: lietotājam jāspēj atrast gan tieši savai no
 Finansējuma veidi jānodala: grants, aizdevums, garantija, kapitāla ieguldījums, nodokļu atvieglojums un nefinansiāls atbalsts. Katram piedāvājumam jānorāda oficiālais avots, termiņš, atbilstības kritēriji, summa/atbalsta intensitāte, līdzfinansējums un pēdējās pārbaudes datums. Nekad nedrīkst garantēt atbilstību vai finansējuma saņemšanu, un aizdevumu nedrīkst pasniegt kā grantu.
 
 Sākotnējā meklēšana paliek anonīma; nozares profils pēc noklusējuma tiek izmantots lokāli pārlūkā. Lietotāja finanšu ieraksti un dokumenti netiek nosūtīti finansējuma katalogam. Pilnā specifikācija: [docs/sector-funding-discovery.md](docs/sector-funding-discovery.md). Sākotnējie oficiālie avoti reģistrēti [funding-sources.json](funding-sources.json); tas vēl nav automātiski atjaunots finansējuma katalogs. Avotu reģistra struktūru pārbauda arī atsevišķs tests.
+
+
+### Finansējuma atlases tehniskais pamats
+
+Pievienots lokāls atlases modulis `funding-discovery.js`, kas lasa jau saglabātos nozares profilus no pārlūka, salīdzina tos ar programmu nozares, NACE kodu, uzņēmējdarbības formas, stadijas, reģiona un atbalsta mērķa kritērijiem, kā arī nošķir tieši nozarei paredzētu atbalstu no starpnozaru iespējām. Tas neraksta un nesūta profila datus uz serveri. Programmu datu modelis atrodas `funding-programs.json`; katalogs apzināti sākas tukšs, līdz katras konkrētās atlases oficiālie nosacījumi ir pārbaudīti. Modulis vēl nav pieslēgts lietotāja saskarnei, lai neveiktu neapstiprinātas dizaina vai izkārtojuma izmaiņas.
