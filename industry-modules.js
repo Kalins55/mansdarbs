@@ -152,9 +152,13 @@ function renderModule(){
 }
 function saveEntry(){
  const sector=el('industrySector').value,job=el('industryJob').value,root=el('industryModule'),data={};root.querySelectorAll('[id^="ind_"]').forEach(x=>{data[x.id.slice(4)]=x.value.trim()});
- if(!data.amount||Number(data.amount)<=0){alert(t('Ievadi summu, kas lielāka par nulli.','Enter an amount greater than zero.'));return;}
+ const amount=Number(data.amount);
+ if(!data.amount||!Number.isFinite(amount)||amount<=0){alert(t('Ievadi derīgu summu, kas lielāka par nulli.','Enter a valid amount greater than zero.'));return;}
+ const dateParts=String(data.date||'').match(/^(\\d{4})-(\\d{2})-(\\d{2})$/);
+ const dateValid=!!dateParts&&(()=>{const y=Number(dateParts[1]),m=Number(dateParts[2]),d=Number(dateParts[3]),date=new Date(y,m-1,d);return date.getFullYear()===y&&date.getMonth()===m-1&&date.getDate()===d;})();
+ if(!dateValid){alert(t('Izvēlies derīgu darījuma datumu.','Choose a valid transaction date.'));return;}
  const flow=data.flow||'income';
- const items=getRecords();items.push({id:Date.now().toString(36)+Math.random().toString(36).slice(2,7),sector,job,date:data.date,amount:Number(data.amount),flow,vatThreshold:flow==='income'&&root.querySelector('#ind_vatThreshold')?.checked===true,kind:data.recordKind||'Darījums',data,createdAt:new Date().toISOString()});
+ const items=getRecords();items.push({id:Date.now().toString(36)+Math.random().toString(36).slice(2,7),sector,job,date:data.date,amount:Math.round(amount*100)/100,flow,vatThreshold:flow==='income'&&root.querySelector('#ind_vatThreshold')?.checked===true,kind:data.recordKind||'Darījums',data,createdAt:new Date().toISOString()});
  try{localStorage.setItem(RECORDS_KEY,JSON.stringify(items));renderEntries();renderUnifiedOverview();if(typeof window.updateIinWarning==='function')window.updateIinWarning();root.querySelectorAll('input:not([type=date]),select').forEach(x=>{if(x.type==='checkbox')x.checked=false;else x.value='';});}catch(_){alert(t('Neizdevās saglabāt. Pārlūkā var nebūt pietiekami daudz vietas.','Could not save. Browser storage may be full.'));}
 }
 function renderUnifiedOverview(){
