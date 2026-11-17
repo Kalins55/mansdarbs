@@ -619,7 +619,7 @@ function fillRegimeFromRecords(){
  status.textContent='No uzskaites pārņemti '+year+'. gada dati ('+records.length+' derīgi ieraksti): ieņēmumi '+money(totals.income)+', izdevumi '+money(totals.expenses)+'.'+(invalidCount?' Izlaisti '+invalidCount+' nekorekti ieraksti — pārbaudi to datumu, veidu un summu.':'')+(preserved?' Manuāli ievadītie lauki netika pārrakstīti.':'');
 }
 function resetTaxRegimeComparison(){
- ['regimeTurnover','regimeExpenses','regimeVsaoi','regimeOtherIncome','regimeDeductions'].forEach(id=>{const el=document.getElementById(id);el.value='';if(el)el.dataset.synced='';});
+ ['regimeTurnover','regimeExpenses','regimeVsaoi','regimeOtherIncome','regimeAllowance','regimeDeductions'].forEach(id=>{const el=document.getElementById(id);el.value='';if(el)el.dataset.synced='';});
  document.getElementById('regimeAllowance').value='6600';
  document.getElementById('regimeVatStatus').value='eligible';
  document.getElementById('regimeMinimumIinExempt').checked=false;
