@@ -678,8 +678,9 @@ function updateIinWarning(){
  const warning=document.getElementById('taxWarning');
  if(!warning)return;
  const date=document.getElementById('date').value;
- const year=date?date.slice(0,4):String(new Date().getFullYear());
- const month=date?date.slice(0,7):new Date().toISOString().slice(0,7);
+ const now=new Date();
+ const year=date?date.slice(0,4):String(now.getFullYear());
+ const month=date?date.slice(0,7):[now.getFullYear(),String(now.getMonth()+1).padStart(2,'0')].join('-');
  const items=getRecords();
  const raw=document.getElementById('amount').value;
  const amount=raw===''?0:Number(raw);
