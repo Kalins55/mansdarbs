@@ -188,6 +188,20 @@ test('comparison clears stale imported values when all selected-year records are
   assert.match(result.regimeRecordsStatus.textContent, /Iepriekš no uzskaites pārņemtās vērtības notīrītas/);
 });
 
+test('comparison reset clears the allowance sync marker so later IIN values can sync', () => {
+  const ids = ['regimeTurnover', 'regimeExpenses', 'regimeVsaoi', 'regimeOtherIncome', 'regimeAllowance', 'regimeDeductions'];
+  const elements = Object.fromEntries(ids.map(id => [id, { value: '123', dataset: { synced: 'manual' } }]));
+  elements.regimeVatStatus = { value: 'registered' };
+  elements.regimeMinimumIinExempt = { checked: true };
+  elements.regimeResult = { className: '', textContent: '' };
+  const document = { getElementById: id => elements[id] };
+  const run = new Function('document', extractFunction('resetTaxRegimeComparison') + '; return resetTaxRegimeComparison;')(document);
+  run();
+  assert.equal(elements.regimeAllowance.value, '6600');
+  assert.equal(elements.regimeAllowance.dataset.synced, '');
+  assert.equal(elements.regimeTurnover.dataset.synced, '');
+});
+
 test('comparison warns when MUN exceeds profit after expenses', () => {
   const result = runComparison({
     regimeTurnover: 10000, regimeExpenses: 9000, regimeVsaoi: 100,
