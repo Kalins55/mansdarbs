@@ -32,7 +32,7 @@ function runComparison(values) {
   elements.regimeMinimumIinExempt = { checked: values.exempt === true };
   elements.regimeResult = { className: 'empty', textContent: '', innerHTML: '' };
   const document = { documentElement: { lang: 'lv' }, getElementById: id => elements[id] };
-  const money = value => Number(value).toFixed(2) + ' €';
+  const money = value => Number(value).toFixed(2).replace(/\\B(?=(\\d{3})+(?!\\d))/g, ' ') + ' €';
   const run = new Function('document', 'money', 'progressiveIin',
     extractFunction('compareTaxRegimes') + '; return compareTaxRegimes;'
   )(document, money, amount => {
