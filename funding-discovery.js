@@ -306,15 +306,22 @@ function getLocalFundingMatches(catalog, options) {
 async function loadFundingCatalog(fetcher) {
   const request = fetcher || root.fetch;
   if (typeof request !== 'function') throw new Error('Funding catalogue fetch is unavailable');
-  const response = await request('/funding-programs.json', {
-    headers: { Accept: 'application/json' }
-  });
-  if (!response || !response.ok) throw new Error('Funding catalogue could not be loaded');
-  const catalog = await response.json();
-  if (!catalog || catalog.schemaVersion !== 1 || !Array.isArray(catalog.programs)) {
+  const [programResponse, sourceResponse] = await Promise.all([
+    request('/funding-programs.json', { headers: { Accept: 'application/json' } }),
+    request('/funding-sources.json', { headers: { Accept: 'application/json' } })
+  ]);
+  if (!programResponse || !programResponse.ok || !sourceResponse || !sourceResponse.ok) {
+    throw new Error('Funding catalogue could not be loaded');
+  }
+  const [catalog, sourceRegistry] = await Promise.all([
+    programResponse.json(),
+    sourceResponse.json()
+  ]);
+  if (!catalog || catalog.schemaVersion !== 1 || !Array.isArray(catalog.programs) ||
+      !sourceRegistry || !Array.isArray(sourceRegistry.sources)) {
     throw new Error('Funding catalogue has an unsupported format');
   }
-  return catalog;
+  return { ...catalog, sources: sourceRegistry.sources };
 }
 
 async function findLocalFundingMatches(options) {
