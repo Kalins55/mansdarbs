@@ -10,28 +10,28 @@ function read(relativePath) {
 }
 
 function checkLocalScripts(html, baseDirectory) {
-  const sources = [...html.matchAll(/<script\\b[^>]*\\bsrc=["']([^"']+)["']/gi)].map(match => match[1]);
+  const sources = [...html.matchAll(/<script\b[^>]*\bsrc=["']([^"']+)["']/gi)].map(match => match[1]);
   for (const source of sources) {
-    if (/^(?:[a-z]+:)?\\/\\//i.test(source) || source.startsWith('data:')) continue;
+    if (/^(?:[a-z]+:)?\/\//i.test(source) || source.startsWith('data:')) continue;
     const pathname = source.split(/[?#]/, 1)[0];
     assert.ok(
       fs.existsSync(path.join(baseDirectory, pathname)),
-      `Missing local script referenced by HTML: ${source}`
+      \`Missing local script referenced by HTML: \${source}\`
     );
   }
 }
 
 function checkSocialPreview(html, baseDirectory) {
-  const match = html.match(/<meta\\s+property=["']og:image["']\\s+content=["']([^"']+)["']/i);
+  const match = html.match(/<meta\s+property=["']og:image["']\s+content=["']([^"']+)["']/i);
   assert.ok(match, 'Open Graph image metadata is missing');
   const url = new URL(match[1]);
   assert.equal(url.protocol, 'https:');
   assert.equal(url.hostname, 'mansdarbs.eu');
   assert.ok(
-    fs.existsSync(path.join(baseDirectory, url.pathname.replace(/^\\//, ''))),
-    `Open Graph image file is missing: ${url.pathname}`
+    fs.existsSync(path.join(baseDirectory, url.pathname.replace(/^\//, ''))),
+    \`Open Graph image file is missing: \${url.pathname}\`
   );
-  assert.match(html, /<meta\\s+property=["']og:image:type["']\\s+content=["']image\\/(?:png|jpeg)["']/i);
+  assert.match(html, /<meta\s+property=["']og:image:type["']\s+content=["']image\/(?:png|jpeg)["']/i);
 }
 
 test('Cloudflare Pages root references existing local scripts and a real PNG share image', () => {
