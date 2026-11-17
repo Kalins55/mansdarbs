@@ -426,13 +426,13 @@
 <div class="field full"><label for="contributionStatus">Sociālās apdrošināšanas statuss</label><select id="contributionStatus"><option value="standard">Pašnodarbinātais — 31,07%</option><option value="pensioner">Pašnodarbinātais, kurš sasniedzis vecumu, kas dod tiesības uz vecuma pensiju — 29,36%</option></select><small class="muted">Izvēlies pensionāra likmi tikai tad, ja tev ir tiesības uz valsts vecuma pensiju (arī priekšlaicīgi). Ja neesi pārliecināts par savu statusu, atstāj standarta likmi un pārbaudi to VID.</small></div>
 <div class="field full"><label for="vsaoiActivityType">Saimnieciskās darbības ienākuma veids</label><select id="vsaoiActivityType" onchange="toggleVsaoiActivity()"><option value="ordinary">Parastā saimnieciskā darbība</option><option value="annual_special">Lauksaimnieciskā ražošana vai intelektuālais īpašums</option></select><small id="vsaoiActivityHelp" class="muted">Parastajai darbībai 10% pensiju iemaksas aprēķina katram mēnesim atsevišķi.</small><p id="vsaoiMixedWarning" class="privacy" style="display:none;margin:6px 0 0">Šo režīmu izmanto tikai tad, ja attiecīgajos mēnešos ienākumi ir no lauksaimnieciskās ražošanas vai intelektuālā īpašuma. Ja tajā pašā ceturksnī ir arī cita saimnieciskā darbība, nepieciešams VID proporcijas aprēķins — šo vienkāršoto režīmu neizmanto.</p></div>
 <div class="field full"><label for="contributionBase">Izvēlētais VSAOI objekts mēnesī (€)</label><input id="contributionBase" type="number" min="780" step="0.01" inputmode="decimal" value="780"><small class="muted">Vismaz 780 €. Vari izvēlēties lielāku summu, ja vēlies maksāt pilno VSAOI no lielākas peļņas daļas.</small></div>
-<div class="field"><label for="profit1">1. mēneša peļņa (€)</label><input id="profit1" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0,00"></div>
-<div class="field"><label for="profit2">2. mēneša peļņa (€)</label><input id="profit2" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0,00"></div>
-<div class="field"><label for="profit3">3. mēneša peļņa (€)</label><input id="profit3" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0,00"></div>
+<div class="field"><label for="profit1">1. mēneša peļņa (€)</label><input id="profit1" type="number" min="-1000000" step="0.01" inputmode="decimal" placeholder="0,00"></div>
+<div class="field"><label for="profit2">2. mēneša peļņa (€)</label><input id="profit2" type="number" min="-1000000" step="0.01" inputmode="decimal" placeholder="0,00"></div>
+<div class="field"><label for="profit3">3. mēneša peļņa (€)</label><input id="profit3" type="number" min="-1000000" step="0.01" inputmode="decimal" placeholder="0,00"></div>
 </div>
 <div class="actions" style="justify-content:flex-start"><button class="btn primary" onclick="calculateVsaoi()">Aprēķināt VSAOI</button><button class="btn secondary" onclick="resetVsaoi()">Notīrīt</button></div>
 <div id="vsaoiResult" class="empty" aria-live="polite">Ievadi peļņu visiem trim ceturkšņa mēnešiem, lai redzētu orientējošo aprēķinu.</div>
-<div class="callout" style="margin-top:14px"><strong>Ja mēneša peļņa nepārsniedz 780 €</strong><p>VSAOI pensiju apdrošināšanai ir 10% no visas mēneša peļņas. Piemēram, ja peļņa ir 550 €, iemaksa ir 55 €. 550 € nav VSAOI slieksnis — tā ir 2026. gada IIN neapliekamā minimuma summa. Ja peļņa sasniedz vismaz 780 €, standarta gadījumā 31,07% maksā no izvēlētā VSAOI objekta (vismaz 780 €), bet 10% — no peļņas daļas virs šī objekta. No 2026. gada pašnodarbinātajiem vairs nepiemēro minimālo VSAOI piemaksu par nepietiekamiem ienākumiem. <a href="https://www.vid.gov.lv/lv/saimnieciskas-darbibas-veiceji" target="_blank" rel="noopener">VID skaidrojums par VSAOI ↗</a></p></div><p class="privacy">Aprēķins ir orientējošs. Pašlaik pieejamas standarta 31,07% un vecuma pensijas tiesību gadījumā piemērojamā 29,36% likme. Nekustamā īpašuma apsaimniekotāja īpašais režīms, lauksaimnieciskās ražošanas un intelektuālā īpašuma gada kārtība, kā arī jauktu darbību proporcionālais aprēķins vēl nav iekļauts. Šādos gadījumos neizmanto šo rezultātu kā maksājuma summu — pārbaudi kārtību VID EDS. <a href="https://www.vid.gov.lv/lv/pasnodarbinata-socialas-apdrosinasanas-iemaksas" target="_blank" rel="noopener">VID skaidrojums par pašnodarbināto VSAOI ↗</a></p>
+<div class="callout" style="margin-top:14px"><strong>VSAOI aprēķina pamatprincipi</strong><p>Parastajai saimnieciskajai darbībai, ja mēneša peļņa ir zem 780 €, 10% pensiju iemaksu aprēķina no visas mēneša peļņas. Ja peļņa sasniedz vismaz 780 €, pilno VSAOI maksā no izvēlētā objekta (vismaz 780 €), bet 10% — no peļņas daļas virs šī objekta. Lauksaimniecības un intelektuālā īpašuma ienākumiem 10% daļu aprēķina par gadu atsevišķi. No 2026. gada pašnodarbinātajiem vairs nepiemēro minimālo VSAOI piemaksu par nepietiekamiem ienākumiem. <a href="https://www.vid.gov.lv/lv/saimnieciskas-darbibas-veiceji" target="_blank" rel="noopener">VID skaidrojums par VSAOI ↗</a></p></div><p class="privacy">Aprēķins ir orientējošs. Pieejamas standarta 31,07% un vecuma pensijas tiesību gadījumā piemērojamā 29,36% likme. Lauksaimnieciskās ražošanas un intelektuālā īpašuma gada 10% kārtība ir pieejama atsevišķā režīmā. Nekustamā īpašuma apsaimniekotāja īpašais režīms un jauktu darbību proporcionālais aprēķins vēl nav iekļauts. Šādos gadījumos pārbaudi aprēķinu VID EDS. <a href="https://www.vid.gov.lv/lv/pasnodarbinata-socialas-apdrosinasanas-iemaksas" target="_blank" rel="noopener">VID skaidrojums par pašnodarbināto VSAOI ↗</a></p>
 </section>
 
 <section class="tool calculator-panel" id="iin">
@@ -499,8 +499,8 @@ function syncIinFromVsaoi(){
    });
   }
  }
- const annualSpecialPensionBase=Math.max(0,annualSpecialProfit-annualSpecialBase);
- const annualSpecialPension=annualSpecialPensionBase*0.10;
+ const annualSpecialPensionBase=Math.round((Math.max(0,annualSpecialProfit-annualSpecialBase)+Number.EPSILON)*100)/100;
+ const annualSpecialPension=Math.round((annualSpecialPensionBase*0.10+Number.EPSILON)*100)/100;
  annualVsaoi+=annualSpecialPension;
  document.getElementById('annualProfit').value=annualProfit.toFixed(2);
  document.getElementById('annualVsaoi').value=annualVsaoi.toFixed(2);
@@ -517,8 +517,9 @@ function calculateVsaoi(){
  if(!Number.isFinite(chosenBase)||chosenBase<780){alert(uiText('VSAOI objektam jābūt vismaz 780 €.','The VSAOI contribution base must be at least €780.'));return}
  const rows=values.map((profit,i)=>{
   const base=profit>=780?Math.min(profit,chosenBase):0;
-  const full=base*rate;
-  const pension=special?0:(profit>=780?Math.max(0,profit-base)*0.10:Math.max(0,profit)*0.10);
+  const full=Math.round((base*rate+Number.EPSILON)*100)/100;
+  const rawPension=special?0:(profit>=780?Math.max(0,profit-base)*0.10:Math.max(0,profit)*0.10);
+  const pension=Math.round((rawPension+Number.EPSILON)*100)/100;
   return {month:i+1,profit,base,full,pension,total:full+pension};
  });
  const quarter=document.getElementById('vsaoiQuarter').value;
