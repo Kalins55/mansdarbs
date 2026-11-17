@@ -43,10 +43,10 @@ Mansdarbs attīstībā jāievēro šādi principi:
 Ja datorā ir instalēts Node.js, VSAOI aprēķinu regresijas testus var palaist ar:
 
 ```bash
-node --test tests/vsaoi-calculations.test.js
+node --test tests/*.test.js
 ```
 
-Testi pārbauda parasto mēneša aprēķinu, lauksaimniecības gada aprēķinu, zaudējumu ietekmi, pensionāra likmi un negatīvu ienākumu validāciju.
+Testi pārbauda VSAOI aprēķinus, vietnes lokālo skriptu esamību, Cloudflare Pages/Worker statisko resursu norādes un Meta priekšskatījuma attēla failu.
 
 ## VID palīgs un AI savienojums
 
