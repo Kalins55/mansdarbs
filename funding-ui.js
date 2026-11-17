@@ -1,6 +1,37 @@
 (function(w){
 'use strict';
 function esc(v){return String(v==null?'':v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+const EN_TEXT = {
+ 'lad-la-4-1-1-farm-competitiveness-2026': {
+  summary:'Investment support for small and medium-sized farms to improve competitiveness and operations.',
+  review:'Check the farm-size category, previous investment aid and eligible costs.',
+  note:'Total public programme budget, not the grant amount for one applicant.'
+ },
+ 'lad-la-4-1-2-climate-farm-2026': {
+  summary:'Support for reducing farm emissions, improving energy efficiency and producing renewable energy.',
+  review:'Check the planned investment, applicant eligibility and restrictions on processing agricultural products.',
+  note:'Total public budget across investment categories, not the amount for one applicant.'
+ },
+ 'lad-la-4-1-1-sheep-goat-prevention-2026': {
+  summary:'Preventive investments in fencing, machinery and equipment for sheep and goat farms.',
+  review:'Check that the farm specifically raises sheep or goats and that planned costs are eligible.',
+  note:'Total public programme budget, not the amount for one applicant.'
+ },
+ 'altum-start-loan-2026': {
+  summary:'A repayable loan for business start-ups covering investment, working capital and real estate.',
+  review:'Check business age, activity and project-specific conditions. Agriculture and fisheries have separate ALTUM programmes.',
+  note:'A loan must be repaid. The published rate and terms are subject to ALTUM assessment.'
+ },
+ 'nostradamus-open-call-1-2026': {
+  summary:'Support for developing and testing open-source digital apps for farm decision-making, especially in cereal systems.',
+  review:'Check whether the applicant can develop an open-source digital solution and whether the idea fits a call theme.',
+  note:'Up to €50,000 per selected project; €250,000 is the total call budget.'
+ }
+};
+function supportLabels(program,lang){
+ const labels={grant:'Grant',subsidy:'Subsidy',loan:'Loan — repayable',guarantee:'Guarantee',equity:'Equity investment',capital_rebate:'Capital rebate',tax_relief:'Tax relief',non_financial:'Non-financial support',prize:'Prize',procurement:'Public procurement'};
+ return (program.supportTypes||[]).map((type,index)=>lang==='en'?(labels[type]||type):((program.supportTypeLabels||[])[index]||type));
+}
 function group(matches){
  const a=(matches||[]).filter(x=>x.matchType==='sector_specific');
  return {direct:a.filter(x=>x.fitStatus==='potential_match'),review:a.filter(x=>x.fitStatus!=='potential_match'),general:(matches||[]).filter(x=>x.matchType!=='sector_specific')};
@@ -15,9 +46,8 @@ function euro(v,lang,compact){
  try{return new Intl.NumberFormat(lang==='en'?'en-IE':'lv-LV',{style:'currency',currency:'EUR',maximumFractionDigits:0,...(compact?{notation:'compact'}:{})}).format(v);}catch(_){return Math.round(v)+' EUR';}
 }
 function renderCard(p,lang){
- const d=p.fundingDetails||{},loan=(p.supportTypes||[]).includes('loan');
+ const d=p.fundingDetails||{},loan=(p.supportTypes||[]).includes('loan'),support=supportLabels(p,lang),copy=EN_TEXT[p.id]||{};
  const status=lang==='en'?({open:'Applications open',upcoming:'Coming soon',ongoing:'Ongoing programme'}[p.status]||'Check status'):(p.statusLabel||'Statuss nav pārbaudīts');
- const support=loan?(lang==='en'?'Loan — repayable':'Aizdevums — jāatmaksā'):(lang==='en'?'Grant / support':'Grants / atbalsts');
  const fit=p.fitStatus==='potential_match'?(lang==='en'?'Matches profile criteria':'Atbilst profila kritērijiem'):(lang==='en'?'Eligibility needs checking':'Jāpārbauda atbilstība');
  let amount='';
  if(typeof d.applicantMaximum==='number')amount=(lang==='en'?'Up to ':'Līdz ')+euro(d.applicantMaximum,lang,false);
@@ -25,12 +55,13 @@ function renderCard(p,lang){
  else if(typeof d.totalPublicBudget==='number')amount=(lang==='en'?'Total programme budget: ':'Kopējais programmas budžets: ')+euro(d.totalPublicBudget,lang,true);
  const rate=typeof d.interestRateFrom==='number'?(lang==='en'?' · rate from ':' · likme no ')+String(d.interestRateFrom).replace('.',lang==='en'?'.':',')+'%':'';
  const deadline=date(p.deadline,lang),verified=date(p.lastVerifiedAt,lang);
- const review=p.manualReviewReason||'';
- const note=d.note||'';
+ const review=lang==='en'?(copy.review||p.manualReviewReason||''):(p.manualReviewReason||'');
+ const note=lang==='en'?(copy.note||d.note||''):(d.note||'');
+ const summary=lang==='en'?(copy.summary||p.summary||''):(p.summary||'');
  const source=p.sourceUrl?'<a href="'+esc(p.sourceUrl)+'" target="_blank" rel="noopener noreferrer">'+(lang==='en'?'Programme details':'Programmas apraksts')+' ↗</a>':'';
  const apply=p.applicationUrl?'<a href="'+esc(p.applicationUrl)+'" target="_blank" rel="noopener noreferrer">'+(lang==='en'?'Apply':'Pieteikties')+' ↗</a>':'';
  return '<article class="funding-card"><div class="funding-tags"><span class="funding-tag funding-status">'+esc(status)+'</span><span class="funding-tag '+(loan?'funding-loan':'')+'">'+esc(support)+'</span><span class="funding-tag">'+esc(fit)+'</span></div>'+
- '<h4>'+esc(p.name)+'</h4><p class="funding-summary">'+esc(p.summary||'')+'</p>'+
+ '<h4>'+esc(p.name)+'</h4><p class="funding-summary">'+esc(summary)+'</p>'+
  (amount?'<div class="funding-amount">'+esc(amount+rate)+'</div>':'')+
  (deadline?'<p class="funding-detail"><strong>'+(lang==='en'?'Deadline:':'Termiņš:')+'</strong> '+esc(deadline)+'</p>':'')+
  (note?'<p class="funding-note">'+esc(note)+'</p>':'')+
