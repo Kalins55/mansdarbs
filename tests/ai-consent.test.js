@@ -27,3 +27,15 @@ test('VID assistant API rejects requests without explicit consent', () => {
   assert.ok(guard < messages, 'Consent is checked before processing chat messages');
   assert.ok(guard < upstream, 'Consent is checked before any upstream AI request');
 });
+
+test('VID assistant enforces the request size limit even when Content-Length is absent or inaccurate', () => {
+  const rawBody = api.indexOf('rawBody = await request.text()');
+  const byteLimit = api.indexOf('new TextEncoder().encode(rawBody).byteLength > 14000');
+  const parseBody = api.indexOf('body = JSON.parse(rawBody)');
+  const consent = api.indexOf('if (body?.consent !== true)');
+  assert.notEqual(rawBody, -1, 'Request body is read as text');
+  assert.notEqual(byteLimit, -1, 'Actual request bytes are checked against the limit');
+  assert.notEqual(parseBody, -1, 'JSON is parsed only after the byte limit check');
+  assert.ok(rawBody < byteLimit && byteLimit < parseBody && parseBody < consent,
+    'Body size is enforced before parsing and consent-dependent processing');
+});
