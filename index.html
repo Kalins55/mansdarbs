@@ -642,6 +642,12 @@ function compareTaxRegimes(){
  const en=document.documentElement.lang==='en';
  const row=(label,value)=>'<div class="record"><span>'+label+'</span><strong class="amount">'+money(value)+'</strong></div>';
  let content='<h3 style="margin:0 0 10px">Aptuvens gada salīdzinājums</h3>'+row('Apgrozījums',turnover)+row('Izdevumi',expenses)+row('Peļņa pirms nodokļiem',profit)+'<hr>'+row('Vispārējais režīms — VSAOI',vsaoi)+row('Vispārējais režīms — IIN',generalIin)+row('Vispārējais režīms — kopā',generalTax)+row('MUN 25% no apgrozījuma',munTax)+row('No MUN sociālajai apdrošināšanai (80%)',munSocial)+row('No MUN IIN daļai (20%)',munIin)+'<hr>'+row('Atlikums vispārējā režīmā',generalNet)+row('Atlikums MUN režīmā',munNet);
+ if(munTax>profit){
+  content+='<p class="privacy"><strong>Uzmanību: MUN var pārsniegt peļņu.</strong> MUN aprēķina no visa apgrozījuma, nevis peļņas. Pēc ievadītajiem izdevumiem MUN '+money(munTax)+' pārsniedz peļņu '+money(profit)+' par '+money(munTax-profit)+'. Šādā situācijā zemāka nodokļa summa pati par sevi nenozīmē, ka režīms ir finansiāli izdevīgāks.</p>';
+ }
+ if(generalTax>profit){
+  content+='<p class="privacy"><strong>Uzmanību: vispārējā režīma nodokļu summa pārsniedz norādīto peļņu.</strong> Pārbaudi, vai VSAOI un IIN ievadīti par vienu un to pašu gadu un vai citi ienākumi vai maksājumi nav sajaukti ar saimnieciskās darbības datiem.</p>';
+ }
  if(!eligible){
   content+='<p class="privacy"><strong>Šobrīd MUN izvēli nevar droši ieteikt.</strong> '+(turnover>50000?'Norādītais apgrozījums pārsniedz 50 000 € PVN reģistrācijas slieksni. ':'')+(status==='registered'?'Norādīta vispārīgā PVN reģistrācija vai nodoms reģistrēties. ':'Norādīta neskaidra PVN situācija. ')+'Pārbaudi tiesības un izņēmumus VID.</p>';
  }else if(winner==='equal'){
