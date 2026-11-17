@@ -8,6 +8,28 @@ Design a lightweight finance-operations workspace for an organization that runs 
 
 This is a working hypothesis based on public information and the user's confirmation that a close family contact works directly with these finance processes. It is not evidence of LAAPC's actual software stack or pain points.
 
+## Interaction principle: show the right functions at the point of need
+
+Users should not have to know the product's menu structure or search manually for a function they need. When a user opens a section, project or task, the workspace should automatically present the relevant actions and information for that context.
+
+Examples:
+- Opening a project presents its approved budget, actual/invoiced costs, commitments, payments, remaining budget, outstanding invoices and the next relevant project actions.
+- Opening an invoice presents actions appropriate to its state: assign project and cost category, attach supporting reference, submit for approval, record partial/full payment, or flag a mismatch.
+- Opening a fieldwork expense flow presents the fields and actions needed to record the expense, attach a receipt/reference, assign a project and submit it for review.
+- Opening a reporting period presents the applicable report, missing-document checks, outstanding items and export actions.
+
+Guidelines:
+- Contextual suggestions must be based on the current record, workflow state and the user's permissions.
+- Show the next useful action, not every available function at once.
+- Do not expose actions the user is not authorized to perform; permissions must still be enforced server-side.
+- Suggestions should be helpful and dismissible, not blocking pop-ups or forced tours.
+- Keep the user's place and entered data when moving between related actions.
+- Explain why an action is suggested when that is not obvious.
+- Avoid claiming that an action is complete until the user confirms it and the system records the result.
+- Validate the terminology and actual workflow with finance users before implementation.
+
+This is a functional behavior requirement, not approval to change the existing Mansdarbs visual design. The final presentation and placement of contextual actions must follow the product's established design and any required design approval.
+
 ## Release priorities
 
 ### P0. Project financial register
