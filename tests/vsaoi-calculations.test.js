@@ -166,4 +166,5 @@ test('annual sync safely skips malformed saved quarters instead of breaking or p
   assert.equal(h.elements.annualVsaoi.value, '10.00');
   assert.doesNotMatch(h.elements.annualProfit.value, /NaN/);
   assert.doesNotMatch(h.elements.annualVsaoi.value, /NaN/);
+  assert.match(h.elements.vsaoiResult.innerHTML, /ceturkšņa saglabātie dati ir nekorekti un netika iekļauti gada kopsummā/);
 });
