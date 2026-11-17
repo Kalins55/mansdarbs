@@ -117,3 +117,54 @@ test('minimum IIN exemption is applied only when the user confirms actual paymen
   assert.match(withoutExemption.innerHTML, /Vispārējais režīms — IIN[\s\S]*?50\.00 €/);
   assert.match(withExemption.innerHTML, /Vispārējais režīms — IIN[\s\S]*?0\.00 €/);
 });
+
+function runPrefill(records, options = {}) {
+  const elements = {
+    regimeRecordYear: { value: String(options.year || 2026) },
+    regimeRecordsStatus: { textContent: '' },
+    regimeTurnover: { value: '', dataset: {} },
+    regimeExpenses: { value: '', dataset: {} }
+  };
+  if (options.manualIncome !== undefined) {
+    elements.regimeTurnover.value = String(options.manualIncome);
+    elements.regimeTurnover.dataset.synced = 'manual';
+  }
+  if (options.manualExpenses !== undefined) {
+    elements.regimeExpenses.value = String(options.manualExpenses);
+    elements.regimeExpenses.dataset.synced = 'manual';
+  }
+  const document = { getElementById: id => elements[id] };
+  const run = new Function('document', 'getRecords', 'money',
+    extractFunction('fillRegimeFromRecords') + '; return fillRegimeFromRecords;'
+  )(document, () => records, value => Number(value).toFixed(2) + ' €');
+  run();
+  return elements;
+}
+
+test('comparison imports only selected-year income and expenses from local records', () => {
+  const result = runPrefill([
+    { kind: 'Ienākums', amount: 1000, date: '2026-01-12' },
+    { kind: 'Izdevums', amount: 250, date: '2026-02-02' },
+    { kind: 'Ienākums', amount: 900, date: '2025-12-31' }
+  ]);
+  assert.equal(result.regimeTurnover.value, '1000.00');
+  assert.equal(result.regimeExpenses.value, '250.00');
+  assert.match(result.regimeRecordsStatus.textContent, /2 ieraksti/);
+});
+
+test('comparison prefill never overwrites manually entered values', () => {
+  const result = runPrefill([
+    { kind: 'Ienākums', amount: 1000, date: '2026-01-12' },
+    { kind: 'Izdevums', amount: 250, date: '2026-02-02' }
+  ], { manualIncome: 1500 });
+  assert.equal(result.regimeTurnover.value, '1500');
+  assert.equal(result.regimeExpenses.value, '250.00');
+  assert.match(result.regimeRecordsStatus.textContent, /Manuāli ievadītie lauki netika pārrakstīti/);
+});
+
+test('comparison prefill reports when no records exist for selected year', () => {
+  const result = runPrefill([
+    { kind: 'Ienākums', amount: 1000, date: '2025-01-12' }
+  ]);
+  assert.match(result.regimeRecordsStatus.textContent, /nav atrasts neviens/);
+});
