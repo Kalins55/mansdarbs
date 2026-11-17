@@ -18,6 +18,7 @@ Vienkāršs, mobilajām ierīcēm pielāgots palīgs saimnieciskās darbības s�
 
 - VSAOI kalkulators atbalsta standarta pašnodarbinātā 31,07% likmi un vecuma pensijas tiesību gadījumā piemērojamo 29,36% likmi.
 - Parastai saimnieciskajai darbībai 10% pensiju iemaksas tiek aprēķinātas katram mēnesim atsevišķi.
+- No 2026. gada 1. janvāra pašnodarbinātajiem vairs nepiemēro minimālo VSAOI piemaksu līdz minimālajam iemaksu objektam, un par 2026. gadā plānotajiem ienākumiem VID vairs nav jāiesniedz apliecinājums. 780 € mēneša robeža joprojām nosaka, kad piemēro pilno VSAOI likmi un kad 10% pensiju iemaksas, taču tā vairs nav minimālās VSAOI piemaksas slieksnis. Avoti: [VSAA — minimālās iemaksas](https://www.vsaa.gov.lv/lv/minimalas-valsts-socialas-apdrosinasanas-obligatas-iemaksas), [VID — pašnodarbinātā sociālās apdrošināšanas iemaksas](https://www.vid.gov.lv/lv/pasnodarbinata-socialas-apdrosinasanas-iemaksas).
 - Lauksaimnieciskās ražošanas un intelektuālā īpašuma ienākumiem pieejams atsevišķs gada 10% aprēķina režīms; tajā gada rezultātā tiek ņemti vērā arī zaudējumu mēneši.
 - Ja vienā ceturksnī ir gan lauksaimnieciskās ražošanas/intelektuālā īpašuma, gan cita veida saimnieciskās darbības ienākumi, nepieciešams VID noteiktais proporcijas aprēķins — pašreizējais vienkāršotais kalkulators šo gadījumu vēl neatbalsta.
 - Pensionāra statusa kombinācija ar lauksaimniecības vai intelektuālā īpašuma gada režīmu tiek bloķēta, jo šiem statusiem var būt īpaši izņēmumi, kas vēl nav ieviesti.
