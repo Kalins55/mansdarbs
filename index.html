@@ -464,7 +464,8 @@ function loadVsaoiQuarter(){
  let saved={};
  try{saved=JSON.parse(localStorage.getItem(vsaoiQuarterKey(q))||'{}')}catch(e){}
  [1,2,3].forEach(i=>document.getElementById('profit'+i).value=saved.values?saved.values[i-1]??'':'');
- document.getElementById('contributionBase').value=saved.base||'780';\n document.getElementById('contributionStatus').value=saved.status||'standard';
+ document.getElementById('contributionBase').value=saved.base||'780';
+ document.getElementById('contributionStatus').value=saved.status||'standard';
  syncIinFromVsaoi();
 }
 function syncIinFromVsaoi(){
@@ -482,7 +483,8 @@ function syncIinFromVsaoi(){
 }
 function calculateVsaoi(){
  const values=[1,2,3].map(i=>Number(document.getElementById('profit'+i).value||0));
- const chosenBase=Number(document.getElementById('contributionBase').value||780);\n const status=document.getElementById('contributionStatus').value;\n const rate=status==='pensioner'?0.2936:0.3107;
+ const chosenBase=Number(document.getElementById('contributionBase').value||780);
+ const status=document.getElementById('contributionStatus').value;\n const rate=status==='pensioner'?0.2936:0.3107;
  if(values.some(v=>!Number.isFinite(v)||v<0)){alert(uiText('Ievadi korektu peļņu — 0 vai lielāku summu.','Enter a valid profit amount (0 or more).'));return}
  if(!Number.isFinite(chosenBase)||chosenBase<780){alert(uiText('VSAOI objektam jābūt vismaz 780 €.','The VSAOI contribution base must be at least €780.'));return}
  const rows=values.map((profit,i)=>{
