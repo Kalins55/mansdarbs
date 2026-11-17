@@ -59,9 +59,9 @@ Testi pārbauda parasto mēneša aprēķinu, lauksaimniecības gada aprēķinu, 
 - EDS pieslēgšanās, dokumentu iesniegšana un konta pārbaude vienmēr paliek paša lietotāja ziņā. Mansdarbs neprasa EDS piekļuves datus un neveic darbības lietotāja vietā.
 - AI atbildēm jābalstās uz VID, likumi.lv, VSAA, Uzņēmumu reģistra, Finanšu ministrijas un Latvija.gov.lv avotiem; neskaidrās situācijās jānorāda uz nepieciešamību precizēt informāciju pie VID.
 
-## Cloudflare Pages iestatījumi
+## Publicēšana un Cloudflare konfigurācija
 
-Ja projekts tiek izvietots ar Cloudflare Pages un piesaistīts šim GitHub repozitorijam:
+**Galvenā Mansdarbs versija atrodas repozitorija saknē.** Cloudflare Pages projektam, kas piesaistīts šim GitHub repozitorijam, izmanto:
 
 - Production branch: `main`
 - Framework preset: `None`
@@ -69,7 +69,11 @@ Ja projekts tiek izvietots ar Cloudflare Pages un piesaistīts šim GitHub repoz
 - Build output directory: `/` (vai `.`, ja Cloudflare interfeiss to pieprasa)
 - Root directory: `/` (noklusējums)
 
-Svarīgi: šis ir statisks HTML prototips. To nevajag konfigurēt kā Vite/React projektu vai norādīt `npm run build`.
+Šī ir statiska HTML vietne ar Cloudflare Pages Function mapē `functions/api/`. Tai nevajag Vite/React kompilēšanu vai `npm run build`.
+
+**Svarīga atšķirība:** `wrangler.jsonc` konfigurē atsevišķu Cloudflare Worker statisko resursu izvietošanu no mapes `public/`. Tas nav Cloudflare Pages izvades mapes iestatījums. `public/` pašlaik ir vecāka vietnes kopija, nevis galvenais izstrādes avots; tajā vēl nav visu jaunāko funkciju un Pages API maršruta. Tāpēc `wrangler deploy` ar šo konfigurāciju nav līdzvērtīgs pilnas Mansdarbs Pages vietnes publicēšanai.
+
+Ja vēlāk izvēlamies pāriet uz vienotu Workers izvietošanu, vispirms jāpārnes un jāpārbauda visas lapas, skripti un API funkcijas. Līdz tam izmaiņas galvenajā vietnē jāveic saknes failos, un publisko Pages versiju jāpublicē no saknes mapes.
 
 ## Pirms publiskas palaišanas pārbaudīt
 
