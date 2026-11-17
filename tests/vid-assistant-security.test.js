@@ -104,3 +104,94 @@ test('VID assistant rejects missing or non-canonical Origin and wrong content ty
   assert.equal(nonCanonical.status, 403);
   assert.equal(calls, 0);
 });
+
+test('VID assistant returns only HTTPS citations from approved official domains', async () => {
+  let upstreamRequest;
+  const handler = loadHandler(async (url, options) => {
+    upstreamRequest = { url, options };
+    return new Response(JSON.stringify({
+      output: [{
+        type: 'message',
+        content: [{
+          type: 'output_text',
+          text: 'Pārbaudi EDS paziņojumu.',
+          annotations: [
+            { type: 'url_citation', url: 'https://vid.gov.lv/lv', title: 'VID' },
+            { type: 'url_citation', url: 'https://sub.vsaa.gov.lv/info', title: 'VSAA' },
+            { type: 'url_citation', url: 'https://vid.gov.lv.attacker.example/fake', title: 'Fake' },
+            { type: 'url_citation', url: 'http://vid.gov.lv/insecure', title: 'Insecure' }
+          ]
+        }]
+      }]
+    }), { status: 200, headers: { 'Content-Type': 'application/json' } });
+  });
+  const response = await handler({
+    request: request(JSON.stringify({
+      consent: true,
+      profile: 'general',
+      task: 'quarterly',
+      messages: [{ role: 'user', content: 'Kur EDS redzēt paziņojumu?' }]
+    })),
+    env: { OPENAI_API_KEY: 'test-key', OPENAI_MODEL: 'gpt-6-luna' }
+  });
+  const data = await response.json();
+  assert.equal(response.status, 200);
+  assert.equal(data.answer, 'Pārbaudi EDS paziņojumu.');
+  assert.deepEqual(data.sources.map(source => source.url), [
+    'https://vid.gov.lv/lv',
+    'https://sub.vsaa.gov.lv/info'
+  ]);
+  assert.equal(upstreamRequest.url, 'https://api.openai.com/v1/responses');
+  const payload = JSON.parse(upstreamRequest.options.body);
+  assert.equal(payload.store, false);
+  assert.equal(payload.model, 'gpt-6-luna');
+  assert.equal(upstreamRequest.options.signal.aborted, false);
+});
+
+test('VID assistant rejects malformed JSON and non-object payloads without calling OpenAI', async () => {
+  let calls = 0;
+  const handler = loadHandler(async () => { calls++; });
+  const malformed = await handler({
+    request: request('{invalid json'),
+    env: { OPENAI_API_KEY: 'test-key' }
+  });
+  const arrayPayload = await handler({
+    request: request('[]'),
+    env: { OPENAI_API_KEY: 'test-key' }
+  });
+  assert.equal(malformed.status, 400);
+  assert.equal(arrayPayload.status, 400);
+  assert.equal(calls, 0);
+});
+
+test('VID assistant does not expose provider errors or secrets to the browser', async () => {
+  const handler = loadHandler(async () => new Response(
+    JSON.stringify({ error: { message: 'private provider diagnostic' } }),
+    { status: 401 }
+  ));
+  const response = await handler({
+    request: request(JSON.stringify({
+      consent: true,
+      messages: [{ role: 'user', content: 'Sveiki' }]
+    })),
+    env: { OPENAI_API_KEY: 'secret-test-key' }
+  });
+  const body = await response.text();
+  assert.equal(response.status, 502);
+  assert.ok(!body.includes('private provider diagnostic'));
+  assert.ok(!body.includes('secret-test-key'));
+});
+
+test('VID assistant returns a safe unavailable response when the API key is missing', async () => {
+  let calls = 0;
+  const handler = loadHandler(async () => { calls++; });
+  const response = await handler({
+    request: request(JSON.stringify({
+      consent: true,
+      messages: [{ role: 'user', content: 'Sveiki' }]
+    })),
+    env: {}
+  });
+  assert.equal(response.status, 503);
+  assert.equal(calls, 0);
+});
