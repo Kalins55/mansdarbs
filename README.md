@@ -33,7 +33,7 @@ Mansdarbs attīstībā jāievēro šādi principi:
 - Paziņojumam skaidri jāpasaka, kas tieši jāprecizē, kāpēc tas ir svarīgi un kāds ir drošākais nākamais solis. Ja aprēķins nav atbalstīts, nedrīkst parādīt maldinošu maksājuma summu.
 - Jāseko lietotāja uzskaitītajam apgrozījumam un jābrīdina par tuvošanos būtiskiem nodokļu sliekšņiem, tostarp PVN reģistrācijas slieksnim. Jānorāda, ka apgrozījuma slieksnis un nodokļu režīma izvēle ir atšķirīgi jautājumi.
 - PVN sliekšņa brīdinājums tiek aprēķināts atsevišķi no peļņas: lietotājs pats atzīmē darījumus, kurus uzskata par ieskaitāmiem 50 000 € kalendārā gada slieksnī. Vecie ieraksti bez šīs atzīmes netiek automātiski pieskaitīti. Pie 80% tiek parādīts atgādinājums, pie 90% — izteiktāks brīdinājums; īpašie darījumu veidi un obligātās reģistrācijas gadījumi jāprecizē VID. Šī atzīme pieejama arī nozares uzskaites ienākumiem; tie tiek ieskaitīti tikai tad, ja lietotājs konkrēto darījumu atzīmē. Nozares ienākumi, izdevumi un klientu atmaksas tiek ņemtas vērā arī IIN brīdinājuma peļņas orientierī.
-- Ja lietotāja dati ir pietiekami, jāsalīdzina vispārējais nodokļu režīms ar pieejamām alternatīvām (tostarp mikrouzņēmumu nodokli), ņemot vērā ieņēmumus, attaisnotos izdevumus, peļņu, citus ienākumus, sociālās apdrošināšanas sekas un tiesības izvēlēties attiecīgo režīmu.
+- Ja lietotāja dati ir pietiekami, jāsalīdzina vispārējais nodokļu režīms ar pieejamām alternatīvām (tostarp mikrouzņēmumu nodokli), ņemot vērā ieņēmumus, attaisnotos izdevumus, peļņu, citus ienākumus, sociālās apdrošināšanas sekas un tiesības izvēlēties attiecīgo režīmu. Pašreizējais salīdzinātājs ir orientējošs: lietotājs ievada gada apgrozījumu, izdevumus un vispārējā režīma VSAOI; MUN tiek rēķināts kā 25% no apgrozījuma, no tā 80% attiecinot uz sociālo apdrošināšanu un 20% uz IIN. Ja PVN reģistrācijas situācija nav atbilstoša vai ir neskaidra, rīks neizsaka MUN izvēles ieteikumu. Salīdzinājums neaizstāj individuālu VID atbilstības pārbaudi.
 - Ieteikumu nedrīkst balstīt tikai uz vienu ieņēmumu vai apgrozījuma robežvērtību. Jāparāda pieņēmumi, aptuvenā nodokļu starpība naudā, būtiskākie ierobežojumi un datu trūkumi.
 - Paziņojumi ir informatīvi, nevis automātiska nodokļu režīma maiņa vai garantija par ietaupījumu. Lietotājs pats pieņem lēmumu un pirms reģistrācijas izmaiņām pārbauda aktuālos nosacījumus VID.
 - Paziņojumu biežumam jābūt samērīgam: viens skaidrs brīdinājums pie sliekšņa tuvošanās, nevis atkārtoti uznirstoši paziņojumi katrā apmeklējumā.
@@ -47,7 +47,7 @@ Ja datorā ir instalēts Node.js, VSAOI aprēķinu regresijas testus var palaist
 node --test tests/*.test.js
 ```
 
-Testi pārbauda VSAOI aprēķinus, nodokļu brīdinājumus pēc ierakstu labošanas, nozares ierakstu iekļaušanu IIN/PVN brīdinājumos, vietējo datumu apstrādi, vietnes lokālo skriptu esamību, Cloudflare Pages/Worker statisko resursu norādes un Meta priekšskatījuma attēla failu.
+Testi pārbauda VSAOI aprēķinus, vispārējā režīma un MUN salīdzinājuma scenārijus, nodokļu brīdinājumus pēc ierakstu labošanas, nozares ierakstu iekļaušanu IIN/PVN brīdinājumos, vietējo datumu apstrādi, vietnes lokālo skriptu esamību, Cloudflare Pages/Worker statisko resursu norādes un Meta priekšskatījuma attēla failu.
 
 ## VID palīgs un AI savienojums
 
