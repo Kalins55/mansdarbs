@@ -31,7 +31,7 @@ function runComparison(values) {
   elements.regimeVatStatus = { value: values.regimeVatStatus || 'eligible' };
   elements.regimeMinimumIinExempt = { checked: values.exempt === true };
   elements.regimeResult = { className: 'empty', textContent: '', innerHTML: '' };
-  const document = { getElementById: id => elements[id] };
+  const document = { documentElement: { lang: 'lv' }, getElementById: id => elements[id] };
   const money = value => Number(value).toFixed(2) + ' €';
   const run = new Function('document', 'money', 'progressiveIin',
     extractFunction('compareTaxRegimes') + '; return compareTaxRegimes;'
