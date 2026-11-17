@@ -154,6 +154,48 @@ test('VID assistant rejects non-canonical Origin values containing a path', asyn
   assert.equal(response.status, 403);
 });
 
+test('VID assistant rejects non-JSON content types before reading the request body', async () => {
+  const vm = require('node:vm');
+  let upstreamCalls = 0;
+  const executable = api.replace(
+    'export async function onRequestPost',
+    'async function onRequestPost'
+  );
+  const sandbox = { Response, URL, TextEncoder, TextDecoder, fetch: async () => { upstreamCalls += 1; } };
+  vm.runInNewContext(executable + '\\nthis.onRequestPost = onRequestPost;', sandbox);
+  const request = new Request('https://mansdarbs.eu/api/vid-assistant', {
+    method: 'POST',
+    headers: { Origin: 'https://mansdarbs.eu', 'Content-Type': 'text/plain' },
+    body: '{"consent":true}'
+  });
+
+  const response = await sandbox.onRequestPost({ request, env: { OPENAI_API_KEY: 'test-key' } });
+
+  assert.equal(response.status, 415);
+  assert.equal(upstreamCalls, 0);
+});
+
+test('VID assistant rejects JSON values that are not request objects', async () => {
+  const vm = require('node:vm');
+  let upstreamCalls = 0;
+  const executable = api.replace(
+    'export async function onRequestPost',
+    'async function onRequestPost'
+  );
+  const sandbox = { Response, URL, TextEncoder, TextDecoder, fetch: async () => { upstreamCalls += 1; } };
+  vm.runInNewContext(executable + '\\nthis.onRequestPost = onRequestPost;', sandbox);
+  const request = new Request('https://mansdarbs.eu/api/vid-assistant', {
+    method: 'POST',
+    headers: { Origin: 'https://mansdarbs.eu', 'Content-Type': 'application/json' },
+    body: '[]'
+  });
+
+  const response = await sandbox.onRequestPost({ request, env: { OPENAI_API_KEY: 'test-key' } });
+
+  assert.equal(response.status, 400);
+  assert.equal(upstreamCalls, 0);
+});
+
 test('VID assistant API returns 403 and never contacts OpenAI when consent is absent', async () => {
   const vm = require('node:vm');
   let upstreamCalls = 0;
