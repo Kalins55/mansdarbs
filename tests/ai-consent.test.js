@@ -17,8 +17,8 @@ test('VID assistant requests clear session consent before adding or sending a qu
   assert.notEqual(sendRequest, -1, 'Client sends the consent flag');
   assert.ok(consent < addMessage, 'Consent must be requested before the question is added');
   assert.ok(addMessage < sendRequest, 'Question is added before the request is sent');
-  assert.match(html, /sessionStorage\\.getItem\\(consentKey\\)==='yes'/);
-  assert.match(html, /sessionStorage\\.setItem\\(consentKey,'yes'\\)/);
+  assert.ok(html.includes("sessionStorage.getItem(consentKey)==='yes'"));
+  assert.ok(html.includes("sessionStorage.setItem(consentKey,'yes')"));
   assert.match(html, /mansdarbsAiDataConsent/);
   assert.match(html, /OpenAI API/);
   assert.match(html, /turpmākajiem jautājumiem šajā pārlūka cilnē līdz tās aizvēršanai/);
