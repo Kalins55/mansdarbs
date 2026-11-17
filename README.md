@@ -124,3 +124,15 @@ Pievienots lokāls atlases modulis `funding-discovery.js`, kas lasa jau saglabā
 Sākumlapā ir kompakta finansējuma sadaļa, kas izmanto lietotāja pārlūkprogrammā saglabāto nozares profilu, lai atlasītu nozares un starpnozaru atbalsta iespējas. Finansējuma katalogs tiek ielādēts kā publiski statiski dati; lietotāja nozares profils, finanšu ieraksti un dokumenti netiek nosūtīti atlases servera pieprasījumā. Rezultātos tiek parādīts atbalsta veids, pieteikšanās statuss un termiņš, summa vai kopējais programmas budžets, oficiālais avots un pēdējās pārbaudes datums. Aizdevumi ir skaidri marķēti kā atmaksājami.
 
 Pašreizējais katalogs ir sākotnējs un nav pilns visu Latvijas vai ES iespēju saraksts. Programmu statusi un nosacījumi ir manuāli pārbaudāmi; automātiska avotu uzraudzība un paziņojumi vēl nav ieviesti. Skatīt `docs/sector-funding-discovery.md`.
+
+
+### VID palīga pieprasījumu biežuma ierobežošana
+
+Lietojumprogrammas API pārbauda izcelsmi, pieprasījuma formātu, lietotāja piekrišanas karogu un pieprasījuma izmēru, taču šīs pārbaudes neaizstāj tīkla līmeņa biežuma ierobežošanu. Pirms plašākas publiskas AI palīga lietošanas Cloudflare zonā jāizveido WAF Rate Limiting rule:
+
+- Nosacījums: `http.request.uri.path eq "/api/vid-assistant" and http.request.method eq "POST"`.
+- Skaitītājs: IP adrese.
+- Sākotnējais slieksnis: 30 pieprasījumi 60 sekundēs no vienas IP adreses; pēc reālās lietošanas novērojumiem slieksni pielāgot.
+- Pārsniedzot slieksni: bloķēt ar HTTP 429 un īsu ierobežojuma periodu.
+
+**Svarīgi:** IP adreses ierobežojums var ietekmēt vairākus lietotājus, kuri atrodas aiz viena kopīga tīkla vai mobilo sakaru operatora NAT. Tāpēc slieksni nevajag iestatīt pārāk zemu. Cloudflare plānos pieejamie skaitītāja parametri un noteikumu skaits atšķiras; Free plānā pieejamais IP skaitītājs nav individuāla lietotāja identifikācija. Noteikums jāizveido Cloudflare vadības panelī sadaļā Security rules → Create rule → Rate limiting rules. Tas nav automātiski ieslēgts ar GitHub izmaiņām.
