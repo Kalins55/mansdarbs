@@ -117,3 +117,10 @@ Sākotnējā meklēšana paliek anonīma; nozares profils pēc noklusējuma tiek
 ### Finansējuma atlases tehniskais pamats
 
 Pievienots lokāls atlases modulis `funding-discovery.js`, kas lasa jau saglabātos nozares profilus no pārlūka, salīdzina tos ar programmu nozares, NACE kodu, uzņēmējdarbības formas, stadijas, reģiona un atbalsta mērķa kritērijiem, kā arī nošķir tieši nozarei paredzētu atbalstu no starpnozaru iespējām. Tas neraksta un nesūta profila datus uz serveri. Programmu datu modelis atrodas `funding-programs.json`; tajā jau ievietoti pirmie pieci oficiālajos avotos pārbaudītie programmu ieraksti. Tas vēl nav pilns katalogs un netiek automātiski atjaunots. Modulis vēl nav pieslēgts lietotāja saskarnei, lai neveiktu neapstiprinātas dizaina vai izkārtojuma izmaiņas.
+
+
+## Nozaru finansējuma un projektu meklētājs
+
+Sākumlapā ir kompakta finansējuma sadaļa, kas izmanto lietotāja pārlūkprogrammā saglabāto nozares profilu, lai atlasītu nozares un starpnozaru atbalsta iespējas. Finansējuma katalogs tiek ielādēts kā publiski statiski dati; lietotāja nozares profils, finanšu ieraksti un dokumenti netiek nosūtīti atlases servera pieprasījumā. Rezultātos tiek parādīts atbalsta veids, pieteikšanās statuss un termiņš, summa vai kopējais programmas budžets, oficiālais avots un pēdējās pārbaudes datums. Aizdevumi ir skaidri marķēti kā atmaksājami.
+
+Pašreizējais katalogs ir sākotnējs un nav pilns visu Latvijas vai ES iespēju saraksts. Programmu statusi un nosacījumi ir manuāli pārbaudāmi; automātiska avotu uzraudzība un paziņojumi vēl nav ieviesti. Skatīt `docs/sector-funding-discovery.md`.
