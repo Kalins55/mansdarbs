@@ -152,3 +152,18 @@ test('pensioner agriculture/IP combination is blocked pending special-status rul
   assert.equal(h.runQuarter(3, [800, 790, 785], 'annual_special', 'pensioner'), null);
   assert.equal(h.alerts.length, 1);
 });
+
+test('annual sync safely skips malformed saved quarters instead of breaking or producing NaN', () => {
+  const h = createHarness();
+  h.storage.set('mansdarbs-vsaoi-2026-q1', JSON.stringify({
+    activityType: 'ordinary',
+    rows: [null, { profit: 'bad', base: 0, full: 0, pension: 0 }, {}]
+  }));
+  h.storage.set('mansdarbs-vsaoi-2026-q3', '{broken json');
+  const saved = h.runQuarter(2, [100, 0, 0]);
+  assert.equal(saved.rows[0].total, 10);
+  assert.equal(h.elements.annualProfit.value, '100.00');
+  assert.equal(h.elements.annualVsaoi.value, '10.00');
+  assert.doesNotMatch(h.elements.annualProfit.value, /NaN/);
+  assert.doesNotMatch(h.elements.annualVsaoi.value, /NaN/);
+});
