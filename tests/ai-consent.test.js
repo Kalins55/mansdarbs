@@ -25,7 +25,7 @@ test('VID assistant requests clear session consent before adding or sending a qu
   assert.ok(html.includes('developers.openai.com/api/docs/guides/your-data'));
   assert.match(html, /OpenAI API/);
   assert.match(html, /turpmākajiem jautājumiem šajā pārlūka cilnē līdz tās aizvēršanai/);
-  assert.match(html, /Mansdarbs sarunu savā serverī nesaglabā/);
+  assert.ok(html.includes('Mansdarbs šo sarunu savā serverī nesaglabā'));
 });
 
 test('VID assistant API rejects requests without explicit consent before processing or forwarding messages', () => {
@@ -351,12 +351,12 @@ test('VID assistant ignores malformed citation annotations without losing the an
 
 
 test('VID guide moves focus to the updated step after using Back', () => {
-  const html = read('index.html');
-  assert.ok(html.includes("mvaBack').addEventListener('click',function(){if(index>0){index--;render();root.querySelector('#mvaStepTitle').focus();}});"));
+  const page = html;
+  assert.ok(page.includes("mvaBack').addEventListener('click',function(){if(index>0){index--;render();root.querySelector('#mvaStepTitle').focus();}});"));
 });
 
 test('VID assistant marks the chat log busy while an answer is loading', () => {
-  const html = read('index.html');
-  assert.ok(html.includes("chatLog.setAttribute('aria-busy','true')"));
-  assert.ok(html.includes("chatLog.setAttribute('aria-busy','false')"));
+  const page = html;
+  assert.ok(page.includes("chatLog.setAttribute('aria-busy','true')"));
+  assert.ok(page.includes("chatLog.setAttribute('aria-busy','false')"));
 });
