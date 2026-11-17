@@ -8,10 +8,16 @@ on:
   pull_request:
     branches:
       - main
+  schedule:
+    - cron: '0 5 * * 1'
   workflow_dispatch:
 
 permissions:
   contents: read
+
+concurrency:
+  group: mansdarbs-checks-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   tests:
