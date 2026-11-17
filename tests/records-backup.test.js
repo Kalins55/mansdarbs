@@ -68,7 +68,7 @@ test('legacy v1 backup remains importable and normalizes records', () => {
 test('v2 backup restores included categories and preserves categories absent from file', () => {
   const backup = {app:'Mansdarbs',version:2,data:{
     mansdarbs_demo_records_v1:[{kind:'Ienākums',amount:25,date:'2026-03-01'}],
-    'mansdarbs-vsaoi-2026-q1':{values:[100,200,300],base:780,status:'standard',activityType:'ordinary',rows:[{month:1},{month:2},{month:3}]}
+    'mansdarbs-vsaoi-2026-q1':{values:[100,200,300],base:780,status:'standard',activityType:'ordinary',rows:[1,2,3].map(month=>({month,profit:100,base:0,full:0,pension:10,total:10}))}
   }};
   const result = runImport(JSON.stringify(backup), {
     mansdarbs_demo_records_v1:[{kind:'Izdevums',amount:10,date:'2026-02-01'}],
@@ -96,4 +96,15 @@ test('v2 backup rejects invalid dates and malformed dataset shapes', () => {
 test('v2 backup rejects oversized files before parsing or confirmation', () => {
   const result = runImport(' '.repeat(5*1024*1024+1));
   assert.equal(result.confirmations, 0);
+});
+
+test('v2 backup rejects invalid bookkeeping amounts and VSAOI row values', () => {
+  const invalidRecord = runImport(JSON.stringify({app:'Mansdarbs',version:2,data:{
+    mansdarbs_demo_records_v1:[{kind:'Ienākums',amount:-5,date:'2026-03-01'}]
+  }}));
+  const invalidQuarter = runImport(JSON.stringify({app:'Mansdarbs',version:2,data:{
+    'mansdarbs-vsaoi-2026-q1':{values:[100,200,300],base:780,status:'standard',activityType:'ordinary',rows:[1,2,3].map(month=>({month,profit:'bad',base:0,full:0,pension:0,total:0}))}
+  }}));
+  assert.equal(invalidRecord.confirmations, 0);
+  assert.equal(invalidQuarter.confirmations, 0);
 });
