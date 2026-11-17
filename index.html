@@ -908,7 +908,9 @@ function validateBackupData(data){
    if(!value||typeof value!=='object'||Array.isArray(value)||!Array.isArray(value.companies)||!Array.isArray(value.transactions)||value.companies.length>10000||value.transactions.length>50000)throw new Error('sia');
    value.companies.forEach(company=>{if(!company||typeof company!=='object'||Array.isArray(company)||typeof company.id!=='string'||typeof company.name!=='string')throw new Error('sia-company')});
    value.transactions.forEach(tx=>{if(!tx||typeof tx!=='object'||Array.isArray(tx)||!['income','expense'].includes(tx.kind)||typeof tx.companyId!=='string'||typeof tx.description!=='string'||!validBackupDate(tx.date)||['net','rate','vat','total'].some(k=>!Number.isFinite(Number(tx[k]))||Number(tx[k])<0))throw new Error('sia-transaction')});
-  }else if(['mansdarbs_context_profile_v1','mansdarbs_industry_profile_v1','mansdarbs_payment_profile_v1','mansdarbs_invoice_seller_v1','mansdarbs_invoice_seller_zs_v1'].includes(key)){
+  }else if(['mansdarbs_invoice_seller_v1','mansdarbs_invoice_seller_zs_v1'].includes(key)){
+   if(!value||typeof value!=='object'||Array.isArray(value)||['seller','reg','address','bank','email'].some(k=>value[k]!==undefined&&(typeof value[k]!=='string'||value[k].length>1000)))throw new Error('invoice-seller');
+  }else if(['mansdarbs_context_profile_v1','mansdarbs_industry_profile_v1','mansdarbs_payment_profile_v1'].includes(key)){
    if(!value||typeof value!=='object'||Array.isArray(value))throw new Error('object');
   }else if(key==='mansdarbs_vsaoi_iin_manual_v1'){
    if(typeof value!=='string'||value.length>100||!Number.isFinite(Number(value))||Number(value)<0)throw new Error('manual-vsaoi');
