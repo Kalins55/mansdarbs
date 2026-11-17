@@ -28,10 +28,11 @@ function request(body, extraHeaders = {}) {
 }
 
 test('VID assistant asks for explicit data-sharing consent before sending a question', () => {
-  const consent = html.indexOf("window.confirm('Pirms nosūtīšanas:");
+  const consent = html.indexOf("var consentMessage=document.documentElement.lang==='en'");
   const addMessage = html.indexOf("chatHistory.push({role:'user',content:question})", consent);
   const sendRequest = html.indexOf("consent:true", consent);
   assert.notEqual(consent, -1);
+  assert.ok(html.indexOf('window.confirm(consentMessage)', consent) > consent);
   assert.ok(addMessage > consent);
   assert.ok(sendRequest > addMessage);
   assert.ok(html.includes("sessionStorage.getItem(consentKey)==='yes'"));
