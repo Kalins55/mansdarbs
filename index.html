@@ -342,11 +342,12 @@
 <h2>Vienkārša ienākumu un izdevumu uzskaite</h2>
 <p class="muted">Ievadi summu. Aprakstu vari atstāt tukšu. Nav jānorāda, kur, kam vai par ko saņēmi naudu.</p>
 <div class="formgrid">
-<div class="field"><label for="kind">Ieraksta veids</label><select id="kind" onchange="updateRecordCategories();updateIinWarning()"><option value="Ienākums">Ienākums</option><option value="Izdevums">Izdevums</option></select></div>
+<div class="field"><label for="kind">Ieraksta veids</label><select id="kind" onchange="updateRecordCategories();document.getElementById('vatThresholdField').hidden=this.value!=='Ienākums';if(this.value!=='Ienākums')document.getElementById('vatThreshold').checked=false;updateIinWarning()"><option value="Ienākums">Ienākums</option><option value="Izdevums">Izdevums</option></select></div>
 <div class="field"><label for="amount">Summa (€)</label><input id="amount" type="number" min="0.01" step="0.01" inputmode="decimal" placeholder="0,00" oninput="updateIinWarning()" autocomplete="off"></div>
 <div class="field"><label for="date">Datums</label><input id="date" type="date"></div>
 <div class="field"><label for="category">Kategorija (nav obligāta)</label><select id="category"><option value="">Bez kategorijas</option></select></div>
 <div class="field full"><label for="note">Apraksts (nav obligāts)</label><input id="note" type="text" maxlength="120" placeholder="Piemēram, klienta darbs vai degviela"></div>
+<div class="field full" id="vatThresholdField"><label><input id="vatThreshold" type="checkbox" style="width:auto;margin-right:8px" onchange="updateIinWarning()">Iekļaut PVN reģistrācijas sliekšņa uzskaitē</label><small class="muted">Atzīmē tikai ienākumiem no darījumiem, kurus VID ieskaita PVN slieksnī. Ne visi ienākumi tajā ietilpst.</small></div>
 </div>
 <div id="taxWarning" class="tax-warning" role="status" aria-live="polite" hidden></div>
 <div class="actions records-actions"><button class="btn primary" id="saveRecordButton" onclick="addRecord()">Pievienot ierakstu</button><button class="btn secondary hidden" id="cancelEditButton" onclick="cancelEdit()">Atcelt labošanu</button></div>
@@ -663,6 +664,15 @@ function filterRecordRows(value){
  const counter=document.getElementById('recordSearchCount');if(counter)counter.textContent=query?('Atrasti ieraksti: '+visible):'';
 }
 function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function getVatThresholdSummary(items,year){
+ const total=items.reduce((sum,item)=>{
+  if(item.kind!=='Ienākums'||item.vatThreshold!==true||!item.date||item.date.slice(0,4)!==String(year))return sum;
+  const amount=Number(item.amount);
+  return sum+(Number.isFinite(amount)&&amount>0?amount:0);
+ },0);
+ const rounded=Math.round((total+Number.EPSILON)*100)/100;
+ return {total:rounded,remaining:Math.max(0,50000-rounded),level:rounded>=45000?'high':rounded>=40000?'notice':'none'};
+}
 function updateIinWarning(){
  const warning=document.getElementById('taxWarning');
  if(!warning)return;
@@ -673,34 +683,41 @@ function updateIinWarning(){
  const raw=document.getElementById('amount').value;
  const amount=raw===''?0:Number(raw);
  const kind=document.getElementById('kind').value;
+ const vatChecked=document.getElementById('vatThreshold')?.checked===true&&kind==='Ienākums';
  let annual=0,monthly=0;
- items.forEach((item,index)=>{
-  if(index===editingIndex)return;
+ const relevant=items.filter((item,index)=>index!==editingIndex);
+ relevant.forEach(item=>{
   const value=item.kind==='Ienākums'?Number(item.amount):-Number(item.amount);
   if(item.date.slice(0,4)===year)annual+=value;
   if(item.date.slice(0,7)===month)monthly+=value;
  });
  const delta=kind==='Ienākums'?amount:-amount;
- annual+=delta;
- monthly+=delta;
- const monthlyExceeded=monthly>550;
- const annualExceeded=annual>6600;
+ annual+=delta;monthly+=delta;
+ const monthlyExceeded=monthly>550,annualExceeded=annual>6600;
+ const vatItems=relevant.concat(amount>0&&vatChecked?[{kind:'Ienākums',amount,date:date||year+'-01-01',vatThreshold:true}]:[]);
+ const vat=getVatThresholdSummary(vatItems,year);
+ const en=document.documentElement.lang==='en',messages=[];
  if(monthlyExceeded||annualExceeded){
-  warning.hidden=false;
   const reasons=[];
-  if(monthlyExceeded)reasons.push(document.documentElement.lang==='en'?'Recorded profit this month is '+money(monthly)+', above the €550 monthly reference amount.':'Šajā mēnesī uzskaitītā peļņa ir '+money(monthly)+', pārsniedzot 550 € mēneša orientieri.');
-  if(annualExceeded)reasons.push(document.documentElement.lang==='en'?'Recorded profit this year is '+money(annual)+', above the €6,600 annual reference amount.':'Šī gada uzskaitītā peļņa ir '+money(annual)+', pārsniedzot 6600 € gada orientieri.');
-  warning.innerHTML='<strong>⚠ '+(document.documentElement.lang==='en'?'Possible IIN liability — please check!':'Iespējams IIN pienākums — pievērs uzmanību!')+'</strong>'+reasons.join(' ')+'<small>'+(document.documentElement.lang==='en'?'€550 per month and €6,600 per year are reference amounts for the tax-free allowance, not automatic tax thresholds. IIN is based on total taxable income for the year, taking other income, eligible expenses, VSAOI and any unused allowance into account. Check the annual estimate under “Calculators”.':'550 € mēnesī un 6600 € gadā ir neapliekamā minimuma orientieri, nevis automātiskas nodokļa robežas. IIN nosaka pēc kopējiem gada apliekamajiem ienākumiem, ņemot vērā citus ienākumus, attaisnotos izdevumus, VSAOI un neizmantoto neapliekamo minimumu. Pārbaudi gada prognozi sadaļā “Aprēķini”.')+'</small>';
- }else{
-  warning.hidden=true;
-  warning.textContent='';
+  if(monthlyExceeded)reasons.push(en?'Recorded profit this month is '+money(monthly)+', above the €550 monthly reference amount.':'Šajā mēnesī uzskaitītā peļņa ir '+money(monthly)+', pārsniedzot 550 € mēneša orientieri.');
+  if(annualExceeded)reasons.push(en?'Recorded profit this year is '+money(annual)+', above the €6,600 annual reference amount.':'Šī gada uzskaitītā peļņa ir '+money(annual)+', pārsniedzot 6600 € gada orientieri.');
+  messages.push('<strong>⚠ '+(en?'Possible IIN liability — please check!':'Iespējams IIN pienākums — pievērs uzmanību!')+'</strong>'+reasons.join(' ')+'<small>'+(en?'€550 per month and €6,600 per year are reference amounts for the tax-free allowance, not automatic tax thresholds. IIN is based on total taxable income for the year, taking other income, eligible expenses, VSAOI and any unused allowance into account. Check the annual estimate under “Calculators”.':'550 € mēnesī un 6600 € gadā ir neapliekamā minimuma orientieri, nevis automātiskas nodokļa robežas. IIN nosaka pēc kopējiem gada apliekamajiem ienākumiem, ņemot vērā citus ienākumus, attaisnotos izdevumus, VSAOI un neizmantoto neapliekamo minimumu. Pārbaudi gada prognozi sadaļā “Aprēķini”.')+'</small>');
  }
+ if(vat.level!=='none'){
+  const pct=Math.round(vat.total/50000*100);
+  const heading=vat.level==='high'?(en?'VAT registration threshold is close':'Tuvojies PVN reģistrācijas slieksnim'):(en?'VAT turnover threshold reminder':'Atgādinājums par PVN apgrozījuma slieksni');
+  const body=en?'Marked qualifying transactions this calendar year: '+money(vat.total)+' ('+pct+'% of €50,000). Remaining to the threshold: '+money(vat.remaining)+'.':'Šajā kalendāra gadā atzīmētie slieksnī ieskaitāmie darījumi: '+money(vat.total)+' ('+pct+'% no 50 000 €). Līdz slieksnim: '+money(vat.remaining)+'.';
+  const note=en?'The €50,000 threshold is generally calculated by calendar year and includes only specified transactions. Some exempt transactions and mandatory registration cases have special rules. Verify your transaction types and current obligations with VID.':'50 000 € slieksni parasti vērtē kalendāra gadā, un tajā ieskaita tikai noteiktus darījumus. Dažiem neapliekamiem darījumiem un obligātās reģistrācijas gadījumiem ir īpaši noteikumi. Pārbaudi darījumu veidu un pienākumus VID.';
+  messages.push('<strong>⚠ '+heading+'</strong>'+body+'<small>'+note+' <a href="https://www.vid.gov.lv/lv/biezak-uzdotie-jautajumi-katalogs/pievienotas-vertibas-nodokla-jautajumi-par-registraciju-un-ipasajiem-rezimiem-esmu-pvn-maksatajs" target="_blank" rel="noopener">VID skaidrojums</a></small>');
+ }
+ warning.hidden=messages.length===0;
+ warning.innerHTML=messages.join('<div style="height:10px"></div>');
 }
 function addRecord(){
  const amount=Number(document.getElementById('amount').value),date=document.getElementById('date').value,kind=document.getElementById('kind').value,note=document.getElementById('note').value.trim(),category=document.getElementById('category').value;
  if(!Number.isFinite(amount)||amount<=0){alert(uiText('Ievadi summu, kas lielāka par 0.','Enter an amount greater than 0.'));if(window.mansdarbsHelpFailure)window.mansdarbsHelpFailure('records');return}
  if(!date){alert(uiText('Izvēlies datumu.','Choose a date.'));if(window.mansdarbsHelpFailure)window.mansdarbsHelpFailure('records');return}
- const items=getRecords(),record={kind,amount:Math.round(amount*100)/100,date,note,category};
+ const items=getRecords(),record={kind,amount:Math.round(amount*100)/100,date,note,category,vatThreshold:kind==='Ienākums'&&document.getElementById('vatThreshold').checked};
  if(editingIndex===null)items.push(record);else items[editingIndex]=record;
  if(!saveRecords(items))return;
  cancelEdit();renderRecords();
@@ -708,6 +725,7 @@ function addRecord(){
 function editRecord(index){
  const item=getRecords()[index];if(!item)return;
  editingIndex=index;document.getElementById('kind').value=item.kind;updateRecordCategories(item.category||'');
+ document.getElementById('vatThreshold').checked=item.vatThreshold===true&&item.kind==='Ienākums';document.getElementById('vatThresholdField').hidden=item.kind!=='Ienākums';
  document.getElementById('amount').value=Number(item.amount).toFixed(2);updateIinWarning();
  document.getElementById('date').value=item.date;document.getElementById('note').value=item.note||'';
  document.getElementById('saveRecordButton').textContent='Saglabāt izmaiņas';document.getElementById('cancelEditButton').classList.remove('hidden');
@@ -715,7 +733,7 @@ function editRecord(index){
 }
 function cancelEdit(){
  editingIndex=null;document.getElementById('amount').value='';document.getElementById('note').value='';document.getElementById('category').value='';
- updateIinWarning();document.getElementById('saveRecordButton').textContent='Pievienot ierakstu';document.getElementById('cancelEditButton').classList.add('hidden');
+ document.getElementById('vatThreshold').checked=false;document.getElementById('vatThresholdField').hidden=document.getElementById('kind').value!=='Ienākums';updateIinWarning();document.getElementById('saveRecordButton').textContent='Pievienot ierakstu';document.getElementById('cancelEditButton').classList.add('hidden');
 }
 function deleteRecord(index){
  const items=getRecords();if(!items[index])return;
@@ -728,7 +746,7 @@ function clearRecords(){if(!getRecords().length)return;if(confirm(uiText('Vai ti
 function exportCsv(){
  const items=getRecords();if(!items.length){alert(uiText('Nav ierakstu, ko eksportēt.','There are no entries to export.'));return}
  const quote=v=>'"'+String(v??'').replace(/"/g,'""')+'"',en=document.documentElement.lang==='en';
- const rows=[[en?'Date':'Datums',en?'Type':'Veids',en?'Category':'Kategorija',en?'Amount (EUR)':'Summa EUR',en?'Description':'Apraksts'],...items.map(x=>[x.date,en?(x.kind==='Ienākums'?'Income':'Expense'):x.kind,x.category||'',Number(x.amount).toFixed(2),x.note||''])];
+ const rows=[[en?'Date':'Datums',en?'Type':'Veids',en?'Category':'Kategorija',en?'Amount (EUR)':'Summa EUR',en?'Description':'Apraksts',en?'Counted in VAT threshold':'Ieskaitīts PVN slieksnī'],...items.map(x=>[x.date,en?(x.kind==='Ienākums'?'Income':'Expense'):x.kind,x.category||'',Number(x.amount).toFixed(2),x.note||'',x.vatThreshold===true?'Yes':'No'])];
  const csv='\uFEFF'+rows.map(row=>row.map(quote).join(';')).join('\r\n');
  const blob=new Blob([csv],{type:'text/csv;charset=utf-8;'}),url=URL.createObjectURL(blob),a=document.createElement('a');
  a.href=url;a.download='mansdarbs-uzskaite.csv';document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);
@@ -748,7 +766,7 @@ function importRecordsBackup(event){
    if(!Array.isArray(source)||!source.length)throw new Error('empty');
    const restored=source.map(x=>{
     if(!x||!['Ienākums','Izdevums'].includes(x.kind)||!Number.isFinite(Number(x.amount))||Number(x.amount)<=0||typeof x.date!=='string'||!/^\d{4}-\d{2}-\d{2}$/.test(x.date))throw new Error('invalid');
-    return {kind:x.kind,amount:Math.round(Number(x.amount)*100)/100,date:x.date,category:typeof x.category==='string'?x.category.slice(0,80):'',note:typeof x.note==='string'?x.note.slice(0,120):''};
+    return {kind:x.kind,amount:Math.round(Number(x.amount)*100)/100,date:x.date,category:typeof x.category==='string'?x.category.slice(0,80):'',note:typeof x.note==='string'?x.note.slice(0,120):'',vatThreshold:x.kind==='Ienākums'&&x.vatThreshold===true};
    });
    if(!confirm(uiText('Atjaunot ierakstus no rezerves kopijas? Pašreizējie ieraksti tiks aizstāti.','Restore entries from this backup? Your current entries will be replaced.')))return;
    if(saveRecords(restored)){cancelEdit();renderRecords();alert(uiText('Rezerves kopija veiksmīgi atjaunota.','Backup restored successfully.'))}
