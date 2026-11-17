@@ -40,7 +40,7 @@ test('VID assistant asks for explicit data-sharing consent before sending a ques
 test('VID assistant API validates same-origin JSON and server-side consent before upstream processing', () => {
   const origin = api.indexOf('if (!origin) return json');
   const contentType = api.indexOf('contentType !== "application/json"');
-  const limitedRead = api.indexOf('readLimitedRequestBody(request)');
+  const limitedRead = api.indexOf('rawBody = await readLimitedRequestBody(request)');
   const consent = api.indexOf('if (body.consent !== true)');
   const messages = api.indexOf('const allowedRoles = new Set');
   const upstream = api.indexOf('fetch("https://api.openai.com/v1/responses"');
