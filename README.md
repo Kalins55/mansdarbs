@@ -103,3 +103,12 @@ Nozares ierakstos katram darījumam var norādīt ienākumu, izdevumu vai klient
 ### Kopējais finanšu pārskats
 
 Kopējais pārskats apvieno pašnodarbinātā pamata uzskaites ierakstus un visus nozares uzskaites ierakstus no tās pašas pārlūkprogrammas. Tas rāda ienākumus, izdevumus, klientu atmaksas, atlikumu pirms nodokļiem un pēdējo sešu aktīvo mēnešu rezultātus. SIA darījumi netiek jaukti šajā pārskatā, jo uzņēmuma grāmatvedība ir atsevišķa. Pārskats ir informatīvs un nav nodokļu aprēķins.
+
+
+## Nozaru projektu un finansējuma iespēju meklētājs
+
+Mansdarbs attīstības prasība: lietotājam jāspēj atrast gan tieši savai nozarei paredzētus Latvijas un ES projektus, gan starpnozaru atbalstu uzņēmējdarbības uzsākšanai un attīstībai. Atlasei jāņem vērā faktiskā darbība un NACE 2.1 kods, uzņēmējdarbības forma, darbības stadija, reģions un konkrētais ieguldījuma mērķis. Jāiekļauj arī plānotie konkursi, lai lietotājs var sagatavoties pirms pieteikšanās sākuma.
+
+Finansējuma veidi jānodala: grants, aizdevums, garantija, kapitāla ieguldījums, nodokļu atvieglojums un nefinansiāls atbalsts. Katram piedāvājumam jānorāda oficiālais avots, termiņš, atbilstības kritēriji, summa/atbalsta intensitāte, līdzfinansējums un pēdējās pārbaudes datums. Nekad nedrīkst garantēt atbilstību vai finansējuma saņemšanu, un aizdevumu nedrīkst pasniegt kā grantu.
+
+Sākotnējā meklēšana paliek anonīma; nozares profils pēc noklusējuma tiek izmantots lokāli pārlūkā. Lietotāja finanšu ieraksti un dokumenti netiek nosūtīti finansējuma katalogam. Pilnā specifikācija: [docs/sector-funding-discovery.md](docs/sector-funding-discovery.md). Šī ir prasība turpmākai izstrādei, nevis jau ieviesta vai automātiski atjaunota finansējuma datubāze.
