@@ -49,15 +49,15 @@ Versijas 2 eksports izmanto skaidru atļauto `localStorage` atslēgu sarakstu. T
 - Importēšana tiek testēta ar legacy v1 datiem, daļēju v2 atjaunošanu, bojātiem datiem un nederīgām finanšu vērtībām.
 
 
-## Ieteicamais drošais nākamais solis
+## Rezerves kopijas v2 ieviešana un pārbaudes robežas
 
-Ieviest versijas 2 rezerves kopiju, saglabājot versijas 1 importēšanas atpakaļsaderību. Pirms jebkādas lokālās glabātuves izmaiņas:
+Versija 2 ir ieviesta izstrādes zarā feature/explicit-ai-consent PR #12 ietvaros; tā nav publicēta produkcijā. Tā saglabā v1 importēšanas atpakaļsaderību.
 
-1. Validēt katru datu kopu atsevišķi (tipi, datumi, summas, masīvu/objektu forma un saprātīgi izmēra ierobežojumi).
-2. Vispirms pilnībā nolasīt un validēt visu failu; kļūdas gadījumā neko nemainīt.
-3. Parādīt, kuras datu kategorijas tiks aizstātas, un tikai pēc apstiprinājuma sākt atjaunošanu.
-4. Atjaunošanu veikt ar iepriekšēju pašreizējo vērtību momentuzņēmumu un rollback, ja kāda rakstīšana neizdodas.
-5. Pievienot testus katrai datu kategorijai, versijas 1 importam, bojātiem failiem un daļējas rakstīšanas kļūdas scenārijam.
-6. Neiekļaut sesijas datus, AI piekrišanu, autentifikācijas noslēpumus, servera konfigurāciju vai nezināmas localStorage atslēgas.
+- Pirms atjaunošanas tiek validēta visa datu kopa un parādīts, kuras kategorijas tiks aizstātas.
+- Atjaunošana notiek tikai pēc lietotāja apstiprinājuma.
+- Tiek saglabāts pašreizējo vērtību momentuzņēmums; rakstīšanas kļūmes gadījumā tiek mēģināts veikt rollback.
+- Eksporta un importa failiem ir vienots 5 MB ierobežojums. Eksports pirms lejupielādes pārbauda arī paša izveidotā faila izmēru.
+- Validācija pārbauda ierakstu tipus, summas, datumus, rēķinu kopsummu matemātisko saskaņu, SIA darījumu saistību ar uzņēmumu, nozares ierakstu laukus, profilus, norēķinu metodes un VSAOI rindu struktūru.
+- Sesijas dati, AI piekrišana, autentifikācijas noslēpumi, servera konfigurācija un nezināmas localStorage atslēgas netiek eksportētas vai importētas.
 
-Šis dokuments ir koda līmeņa inventārs, nevis garantija, ka visas uzskaitītās shēmas jau ir pilnībā validētas. Pirms versijas 2 realizācijas katras datu kopas reālais rakstīšanas ceļš un lauku shēma vēl jāpārbauda.
+Inventārs jāatjaunina ikreiz, kad lietotnē tiek ieviesta jauna pārlūka glabāšanas atslēga vai mainīta esošas datu kopas shēma. Katras jaunas kategorijas ieviešanai jāpievieno atbilstošs importa/eksporta regresijas tests.
