@@ -115,3 +115,35 @@ test('closed programmes are hidden by default and can be requested explicitly', 
   assert.equal(api.getFundingMatches({ sector: 'agri', legalForm: 'Z/S' }, [item], { today: '2026-11-17' }).length, 0);
   assert.equal(api.getFundingMatches({ sector: 'agri', legalForm: 'Z/S' }, [item], { today: '2026-11-17', includeClosed: true }).length, 1);
 });
+
+test('local matching merges opportunities across multiple saved industry profiles', () => {
+  const values = {
+    mansdarbs_industry_profiles_v1: JSON.stringify([
+      { sector: 'agri', job: 'Augkopība' },
+      { sector: 'repair', job: 'Traktoru remonts' }
+    ])
+  };
+  const storage = { getItem: key => values[key] || null };
+  const agriculture = program({ id: 'agri-grant' });
+  const repair = program({ id: 'repair-grant', name: 'Remonta pakalpojumu atbalsts', sectors: ['repair'] });
+  const matches = api.getLocalFundingMatches(
+    { programs: [agriculture, repair], sources: sourceRegistry.sources },
+    { storage, today: '2026-11-17' }
+  );
+  assert.deepEqual(matches.map(item => item.id).sort(), ['agri-grant', 'repair-grant']);
+  assert.ok(matches.every(item => item.profileMatchCount === 1));
+});
+
+test('public funding catalogue loader validates the versioned JSON structure', async () => {
+  const catalog = { schemaVersion: 1, programs: [] };
+  const loaded = await api.loadFundingCatalog(async url => ({
+    ok: true,
+    json: async () => catalog
+  }));
+  assert.deepEqual(loaded, catalog);
+  await assert.rejects(
+    api.loadFundingCatalog(async () => ({ ok: true, json: async () => ({ schemaVersion: 2, programs: [] }) })),
+    /unsupported format/
+  );
+});
+
