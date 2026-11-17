@@ -11,8 +11,27 @@ Vienkāršs, mobilajām ierīcēm pielāgots palīgs saimnieciskās darbības s�
 - Situācijas profils nolasa arī atsevišķi saglabāto nozares profilu un sākumlapā parāda izvēlēto nozari/nodarbošanos vai aicina to pievienot; abi profili paliek atsevišķi un tiek glabāti lokāli pārlūkā.
 - Ienākumu, izdevumu un rēķinu dati paliek lietotāja pārlūkprogrammā un netiek nosūtīti serverim.
 - Ja lietotājs pats atver VID palīga jautājumu sadaļu un nosūta ziņu, tās saturs tiek nosūtīts uz `/api/vid-assistant` un tālāk uz OpenAI API atbildes sagatavošanai; saruna netiek saglabāta Mansdarbs serverī.
-- Šī demonstrācija nav oficiāls grāmatvedības reģistrs un neveic nodokļu aprēķinus.
+- Šī demonstrācija nav oficiāls grāmatvedības reģistrs. Tajā ir orientējoši 2026. gada VSAOI un IIN aprēķini; tie neaizstāj VID EDS aprēķinu un neaptver visus īpašos nodokļu režīmus.
 
+
+## VSAOI un IIN aprēķini
+
+- VSAOI kalkulators atbalsta standarta pašnodarbinātā 31,07% likmi un vecuma pensijas tiesību gadījumā piemērojamo 29,36% likmi.
+- Parastai saimnieciskajai darbībai 10% pensiju iemaksas tiek aprēķinātas katram mēnesim atsevišķi.
+- Lauksaimnieciskās ražošanas un intelektuālā īpašuma ienākumiem pieejams atsevišķs gada 10% aprēķina režīms; tajā gada rezultātā tiek ņemti vērā arī zaudējumu mēneši.
+- Ja vienā ceturksnī ir gan lauksaimnieciskās ražošanas/intelektuālā īpašuma, gan cita veida saimnieciskās darbības ienākumi, nepieciešams VID noteiktais proporcijas aprēķins — pašreizējais vienkāršotais kalkulators šo gadījumu vēl neatbalsta.
+- Nekustamā īpašuma apsaimniekotāja īpašā likme un citi individuāli statusi vēl nav pilnībā ieviesti. Īpašos gadījumos summas jāpārbauda VID EDS.
+- Aprēķinu dati tiek glabāti lietotāja pārlūkprogrammā kopā ar pārējiem lokālajiem demonstrācijas datiem.
+
+## Aprēķinu testēšana
+
+Ja datorā ir instalēts Node.js, VSAOI aprēķinu regresijas testus var palaist ar:
+
+```bash
+node --test tests/vsaoi-calculations.test.js
+```
+
+Testi pārbauda parasto mēneša aprēķinu, lauksaimniecības gada aprēķinu, zaudējumu ietekmi, pensionāra likmi un negatīvu ienākumu validāciju.
 
 ## VID palīgs un AI savienojums
 
