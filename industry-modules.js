@@ -153,7 +153,7 @@ function renderModule(){
 function saveEntry(){
  const sector=el('industrySector').value,job=el('industryJob').value,root=el('industryModule'),data={};root.querySelectorAll('[id^="ind_"]').forEach(x=>{data[x.id.slice(4)]=x.value.trim()});
  const amount=Number(data.amount);
- if(!data.amount||!Number.isFinite(amount)||amount<=0){alert(t('Ievadi derīgu summu, kas lielāka par nulli.','Enter a valid amount greater than zero.'));return;}
+ if(!data.amount||!Number.isFinite(amount)||amount<=0||Math.round((amount+Number.EPSILON)*100)/100<=0){alert(t('Ievadi derīgu summu, kas pēc noapaļošanas ir vismaz 0,01 €.','Enter a valid amount of at least €0.01 after rounding.'));return;}
  const dateParts=String(data.date||'').match(/^(\d{4})-(\d{2})-(\d{2})$/);
  const dateValid=!!dateParts&&(()=>{const y=Number(dateParts[1]),m=Number(dateParts[2]),d=Number(dateParts[3]),date=new Date(y,m-1,d);return date.getFullYear()===y&&date.getMonth()===m-1&&date.getDate()===d;})();
  if(!dateValid){alert(t('Izvēlies derīgu darījuma datumu.','Choose a valid transaction date.'));return;}
