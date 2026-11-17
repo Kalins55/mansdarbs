@@ -1281,12 +1281,23 @@ function applyLanguage(){
   async function sendQuestion(){
     var field=root.querySelector('#mvaQuestion'),send=root.querySelector('#mvaSend'),question=field.value.trim();
     if(!question)return;
+    var consentKey='mansdarbsAiDataConsent';
+    var consentGranted=false;
+    try{consentGranted=sessionStorage.getItem(consentKey)==='yes'}catch(e){}
+    if(!consentGranted){
+      var consentMessage=document.documentElement.lang==='en'
+        ?'Before sending: your question, recent chat messages, and selected VID task/profile type will be sent to the OpenAI API to prepare a response. Mansdarbs does not store this conversation on its own server and disables response storage (store:false) in the request. However, OpenAI API abuse-monitoring logs may retain request content for up to 30 days by default; API data is not used to train models unless the account owner separately opts in to data sharing. Consent also applies to subsequent questions in this browser tab until it is closed. Data terms: https://developers.openai.com/api/docs/guides/your-data. Do not send your personal identity number, passwords, Smart-ID codes, or bank details. Do you agree?'
+        :'Pirms nosūtīšanas: tavs jautājums, pēdējās sarunas ziņas un izvēlētais VID uzdevums/profila tips tiks nosūtīts OpenAI API atbildes sagatavošanai. Mansdarbs šo sarunu savā serverī nesaglabā un pieprasījumā izslēdz atbildes glabāšanu (store:false). Tomēr OpenAI API drošības uzraudzības žurnālos pieprasījuma saturs pēc noklusējuma var tikt glabāts līdz 30 dienām; API dati netiek izmantoti modeļu apmācībai, ja vien konta īpašnieks nav atsevišķi piekritis datu kopīgošanai. Piekrišana attiecas arī uz turpmākajiem jautājumiem šajā pārlūka cilnē līdz tās aizvēršanai. Datu nosacījumi: https://developers.openai.com/api/docs/guides/your-data. Nesūti personas kodu, paroles, Smart-ID kodus vai bankas datus. Vai piekrīti?';
+      var accepted=window.confirm(consentMessage);
+      if(!accepted)return;
+      try{sessionStorage.setItem(consentKey,'yes')}catch(e){}
+    }
     chatHistory.push({role:'user',content:question});
     addChatMessage('user',question);
     field.value='';send.disabled=true;send.textContent='Meklēju atbildi…';
     var pending=document.createElement('div');pending.className='mva-chat-message mva-chat-agent';pending.textContent='Pārbaudu oficiālos avotus un sagatavoju atbildi…';chatLog.appendChild(pending);
     try{
-      var response=await fetch('/api/vid-assistant',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:chatHistory,profile:profile.value,task:current})});
+      var response=await fetch('/api/vid-assistant',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:chatHistory,profile:profile.value,task:current,consent:true})});
       var data=await response.json();pending.remove();
       if(!response.ok)throw new Error(data.error||'Neizdevās saņemt atbildi.');
       chatHistory.push({role:'assistant',content:data.answer});
