@@ -43,8 +43,9 @@ function cleanCode(value) {
 
 function uniqueProfiles(items) {
   const seen = new Set();
-  return items.filter(item => {
-    if (!item || typeof item !== 'object') return false;
+  const profiles = [];
+  items.forEach(item => {
+    if (!item || typeof item !== 'object') return;
     const profile = {
       sector: String(item.sector || '').trim(),
       activity: String(item.activity || item.job || '').trim(),
@@ -54,12 +55,13 @@ function uniqueProfiles(items) {
       region: String(item.region || '').trim(),
       goals: list(item.goals).map(String)
     };
-    if (!profile.sector && !profile.activity && !profile.nace) return false;
+    if (!profile.sector && !profile.activity && !profile.nace) return;
     const key = [profile.sector, profile.activity, profile.nace, profile.legalForm, profile.stage, profile.region].join('|').toLowerCase();
-    if (seen.has(key)) return false;
+    if (seen.has(key)) return;
     seen.add(key);
-    return profile;
+    profiles.push(profile);
   });
+  return profiles;
 }
 
 function getLocalIndustryProfiles(storage) {
