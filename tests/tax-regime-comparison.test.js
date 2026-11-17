@@ -195,3 +195,25 @@ test('comparison does not show tax-exceeds-profit warnings when both tax totals 
   assert.doesNotMatch(result.innerHTML, /MUN var pārsniegt peļņu/);
   assert.doesNotMatch(result.innerHTML, /nodokļu summa pārsniedz norādīto peļņu/i);
 });
+
+test('comparison import skips malformed dates, unknown record types and invalid amounts', () => {
+  const result = runPrefill([
+    { kind: 'Ienākums', amount: 1000, date: '2026-01-12' },
+    { kind: 'Ienākums', amount: 'not-a-number', date: '2026-02-02' },
+    { kind: 'Izdevums', amount: 100, date: '2026-02-31' },
+    { kind: 'Other', amount: 200, date: '2026-03-03' }
+  ]);
+  assert.equal(result.regimeTurnover.value, '1000.00');
+  assert.equal(result.regimeExpenses.value, '0.00');
+  assert.match(result.regimeRecordsStatus.textContent, /Izlaisti 3 nekorekti ieraksti/);
+});
+
+test('comparison import reports when all selected-year records are malformed', () => {
+  const result = runPrefill([
+    { kind: 'Ienākums', amount: -50, date: '2026-01-12' },
+    { kind: 'Izdevums', amount: 100, date: '2026-13-01' }
+  ]);
+  assert.match(result.regimeRecordsStatus.textContent, /bet to datums, veids vai summa nav korekta/);
+  assert.equal(result.regimeTurnover.value, '');
+  assert.equal(result.regimeExpenses.value, '');
+});
