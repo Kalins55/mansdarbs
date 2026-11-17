@@ -10,7 +10,7 @@ Vienkāršs, mobilajām ierīcēm pielāgots palīgs saimnieciskās darbības s�
 - Sākumlapā pieejams neobligāts situācijas profils (darbības stadija un aktuālā vajadzība), kas parāda pielāgotu nākamo soli; profils tiek glabāts tikai pārlūkprogrammā, to var mainīt vai dzēst, un tas netiek izmantots analītikai.
 - Situācijas profils nolasa arī atsevišķi saglabāto nozares profilu un sākumlapā parāda izvēlēto nozari/nodarbošanos vai aicina to pievienot; abi profili paliek atsevišķi un tiek glabāti lokāli pārlūkā.
 - Ienākumu, izdevumu un rēķinu dati paliek lietotāja pārlūkprogrammā un netiek nosūtīti serverim.
-- Ja lietotājs pats atver VID palīga jautājumu sadaļu un nosūta ziņu, tās saturs tiek nosūtīts uz `/api/vid-assistant` un tālāk uz OpenAI API atbildes sagatavošanai; saruna netiek saglabāta Mansdarbs serverī.
+- Ja lietotājs pats atver VID palīga jautājumu sadaļu un nosūta ziņu, jautājums, pēdējās sarunas ziņas un izvēlētais VID uzdevuma/profila konteksts tiek nosūtīts uz `/api/vid-assistant` un tālāk uz OpenAI API tikai pēc skaidras piekrišanas. Piekrišana attiecas uz pašreizējo pārlūka cilnes sesiju un tiek glabāta tikai `sessionStorage`; cilnes aizvēršana to pārtrauc. API serveris pieprasījumus bez `consent: true` noraida. Šī pārbaude nodrošina skaidru klienta protokolu, bet nav neatkarīgs pierādījums lietotāja piekrišanai — publiskā pārlūka pieprasījuma karodziņu var mainīt. Saruna netiek saglabāta Mansdarbs serverī.
 - Šī demonstrācija nav oficiāls grāmatvedības reģistrs. Tajā ir orientējoši 2026. gada VSAOI un IIN aprēķini; tie neaizstāj VID EDS aprēķinu un neaptver visus īpašos nodokļu režīmus.
 
 
@@ -59,7 +59,7 @@ Testi pārbauda VSAOI aprēķinus, vispārējā režīma un MUN salīdzinājuma 
 - Papildu jautājumu atbildes nodrošina Cloudflare Pages Function `/api/vid-assistant`, izmantojot OpenAI Responses API un oficiālo Latvijas iestāžu avotu meklēšanu.
 - Lai aktivizētu AI atbildes, Cloudflare Pages projekta iestatījumos jāpievieno slepenais mainīgais `OPENAI_API_KEY`. Pēc noklusējuma tiek izmantots `gpt-6-luna`; to var mainīt ar neobligātu `OPENAI_MODEL`.
 - API atslēga nekad nedrīkst atrasties HTML, JavaScript klienta kodā vai GitHub repozitorijā.
-- AI jautājumu saturs tiek nosūtīts ārējam AI pakalpojumam. Lietotājam pirms nosūtīšanas tiek atgādināts neiekļaut paroles, personas kodu, Smart-ID kodus vai bankas datus.
+- AI jautājumu saturs un pēdējās sarunas ziņas tiek nosūtītas OpenAI API tikai pēc lietotāja piekrišanas. Pieprasījumā ir `store: false`, tāpēc Responses API atbildes glabāšana kā lietojumprogrammas stāvoklis ir izslēgta. Tas **neizslēdz OpenAI drošības uzraudzības žurnālus**: pēc noklusējuma tajos var tikt glabāts pieprasījuma saturs līdz 30 dienām. OpenAI norāda, ka API dati netiek izmantoti modeļu apmācībai, ja vien klients nav atsevišķi piekritis datu kopīgošanai. Pirms piekrišanas lietotājam tiek parādīts šis skaidrojums un saite uz [OpenAI API datu kontroles nosacījumiem](https://developers.openai.com/api/docs/guides/your-data). Lietotājam tiek atgādināts neiekļaut paroles, personas kodu, Smart-ID kodus vai bankas datus.
 - EDS pieslēgšanās, dokumentu iesniegšana un konta pārbaude vienmēr paliek paša lietotāja ziņā. Mansdarbs neprasa EDS piekļuves datus un neveic darbības lietotāja vietā.
 - AI atbildēm jābalstās uz VID, likumi.lv, VSAA, Uzņēmumu reģistra, Finanšu ministrijas un Latvija.gov.lv avotiem; neskaidrās situācijās jānorāda uz nepieciešamību precizēt informāciju pie VID.
 
@@ -124,3 +124,15 @@ Pievienots lokāls atlases modulis `funding-discovery.js`, kas lasa jau saglabā
 Sākumlapā ir kompakta finansējuma sadaļa, kas izmanto lietotāja pārlūkprogrammā saglabāto nozares profilu, lai atlasītu nozares un starpnozaru atbalsta iespējas. Finansējuma katalogs tiek ielādēts kā publiski statiski dati; lietotāja nozares profils, finanšu ieraksti un dokumenti netiek nosūtīti atlases servera pieprasījumā. Rezultātos tiek parādīts atbalsta veids, pieteikšanās statuss un termiņš, summa vai kopējais programmas budžets, oficiālais avots un pēdējās pārbaudes datums. Aizdevumi ir skaidri marķēti kā atmaksājami.
 
 Pašreizējais katalogs ir sākotnējs un nav pilns visu Latvijas vai ES iespēju saraksts. Programmu statusi un nosacījumi ir manuāli pārbaudāmi; automātiska avotu uzraudzība un paziņojumi vēl nav ieviesti. Skatīt `docs/sector-funding-discovery.md`.
+
+
+### VID palīga pieprasījumu biežuma ierobežošana
+
+Lietojumprogrammas API pārbauda izcelsmi, pieprasījuma formātu, lietotāja piekrišanas karogu un pieprasījuma izmēru, taču šīs pārbaudes neaizstāj tīkla līmeņa biežuma ierobežošanu. Pirms plašākas publiskas AI palīga lietošanas Cloudflare zonā jāizveido WAF Rate Limiting rule:
+
+- Nosacījums: `http.request.uri.path eq "/api/vid-assistant" and http.request.method eq "POST"`.
+- Skaitītājs: IP adrese.
+- Sākotnējais slieksnis: 30 pieprasījumi 60 sekundēs no vienas IP adreses; pēc reālās lietošanas novērojumiem slieksni pielāgot.
+- Pārsniedzot slieksni: bloķēt ar HTTP 429 un īsu ierobežojuma periodu.
+
+**Svarīgi:** IP adreses ierobežojums var ietekmēt vairākus lietotājus, kuri atrodas aiz viena kopīga tīkla vai mobilo sakaru operatora NAT. Tāpēc slieksni nevajag iestatīt pārāk zemu. Cloudflare plānos pieejamie skaitītāja parametri un noteikumu skaits atšķiras; Free plānā pieejamais IP skaitītājs nav individuāla lietotāja identifikācija. Noteikums jāizveido Cloudflare vadības panelī sadaļā Security rules → Create rule → Rate limiting rules. Tas nav automātiski ieslēgts ar GitHub izmaiņām.

@@ -1,5 +1,6 @@
 // Mansdarbs VID assistant API — server-side only; never expose the API key to the browser.
 const MODEL_DEFAULT = "gpt-6-luna";
+const MAX_REQUEST_BYTES = 14000;
 const OFFICIAL_DOMAINS = [
   "vid.gov.lv",
   "likumi.lv",
@@ -19,6 +20,36 @@ Nesniedz galīgu juridisku slēdzienu sarežģītos vai individuālos gadījumos
 Dod vienu konkrētu nākamo soli, nevis garu vispārīgu lekciju. Ja vajadzīgi vairāki soļi, numurē tos. Saglabā atbildi īsu un praktisku.
 `.trim();
 
+async function readLimitedRequestBody(request) {
+  if (!request.body) return "";
+  const reader = request.body.getReader();
+  const chunks = [];
+  let totalBytes = 0;
+  try {
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      if (!value) continue;
+      totalBytes += value.byteLength;
+      if (totalBytes > MAX_REQUEST_BYTES) {
+        try { await reader.cancel(); } catch (_) {}
+        return null;
+      }
+      chunks.push(value);
+    }
+  } finally {
+    reader.releaseLock();
+  }
+
+  const bytes = new Uint8Array(totalBytes);
+  let offset = 0;
+  for (const chunk of chunks) {
+    bytes.set(chunk, offset);
+    offset += chunk.byteLength;
+  }
+  return new TextDecoder().decode(bytes);
+}
+
 function json(data, status = 200) {
   return Response.json(data, {
     status,
@@ -32,24 +63,46 @@ function json(data, status = 200) {
 
 export async function onRequestPost({ request, env }) {
   const origin = request.headers.get("Origin");
-  if (origin) {
-    try {
-      if (new URL(origin).host !== new URL(request.url).host) return json({ error: "Pieprasījums nav atļauts." }, 403);
-    } catch (_) {
-      return json({ error: "Nederīgs pieprasījums." }, 403);
+  if (!origin) return json({ error: "Pieprasījums nav atļauts." }, 403);
+  try {
+    const parsedOrigin = new URL(origin);
+    if (parsedOrigin.origin !== new URL(request.url).origin || origin !== parsedOrigin.origin) {
+      return json({ error: "Pieprasījums nav atļauts." }, 403);
     }
+  } catch (_) {
+    return json({ error: "Nederīgs pieprasījums." }, 403);
+  }
+
+  const contentType = (request.headers.get("Content-Type") || "").split(";")[0].trim().toLowerCase();
+  if (contentType !== "application/json") {
+    return json({ error: "Nederīgs pieprasījuma formāts." }, 415);
   }
 
   const length = Number(request.headers.get("Content-Length") || 0);
-  if (length > 14000) return json({ error: "Ziņa ir pārāk gara. Saīsini to un mēģini vēlreiz." }, 413);
+  if (length > MAX_REQUEST_BYTES) return json({ error: "Ziņa ir pārāk gara. Saīsini to un mēģini vēlreiz." }, 413);
 
-  if (!env.OPENAI_API_KEY) {
-    return json({ error: "AI savienojums vēl nav aktivizēts. Pagaidām izmanto soli pa solim ceļvedi." }, 503);
+  let rawBody;
+  try { rawBody = await readLimitedRequestBody(request); } catch (_) {
+    return json({ error: "Neizdevās nolasīt ziņu." }, 400);
+  }
+  if (rawBody === null) {
+    return json({ error: "Ziņa ir pārāk gara. Saīsini to un mēģini vēlreiz." }, 413);
   }
 
   let body;
-  try { body = await request.json(); } catch (_) {
+  try { body = JSON.parse(rawBody); } catch (_) {
     return json({ error: "Neizdevās nolasīt ziņu." }, 400);
+  }
+  if (!body || typeof body !== "object" || Array.isArray(body)) {
+    return json({ error: "Nederīgs pieprasījuma saturs." }, 400);
+  }
+
+  if (body.consent !== true) {
+    return json({ error: "Pirms jautājuma nosūtīšanas nepieciešams apstiprināt datu nosūtīšanu AI pakalpojumam." }, 403);
+  }
+
+  if (!env.OPENAI_API_KEY) {
+    return json({ error: "AI savienojums vēl nav aktivizēts. Pagaidām izmanto soli pa solim ceļvedi." }, 503);
   }
 
   const allowedRoles = new Set(["user", "assistant"]);
@@ -87,7 +140,8 @@ export async function onRequestPost({ request, env }) {
         }],
         max_output_tokens: 900,
         store: false
-      })
+      }),
+      signal: AbortSignal.timeout(25000)
     });
   } catch (_) {
     return json({ error: "AI palīgs pašlaik nav sasniedzams. Mēģini vēlreiz pēc brīža." }, 502);
@@ -103,14 +157,20 @@ export async function onRequestPost({ request, env }) {
     return json({ error: "Saņēmu nesaprotamu atbildi. Mēģini vēlreiz." }, 502);
   }
 
+  if (!result || !Array.isArray(result.output)) {
+    return json({ error: "Saņēmu nesaprotamu atbildi. Mēģini vēlreiz." }, 502);
+  }
+
   const answerParts = [];
   const sources = [];
-  for (const item of result.output || []) {
-    if (item.type !== "message" || !Array.isArray(item.content)) continue;
+  for (const item of result.output) {
+    if (!item || item.type !== "message" || !Array.isArray(item.content)) continue;
     for (const part of item.content) {
+      if (!part || typeof part !== "object") continue;
       if (part.type === "output_text" && typeof part.text === "string") answerParts.push(part.text);
-      for (const annotation of part.annotations || []) {
-        if (annotation.type === "url_citation" && typeof annotation.url === "string") {
+      const annotations = Array.isArray(part.annotations) ? part.annotations : [];
+      for (const annotation of annotations) {
+        if (annotation?.type === "url_citation" && typeof annotation.url === "string") {
           try {
             const url = new URL(annotation.url);
             if (url.protocol === "https:" && OFFICIAL_DOMAINS.some(domain => url.hostname === domain || url.hostname.endsWith("." + domain))) {
