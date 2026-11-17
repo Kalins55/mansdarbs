@@ -294,7 +294,7 @@ test('VID assistant returns a controlled 502 when the provider response has an i
       headers: { 'Content-Type': 'application/json' }
     })
   };
-  vm.runInNewContext(executable + '\\nthis.onRequestPost = onRequestPost;', sandbox);
+  vm.runInNewContext(executable + '\nthis.onRequestPost = onRequestPost;', sandbox);
   const request = new Request('https://mansdarbs.eu/api/vid-assistant', {
     method: 'POST',
     headers: { Origin: 'https://mansdarbs.eu', 'Content-Type': 'application/json' },
@@ -328,7 +328,7 @@ test('VID assistant ignores malformed citation annotations without losing the an
       }]
     }), { status: 200, headers: { 'Content-Type': 'application/json' } })
   };
-  vm.runInNewContext(executable + '\\nthis.onRequestPost = onRequestPost;', sandbox);
+  vm.runInNewContext(executable + '\nthis.onRequestPost = onRequestPost;', sandbox);
   const request = new Request('https://mansdarbs.eu/api/vid-assistant', {
     method: 'POST',
     headers: { Origin: 'https://mansdarbs.eu', 'Content-Type': 'application/json' },
