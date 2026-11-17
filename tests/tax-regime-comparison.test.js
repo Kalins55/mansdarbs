@@ -135,7 +135,7 @@ function runPrefill(records, options = {}) {
   }
   const document = { getElementById: id => elements[id] };
   const run = new Function('document', 'getRecords', 'money',
-    extractFunction('fillRegimeFromRecords') + '; return fillRegimeFromRecords;'
+    extractFunction('clearRegimeRecordPrefill') + ';' + extractFunction('fillRegimeFromRecords') + '; return fillRegimeFromRecords;'
   )(document, () => records, value => Number(value).toFixed(2) + ' €');
   run();
   return elements;
