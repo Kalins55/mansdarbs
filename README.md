@@ -24,6 +24,9 @@ Vienkāršs, mobilajām ierīcēm pielāgots palīgs saimnieciskās darbības s�
 - Nekustamā īpašuma apsaimniekotāja īpašā likme un citi individuāli statusi vēl nav pilnībā ieviesti. Īpašos gadījumos summas jāpārbauda VID EDS.
 - Aprēķinu dati tiek glabāti lietotāja pārlūkprogrammā kopā ar pārējiem lokālajiem demonstrācijas datiem.
 - IIN prognozes VSAOI lauku var automātiski aizpildīt no ceturkšņu aprēķiniem vai manuāli pielāgot faktiskajām attiecīgajā kalendāra gadā samaksātajām iemaksām.
+- 2026. gada maksimālais VSAOI objekts ir 105 300 € gadā kopā visos apdrošināšanas statusos; pārsnieguma daļa ir solidaritātes nodokļa objekts. Kalkulators solidaritātes nodokli neaprēķina un brīdina, ja saglabāto pašnodarbinātā pilno iemaksu objektu summa pārsniedz šo robežu.
+- Valsts un ES atbalsts lauksaimniecībai un lauku attīstībai netiek iekļauts VSAOI objektā; konkrētā atbalsta IIN atbrīvojums jāpārbauda pēc tā veida un izlietojuma.
+- IIN prognozē 3% papildu likmes bāze virs 200 000 € tiek vērtēta atsevišķi no neapliekamā minimuma un citiem atvieglojumiem. Tā ir vienkāršota prognoze, nevis pilns visu īpašo ienākumu veidu aprēķins. Negatīvas gada peļņas vai VSAOI, kas pārsniedz peļņu, gadījumā jāprecizē zaudējumu un iemaksu attiecināšana VID EDS.
 
 ## Proaktīvie nodokļu paziņojumi un režīma salīdzināšana
 
@@ -41,6 +44,14 @@ Mansdarbs attīstībā jāievēro šādi principi:
 - Paziņojumi ir informatīvi, nevis automātiska nodokļu režīma maiņa vai garantija par ietaupījumu. Lietotājs pats pieņem lēmumu un pirms reģistrācijas izmaiņām pārbauda aktuālos nosacījumus VID.
 - Paziņojumu biežumam jābūt samērīgam: viens skaidrs brīdinājums pie sliekšņa tuvošanās, nevis atkārtoti uznirstoši paziņojumi katrā apmeklējumā.
 - Finanšu dati pašreizējā prototipā paliek lietotāja pārlūkprogrammā. Proaktīvie brīdinājumi jāaprēķina lokāli; tos nedrīkst saukt par uzvedības analītiku vai servera uzraudzību.
+
+## Lokālo datu rezerves kopijas
+
+- Pilnā rezerves kopija izmanto JSON formāta v2 un ietver atbalstītās pārlūka lokālās uzskaites kategorijas, VSAOI ceturkšņus, rēķinus, SIA prototipa datus, profilus un iestatījumus.
+- Rezerves kopija tiek veidota un atjaunota lietotāja pārlūkā. Sesijas dati, AI piekrišana, servera konfigurācija un nezināmas glabātuves atslēgas netiek eksportētas.
+- Eksporta un importa faila maksimālais izmērs ir 5 MB. Atjaunošana notiek tikai pēc lietotāja apstiprinājuma; tiek aizstātas tikai failā iekļautās kategorijas.
+- Saglabāta iepriekšējā v1 rezerves kopiju importēšanas atpakaļsaderība.
+- Šī funkcija ir prototipa līmeņa datu pārneses rīks; lietotājam jāsaglabā rezerves kopija drošā vietā un jāizmēģina atjaunošana ar kopiju, nevis vienīgo datu failu.
 
 ## Aprēķinu testēšana
 
