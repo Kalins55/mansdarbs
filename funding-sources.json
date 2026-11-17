@@ -156,6 +156,33 @@
         "partneru meklēšana"
       ],
       "notes": "Tiešo ES programmu un uzaicinājumu avots. Jāpārbauda, vai konkrētajā konkursā drīkst pieteikties Latvijas MVU, fiziska persona vai tikai starptautisks konsorcijs."
+    },
+    {
+      "id": "nostradamus-open-call",
+      "name": "NOSTRADAMUS Open Call #1",
+      "institution": "NOSTRADAMUS — ES finansēts projekts",
+      "url": "https://nostradamus-project.eu/open-call-1/",
+      "sourceType": "eu_project_cascade_funding",
+      "scope": [
+        "Eiropas Savienība"
+      ],
+      "coverage": [
+        "agritech",
+        "digitālās lauksaimniecības lietotnes",
+        "precīzā lauksaimniecība",
+        "atvērtā koda programmatūra"
+      ],
+      "supportTypes": [
+        "grant",
+        "non_financial"
+      ],
+      "filters": [
+        "digitāls risinājums",
+        "lauksaimniecība",
+        "atvērtā koda izstrāde",
+        "TRL"
+      ],
+      "notes": "Konkrēts ES finansēta projekta trešo pušu atbalsta konkurss; jāievēro NOSTRADAMUS vadlīnijas un F6S pieteikšanās process."
     }
   ]
 }
