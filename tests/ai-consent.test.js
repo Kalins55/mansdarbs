@@ -47,3 +47,33 @@ test('VID assistant enforces the request size limit even when Content-Length is 
   assert.ok(rawBody < byteLimit && byteLimit < parseBody && parseBody < consent,
     'Body size is enforced before parsing and consent-dependent processing');
 });
+
+
+test('VID assistant API returns 403 and never contacts OpenAI when consent is absent', async () => {
+  const vm = require('node:vm');
+  let upstreamCalls = 0;
+  const executable = api.replace(
+    'export async function onRequestPost',
+    'async function onRequestPost'
+  );
+  const sandbox = {
+    Response,
+    URL,
+    TextEncoder,
+    fetch: async () => { upstreamCalls += 1; throw new Error('Unexpected upstream call'); }
+  };
+  vm.runInNewContext(executable + '\nthis.onRequestPost = onRequestPost;', sandbox);
+  const request = new Request('https://mansdarbs.eu/api/vid-assistant', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ messages: [{ role: 'user', content: 'Test question' }] })
+  });
+
+  const response = await sandbox.onRequestPost({
+    request,
+    env: { OPENAI_API_KEY: 'test-key' }
+  });
+
+  assert.equal(response.status, 403);
+  assert.equal(upstreamCalls, 0, 'The AI provider must not be contacted without consent');
+});
