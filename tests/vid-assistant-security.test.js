@@ -35,6 +35,9 @@ test('VID assistant asks for explicit data-sharing consent before sending a ques
   assert.ok(addMessage > consent);
   assert.ok(sendRequest > addMessage);
   assert.ok(html.includes("sessionStorage.getItem(consentKey)==='yes'"));
+  assert.ok(html.includes("document.documentElement.lang==='en'"));
+  assert.ok(html.includes("Before sending: your question, recent chat messages"));
+  assert.ok(html.includes("Pirms nosūtīšanas: tavs jautājums, pēdējās sarunas ziņas"));
 });
 
 test('VID assistant API validates same-origin JSON and server-side consent before upstream processing', () => {
