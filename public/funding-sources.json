@@ -1,0 +1,188 @@
+{
+  "schemaVersion": 1,
+  "country": "LV",
+  "verifiedAt": "2026-11-17",
+  "description": "Sākotnējais oficiālo finansējuma avotu reģistrs. Šie ir avoti, nevis pilns vai automātiski atjaunots projektu katalogs.",
+  "sources": [
+    {
+      "id": "liaa-business-support",
+      "name": "LIAA Biznesa atbalsts",
+      "institution": "Latvijas Investīciju un attīstības aģentūra",
+      "url": "https://liaa.business.gov.lv/",
+      "sourceType": "national_aggregator",
+      "scope": [
+        "Latvija"
+      ],
+      "coverage": [
+        "visas nozares",
+        "uzņēmējdarbības uzsākšana",
+        "digitalizācija",
+        "inovācijas",
+        "eksports",
+        "pašvaldību atbalsts"
+      ],
+      "supportTypes": [
+        "grant",
+        "loan",
+        "guarantee",
+        "tax_relief",
+        "non_financial"
+      ],
+      "filters": [
+        "vajadzība",
+        "uzņēmuma stadija",
+        "statuss",
+        "nozare"
+      ],
+      "notes": "LIAA portālā jau ir Latvijas biznesa atbalsta vednis un dažādu iestāžu programmu apkopojums. Mansdarbs to papildina ar detalizētāku faktiskās darbības/NACE atbilstības skaidrojumu un tiešo ES programmu atlasi."
+    },
+    {
+      "id": "lad-support-catalogue",
+      "name": "LAD atbalsta katalogs",
+      "institution": "Lauku atbalsta dienests",
+      "url": "https://www.lad.gov.lv/lv/katalogs",
+      "sourceType": "sector_catalogue",
+      "scope": [
+        "Latvija"
+      ],
+      "coverage": [
+        "lauksaimniecība",
+        "mežsaimniecība",
+        "zivsaimniecība",
+        "pārtikas pārstrāde",
+        "lauku attīstība"
+      ],
+      "supportTypes": [
+        "grant",
+        "subsidy",
+        "non_financial"
+      ],
+      "filters": [
+        "plānošanas periods",
+        "programmas tips",
+        "statuss",
+        "nozare"
+      ],
+      "notes": "Katalogā iespējams atlasīt atbalstu pēc nozares un statusa, tostarp atvērtas, izsludinātas un noslēgtas kārtas. Jāatšķir primārā ražošana, pakalpojumi un pārstrāde."
+    },
+    {
+      "id": "altum-business",
+      "name": "ALTUM atbalsts biznesam",
+      "institution": "Attīstības finanšu institūcija ALTUM",
+      "url": "https://www.altum.lv/pakalpojumi/biznesam/",
+      "sourceType": "financial_instruments_catalogue",
+      "scope": [
+        "Latvija"
+      ],
+      "coverage": [
+        "uzņēmējdarbības uzsākšana",
+        "investīcijas",
+        "apgrozāmie līdzekļi",
+        "energoefektivitāte",
+        "ražošana",
+        "eksports"
+      ],
+      "supportTypes": [
+        "loan",
+        "guarantee",
+        "equity",
+        "capital_rebate"
+      ],
+      "filters": [
+        "programmas mērķis",
+        "uzņēmuma stadija",
+        "nozare",
+        "reģions"
+      ],
+      "notes": "Aizdevumi un garantijas ir atmaksājami vai saistību nodrošināšanas instrumenti, nevis grants. Katras programmas nozares izņēmumi jāpārbauda atsevišķi."
+    },
+    {
+      "id": "cfla-eu-funds-2021-2027",
+      "name": "CFLA ES fondu 2021–2027 programmas",
+      "institution": "Centrālā finanšu un līgumu aģentūra",
+      "url": "https://www.cfla.gov.lv/lv/2021-2027-programmas",
+      "sourceType": "eu_funds_call_register",
+      "scope": [
+        "Latvija"
+      ],
+      "coverage": [
+        "uzņēmējdarbība",
+        "pētniecība",
+        "inovācijas",
+        "digitalizācija",
+        "enerģētika",
+        "reģionālā attīstība",
+        "infrastruktūra"
+      ],
+      "supportTypes": [
+        "grant"
+      ],
+      "filters": [
+        "atlases statuss",
+        "pieteikšanās sākums",
+        "pieteikšanās beigas",
+        "programmas mērķis"
+      ],
+      "notes": "Programmu lapā redzamas notiekošās un drīzumā plānotās atlases. Daļa pasākumu paredzēta pašvaldībām vai citām iestādēm, nevis tieši privātam uzņēmumam."
+    },
+    {
+      "id": "eu-funding-tenders",
+      "name": "EU Funding & Tenders Portal",
+      "institution": "Eiropas Komisija",
+      "url": "https://ec.europa.eu/info/funding-tenders/opportunities/portal/screen/about",
+      "sourceType": "eu_direct_calls_portal",
+      "scope": [
+        "Eiropas Savienība"
+      ],
+      "coverage": [
+        "pētniecība",
+        "inovācijas",
+        "digitalizācija",
+        "klimats",
+        "izglītība",
+        "sadarbības projekti",
+        "dažādas ES programmas"
+      ],
+      "supportTypes": [
+        "grant",
+        "prize",
+        "procurement"
+      ],
+      "filters": [
+        "programma",
+        "tēma",
+        "uzaicinājums",
+        "pieteikšanās statuss",
+        "partneru meklēšana"
+      ],
+      "notes": "Tiešo ES programmu un uzaicinājumu avots. Jāpārbauda, vai konkrētajā konkursā drīkst pieteikties Latvijas MVU, fiziska persona vai tikai starptautisks konsorcijs."
+    },
+    {
+      "id": "nostradamus-open-call",
+      "name": "NOSTRADAMUS Open Call #1",
+      "institution": "NOSTRADAMUS — ES finansēts projekts",
+      "url": "https://nostradamus-project.eu/open-call-1/",
+      "sourceType": "eu_project_cascade_funding",
+      "scope": [
+        "Eiropas Savienība"
+      ],
+      "coverage": [
+        "agritech",
+        "digitālās lauksaimniecības lietotnes",
+        "precīzā lauksaimniecība",
+        "atvērtā koda programmatūra"
+      ],
+      "supportTypes": [
+        "grant",
+        "non_financial"
+      ],
+      "filters": [
+        "digitāls risinājums",
+        "lauksaimniecība",
+        "atvērtā koda izstrāde",
+        "TRL"
+      ],
+      "notes": "Konkrēts ES finansēta projekta trešo pušu atbalsta konkurss; jāievēro NOSTRADAMUS vadlīnijas un F6S pieteikšanās process."
+    }
+  ]
+}
