@@ -60,3 +60,20 @@ test('Worker static-assets copy references existing local scripts and a real PNG
   checkLocalScripts(html, publicDirectory);
   checkSocialPreview(html, publicDirectory);
 });
+
+test('Interactive disclosure controls reference unique elements on both site copies', () => {
+  for (const relativePath of ['index.html', 'public/index.html']) {
+    const html = read(relativePath);
+    const ids = [...html.matchAll(/\\bid=["']([^"']+)["']/g)].map(match => match[1]);
+    const counts = new Map();
+    for (const id of ids) counts.set(id, (counts.get(id) || 0) + 1);
+    const duplicates = [...counts].filter(([, count]) => count > 1).map(([id]) => id);
+    assert.deepEqual(duplicates, [], relativePath + ' contains duplicate element IDs');
+
+    const controlledIds = [...html.matchAll(/\\baria-controls=["']([^"']+)["']/g)]
+      .flatMap(match => match[1].trim().split(/\\s+/));
+    for (const id of controlledIds) {
+      assert.equal(counts.get(id), 1, relativePath + ' references a missing or non-unique aria-controls target: ' + id);
+    }
+  }
+});
