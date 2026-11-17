@@ -41,7 +41,8 @@
         "notes": "Paredzēts mazajām un vidējām lauku saimniecībām. Precīzs saimniecības lielums, attiecināmās izmaksas, atbalsta intensitāte un citi kritēriji jāpārbauda konkrētās kārtas nolikumā."
       },
       "lastVerifiedAt": "2026-11-17",
-      "evidenceNotes": "LAD 2026-10-12 paziņojums: pieteikšanās 2026-11-09 līdz 2026-12-09; 10 milj. EUR mazajām un 20,5 milj. EUR vidējām saimniecībām."
+      "evidenceNotes": "LAD 2026-10-12 paziņojums: pieteikšanās 2026-11-09 līdz 2026-12-09; 10 milj. EUR mazajām un 20,5 milj. EUR vidējām saimniecībām.",
+      "manualReviewReason": "Jāpārbauda saimniecības lieluma kategorija, iepriekš saņemtais investīciju atbalsts un attiecināmās izmaksas."
     },
     {
       "id": "lad-la-4-1-2-climate-farm-2026",
@@ -83,7 +84,8 @@
         "notes": "LAD norāda, ka atbalstam nevar pieteikties uzņēmumi, kas pārstrādā lauksaimniecības produktus un ražo produktus, kuri nav iekļauti ES līguma I pielikumā. Precīzie nosacījumi jāpārbauda nolikumā."
       },
       "lastVerifiedAt": "2026-11-17",
-      "evidenceNotes": "LAD 2026-10-12 paziņojums: pieteikšanās 2026-11-09 līdz 2026-12-09; kopējais publiskais finansējums 14,2 milj. EUR."
+      "evidenceNotes": "LAD 2026-10-12 paziņojums: pieteikšanās 2026-11-09 līdz 2026-12-09; kopējais publiskais finansējums 14,2 milj. EUR.",
+      "manualReviewReason": "Jāpārbauda plānotā ieguldījuma veids, pretendenta atbilstība un produkcijas pārstrādes ierobežojumi."
     },
     {
       "id": "lad-la-4-1-1-sheep-goat-prevention-2026",
