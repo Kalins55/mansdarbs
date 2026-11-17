@@ -1,2 +1,3 @@
 Cloudflare Pages automatic deployment verification
 Funding discovery module deployment verification — 2026-11-17
+Funding catalogue + matcher deployment check — 2026-11-17
