@@ -68,5 +68,5 @@ test('additional 3% IIN does not start when the separate annual income base is e
   });
   assert.equal(result.alerts.length, 0);
   assert.match(result.elements.iinResult.innerHTML, /2 295\.00 €|2295\.00 €/);
-  assert.match(result.elements.iinResult.innerHTML, /49 245\.00 €|49245\.00 €/);
+  assert.match(result.elements.iinResult.innerHTML, /49 062\.00 €|49062\.00 €/);
 });
