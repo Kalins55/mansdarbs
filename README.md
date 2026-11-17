@@ -20,6 +20,7 @@ Vienkāršs, mobilajām ierīcēm pielāgots palīgs saimnieciskās darbības s�
 - Parastai saimnieciskajai darbībai 10% pensiju iemaksas tiek aprēķinātas katram mēnesim atsevišķi.
 - Lauksaimnieciskās ražošanas un intelektuālā īpašuma ienākumiem pieejams atsevišķs gada 10% aprēķina režīms; tajā gada rezultātā tiek ņemti vērā arī zaudējumu mēneši.
 - Ja vienā ceturksnī ir gan lauksaimnieciskās ražošanas/intelektuālā īpašuma, gan cita veida saimnieciskās darbības ienākumi, nepieciešams VID noteiktais proporcijas aprēķins — pašreizējais vienkāršotais kalkulators šo gadījumu vēl neatbalsta.
+- Pensionāra statusa kombinācija ar lauksaimniecības vai intelektuālā īpašuma gada režīmu tiek bloķēta, jo šiem statusiem var būt īpaši izņēmumi, kas vēl nav ieviesti.
 - Nekustamā īpašuma apsaimniekotāja īpašā likme un citi individuāli statusi vēl nav pilnībā ieviesti. Īpašos gadījumos summas jāpārbauda VID EDS.
 - Aprēķinu dati tiek glabāti lietotāja pārlūkprogrammā kopā ar pārējiem lokālajiem demonstrācijas datiem.
 - IIN prognozes VSAOI lauku var automātiski aizpildīt no ceturkšņu aprēķiniem vai manuāli pielāgot faktiskajām attiecīgajā kalendāra gadā samaksātajām iemaksām.
