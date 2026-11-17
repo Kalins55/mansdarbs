@@ -20,6 +20,9 @@ test('VID assistant requests clear session consent before adding or sending a qu
   assert.ok(html.includes("sessionStorage.getItem(consentKey)==='yes'"));
   assert.ok(html.includes("sessionStorage.setItem(consentKey,'yes')"));
   assert.match(html, /mansdarbsAiDataConsent/);
+  assert.match(html, /OpenAI API drošības uzraudzības žurnālos pieprasījuma saturs pēc noklusējuma var tikt glabāts līdz 30 dienām/);
+  assert.match(html, /API dati netiek izmantoti modeļu apmācībai/);
+  assert.match(html, /developers\\.openai\\.com\\/api\\/docs\\/guides\\/your-data/);
   assert.match(html, /OpenAI API/);
   assert.match(html, /turpmākajiem jautājumiem šajā pārlūka cilnē līdz tās aizvēršanai/);
   assert.match(html, /Mansdarbs sarunu savā serverī nesaglabā/);
@@ -344,4 +347,16 @@ test('VID assistant ignores malformed citation annotations without losing the an
   assert.equal(response.status, 200);
   assert.equal(result.answer, 'Atbilde ir pieejama.');
   assert.deepEqual(result.sources, []);
+});
+
+
+test('VID guide moves focus to the updated step after using Back', () => {
+  const html = read('index.html');
+  assert.match(html, /mvaBack'\\)\\.addEventListener\\('click',function\\(\\)\\{if\\(index>0\\)\\{index--;render\\(\\);root\\.querySelector\\('#mvaStepTitle'\\)\\.focus\\(\\);\\}\\}\\)/);
+});
+
+test('VID assistant marks the chat log busy while an answer is loading', () => {
+  const html = read('index.html');
+  assert.match(html, /chatLog\\.setAttribute\\('aria-busy','true'\\)/);
+  assert.match(html, /chatLog\\.setAttribute\\('aria-busy','false'\\)/);
 });
