@@ -78,6 +78,22 @@ test('Interactive disclosure controls reference unique elements on both site cop
   }
 });
 
+test('Anonymous visitor tracking requires explicit consent before reading or writing visitor data', () => {
+  const tracking = read('functions/api/track.js');
+  const handler = tracking.slice(tracking.indexOf('export async function onRequestPost'));
+  const parseBody = handler.indexOf('body = await request.json()');
+  const consentGuard = handler.indexOf('if (body?.consent !== true)');
+  const cookieRead = handler.indexOf('getCookie(request, COOKIE)');
+  const randomId = handler.indexOf('crypto.randomUUID()');
+  const storageWrite = handler.indexOf('env.VISITS.put(');
+
+  assert.notEqual(parseBody, -1, 'Tracking request body must be parsed');
+  assert.notEqual(consentGuard, -1, 'Tracking endpoint must require explicit consent');
+  assert.ok(parseBody < consentGuard, 'Consent must be read from the request');
+  assert.ok(consentGuard < cookieRead, 'Consent must be checked before reading the visitor cookie');
+  assert.ok(consentGuard < randomId, 'Consent must be checked before creating a visitor identifier');
+  assert.ok(consentGuard < storageWrite, 'Consent must be checked before writing analytics data');
+});
 test('Browser code only sends user content through explicitly consented VID assistant endpoints', () => {
   const browserFiles = [
     'index.html',
