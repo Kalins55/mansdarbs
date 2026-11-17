@@ -16,9 +16,10 @@ const networkApis = [
 ];
 
 test('context profile remains browser-local and does not call network APIs', () => {
-  assert.match(contextEngine, /localStorage\.getItem\(['"]mansdarbs_context_profile_v1['"]\)/);
-  assert.match(contextEngine, /localStorage\.setItem\(['"]mansdarbs_context_profile_v1['"]/);
-  assert.match(contextEngine, /localStorage\.removeItem\(['"]mansdarbs_context_profile_v1['"]\)/);
+  assert.match(contextEngine, /const KEY = ['"]mansdarbs_context_profile_v1['"]/);
+  assert.match(contextEngine, /localStorage\.getItem\(KEY\)/);
+  assert.match(contextEngine, /localStorage\.setItem\(KEY, JSON\.stringify\(next\)\)/);
+  assert.match(contextEngine, /localStorage\.removeItem\(KEY\)/);
 
   for (const api of networkApis) {
     assert.doesNotMatch(contextEngine, api, 'Context profile must not transmit user data');
@@ -32,7 +33,7 @@ test('contextual help is local UI guidance and does not transmit form details', 
   assert.doesNotMatch(contextualHelp, /document\.cookie|localStorage\.(?:getItem|setItem)/);
 });
 
-test('context profile stores only the selected stage and need as its personalisation inputs', () => {
-  assert.match(contextEngine, /JSON\.stringify\(\{\s*stage:\s*stageEl\.value,\s*need:\s*needEl\.value\s*\}\)/);
-  assert.doesNotMatch(contextEngine, /navigator\.sendBeacon|\banalytics\b/i);
+test('context profile contains only stage, need and a local update timestamp', () => {
+  assert.match(contextEngine, /const next = \{stage: stageEl\.value, need: needEl\.value, updatedAt: new Date\(\)\.toISOString\(\)\}/);
+  assert.match(contextEngine, /JSON\.stringify\(next\)/);
 });
