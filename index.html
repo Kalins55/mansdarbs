@@ -597,7 +597,7 @@ function fillRegimeFromRecords(){
  const year=Number(yearField.value);
  const status=document.getElementById('regimeRecordsStatus');
  if(!Number.isInteger(year)||year<2020||year>2100){status.textContent='Ievadi derīgu uzskaites gadu.';return;}
- const records=getRecords().filter(item=>/^\\d{4}-\\d{2}-\\d{2}$/.test(item.date)&&Number(item.date.slice(0,4))===year);
+ const records=getRecords().filter(item=>/^\d{4}-\d{2}-\d{2}$/.test(item.date)&&Number(item.date.slice(0,4))===year);
  if(!records.length){status.textContent='Uzskaitē nav atrasts neviens ienākumu vai izdevumu ieraksts par '+year+'. gadu.';return;}
  const totals=records.reduce((sum,item)=>{if(item.kind==='Ienākums')sum.income+=Number(item.amount);else if(item.kind==='Izdevums')sum.expenses+=Number(item.amount);return sum;},{income:0,expenses:0});
  const income=document.getElementById('regimeTurnover'),expenses=document.getElementById('regimeExpenses');
