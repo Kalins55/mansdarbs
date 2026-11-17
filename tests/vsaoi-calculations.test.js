@@ -138,3 +138,9 @@ test('manual paid-VSAOI override persists and can return to automatic estimate',
   assert.equal(h.elements.annualVsaoi.value, '364.35');
   assert.equal(h.storage.has('mansdarbs_vsaoi_iin_manual_v1'), false);
 });
+
+test('pensioner agriculture/IP combination is blocked pending special-status rules', () => {
+  const h = createHarness();
+  assert.equal(h.runQuarter(3, [800, 790, 785], 'annual_special', 'pensioner'), null);
+  assert.equal(h.alerts.length, 1);
+});
