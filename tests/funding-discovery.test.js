@@ -232,3 +232,14 @@ test('LAD programme records include source-backed eligibility checks and investm
   assert.equal(climate.sourceUrl, 'https://www.lad.gov.lv/lv/katalogs/la-412-atbalsts-ieguldijumiem-seg-un-amonjaka-emisijas-samazinosajiem-pasakumiem-un-klimata-parmainu-mazinasanai-un-pielagosanas-pasakumu-istenosanai-lauku-saimniecibas');
   assert.equal(energy.sourceUrl, 'https://www.lad.gov.lv/lv/katalogs/la-414-atbalsts-ieguldijumiem-aer-izmantosanai-vai-energoefektivitates-palielinasanai');
 });
+
+
+test('LA 4.1.4 distinguishes eligible project costs from grant amount', () => {
+  const catalogue = JSON.parse(fs.readFileSync(path.join(root, 'funding-programs.json'), 'utf8'));
+  const energy = catalogue.programs.find(item => item.id === 'lad-la-4-1-4-energy-efficiency-2026');
+  assert.match(energy.manualReviewReason, /700 000 EUR/);
+  assert.match(energy.manualReviewReason, /80%/);
+  assert.match(energy.manualReviewReason, /20%/);
+  assert.match(energy.manualReviewReason, /1,2 kWh\/kg/);
+  assert.match(energy.fundingDetails.note, /tas nav granta apmērs/);
+});
