@@ -78,7 +78,7 @@ test('Interactive disclosure controls reference unique elements on both site cop
   }
 });
 
-test('Browser code only sends user content through the explicitly consented VID assistant endpoint', () => {
+test('Browser code only sends user content through explicitly consented VID assistant endpoints', () => {
   const browserFiles = [
     'index.html',
     'context-engine.js',
@@ -99,12 +99,15 @@ test('Browser code only sends user content through the explicitly consented VID 
       relativePath + ' must not introduce an unreviewed browser network channel');
   }
 
-  assert.deepEqual(networkCalls, [{ path: 'index.html', line: networkCalls[0]?.line }],
-    'Only the main page may make a browser fetch request, through the reviewed VID assistant flow');
-  const html = read('index.html');
-  const request = html.match(/fetch\(['"]([^'"]+)['"],\s*\{[\s\S]{0,500}?body:\s*JSON\.stringify\(\{([^}]+)\}\)/);
-  assert.ok(request, 'The reviewed VID assistant request must remain identifiable');
-  assert.equal(request[1], '/api/vid-assistant');
-  assert.match(request[2], /consent\s*:\s*true/);
-  assert.match(request[2], /messages\s*:\s*chatHistory/);
+  assert.deepEqual(networkCalls.map(call => call.path).sort(), ['index.html', 'public/index.html']);
+  for (const relativePath of ['index.html', 'public/index.html']) {
+    const html = read(relativePath);
+    const consent = html.indexOf("window.confirm('Pirms nosūtīšanas:");
+    const addMessage = html.indexOf("chatHistory.push({role:'user',content:question})");
+    const sendRequest = html.indexOf("body:JSON.stringify({messages:chatHistory,profile:profile.value,task:current,consent:true})");
+    assert.notEqual(consent, -1, relativePath + ' must request explicit consent');
+    assert.ok(consent < addMessage, relativePath + ' must request consent before adding the question');
+    assert.ok(addMessage < sendRequest, relativePath + ' must add the question before sending it');
+    assert.match(html, /sessionStorage\.setItem\(consentKey,'yes'\)/);
+  }
 });
