@@ -60,7 +60,7 @@ function renderCard(p,lang){
  const summary=lang==='en'?(copy.summary||p.summary||''):(p.summary||'');
  const source=p.sourceUrl?'<a href="'+esc(p.sourceUrl)+'" target="_blank" rel="noopener noreferrer">'+(lang==='en'?'Programme details':'Programmas apraksts')+' ↗</a>':'';
  const apply=p.applicationUrl?'<a href="'+esc(p.applicationUrl)+'" target="_blank" rel="noopener noreferrer">'+(lang==='en'?'Apply':'Pieteikties')+' ↗</a>':'';
- return '<article class="funding-card"><div class="funding-tags"><span class="funding-tag funding-status">'+esc(status)+'</span><span class="funding-tag '+(loan?'funding-loan':'')+'">'+esc(support)+'</span><span class="funding-tag">'+esc(fit)+'</span></div>'+
+ return '<article class="funding-card"><div class="funding-tags"><span class="funding-tag funding-status">'+esc(status)+'</span>'+support.map(s=>'<span class="funding-tag '+(s.toLowerCase().includes('loan')||s.toLowerCase().includes('aizdev')?'funding-loan':'')+'">'+esc(s)+'</span>').join('')+'<span class="funding-tag">'+esc(fit)+'</span></div>'+
  '<h4>'+esc(p.name)+'</h4><p class="funding-summary">'+esc(summary)+'</p>'+
  (amount?'<div class="funding-amount">'+esc(amount+rate)+'</div>':'')+
  (deadline?'<p class="funding-detail"><strong>'+(lang==='en'?'Deadline:':'Termiņš:')+'</strong> '+esc(deadline)+'</p>':'')+
