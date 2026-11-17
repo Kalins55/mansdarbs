@@ -208,6 +208,39 @@
       "lastVerifiedAt": "2026-11-17",
       "evidenceNotes": "LAD LA 4.1.4. kataloga lapa atjaunota 2026-11-09; 5. kārtas periods 2026-11-09 līdz 2026-12-09. LAD norāda finansējuma sadalījumu, atbalstāmās investīcijas, 700 000 EUR maksimālās attiecināmās izmaksas un mērķrādītājus.",
       "manualReviewReason": "Maksimālās attiecināmās izmaksas vienam pretendentam nepārsniedz 700 000 EUR (tas nav automātiski granta apmērs). AER saražotās enerģijas pašpatēriņam jābūt vismaz 80%; energoefektivitātes projektā jāsasniedz vismaz 20% enerģijas patēriņa samazinājums attiecīgajā patērētāju grupā. Biogāzes izejvielās kūtsmēslu īpatsvaram jābūt vismaz 70%. Jauna būvniecība un jauna ražošanas līnija bez esošās nomaiņas parasti nav attiecināma; graudu kaltes īpatnējais enerģijas patēriņš nedrīkst pārsniegt 1,2 kWh/kg iztvaicētā ūdens. Pārbaudīt MK noteikumu Nr. 303 43.–47. punktu un metodikas."
+    },
+    {
+      "id": "lad-la-4-2-cooperative-processing-2026",
+      "name": "LA 4.2. Atbalsts ieguldījumiem pārstrādē — kooperatīvajām sabiedrībām",
+      "sourceId": "lad-support-catalogue",
+      "sourceUrl": "https://www.lad.gov.lv/lv/katalogs/la-42-atbalsts-ieguldijumiem-parstrade",
+      "applicationUrl": "https://eps.lad.gov.lv/",
+      "scope": "sector",
+      "sectors": [
+        "agri"
+      ],
+      "supportTypes": [
+        "grant"
+      ],
+      "status": "open",
+      "openingDate": "2026-11-09",
+      "deadline": "2026-12-09",
+      "summary": "Investīciju atbalsts lauksaimniecības produktu pārstrādes efektivitātei un pievienotās vērtības palielināšanai. Šī kārta paredzēta kooperatīvajām sabiedrībām un to apvienībām.",
+      "fundingDetails": {
+        "totalPublicBudget": 2127990,
+        "applicantMaximum": null,
+        "note": "LAD LA 4.2. lapā norādītais finansējums 2 127 990 EUR. Šis finansējums ir kopējais kooperatīvu finansējums LA 4.1.1., LA 4.1.2., LA 4.1.4. un LA 4.2. intervencēm, nevis tikai LA 4.2. atsevišķi rezervēta summa; tā nav viena pretendenta atbalsta summa."
+      },
+      "eligibility": {
+        "legalForms": [
+          "Kooperatīvā sabiedrība",
+          "Kooperatīvo sabiedrību apvienība"
+        ],
+        "notes": "Atbalsta pretendents šajā 2026. gada kārtā ir kooperatīvā sabiedrība vai kooperatīvo sabiedrību apvienība. Intervence paredzēta lauksaimniecības produktu pārstrādes efektivitātes un pievienotās vērtības palielināšanai, tostarp augstas pievienotās vērtības un eksportspējīgu produktu ražošanai. Individuāls pašnodarbinātais vai parasta zemnieku saimniecība bez atbilstoša kooperatīva statusa nav automātiski atbilstošs pretendents."
+      },
+      "lastVerifiedAt": "2026-11-17",
+      "evidenceNotes": "LAD LA 4.2. kataloga lapa, atjaunota 2026-10-10: kooperatīvu kārta 2026-11-09 līdz 2026-12-09; norādīts kopējais finansējums 2 127 990 EUR.",
+      "manualReviewReason": "Pirms pieteikšanās pārbaudīt kooperatīva juridisko statusu, konkrētā pārstrādes projekta attiecināmību un LAD elektroniskajā rīku katalogā noteiktās izmaksas un izņēmumus. Finansējums 2 127 990 EUR ir kopīgs kooperatīvu finansējuma grozs vairākām intervencēm."
     }
   ]
 }
