@@ -63,12 +63,14 @@ function json(data, status = 200) {
 
 export async function onRequestPost({ request, env }) {
   const origin = request.headers.get("Origin");
-  if (origin) {
-    try {
-      if (new URL(origin).origin !== new URL(request.url).origin) return json({ error: "Pieprasījums nav atļauts." }, 403);
-    } catch (_) {
-      return json({ error: "Nederīgs pieprasījums." }, 403);
+  if (!origin) return json({ error: "Pieprasījums nav atļauts." }, 403);
+  try {
+    const parsedOrigin = new URL(origin);
+    if (parsedOrigin.origin !== new URL(request.url).origin || origin !== parsedOrigin.origin) {
+      return json({ error: "Pieprasījums nav atļauts." }, 403);
     }
+  } catch (_) {
+    return json({ error: "Nederīgs pieprasījums." }, 403);
   }
 
   const length = Number(request.headers.get("Content-Length") || 0);
