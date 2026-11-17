@@ -66,7 +66,11 @@ test('VID assistant exposes modal semantics and manages keyboard focus', () => {
   assert.ok(html.includes("root.setAttribute('aria-modal','true')"));
   assert.ok(html.includes("root.setAttribute('aria-labelledby','mvaHeading')"));
   assert.ok(html.includes("root.setAttribute('aria-describedby','mvaIntro')"));
-  assert.ok(html.includes('previousFocus=document.activeElement'));
+  assert.ok(html.includes('previousFocus=returnFocusTo||document.activeElement'));
+  assert.ok(html.includes('show(footerLink)'));
+  assert.ok(html.includes("root.querySelector('#mvaStepTitle').focus()"));
+  assert.ok(html.includes("root.querySelector('#mvaDone h2').focus()"));
+  assert.ok(html.includes("else root.querySelector('#mvaAskToggle').focus()"));
   assert.ok(html.includes("document.addEventListener('keydown',trapDialogFocus,true)"));
   assert.ok(html.includes('event.shiftKey'));
   assert.ok(html.includes("document.documentElement.contains(target)&&typeof target.focus==='function')target.focus();"));
