@@ -149,7 +149,7 @@ test('comparison imports only selected-year income and expenses from local recor
   ]);
   assert.equal(result.regimeTurnover.value, '1000.00');
   assert.equal(result.regimeExpenses.value, '250.00');
-  assert.match(result.regimeRecordsStatus.textContent, /2 ieraksti/);
+  assert.match(result.regimeRecordsStatus.textContent, /2 derīgi ieraksti/);
 });
 
 test('comparison prefill never overwrites manually entered values', () => {
