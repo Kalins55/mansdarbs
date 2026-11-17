@@ -57,3 +57,26 @@ test('Worker static-assets copy references existing local scripts and a real PNG
   assert.ok(fs.existsSync(path.join(publicDirectory, 'funding-programs.json')));
   assert.ok(fs.existsSync(path.join(publicDirectory, 'funding-sources.json')));
 });
+
+
+test('VID assistant exposes modal semantics and manages keyboard focus', () => {
+  const html = read('index.html');
+  assert.match(html, /root\\.setAttribute\\('role','dialog'\\)/);
+  assert.match(html, /root\\.setAttribute\\('aria-modal','true'\\)/);
+  assert.match(html, /root\\.setAttribute\\('aria-labelledby','mvaHeading'\\)/);
+  assert.match(html, /root\\.setAttribute\\('aria-describedby','mvaIntro'\\)/);
+  assert.match(html, /previousFocus=document\\.activeElement/);
+  assert.match(html, /document\\.addEventListener\\('keydown',trapDialogFocus,true\\)/);
+  assert.match(html, /event\\.shiftKey/);
+  assert.match(html, /document\\.documentElement\\.contains\\(target\\).*target\\.focus\\(\\)/);
+});
+
+test('frequently used mobile controls have at least 44px touch targets', () => {
+  const html = read('index.html');
+  assert.match(html, /\\.lang-switch button\\{[^}]*min-width:44px;min-height:44px\\}/);
+  assert.match(html, /\\.nav button\\{min-height:44px\\}/);
+  assert.match(html, /\\.record-actions button\\{min-width:44px;min-height:44px/);
+  assert.match(html, /\\.md-context-help__actions button\\{min-height:44px\\}/);
+  assert.match(html, /#mansdarbs-vid-assistant \\.mva-close\\{min-width:44px;min-height:44px/);
+  assert.match(html, /class="record-actions"><button class="textlink" style="[^"]*min-width:44px;min-height:44px/);
+});
