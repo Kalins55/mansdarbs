@@ -91,6 +91,17 @@ test('v2 backup rejects unknown keys before confirmation and leaves data unchang
   assert.equal(JSON.parse(result.store.get('mansdarbs_demo_records_v1'))[0].amount, 9);
 });
 
+test('v2 backup rejects malformed nested SIA companies and transactions', () => {
+  const invalidCompany = runImport(JSON.stringify({app:'Mansdarbs',version:2,data:{
+    mansdarbs_sia_prototype_v1:{companies:[{name:'Bez ID'}],transactions:[]}
+  }}));
+  const invalidTransaction = runImport(JSON.stringify({app:'Mansdarbs',version:2,data:{
+    mansdarbs_sia_prototype_v1:{companies:[{id:'c1',name:'Uzņēmums'}],transactions:[{kind:'income',companyId:'c1',description:'Darbs',date:'2026-03-01',net:-10,rate:21,vat:0,total:0}]}
+  }}));
+  assert.equal(invalidCompany.confirmations, 0);
+  assert.equal(invalidTransaction.confirmations, 0);
+});
+
 test('v2 backup rejects invalid dates and malformed dataset shapes', () => {
   const invalidDate = runImport(JSON.stringify({app:'Mansdarbs',version:2,data:{mansdarbs_demo_records_v1:[{kind:'Ienākums',amount:9,date:'2026-02-30'}]}}));
   const invalidShape = runImport(JSON.stringify({app:'Mansdarbs',version:2,data:{mansdarbs_sia_prototype_v1:{companies:[],transactions:{}}}}));
