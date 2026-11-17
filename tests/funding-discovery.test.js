@@ -147,3 +147,38 @@ test('public funding catalogue loader validates the versioned JSON structure', a
   );
 });
 
+
+
+test('verified current Latvian and EU funding opportunities are present in the catalogue', () => {
+  const catalogue = JSON.parse(fs.readFileSync(path.join(root, 'funding-programs.json'), 'utf8'));
+  assert.ok(catalogue.programs.some(item => item.id === 'lad-la-4-1-1-farm-competitiveness-2026'));
+  assert.ok(catalogue.programs.some(item => item.id === 'nostradamus-open-call-1-2026'));
+  assert.ok(catalogue.programs.every(item => item.sourceId && item.lastVerifiedAt && item.sourceUrl));
+});
+
+test('NOSTRADAMUS agricultural digital call is shown with a manual eligibility check', () => {
+  const catalogue = JSON.parse(fs.readFileSync(path.join(root, 'funding-programs.json'), 'utf8'));
+  const matches = api.getFundingMatches(
+    { sector: 'agri', activity: 'Augkopība' },
+    catalogue,
+    { today: '2026-11-17' }
+  );
+  const call = matches.find(item => item.id === 'nostradamus-open-call-1-2026');
+  assert.ok(call);
+  assert.equal(call.fitStatus, 'needs_more_info');
+  assert.match(call.missing.join(' '), /atvērtā koda digitālu risinājumu/);
+});
+
+test('ALTUM start-up support is classified as a repayable loan, not a grant', () => {
+  const catalogue = JSON.parse(fs.readFileSync(path.join(root, 'funding-programs.json'), 'utf8'));
+  const matches = api.getFundingMatches(
+    { sector: 'repair', activity: 'Traktoru remonts', stage: 'new' },
+    catalogue,
+    { today: '2026-11-17' }
+  );
+  const loan = matches.find(item => item.id === 'altum-start-loan-2026');
+  assert.ok(loan);
+  assert.equal(loan.supportTypeLabels[0], 'Aizdevums — jāatmaksā');
+  assert.equal(loan.status, 'ongoing');
+});
+
