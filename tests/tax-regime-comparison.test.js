@@ -122,8 +122,8 @@ function runPrefill(records, options = {}) {
   const elements = {
     regimeRecordYear: { value: String(options.year || 2026) },
     regimeRecordsStatus: { textContent: '' },
-    regimeTurnover: { value: '', dataset: {} },
-    regimeExpenses: { value: '', dataset: {} }
+    regimeTurnover: { value: options.importedIncome ?? '', dataset: options.importedIncome !== undefined ? { synced: 'records' } : {} },
+    regimeExpenses: { value: options.importedExpenses ?? '', dataset: options.importedExpenses !== undefined ? { synced: 'records' } : {} }
   };
   if (options.manualIncome !== undefined) {
     elements.regimeTurnover.value = String(options.manualIncome);
@@ -167,6 +167,25 @@ test('comparison prefill reports when no records exist for selected year', () =>
     { kind: 'Ienākums', amount: 1000, date: '2025-01-12' }
   ]);
   assert.match(result.regimeRecordsStatus.textContent, /nav atrasts neviens/);
+});
+
+test('comparison clears stale imported values when selected year has no records but preserves manual values', () => {
+  const result = runPrefill([
+    { kind: 'Ienākums', amount: 1000, date: '2025-01-12' }
+  ], { importedIncome: '1000.00', importedExpenses: '250.00', manualIncome: 1500 });
+  assert.equal(result.regimeTurnover.value, '1500');
+  assert.equal(result.regimeExpenses.value, '');
+  assert.equal(result.regimeExpenses.dataset.synced, '');
+  assert.match(result.regimeRecordsStatus.textContent, /Iepriekš no uzskaites pārņemtās vērtības notīrītas/);
+});
+
+test('comparison clears stale imported values when all selected-year records are invalid', () => {
+  const result = runPrefill([
+    { kind: 'Ienākums', amount: -50, date: '2026-01-12' }
+  ], { importedIncome: '1000.00', importedExpenses: '250.00' });
+  assert.equal(result.regimeTurnover.value, '');
+  assert.equal(result.regimeExpenses.value, '');
+  assert.match(result.regimeRecordsStatus.textContent, /Iepriekš no uzskaites pārņemtās vērtības notīrītas/);
 });
 
 test('comparison warns when MUN exceeds profit after expenses', () => {
