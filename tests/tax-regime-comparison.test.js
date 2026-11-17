@@ -177,3 +177,21 @@ test('comparison warns when MUN exceeds profit after expenses', () => {
   assert.match(result.innerHTML, /MUN var pārsniegt peļņu/);
   assert.match(result.innerHTML, /MUN 2500\.00 € pārsniedz peļņu 1000\.00 €/);
 });
+
+test('comparison warns when general-regime tax exceeds very low profit', () => {
+  const result = runComparison({
+    regimeTurnover: 100, regimeExpenses: 90, regimeVsaoi: 0,
+    regimeOtherIncome: 0, regimeAllowance: 6600, regimeDeductions: 0
+  });
+  assert.match(result.innerHTML, /vispārējā režīma nodokļu summa pārsniedz norādīto peļņu/i);
+  assert.match(result.innerHTML, /50\.00 €/);
+});
+
+test('comparison does not show tax-exceeds-profit warnings when both tax totals are below profit', () => {
+  const result = runComparison({
+    regimeTurnover: 30000, regimeExpenses: 5000, regimeVsaoi: 5000,
+    regimeOtherIncome: 0, regimeAllowance: 6600, regimeDeductions: 0
+  });
+  assert.doesNotMatch(result.innerHTML, /MUN var pārsniegt peļņu/);
+  assert.doesNotMatch(result.innerHTML, /nodokļu summa pārsniedz norādīto peļņu/i);
+});
