@@ -640,7 +640,8 @@ function compareTaxRegimes(){
  if(profit>0&&vsaoi===0){result.className='empty';result.textContent='Peļņai ir norādītas pozitīvas vērtības, bet VSAOI ir 0 €. Vispirms pārbaudi VSAOI aprēķinu vai ievadi faktiski samaksāto summu, lai salīdzinājums nebūtu maldinošs.';return;}
  if(vsaoi>profit){result.className='empty';result.textContent='Norādītā VSAOI summa pārsniedz peļņu. Pārbaudi, vai ievadīta pareizā gada summa un vai tajā nav iekļauti citi maksājumi.';return;}
  const taxableBusiness=Math.max(0,profit-vsaoi);
- const totalTaxable=Math.max(0,other+taxableBusiness-Math.min(other+taxableBusiness,allowance+deductions));
+ const totalBeforeRelief=other+taxableBusiness;
+ const totalTaxable=Math.max(0,totalBeforeRelief-Math.min(totalBeforeRelief,allowance+deductions));
  const otherTaxable=Math.max(0,other-Math.min(other,allowance+deductions));
  const progressiveBusiness=Math.max(0,progressiveIin(totalTaxable,totalBeforeRelief)-progressiveIin(otherTaxable,other));
  const exempt=document.getElementById('regimeMinimumIinExempt').checked;
