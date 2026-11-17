@@ -75,6 +75,7 @@ test('VID assistant stops reading oversized streamed requests and returns 413', 
   });
   const request = new Request('https://mansdarbs.eu/api/vid-assistant', {
     method: 'POST',
+    headers: { Origin: 'https://mansdarbs.eu' },
     body: stream,
     duplex: 'half'
   });
@@ -111,6 +112,57 @@ test('VID assistant rejects a different scheme on the same host as a cross-origi
   assert.equal(upstreamCalls, 0);
 });
 
+test('VID assistant rejects requests without an Origin header before reading the body or contacting OpenAI', async () => {
+  const vm = require('node:vm');
+  let upstreamCalls = 0;
+  let bodyRead = false;
+  const executable = api.replace(
+    'export async function onRequestPost',
+    'async function onRequestPost'
+  );
+  const sandbox = {
+    Response, URL, TextEncoder, TextDecoder,
+    fetch: async () => { upstreamCalls += 1; }
+  };
+  vm.runInNewContext(executable + '\\nthis.onRequestPost = onRequestPost;', sandbox);
+  const request = new Request('https://mansdarbs.eu/api/vid-assistant', {
+    method: 'POST',
+    body: new ReadableStream({
+      pull(controller) {
+        bodyRead = true;
+        controller.enqueue(new TextEncoder().encode('{}'));
+        controller.close();
+      }
+    }),
+    duplex: 'half'
+  });
+
+  const response = await sandbox.onRequestPost({ request, env: { OPENAI_API_KEY: 'test-key' } });
+
+  assert.equal(response.status, 403);
+  assert.equal(bodyRead, false, 'Rejected requests should be stopped before body parsing');
+  assert.equal(upstreamCalls, 0);
+});
+
+test('VID assistant rejects non-canonical Origin values containing a path', async () => {
+  const vm = require('node:vm');
+  const executable = api.replace(
+    'export async function onRequestPost',
+    'async function onRequestPost'
+  );
+  const sandbox = { Response, URL, TextEncoder, TextDecoder, fetch: async () => { throw new Error('Unexpected upstream call'); } };
+  vm.runInNewContext(executable + '\\nthis.onRequestPost = onRequestPost;', sandbox);
+  const request = new Request('https://mansdarbs.eu/api/vid-assistant', {
+    method: 'POST',
+    headers: { Origin: 'https://mansdarbs.eu/other-path' },
+    body: '{}'
+  });
+
+  const response = await sandbox.onRequestPost({ request, env: { OPENAI_API_KEY: 'test-key' } });
+
+  assert.equal(response.status, 403);
+});
+
 test('VID assistant API returns 403 and never contacts OpenAI when consent is absent', async () => {
   const vm = require('node:vm');
   let upstreamCalls = 0;
@@ -128,7 +180,7 @@ test('VID assistant API returns 403 and never contacts OpenAI when consent is ab
   vm.runInNewContext(executable + '\nthis.onRequestPost = onRequestPost;', sandbox);
   const request = new Request('https://mansdarbs.eu/api/vid-assistant', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json', Origin: 'https://mansdarbs.eu' },
     body: JSON.stringify({ messages: [{ role: 'user', content: 'Test question' }] })
   });
 
