@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#fafaf7"/>
+  <g fill="none" stroke="#205e43" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M205 326 L263 268" stroke-width="18"/>
+    <circle cx="205" cy="326" r="15" stroke-width="15"/>
+    <path d="M254 277 L241 262 M263 268 L278 281 M241 262 L252 251 M278 281 L289 270" stroke-width="14"/>
+  </g>
+  <text x="300" y="316" font-family="Lato, Arial, sans-serif" font-size="112" font-weight="700" fill="#1c2b24">Mansdarbs.eu</text>
+  <text x="600" y="426" text-anchor="middle" font-family="Lato, Arial, sans-serif" font-size="36" fill="#5b675f">Neieberzies uz nodokļiem. Sāc oficiāli.</text>
+</svg>
