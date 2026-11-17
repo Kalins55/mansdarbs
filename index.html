@@ -447,8 +447,10 @@
 <h2>Kurš nodokļu režīms varētu būt izdevīgāks?</h2>
 <p class="muted">Salīdzini vispārējo kārtību ar mikrouzņēmumu nodokli (MUN), izmantojot sava gada apgrozījuma, izdevumu un VSAOI datus.</p>
 <div class="formgrid">
-<div class="field"><label for="regimeTurnover">Gada apgrozījums — ieņēmumi (€)</label><input id="regimeTurnover" type="number" min="0" step="0.01" inputmode="decimal" placeholder="Piemēram, 18000"></div>
-<div class="field"><label for="regimeExpenses">Gada saimnieciskās darbības izdevumi (€)</label><input id="regimeExpenses" type="number" min="0" step="0.01" inputmode="decimal" placeholder="Piemēram, 6000"></div>
+<div class="field full"><label for="regimeRecordYear">Uzskaites gads</label><input id="regimeRecordYear" type="number" min="2020" max="2100" step="1" value="2026"><small class="muted">Izvēlies gadu, kura ienākumus un izdevumus vēlies salīdzināt.</small></div>
+<div class="field full"><button type="button" class="btn secondary" onclick="fillRegimeFromRecords()">Aizpildīt ieņēmumus un izdevumus no uzskaites</button><small id="regimeRecordsStatus" class="muted" aria-live="polite">Tiks izmantoti šajā pārlūkā saglabātie ieraksti. Dati netiek nosūtīti serverim.</small></div>
+<div class="field"><label for="regimeTurnover">Gada apgrozījums — ieņēmumi (€)</label><input id="regimeTurnover" type="number" min="0" step="0.01" inputmode="decimal" placeholder="Piemēram, 18000" oninput="this.dataset.synced='manual'"></div>
+<div class="field"><label for="regimeExpenses">Gada saimnieciskās darbības izdevumi (€)</label><input id="regimeExpenses" type="number" min="0" step="0.01" inputmode="decimal" placeholder="Piemēram, 6000" oninput="this.dataset.synced='manual'"></div>
 <div class="field"><label for="regimeVsaoi">Vispārējā režīma VSAOI gadā (€)</label><input id="regimeVsaoi" type="number" min="0" step="0.01" inputmode="decimal" placeholder="Ievadi faktisko vai aprēķināto summu" oninput="this.dataset.synced='manual'"><small class="muted">Vari pārnest summu no VSAOI aprēķina. Bez šīs summas salīdzinājums nebūs pilnīgs.</small></div>
 <div class="field"><label for="regimeOtherIncome">Citi gada apliekamie ienākumi (€)</label><input id="regimeOtherIncome" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0,00" oninput="this.dataset.synced='manual'"><small class="muted">Ienākumi, kas ietekmē kopējo progresīvo IIN likmi.</small></div>
 <div class="field"><label for="regimeAllowance">Neizmantotais neapliekamais minimums (€)</label><input id="regimeAllowance" type="number" min="0" step="0.01" inputmode="decimal" value="6600" oninput="this.dataset.synced='manual'"></div>
@@ -589,6 +591,20 @@ function progressiveIin(amount){
 function syncTaxRegimeInputs(){
  const map=[['regimeVsaoi','annualVsaoi'],['regimeOtherIncome','otherTaxableIncome'],['regimeAllowance','annualAllowance'],['regimeDeductions','otherDeductions']];
  map.forEach(([target,source])=>{const el=document.getElementById(target),value=document.getElementById(source)?.value;if(el&&value!==undefined&&value!==''&&(el.value===''||el.dataset.synced!=='manual')){el.value=value;el.dataset.synced='auto';}});
+}
+function fillRegimeFromRecords(){
+ const yearField=document.getElementById('regimeRecordYear');
+ const year=Number(yearField.value);
+ const status=document.getElementById('regimeRecordsStatus');
+ if(!Number.isInteger(year)||year<2020||year>2100){status.textContent='Ievadi derīgu uzskaites gadu.';return;}
+ const records=getRecords().filter(item=>/^\\d{4}-\\d{2}-\\d{2}$/.test(item.date)&&Number(item.date.slice(0,4))===year);
+ if(!records.length){status.textContent='Uzskaitē nav atrasts neviens ienākumu vai izdevumu ieraksts par '+year+'. gadu.';return;}
+ const totals=records.reduce((sum,item)=>{if(item.kind==='Ienākums')sum.income+=Number(item.amount);else if(item.kind==='Izdevums')sum.expenses+=Number(item.amount);return sum;},{income:0,expenses:0});
+ const income=document.getElementById('regimeTurnover'),expenses=document.getElementById('regimeExpenses');
+ let preserved=0;
+ if(income.dataset.synced!=='manual'){income.value=totals.income.toFixed(2);income.dataset.synced='records';}else preserved++;
+ if(expenses.dataset.synced!=='manual'){expenses.value=totals.expenses.toFixed(2);expenses.dataset.synced='records';}else preserved++;
+ status.textContent='No uzskaites pārņemti '+year+'. gada dati ('+records.length+' ieraksti): ieņēmumi '+money(totals.income)+', izdevumi '+money(totals.expenses)+'.'+(preserved?' Manuāli ievadītie lauki netika pārrakstīti.':'');
 }
 function resetTaxRegimeComparison(){
  ['regimeTurnover','regimeExpenses','regimeVsaoi','regimeOtherIncome','regimeDeductions'].forEach(id=>{const el=document.getElementById(id);el.value='';if(el)el.dataset.synced='';});
