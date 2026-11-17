@@ -227,6 +227,15 @@
 </div>
 </section>
 
+<section class="section funding-section" id="fundingSection" aria-labelledby="fundingHeading">
+<div class="sectionhead">
+<div class="eyebrow">Atbalsta iespējas</div>
+<h2 id="fundingHeading">Pieejamais finansējums un projekti</h2>
+<p>Atrodi atbalstu savai nozarei, darbībai vai biznesa iecerei.</p>
+</div>
+<div class="funding-results" id="fundingResults" aria-live="polite"><div class="empty">Pārbaudu pieejamās iespējas…</div></div>
+</section>
+
 <section class="guide" id="guide">
 <div class="eyebrow">Tavs ceļš līdz oficiālam biznesam Latvijā</div>
 <h2>Sāc savu biznesu Latvijā — soli pa solim.</h2>
@@ -880,6 +889,7 @@ const EN_TRANSLATIONS={"Kategorija (nav obligāta)":"Category (optional)","Bez k
 "PVD: pārtikas uzņēmuma reģistrācija ↗":"PVD: register a food business ↗",
 "PVD: telpas un pirmsreģistrācijas pārbaude ↗":"PVD: premises and pre-registration inspection ↗",
 };
+Object.assign(EN_TRANSLATIONS,{"Atbalsta iespējas":"Support opportunities","Pieejamais finansējums un projekti":"Available funding and projects","Atrodi atbalstu savai nozarei, darbībai vai biznesa iecerei.":"Find support for your industry, activity or business idea.","Pārbaudu pieejamās iespējas…":"Checking available opportunities…"});
 function uiText(lv,en){return document.documentElement.lang==='en'?en:lv}
 function setLanguage(lang){
  const value=lang==='en'?'en':'lv';
@@ -925,6 +935,7 @@ function applyLanguage(){
 <script src="contextual-help.js?v=1"></script>
 <script src="industry-modules.js?v=80a1e8e"></script>
 <script src="funding-discovery.js?v=1"></script>
+<script src="funding-ui.js?v=1"></script>
 
 <script>
 (function(){
