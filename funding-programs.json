@@ -46,9 +46,9 @@
     },
     {
       "id": "lad-la-4-1-2-climate-farm-2026",
-      "name": "LA 4.1.2. Atbalsts SEG un amonjaka emisiju samazināšanai un klimata pārmaiņu mazināšanai lauku saimniecībās",
+      "name": "LA 4.1.2. Atbalsts ieguldījumiem SEG un amonjaka emisijas samazinošajiem pasākumiem un klimata pārmaiņu mazināšanai un pielāgošanās pasākumu īstenošanai lauku saimniecībās",
       "sourceId": "lad-support-catalogue",
-      "sourceUrl": "https://www.lad.gov.lv/lv/jaunums/lauksaimniekiem-un-kooperativiem-pieejams-atbalsts-investicijam-un-attistibai",
+      "sourceUrl": "https://www.lad.gov.lv/lv/katalogs/la-412-atbalsts-ieguldijumiem-seg-un-amonjaka-emisijas-samazinosajiem-pasakumiem-un-klimata-parmainu-mazinasanai-un-pielagosanas-pasakumu-istenosanai-lauku-saimniecibas",
       "applicationUrl": "https://eps.lad.gov.lv/",
       "scope": "sector",
       "sectors": [
@@ -60,31 +60,17 @@
       "status": "open",
       "openingDate": "2026-11-09",
       "deadline": "2026-12-09",
-      "summary": "Atbalsts lauku saimniecību klimata ietekmes mazināšanai, energoefektivitātei un atjaunīgās enerģijas ražošanai.",
+      "summary": "Atbalsts lauku saimniecību ieguldījumiem siltumnīcefekta gāzu un amonjaka emisiju samazināšanai, klimata pārmaiņu mazināšanai un pielāgošanās pasākumiem.",
       "fundingDetails": {
-        "totalPublicBudget": 14200000,
-        "budgetBreakdown": [
-          {
-            "label": "Biogāzes ražošanas iekārtas",
-            "amount": 7200000
-          },
-          {
-            "label": "Energoefektivitāte",
-            "amount": 4000000
-          },
-          {
-            "label": "Atjaunīgās enerģijas ražošana",
-            "amount": 3000000
-          }
-        ],
+        "totalPublicBudget": 12569464,
         "applicantMaximum": null,
-        "note": "Norādīts kopējais publiskais finansējums pa ieguldījumu veidiem, nevis viena pretendenta maksimālā atbalsta summa."
+        "note": "LAD norādītais kopējais publiskais finansējums 2026. gada kārtai; tā nav viena pretendenta maksimālā atbalsta summa."
       },
       "eligibility": {
-        "notes": "LAD norāda, ka atbalstam nevar pieteikties uzņēmumi, kas pārstrādā lauksaimniecības produktus un ražo produktus, kuri nav iekļauti ES līguma I pielikumā. Precīzie nosacījumi jāpārbauda nolikumā."
+        "notes": "Pretendents var būt lauku saimniecība (fiziska vai juridiska persona), kas ražo primāros lauksaimniecības produktus un pēdējā noslēgtajā gadā no to pārdošanas guvusi vismaz 4 000 EUR ieņēmumus, kooperatīvā sabiedrība vai lauksaimniecības nozares zinātniskā institūcija, kas nodarbojas ar lauksaimniecisko darbību. Jāpārbauda konkrētās izmaksas un atlases kritēriji."
       },
       "lastVerifiedAt": "2026-11-17",
-      "evidenceNotes": "LAD 2026-10-12 paziņojums: pieteikšanās 2026-11-09 līdz 2026-12-09; kopējais publiskais finansējums 14,2 milj. EUR.",
+      "evidenceNotes": "LAD kataloga LA 4.1.2. lapa, atjaunota 2026-11-09: 3. kārtas pieteikšanās 2026-11-09 līdz 2026-12-09; pieejamais publiskais finansējums 12 569 464 EUR.",
       "manualReviewReason": "Jāpārbauda plānotā ieguldījuma veids, pretendenta atbilstība un produkcijas pārstrādes ierobežojumi."
     },
     {
@@ -193,6 +179,35 @@
       "manualReviewReason": "Jāpārbauda, vai pieteicējs spēj izstrādāt atvērtā koda digitālu risinājumu un vai ideja atbilst vienai no piecām konkursa tēmām.",
       "lastVerifiedAt": "2026-11-17",
       "evidenceNotes": "NOSTRADAMUS oficiālā konkursa lapa: 5 projekti, līdz 50 000 EUR katram, termiņš 2026-12-02 plkst. 17.00 CET, 12 mēnešu programma."
+    },
+    {
+      "id": "lad-la-4-1-4-energy-efficiency-2026",
+      "name": "LA 4.1.4. Atbalsts ieguldījumiem AER izmantošanai vai energoefektivitātes palielināšanai",
+      "sourceId": "lad-support-catalogue",
+      "sourceUrl": "https://www.lad.gov.lv/lv/katalogs/la-414-atbalsts-ieguldijumiem-aer-izmantosanai-vai-energoefektivitates-palielinasanai",
+      "applicationUrl": "https://eps.lad.gov.lv/",
+      "scope": "sector",
+      "sectors": [
+        "agri"
+      ],
+      "supportTypes": [
+        "grant"
+      ],
+      "status": "open",
+      "openingDate": "2026-11-09",
+      "deadline": "2026-12-09",
+      "summary": "Atbalsts lauku saimniecību ieguldījumiem atjaunīgo energoresursu tehnoloģijās pašpatēriņam un energoefektivitātes paaugstināšanā.",
+      "fundingDetails": {
+        "totalPublicBudget": 14181117,
+        "applicantMaximum": null,
+        "note": "LAD norādītais kopējais publiskais finansējums; tas nav viena pretendenta maksimālais atbalsts. Atsevišķu ieguldījumu kategoriju summas LAD norāda noapaļoti."
+      },
+      "eligibility": {
+        "notes": "Atbalsta pretendents var būt lauku saimniecība — fiziska vai juridiska persona, kas ražo primāros lauksaimniecības produktus un pēdējā noslēgtajā gadā no to pārdošanas guvusi vismaz 4 000 EUR ieņēmumus; juridiska persona, kas pārstrādā lauksaimniecības produktus, ražojot ES līguma I pielikumā minētu produktu; vai lauksaimniecības nozares zinātniskā institūcija, kas nodarbojas ar lauksaimniecisko darbību. Jāpārbauda konkrētās izmaksas un atlases kritēriji."
+      },
+      "lastVerifiedAt": "2026-11-17",
+      "evidenceNotes": "LAD kataloga LA 4.1.4. lapa, atjaunota 2026-11-09: pieteikšanās 2026-11-09 līdz 2026-12-09; pieejamais publiskais finansējums 14 181 117 EUR.",
+      "manualReviewReason": "Jāpārbauda ieguldījuma attiecināmība, pretendenta statuss un energoefektivitātes vai AER tehnoloģijas prasības."
     }
   ]
 }
