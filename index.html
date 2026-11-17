@@ -442,7 +442,7 @@
 <p class="muted">Aprēķins parāda, cik papildu IIN varētu radīt saimnieciskā darbība, ņemot vērā arī citus tavus gada apliekamos ienākumus.</p>
 <div class="formgrid">
 <div class="field"><label for="annualProfit">Saimnieciskās darbības peļņa gadā (€)</label><input id="annualProfit" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0,00" readonly><small class="muted">Automātiski no saglabātajiem VSAOI ceturkšņiem.</small></div>
-<div class="field"><label for="annualVsaoi">VSAOI IIN prognozei (€)</label><input id="annualVsaoi" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0,00" readonly><small class="muted">Automātiski no saglabātajiem ceturkšņu aprēķiniem. Pirms deklarācijas salīdzini ar faktiski samaksāto summu EDS.</small><small class="muted">Ievadi tikai to VSAOI summu, kas vēl nav iekļauta saimnieciskās darbības izdevumos.</small></div>
+<div class="field"><label for="annualVsaoi">VSAOI IIN prognozei (€)</label><input id="annualVsaoi" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0,00" readonly oninput="saveManualVsaoiIin()"><small class="muted">Automātiski no saglabātajiem ceturkšņu aprēķiniem; precīzai gada deklarācijas prognozei salīdzini ar faktiski samaksāto summu EDS.</small><label style="display:block;margin-top:8px;font-weight:400"><input id="manualVsaoiIin" type="checkbox" style="width:auto;margin-right:8px" onchange="toggleManualVsaoiIin()">Ievadīt faktiski samaksāto VSAOI manuāli</label><small class="muted">Manuālajā režīmā ievadi attiecīgajā kalendāra gadā faktiski samaksāto VSAOI, arī iepriekšējā gada 4. ceturkšņa maksājumu. Neiekļauj summas, kas jau ierakstītas saimnieciskās darbības izdevumos.</small></div>
 <div class="field"><label for="otherTaxableIncome">Citi gada apliekamie ienākumi (€)</label><input id="otherTaxableIncome" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0,00"><small class="muted">Piemēram, darba alga pēc darba ņēmēja VSAOI, pirms neapliekamā minimuma un atvieglojumiem.</small></div>
 <div class="field"><label for="annualAllowance">Neapliekamais minimums gadā (€)</label><input id="annualAllowance" type="number" min="0" step="0.01" inputmode="decimal" value="6600"><small class="muted">2026. gadā līdz 6600 €. Ja tas jau izmantots citur, ievadi 0 vai neizmantoto daļu.</small></div>
 <div class="field full"><label for="otherDeductions">Citi atvieglojumi un attaisnotie izdevumi (€)</label><input id="otherDeductions" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0,00"><small class="muted">Ievadi tikai summu, ko vēlies ņemt vērā šajā aptuvenajā aprēķinā.</small></div>
@@ -480,6 +480,24 @@ function toggleVsaoiActivity(){
   :(en?'For ordinary business activity, the 10% pension contribution is calculated separately for each month.':'Parastajai darbībai 10% pensiju iemaksas aprēķina katram mēnesim atsevišķi.');
  document.getElementById('vsaoiMixedWarning').style.display=special?'block':'none';
 }
+function saveManualVsaoiIin(){
+ if(!document.getElementById('manualVsaoiIin').checked)return;
+ const value=Number(document.getElementById('annualVsaoi').value||0);
+ if(Number.isFinite(value)&&value>=0)localStorage.setItem('mansdarbs_vsaoi_iin_manual_v1',String(value));
+}
+function toggleManualVsaoiIin(){
+ const enabled=document.getElementById('manualVsaoiIin').checked;
+ const input=document.getElementById('annualVsaoi');
+ input.readOnly=!enabled;
+ if(enabled){
+  const saved=localStorage.getItem('mansdarbs_vsaoi_iin_manual_v1');
+  if(saved!==null)input.value=saved;
+  else localStorage.setItem('mansdarbs_vsaoi_iin_manual_v1',input.value||'0');
+ }else{
+  localStorage.removeItem('mansdarbs_vsaoi_iin_manual_v1');
+  syncIinFromVsaoi();
+ }
+}
 function syncIinFromVsaoi(){
  let annualProfit=0,annualVsaoi=0,annualSpecialProfit=0,annualSpecialBase=0;
  for(let q=1;q<=4;q++){
@@ -503,7 +521,7 @@ function syncIinFromVsaoi(){
  const annualSpecialPension=Math.round((annualSpecialPensionBase*0.10+Number.EPSILON)*100)/100;
  annualVsaoi+=annualSpecialPension;
  document.getElementById('annualProfit').value=annualProfit.toFixed(2);
- document.getElementById('annualVsaoi').value=annualVsaoi.toFixed(2);
+ if(!document.getElementById('manualVsaoiIin').checked)document.getElementById('annualVsaoi').value=annualVsaoi.toFixed(2);
  return {annualSpecialProfit,annualSpecialBase,annualSpecialPensionBase,annualSpecialPension};
 }
 function calculateVsaoi(){
@@ -560,10 +578,10 @@ function calculateIin(){
  const afterTax=profit-vsaoi-businessIin;
  const en=document.documentElement.lang==='en';document.getElementById('iinResult').innerHTML='<h3 style="margin:0 0 10px">'+(en?'Your estimated annual tax':'Tava aptuvenā gada prognoze')+'</h3><div class="record"><span>'+(en?'Business profit':'Saimnieciskās darbības peļņa')+'</span><strong class="amount">'+money(profit)+'</strong></div><div class="record"><span>'+(en?'Deductible VSAOI':'Atņemamās VSAOI')+'</span><strong class="amount">− '+money(vsaoi)+'</strong></div><div class="record"><span>'+(en?'Business income included in the IIN tax base':'Saimnieciskās darbības ienākuma daļa IIN bāzē')+'</span><strong class="amount">'+money(businessTaxable)+'</strong></div><div class="record"><span>'+(en?'IIN at progressive rates':'IIN pēc kopējām progresīvajām likmēm')+'</span><strong class="amount">'+money(progressiveBusinessTax)+'</strong></div><div class="record"><span>'+(en?'€50 minimum IIN':'Minimālā IIN piemērošana')+'</span><strong class="amount">'+(minimumIinApplied?'50,00 €':(minimumIinExempt?(en?'Exemption selected':'Atbrīvojums atzīmēts'):(en?'Not required':'Nav nepieciešama')))+'</strong></div><div class="record"><strong>'+(en?'Estimated IIN on business income':'Aprēķinātais IIN no saimnieciskās darbības')+'</strong><strong class="amount">'+money(businessIin)+'</strong></div><div class="record"><strong>'+(en?'Estimated amount left after VSAOI and IIN':'Aptuveni paliek pēc VSAOI un IIN')+'</strong><strong class="amount">'+money(afterTax)+'</strong></div><p class="privacy">'+(en?'Total taxable income after entered deductions: ':'Kopējais apliekamais ienākums pēc ievadītajiem atskaitījumiem: ')+money(taxableTotal)+'. '+(en?'Total IIN on all entered income before advance payments: ':'Kopējais IIN no visiem ievadītajiem ienākumiem pirms avansa maksājumu ieskaita: ')+money(totalTax)+'. '+(en?'The €50 minimum IIN is a separate obligation and is not reduced by the tax-free allowance or other reliefs.':'Minimālais 50 € IIN ir atsevišķs pienākums un netiek samazināts ar neapliekamo minimumu vai citiem atvieglojumiem.')+'</p>';
 }
-function resetIin(){['otherTaxableIncome','otherDeductions'].forEach(id=>document.getElementById(id).value='');document.getElementById('annualAllowance').value='6600';document.getElementById('minimumIinExempt').checked=false;syncIinFromVsaoi();document.getElementById('iinResult').textContent=uiText('Ievadi citus ienākumus un atvieglojumus, lai aprēķinātu prognozi. Peļņa un VSAOI tiek pārnestas no ceturkšņu aprēķina.','Enter other income and reliefs to estimate your tax. Profit and VSAOI are carried over from the quarterly calculator.')}
+function resetIin(){['otherTaxableIncome','otherDeductions'].forEach(id=>document.getElementById(id).value='');document.getElementById('annualAllowance').value='6600';document.getElementById('minimumIinExempt').checked=false;document.getElementById('manualVsaoiIin').checked=false;document.getElementById('annualVsaoi').readOnly=true;localStorage.removeItem('mansdarbs_vsaoi_iin_manual_v1');syncIinFromVsaoi();document.getElementById('iinResult').textContent=uiText('Ievadi citus ienākumus un atvieglojumus, lai aprēķinātu prognozi. Peļņa un VSAOI tiek pārnestas no ceturkšņu aprēķina.','Enter other income and reliefs to estimate your tax. Profit and VSAOI are carried over from the quarterly calculator.')}
 function resetVsaoi(){[1,2,3].forEach(i=>document.getElementById('profit'+i).value='');document.getElementById('contributionBase').value='780';document.getElementById('contributionStatus').value='standard';document.getElementById('vsaoiActivityType').value='ordinary';toggleVsaoiActivity();document.getElementById('vsaoiResult').textContent=uiText('Ievadi peļņu visiem trim ceturkšņa mēnešiem, lai redzētu orientējošo aprēķinu.','Enter profit for all three months to see an estimate.')}
 
-function initVsaoi(){loadVsaoiQuarter();syncIinFromVsaoi()}
+function initVsaoi(){const manual=localStorage.getItem('mansdarbs_vsaoi_iin_manual_v1');if(manual!==null){document.getElementById('manualVsaoiIin').checked=true;document.getElementById('annualVsaoi').readOnly=false;document.getElementById('annualVsaoi').value=manual;}loadVsaoiQuarter();syncIinFromVsaoi()}
 function showCalculatorPanel(panel){
  const overview=document.getElementById('calculatorOverview');
  const vsaoi=document.getElementById('nodokli');
@@ -936,6 +954,10 @@ const EN_TRANSLATIONS={"Kategorija (nav obligāta)":"Category (optional)","Bez k
 "VSAOI aprēķina pamatprincipi":"VSAOI calculation basics",
 "Parastajai saimnieciskajai darbībai, ja mēneša peļņa ir zem 780 €, 10% pensiju iemaksu aprēķina no visas mēneša peļņas. Ja peļņa sasniedz vismaz 780 €, pilno VSAOI maksā no izvēlētā objekta (vismaz 780 €), bet 10% — no peļņas daļas virs šī objekta. Lauksaimniecības un intelektuālā īpašuma ienākumiem 10% daļu aprēķina par gadu atsevišķi. No 2026. gada pašnodarbinātajiem vairs nepiemēro minimālo VSAOI piemaksu par nepietiekamiem ienākumiem.":"For ordinary business activity, if monthly profit is below €780, the 10% pension contribution is calculated on all monthly profit. If profit reaches at least €780, full VSAOI is paid on the selected base (at least €780), and 10% on profit above that base. For agricultural production and intellectual property income, the 10% portion is calculated annually. From 2026, self-employed people are no longer subject to a minimum VSAOI top-up for insufficient income.",
 "Aprēķins ir orientējošs. Pieejamas standarta 31,07% un vecuma pensijas tiesību gadījumā piemērojamā 29,36% likme. Lauksaimnieciskās ražošanas un intelektuālā īpašuma gada 10% kārtība ir pieejama atsevišķā režīmā. Nekustamā īpašuma apsaimniekotāja īpašais režīms un jauktu darbību proporcionālais aprēķins vēl nav iekļauts. Šādos gadījumos pārbaudi aprēķinu VID EDS.":"This is an estimate. The standard 31.07% rate and the 29.36% rate for people eligible for an old-age pension are available. The annual 10% treatment for agricultural production and intellectual property is available as a separate mode. The special real-estate manager regime and proportional calculations for mixed activities are not yet included. Verify those cases in VID EDS.",
+
+"Ievadīt faktiski samaksāto VSAOI manuāli":"Enter VSAOI actually paid manually",
+"Automātiski no saglabātajiem ceturkšņu aprēķiniem; precīzai gada deklarācijas prognozei salīdzini ar faktiski samaksāto summu EDS.":"Automatically estimated from saved quarterly calculations; for a more accurate annual tax estimate, compare with the amount actually paid in VID EDS.",
+"Manuālajā režīmā ievadi attiecīgajā kalendāra gadā faktiski samaksāto VSAOI, arī iepriekšējā gada 4. ceturkšņa maksājumu. Neiekļauj summas, kas jau ierakstītas saimnieciskās darbības izdevumos.":"In manual mode, enter VSAOI actually paid during the relevant calendar year, including the previous year's Q4 payment. Do not include amounts already recorded as business expenses.",
 };
 function uiText(lv,en){return document.documentElement.lang==='en'?en:lv}
 function setLanguage(lang){
