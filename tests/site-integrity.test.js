@@ -41,6 +41,19 @@ test('Cloudflare Pages root references existing local scripts and a real PNG sha
   assert.ok(fs.existsSync(path.join(root, 'functions/api/vid-assistant.js')));
 });
 
+test('Guide buttons expose and synchronize their expanded state', () => {
+  const html = read('index.html');
+  const buttons = [...html.matchAll(/<button\\b[^>]*onclick="showGuide\\(\\)"[^>]*>/g)].map(match => match[0]);
+  assert.equal(buttons.length, 2);
+  for (const button of buttons) {
+    assert.match(button, /aria-controls="guide"/);
+    assert.match(button, /aria-expanded="false"/);
+  }
+  assert.match(html, /function setGuideExpanded\\(expanded\\)/);
+  assert.match(html, /setGuideExpanded\\(opening\\)/);
+  assert.match(html, /setGuideExpanded\\(false\\)/);
+});
+
 test('Worker static-assets copy references existing local scripts and a real PNG share image', () => {
   const publicDirectory = path.join(root, 'public');
   const html = read('public/index.html');
