@@ -57,3 +57,32 @@ test('Worker static-assets copy references existing local scripts and a real PNG
   assert.ok(fs.existsSync(path.join(publicDirectory, 'funding-programs.json')));
   assert.ok(fs.existsSync(path.join(publicDirectory, 'funding-sources.json')));
 });
+
+
+
+test('VID assistant exposes modal semantics and manages keyboard focus', () => {
+  const html = read('index.html');
+  assert.ok(html.includes("root.setAttribute('role','dialog')"));
+  assert.ok(html.includes("root.setAttribute('aria-modal','true')"));
+  assert.ok(html.includes("root.setAttribute('aria-labelledby','mvaHeading')"));
+  assert.ok(html.includes("root.setAttribute('aria-describedby','mvaIntro')"));
+  assert.ok(html.includes('previousFocus=returnFocusTo||document.activeElement'));
+  assert.ok(html.includes('show(footerLink)'));
+  assert.ok(html.includes("root.querySelector('#mvaStepTitle').focus()"));
+  assert.ok(html.includes("root.querySelector('#mvaDone h2').focus()"));
+  assert.ok(html.includes("else root.querySelector('#mvaAskToggle').focus()"));
+  assert.ok(html.includes("document.addEventListener('keydown',trapDialogFocus,true)"));
+  assert.ok(html.includes('event.shiftKey'));
+  assert.ok(html.includes("document.documentElement.contains(target)&&typeof target.focus==='function')target.focus();"));
+});
+
+test('frequently used mobile controls have at least 44px touch targets', () => {
+  const html = read('index.html');
+  assert.ok(html.includes('.lang-switch button{min-width:44px;min-height:44px}'));
+  assert.ok(html.includes('.nav button{min-height:44px}'));
+  assert.ok(html.includes('.shell.home-screen .card .btn{min-height:44px}'));
+  assert.ok(html.includes('.record-actions button{min-width:44px;min-height:44px;padding:8px 10px}'));
+  assert.ok(html.includes('.md-context-help__actions button{min-height:44px}'));
+  assert.ok(html.includes('#mansdarbs-vid-assistant .mva-close{min-width:44px;min-height:44px;padding:8px 12px}'));
+  assert.ok(html.includes('class="record-actions"><button class="textlink" style="border:0;background:none;min-width:44px;min-height:44px'));
+});
