@@ -80,13 +80,21 @@ test('comparison rejects VSAOI above annual profit', () => {
   assert.match(result.textContent, /VSAOI summa pārsniedz peļņu/);
 });
 
-test('MUN is not recommended at or above the €50,000 turnover threshold', () => {
+test('MUN eligibility is retained at exactly €50,000 turnover', () => {
   const result = runComparison({
     regimeTurnover: 50000, regimeExpenses: 10000, regimeVsaoi: 5000,
     regimeOtherIncome: 0, regimeAllowance: 6600, regimeDeductions: 0
   });
+  assert.doesNotMatch(result.innerHTML, /MUN izvēli nevar droši ieteikt/);
+});
+
+test('MUN is not recommended above the €50,000 turnover threshold', () => {
+  const result = runComparison({
+    regimeTurnover: 50001, regimeExpenses: 10000, regimeVsaoi: 5000,
+    regimeOtherIncome: 0, regimeAllowance: 6600, regimeDeductions: 0
+  });
   assert.match(result.innerHTML, /MUN izvēli nevar droši ieteikt/);
-  assert.match(result.innerHTML, /sasniedz vai pārsniedz 50 000/);
+  assert.match(result.innerHTML, /pārsniedz 50 000/);
 });
 
 test('special VAT registration can retain MUN eligibility below the threshold', () => {
