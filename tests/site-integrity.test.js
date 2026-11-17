@@ -16,7 +16,7 @@ function checkLocalScripts(html, baseDirectory) {
     const pathname = source.split(/[?#]/, 1)[0];
     assert.ok(
       fs.existsSync(path.join(baseDirectory, pathname)),
-      \`Missing local script referenced by HTML: \${source}\`
+      'Missing local script referenced by HTML: ' + source
     );
   }
 }
@@ -29,7 +29,7 @@ function checkSocialPreview(html, baseDirectory) {
   assert.equal(url.hostname, 'mansdarbs.eu');
   assert.ok(
     fs.existsSync(path.join(baseDirectory, url.pathname.replace(/^\//, ''))),
-    \`Open Graph image file is missing: \${url.pathname}\`
+    'Open Graph image file is missing: ' + url.pathname
   );
   assert.match(html, /<meta\s+property=["']og:image:type["']\s+content=["']image\/(?:png|jpeg)["']/i);
 }
