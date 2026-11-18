@@ -99,3 +99,10 @@ This is a limited frontend scan, **not** proof that the entire deployed system h
 ### First integration checkpoint
 
 The first technical prototype should intercept the VID assistant request only in a dedicated test harness, prove that a rejected payload never reaches the mocked network boundary, and verify that an allowed payload preserves the existing request contract. Do not alter the live `main` route or production UX from this branch.
+
+
+## Local gate prototype checkpoint (2026-11-18)
+
+Added `smolets-policy-gate.js` and `tests/smolets-policy-gate.test.js` as an isolated, non-production prototype. The gate recursively inspects JSON-compatible text payloads, rejects unsupported objects and non-empty attachment fields, applies a small set of deterministic blocking rules, and exposes an injected network boundary so tests can prove rejected requests cause zero calls.
+
+**Important limitations:** this is not a complete policy classifier. Pattern matching can miss paraphrases, encoded content, names and contextual intent; it can also produce false positives. Attachments are rejected rather than inspected. A passing result means only that no configured rule matched. The prototype is not wired into the live frontend, does not intercept every network API, and must not be described as a production security boundary. Further work must add a threat-modelled classifier, multilingual/adversarial tests, complete outbound-path inventory, and browser-level interception tests before any integration.
