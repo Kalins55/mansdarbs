@@ -88,3 +88,14 @@ The workspace should make uncertainty visible. It must not fabricate sources, en
 ## Current implementation status
 
 This file records the product and security specification only. No personal dossier has been created, no social profiles have been scraped, no person has been contacted, and no policy gate or workspace UI has yet been implemented. The branch is not deployed.
+
+
+## Initial codebase reconnaissance (2026-11-18)
+
+A read-only review of the current `main` frontend identified one explicit browser-side network request in `index.html`: a POST to `/api/vid-assistant` carrying the chat history, selected profile and current task. The currently loaded frontend scripts `contextual-help.js`, `industry-modules.js`, `context-engine.js`, `funding-discovery.js` and `funding-ui.js` did not contain direct `fetch`, `XMLHttpRequest`, `sendBeacon`, `WebSocket` or `EventSource` calls in the reviewed versions.
+
+This is a limited frontend scan, **not** proof that the entire deployed system has only one outbound path. Before implementing or claiming complete enforcement, inspect the Cloudflare Pages Functions / Worker handlers, all dynamically loaded modules, third-party scripts and any future integrations. The VID assistant route is an existing feature and must not be silently changed by this experimental branch.
+
+### First integration checkpoint
+
+The first technical prototype should intercept the VID assistant request only in a dedicated test harness, prove that a rejected payload never reaches the mocked network boundary, and verify that an allowed payload preserves the existing request contract. Do not alter the live `main` route or production UX from this branch.
