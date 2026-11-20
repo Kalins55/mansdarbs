@@ -30,6 +30,36 @@ function json(data, status = 200) {
   });
 }
 
+async function readJsonBody(request, maxBytes) {
+  const reader = request.body?.getReader();
+  if (!reader) return { ok: false, status: 400 };
+
+  const chunks = [];
+  let totalBytes = 0;
+  try {
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      totalBytes += value.byteLength;
+      if (totalBytes > maxBytes) {
+        await reader.cancel();
+        return { ok: false, status: 413 };
+      }
+      chunks.push(value);
+    }
+
+    const bytes = new Uint8Array(totalBytes);
+    let offset = 0;
+    for (const chunk of chunks) {
+      bytes.set(chunk, offset);
+      offset += chunk.byteLength;
+    }
+    return { ok: true, body: JSON.parse(new TextDecoder().decode(bytes)) };
+  } catch (_) {
+    return { ok: false, status: 400 };
+  }
+}
+
 export async function onRequestPost({ request, env }) {
   const origin = request.headers.get("Origin");
   if (origin) {
@@ -43,13 +73,15 @@ export async function onRequestPost({ request, env }) {
   const length = Number(request.headers.get("Content-Length") || 0);
   if (length > 14000) return json({ error: "Ziņa ir pārāk gara. Saīsini to un mēģini vēlreiz." }, 413);
 
+  const parsed = await readJsonBody(request, 14000);
+  if (!parsed.ok) {
+    if (parsed.status === 413) return json({ error: "Ziņa ir pārāk gara. Saīsini to un mēģini vēlreiz." }, 413);
+    return json({ error: "Neizdevās nolasīt ziņu." }, 400);
+  }
+  const body = parsed.body;
+
   if (!env.OPENAI_API_KEY) {
     return json({ error: "AI savienojums vēl nav aktivizēts. Pagaidām izmanto soli pa solim ceļvedi." }, 503);
-  }
-
-  let body;
-  try { body = await request.json(); } catch (_) {
-    return json({ error: "Neizdevās nolasīt ziņu." }, 400);
   }
 
   const allowedRoles = new Set(["user", "assistant"]);
