@@ -14,6 +14,11 @@ Vienkāršs, mobilajām ierīcēm pielāgots palīgs saimnieciskās darbības s�
 - Šī demonstrācija nav oficiāls grāmatvedības reģistrs. Tajā ir orientējoši 2026. gada VSAOI un IIN aprēķini; tie neaizstāj VID EDS aprēķinu un neaptver visus īpašos nodokļu režīmus.
 
 
+## SIA uzskaite
+
+SIA darījumu reģistrs un vienkāršotais grāmatojumu pārskats pašlaik ir demonstrācijas prototips, nevis pilnvērtīga gada grāmatvedības sistēma. Attīstības prasības, tostarp dokumentu izcelsme, bankas datu imports, kontējumu pārbaude, gada slēgums, auditācijas vēsture un ātrā pārskata drošības robežas, aprakstītas [SIA uzskaites un gada pārskata attīstības prasībās](docs/sia-accounting-roadmap.md).
+
+
 ## VSAOI un IIN aprēķini
 
 - VSAOI kalkulators atbalsta standarta pašnodarbinātā 31,07% likmi un vecuma pensijas tiesību gadījumā piemērojamo 29,36% likmi.
