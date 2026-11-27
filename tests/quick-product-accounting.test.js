@@ -25,3 +25,11 @@ test('quick sales use the local calendar date for saving and daily totals', () =
 test('quick sales summary checks today\'s records, not all historical records', () => {
   assert.match(source, /todaysSales\.length\s*\?\s*todaysSales\.slice/);
 });
+
+test('daily report groups sales by product and totals sold units', () => {
+  assert.match(source, /const units=todaysSales\.reduce\(\(sum,s\)=>sum\+s\.qty,0\)/);
+  assert.match(source, /const byProduct=new Map\(\)/);
+  assert.match(source, /item\.qty\+=s\.qty;item\.total\+=s\.total/);
+  assert.match(source, /Šodienas kopsavilkums/);
+  assert.match(source, /Pārdotās vienības:/);
+});
