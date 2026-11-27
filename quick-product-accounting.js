@@ -70,8 +70,17 @@ function updateTotal(){
  $('qpaTotal').textContent=p&&qty?money(p.price*qty):'—';
 }
 function renderSales(){
- const today=localDate(new Date());const todaysSales=sales.filter(s=>s.date===today);const total=todaysSales.reduce((sum,s)=>sum+s.total,0);
- $('qpaSales').innerHTML='<div class="qpa-row"><strong>Šodienas ievadītie ieraksti</strong><strong>'+money(total)+'</strong></div>'+(todaysSales.length?todaysSales.slice(-8).reverse().map(s=>'<div class="qpa-row"><span>'+esc(s.code)+'. '+esc(s.name)+' × '+s.qty+' <span class="qpa-muted">'+esc(s.time)+'</span></span><strong>'+money(s.total)+'</strong></div>').join(''):'<div class="qpa-muted">Pārdošanas ierakstu vēl nav.</div>');
+ const today=localDate(new Date());
+ const todaysSales=sales.filter(s=>s.date===today);
+ const total=todaysSales.reduce((sum,s)=>sum+s.total,0);
+ const units=todaysSales.reduce((sum,s)=>sum+s.qty,0);
+ const byProduct=new Map();
+ todaysSales.forEach(s=>{
+  const item=byProduct.get(s.code)||{code:s.code,name:s.name,qty:0,total:0};
+  item.qty+=s.qty;item.total+=s.total;byProduct.set(s.code,item);
+ });
+ const productRows=[...byProduct.values()].sort((a,b)=>b.qty-a.qty||b.total-a.total).map(p=>'<div class="qpa-row"><span>'+esc(p.code)+'. '+esc(p.name)+' <span class="qpa-muted">× '+p.qty+'</span></span><strong>'+money(p.total)+'</strong></div>').join('');
+ $('qpaSales').innerHTML='<div class="qpa-row"><strong>Šodienas kopsavilkums</strong><strong>'+money(total)+'</strong></div><div class="qpa-muted">Pārdotās vienības: '+units+'</div>'+(productRows?'<div class="qpa-muted" style="margin-top:8px">Pa produktiem</div>'+productRows:'<div class="qpa-muted">Šodien pārdošanas ierakstu vēl nav.</div>')+'<details><summary>Pēdējie pārdošanas ieraksti ('+todaysSales.length+')</summary>'+(todaysSales.length?todaysSales.slice(-8).reverse().map(s=>'<div class="qpa-row"><span>'+esc(s.code)+'. '+esc(s.name)+' × '+s.qty+' <span class="qpa-muted">'+esc(s.time)+'</span></span><strong>'+money(s.total)+'</strong></div>').join(''):'<div class="qpa-muted">Ierakstu nav.</div>')+'</details>';
 }
 $('qpaSaveProduct').addEventListener('click',()=>{
  const code=$('qpaCode').value.trim(),name=$('qpaName').value.trim(),price=Number($('qpaPrice').value);
