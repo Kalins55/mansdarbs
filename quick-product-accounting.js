@@ -9,6 +9,7 @@ const save=(key,value)=>{try{localStorage.setItem(key,JSON.stringify(value));ret
 let products=read(PRODUCTS_KEY,[]);
 let sales=read(SALES_KEY,[]);
 const money=n=>new Intl.NumberFormat('lv-LV',{style:'currency',currency:'EUR'}).format(Number(n)||0);
+const localDate=d=>[d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-');
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 mount.innerHTML=`
 <style>
@@ -69,8 +70,8 @@ function updateTotal(){
  $('qpaTotal').textContent=p&&qty?money(p.price*qty):'—';
 }
 function renderSales(){
- const today=new Date().toISOString().slice(0,10);const todaysSales=sales.filter(s=>s.date===today);const total=todaysSales.reduce((sum,s)=>sum+s.total,0);
- $('qpaSales').innerHTML='<div class="qpa-row"><strong>Šodienas ievadītie ieraksti</strong><strong>'+money(total)+'</strong></div>'+(sales.length?todaysSales.slice(-8).reverse().map(s=>'<div class="qpa-row"><span>'+esc(s.code)+'. '+esc(s.name)+' × '+s.qty+' <span class="qpa-muted">'+esc(s.time)+'</span></span><strong>'+money(s.total)+'</strong></div>').join(''):'<div class="qpa-muted">Pārdošanas ierakstu vēl nav.</div>');
+ const today=localDate(new Date());const todaysSales=sales.filter(s=>s.date===today);const total=todaysSales.reduce((sum,s)=>sum+s.total,0);
+ $('qpaSales').innerHTML='<div class="qpa-row"><strong>Šodienas ievadītie ieraksti</strong><strong>'+money(total)+'</strong></div>'+(todaysSales.length?todaysSales.slice(-8).reverse().map(s=>'<div class="qpa-row"><span>'+esc(s.code)+'. '+esc(s.name)+' × '+s.qty+' <span class="qpa-muted">'+esc(s.time)+'</span></span><strong>'+money(s.total)+'</strong></div>').join(''):'<div class="qpa-muted">Pārdošanas ierakstu vēl nav.</div>');
 }
 $('qpaSaveProduct').addEventListener('click',()=>{
  const code=$('qpaCode').value.trim(),name=$('qpaName').value.trim(),price=Number($('qpaPrice').value);
@@ -92,7 +93,7 @@ function addSale(){
  const p=selected(),qty=Number($('qpaQty').value);
  if(!p){$('qpaStatus').textContent='Šāds kods nav atrasts. Pārbaudi kodu.';$('qpaSaleCode').focus();return}
  if(!Number.isInteger(qty)||qty<1){$('qpaStatus').textContent='Ievadi daudzumu, vismaz 1.';$('qpaQty').focus();return}
- const now=new Date(),record={code:p.code,name:p.name,qty,total:p.price*qty,time:now.toLocaleTimeString('lv-LV',{hour:'2-digit',minute:'2-digit'}),date:now.toISOString().slice(0,10)};
+ const now=new Date(),record={code:p.code,name:p.name,qty,total:p.price*qty,time:now.toLocaleTimeString('lv-LV',{hour:'2-digit',minute:'2-digit'}),date:localDate(now)};
  sales.push(record);
  if(!save(SALES_KEY,sales)){sales.pop();$('qpaStatus').textContent='Neizdevās saglabāt. Mēģini vēlreiz.';return}
  $('qpaStatus').textContent='Saglabāts! Vari ievadīt nākamo produktu.';renderSales();$('qpaSaleCode').value='';$('qpaQty').value='1';updateTotal();$('qpaSaleCode').focus();
