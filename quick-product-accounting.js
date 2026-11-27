@@ -80,7 +80,9 @@ function renderSales(){
   item.qty+=s.qty;item.total+=s.total;byProduct.set(s.code,item);
  });
  const productRows=[...byProduct.values()].sort((a,b)=>b.qty-a.qty||b.total-a.total).map(p=>'<div class="qpa-row"><span>'+esc(p.code)+'. '+esc(p.name)+' <span class="qpa-muted">× '+p.qty+'</span></span><strong>'+money(p.total)+'</strong></div>').join('');
- $('qpaSales').innerHTML='<div class="qpa-row"><strong>Šodienas kopsavilkums</strong><strong>'+money(total)+'</strong></div><div class="qpa-muted">Pārdotās vienības: '+units+'</div>'+(productRows?'<div class="qpa-muted" style="margin-top:8px">Pa produktiem</div>'+productRows:'<div class="qpa-muted">Šodien pārdošanas ierakstu vēl nav.</div>')+'<details><summary>Pēdējie pārdošanas ieraksti ('+todaysSales.length+')</summary>'+(todaysSales.length?todaysSales.slice(-8).reverse().map(s=>'<div class="qpa-row"><span>'+esc(s.code)+'. '+esc(s.name)+' × '+s.qty+' <span class="qpa-muted">'+esc(s.time)+'</span></span><strong>'+money(s.total)+'</strong></div>').join(''):'<div class="qpa-muted">Ierakstu nav.</div>')+'</details>';
+ const lastToday=todaysSales[todaysSales.length-1];
+ const undoButton=lastToday?'<div class="qpa-actions"><button type="button" class="qpa-secondary" id="qpaUndoSale">Atsaukt pēdējo pārdošanu</button></div>':'';
+ $('qpaSales').innerHTML='<div class="qpa-row"><strong>Šodienas kopsavilkums</strong><strong>'+money(total)+'</strong></div><div class="qpa-muted">Pārdotās vienības: '+units+'</div>'+(productRows?'<div class="qpa-muted" style="margin-top:8px">Pa produktiem</div>'+productRows:'<div class="qpa-muted">Šodien pārdošanas ierakstu vēl nav.</div>')+undoButton+'<details><summary>Pēdējie pārdošanas ieraksti ('+todaysSales.length+')</summary>'+(todaysSales.length?todaysSales.slice(-8).reverse().map(s=>'<div class="qpa-row"><span>'+esc(s.code)+'. '+esc(s.name)+' × '+s.qty+' <span class="qpa-muted">'+esc(s.time)+'</span></span><strong>'+money(s.total)+'</strong></div>').join(''):'<div class="qpa-muted">Ierakstu nav.</div>')+'</details>';
 }
 $('qpaSaveProduct').addEventListener('click',()=>{
  const code=$('qpaCode').value.trim(),name=$('qpaName').value.trim(),price=Number($('qpaPrice').value);
@@ -107,6 +109,18 @@ function addSale(){
  if(!save(SALES_KEY,sales)){sales.pop();$('qpaStatus').textContent='Neizdevās saglabāt. Mēģini vēlreiz.';return}
  $('qpaStatus').textContent='Saglabāts! Vari ievadīt nākamo produktu.';renderSales();$('qpaSaleCode').value='';$('qpaQty').value='1';updateTotal();$('qpaSaleCode').focus();
 }
+$('qpaSales').addEventListener('click',e=>{
+ const button=e.target.closest('#qpaUndoSale');if(!button)return;
+ const today=localDate(new Date());
+ const last=sales.filter(item=>item.date===today).slice(-1)[0];
+ if(!last)return;
+ if(!window.confirm('Atsaukt pēdējo pārdošanas ierakstu?'))return;
+ const index=sales.lastIndexOf(last);
+ const removed=sales.splice(index,1)[0];
+ if(!save(SALES_KEY,sales)){sales.splice(index,0,removed);$('qpaStatus').textContent='Neizdevās saglabāt izmaiņas. Ieraksts nav atsaukts.';return}
+ $('qpaStatus').textContent='Pēdējais pārdošanas ieraksts atsaukts.';
+ renderSales();
+});
 $('qpaAddSale').addEventListener('click',addSale);
 $('qpaSaleCode').addEventListener('keydown',e=>{if(e.key==='Enter'){$('qpaQty').focus();$('qpaQty').select()}});
 $('qpaQty').addEventListener('keydown',e=>{if(e.key==='Enter')addSale()});
